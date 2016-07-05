@@ -26,7 +26,7 @@ return array(
 	|
 	*/
 
-	'url' => 'http://iblis',
+	'url' => '/Applications/XAMPP/htdocs/iblis/iBLIS/public',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -39,7 +39,7 @@ return array(
 	|
 	*/
 
-	'timezone' => 'Africa/Nairobi',
+	'timezone' => 'Africa/Kampala',
 
 	/*
 	|--------------------------------------------------------------------------

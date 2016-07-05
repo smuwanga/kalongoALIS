@@ -39,7 +39,7 @@
 						<div class="col-md-12">
 							<div class="panel panel-info">
 								<div class="panel-heading">
-									<h3 class="panel-title">{{trans("messages.patient-details")}}</h3>
+									<h3 class="panel-title">{{trans("messages.patient-profile")}}</h3>
 								</div>
 								<div class="panel-body inline-display-details">
 									<span><strong>{{trans("messages.patient-number")}}</strong> {{ $patient->patient_number }}</span>
