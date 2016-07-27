@@ -12,7 +12,7 @@ class CreateBbincidencesTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::table('unhls_bbincidences', function(Blueprint $table)
+		Schema::create('unhls_bbincidences', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->integer('facility_id')->unsigned();
