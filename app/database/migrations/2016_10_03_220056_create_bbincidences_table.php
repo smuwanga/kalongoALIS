@@ -25,11 +25,12 @@ class CreateBbincidencesTable extends Migration {
 			$table->string('personnel_gender');
 			$table->date('personnel_dob');
 			$table->string('personnel_age');
-			$table->string('personnel_cadre');
+			$table->string('personnel_category');
 			$table->string('personnel_telephone');
 			$table->string('personnel_email');
 			$table->string('nok_name');
 			$table->string('nok_telephone');
+			$table->string('nok_email');
 			$table->string('lab_section');
 			$table->string('occurrence');
 			$table->string('ulin');
@@ -43,19 +44,28 @@ class CreateBbincidencesTable extends Migration {
 			$table->string('officer_telephone');
 			$table->string('extent');
 			$table->text('firstaid');
-			$table->string('firstaid_date');
+			$table->text('intervention');
+			$table->date('intervention_date');
+			$table->time('intervention_time');
+			$table->text('intervention_followup');
 			$table->string('mo_fname');
 			$table->string('mo_lname');
 			$table->string('mo_designation');
 			$table->string('mo_telephone');
 			$table->text('cause');
 			$table->text('corrective_action');
+			$table->text('referral_status');
+			$table->text('status');
+			$table->date('analysis_date');
+			$table->time('analysis_time');
 			$table->string('bo_fname');
 			$table->string('bo_lname');
 			$table->string('bo_designation');
 			$table->string('bo_telephone');
 			$table->text('findings');
-			$table->text('iprovement_plan');
+			$table->text('improvement_plan');
+			$table->date('response_date');
+			$table->time('response_time');
 			$table->string('brm_fname');
 			$table->string('brm_lname');
 			$table->string('brm_designation');
@@ -64,7 +74,8 @@ class CreateBbincidencesTable extends Migration {
 			$table->string('updatedby');
 			$table->foreign('facility_id')->references('id')->on('unhls_facilities');
 			$table->timestamps();
-			});
+			$table->timestamp('deleted_at');
+		});
 	}
 
 	/**
@@ -74,10 +85,7 @@ class CreateBbincidencesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::table('unhls_bbincidences', function(Blueprint $table)
-		{
-			Schema::drop('unhls_bbincidences');
-		});
+		Schema::drop('unhls_bbincidences');
 	}
 
 }

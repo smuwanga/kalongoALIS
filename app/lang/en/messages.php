@@ -695,4 +695,19 @@ return array(
     'follow-up' =>  'Follow Up',
     'cd4-less'  =>  '< 500',
     'cd4-greater'   =>  '> 500',   
+	
+	
+	/**
+	* BB Incidences
+	*/
+	'bbincidence' => 'BB Incidence | BB Incidences',
+	'new-bbincidence' => 'New BB Incidence',
+	'incident-serial-number' => 'Incident Serial Number',
+	'date-of-occurrence' => 'Date of Occurrence',
+	'time-of-occurrence' => 'Time of Occurrence',
+	'age' => 'Age',
+	'dob' => 'Date of Birth',
+	'filter' => 'Filter',
+	
+	
 );

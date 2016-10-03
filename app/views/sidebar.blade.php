@@ -383,5 +383,49 @@
 			</div>
 		</li>
 		@endif
+		@if(Entrust::can('manage_bbincidences'))
+		<li>
+			<div class="main-menu">
+				<!--<a href="{{ URL::route('bbincidence.index') }}" title="BB Incidences">-->
+					<a href="#" title="BB Incidences">
+					<span class="glyphicon glyphicon-ban-circle"></span> BB Incidences</a>
+			</div>
+			
+			<div class="sub-menu">
+				<ul class="sub-menu-items">
+					<li>
+						<div>
+							<a href="{{ URL::route('bbincidence.index')}}">
+								<span class="glyphicon glyphicon-list"></span> Summary Log</a>
+						</div>
+					</li>
+				</ul>
+			</div>
+			
+			<div class="sub-menu">
+				<ul class="sub-menu-items">
+					<li>
+						<div>
+							<a href="{{ URL::route('bbincidence.create')}}">
+								<span class="glyphicon glyphicon-plus-sign"></span> Create</a>
+						</div>
+					</li>
+				</ul>
+			</div>
+
+			<div class="sub-menu">
+				<ul class="sub-menu-items">
+					<li>
+						<div>
+							<a href="{{ URL::route('bbincidence.bbfacilityreport')}}">
+								<span class="glyphicon glyphicon-stats"></span> Facility Report</a>
+						</div>
+					</li>
+				</ul>
+			</div>
+			
+			
+		</li>
+		@endif
 	</ul>
 @show

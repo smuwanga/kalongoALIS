@@ -9,7 +9,7 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li class="user-link">
                             <a href="javascript:void(0);">
-                                <strong>{{ Auth::user()->name }}</strong>
+                                <strong>{{ Auth::user()->name }}</strong> | {{ Auth::user()->facility->name }}
                             </a>
                         </li>
                     </ul>

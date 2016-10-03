@@ -53,7 +53,9 @@ Route::group(array("before" => "auth"), function()
         "uses" => "UserController@updateOwnPassword"
         ));
     Route::resource('patient', 'PatientController');
-    Route::get("/patient/{id}/delete", array(
+	Route::resource('bbincidence', 'BbincidenceController'); /* Added by Justus */
+    
+	Route::get("/patient/{id}/delete", array(
         "as"   => "patient.delete",
         "uses" => "PatientController@delete"
     ));
@@ -436,4 +438,47 @@ Route::group(array("before" => "auth"), function()
             "uses" => "ReceiptController@delete"
         ));
     });
+	
+	Route::resource('bbincidence', 'BbincidenceController'); /* Added by Justus */
+    
+	Route::get("/bbincidence/clinical/clinical", array(
+        "as"   => "bbincidence.clinical",
+        "uses" => "BbincidenceController@clinical"
+    ));
+	
+	Route::get("/bbincidence/{id}/clinicaledit", array(
+        "as"   => "bbincidence.clinicaledit",
+        "uses" => "BbincidenceController@clinicaledit"
+    ));
+
+    Route::any("/bbincidence/{id}/clinicalupdate", array(
+        "as"   => "bbincidence.clinicalupdate",
+        "uses" => "BbincidenceController@clinicalupdate"
+    ));
+
+    Route::any("/bbincidence/bbfacilityreport/bbfacilityreport", array(
+        "as"   => "bbincidence.bbfacilityreport",
+        "uses" => "BbincidenceController@bbfacilityreport"
+    ));
+
+    Route::get("/bbincidence/{id}/analysisedit", array(
+        "as"   => "bbincidence.analysisedit",
+        "uses" => "BbincidenceController@analysisedit"
+    ));
+
+    Route::any("/bbincidence/{id}/analysisupdate", array(
+        "as"   => "bbincidence.analysisupdate",
+        "uses" => "BbincidenceController@analysisupdate"
+    ));
+
+    Route::get("/bbincidence/{id}/responseedit", array(
+        "as"   => "bbincidence.responseedit",
+        "uses" => "BbincidenceController@responseedit"
+    ));
+
+    Route::any("/bbincidence/{id}/responseupdate", array(
+        "as"   => "bbincidence.responseupdate",
+        "uses" => "BbincidenceController@responseupdate"
+    ));
+	
 });
