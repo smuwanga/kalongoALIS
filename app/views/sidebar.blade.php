@@ -1,6 +1,6 @@
 @section("sidebar")
 <?php
-	$active = array("","","","","","", "", "", "");
+	$active = array("","","","","","", "", "", "","");
 	$key = explode("?",str_replace("/", "?", Request::path()));
 	switch ($key[0]) {
 		case 'home': $active[0] = "active"; break;
@@ -39,7 +39,9 @@
 		case 'user': 
 		case 'role': 
 			$active[6] = "active"; break;
-		case 'issue': 
+		case 'issue':
+		case 'stock-card':
+		case 'requisition-voucher': 
 		case 'receipt': 
 		case 'topup': 
 		case 'metric':
@@ -48,9 +50,17 @@
 			$active[7] = "active"; break;
 		case 'controlresults':
 		case 'control':
-		case 'lot': $active[8] = "active"; break;
+		case 'lot': $active[8] = "active"; break;	
+		case 'home': $active[9] = "active"; break;		
+		case 'settings': $active[10] = "active"; break;
+		 	
 	}
 ?>
+
+
+
+
+
 	<ul class="nav nav-sidebar">
 		<li>
 			<div class="main-menu {{$active[0]}}">
@@ -324,6 +334,19 @@
 								<span class="glyphicon glyphicon-tag"></span> {{ Lang::choice('messages.receipt', 2)}}</a>
 						</div>
 					</li>
+
+					<li>
+						<div>
+							<a href="{{ URL::route("stockcard.index")}}">
+								<span class="glyphicon glyphicon-tag"></span> {{trans('messages.stock-card')}}</a>
+						</div>
+					</li>
+					<li>
+						<div>
+							<a href="{{ URL::route("stockrequisition.index")}}">
+								<span class="glyphicon glyphicon-tag"></span> {{trans('messages.requisition-voucher')}}</a>
+						</div>
+					</li>
 					<li>
 						<div>
 							<a href="{{ URL::route("issue.index")}}">
@@ -353,6 +376,7 @@
 			</div>
 		</li> 
 		@endif
+
 		@if(Entrust::can('manage_qc'))
 		<li>
 			<div class="main-menu {{$active[8]}}">
@@ -383,6 +407,7 @@
 			</div>
 		</li>
 		@endif
+
 		@if(Entrust::can('manage_bbincidences'))
 		<li>
 			<div class="main-menu">
@@ -427,5 +452,16 @@
 			
 		</li>
 		@endif
+
+
+
+		<li>
+			<div class="main-menu {{$active[9]}}">
+				<a href="{{ URL::route('user.home')}}" title="{{trans('messages.home')}}">
+					<span class="glyphicon glyphicon-home"></span> {{trans('messages.equipment-log')}}</a>
+			</div>
+		</li>
+
 	</ul>
+
 @show

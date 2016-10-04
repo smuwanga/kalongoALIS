@@ -15,6 +15,10 @@
         <script type="text/javascript" src="{{ URL::asset('js/dataTables.bootstrap.js') }}"></script>
         <script type="text/javascript" src="{{ URL::asset('js/script.js') }} "></script>
 		<!-- print special by justus --><script type="text/javascript" src="{{ URL::asset('js/print_special.js') }} "></script>
+
+        <script type="text/javascript" src="{{ URL::asset('js/validator.min.js') }} "></script>
+        <script type="text/javascript" src="{{ URL::asset('js/stockcard.js') }} "></script>
+
         <!-- jQuery barcode script -->
         <script type="text/javascript" src="{{ asset('js/jquery-barcode-2.0.2.js') }} "></script>
         <title>{{ Config::get('kblis.name') }} {{ Config::get('kblis.version') }}</title>
@@ -27,7 +31,7 @@
                     <div class="col-md-2 sidebar">
                         @include("sidebar")
                     </div>
-                    <div class="col-md-10 col-md-offset-2 main" id="the-one-main">
+                    <div class="col-md-10 main" id="the-one-main">
                         @yield("content")
                     </div>
                 </div>
