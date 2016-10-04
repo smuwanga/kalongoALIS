@@ -435,5 +435,53 @@ Route::group(array("before" => "auth"), function()
             "as"   => "receipt.delete",
             "uses" => "ReceiptController@delete"
         ));
+        //Stock card
+        Route::post("/stockcard/index", array(
+            "as"   => "stockcard.index",
+            "uses" => "StockCardController@index"
+        ));        
+        Route::post("/stockcard/create", array(
+            "as"   => "stockcard.create",
+            "uses" => "StockCardController@create"
+        ));
+        Route::post("/stockcard/store", array(
+            "as"   => "stockcard.store",
+            "uses" => "StockCardController@store"
+        ));
+        Route::get("/stockcard/{id}/delete", array(
+            "as"   => "stockcard.delete",
+            "uses" => "StockCardController@delete"
+        ));
+        Route::resource('stockcard', 'StockCardController');   
+
+        //Stock requisition form
+        Route::post("/stockrequisition/index", array(
+            "as"   => "stockrequisition.index",
+            "uses" => "StockRequisitionController@index"
+        ));        
+        Route::post("/stockrequisition/create", array(
+            "as"   => "stockrequisition.create",
+            "uses" => "StockRequisitionController@create"
+        ));
+        Route::post("/stockrequisition/store", array(
+            "as"   => "stockrequisition.store",
+            "uses" => "StockRequisitionController@store"
+        ));        
+        Route::get("/stockrequisition/{id}/delete", array(
+            "as"   => "stockrequisition.delete",
+            "uses" => "StockRequisitionController@delete"
+        ));
+        Route::resource('stockrequisition', 'StockRequisitionController');
+
+
+        //API controller        
+        Route::resource('apite', 'ApiController');       
+        Route::post("/apite/facility", array(
+            "as"   => "apite.facility",
+            "uses" => "ApiController@facility"
+        ));
+
+        //Route::get('api/facility-by-district/{districtId}', 'ApiController@getFacilityListByDistrict');
+
     });
 });

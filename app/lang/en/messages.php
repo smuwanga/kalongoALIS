@@ -695,4 +695,18 @@ return array(
     'follow-up' =>  'Follow Up',
     'cd4-less'  =>  '< 500',
     'cd4-greater'   =>  '> 500',   
+
+    //BLIS uganda
+    'stock-card' => 'Stock card' ,   
+    'equipment-log' => 'Equipment log',
+    'requisition-voucher'=>'Requisition voucher',
+    'stock-entries'=> 'Stock Entries',
+    'add-stock'=> 'Add',
+    'stock-list'=> 'Stock List',
+    'stock-requisition' => 'Requisition List',    
+    'edit-stock-entry'=> 'Edit',
+    'stock-succesfully-deleted' => 'Stock has been succesfully deleted',
+    'stock-succesfully-added' => 'Successifully added a new stock entry',
+    'settings' => 'Settings',
+
 );
