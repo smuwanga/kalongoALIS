@@ -718,7 +718,7 @@ return array(
     'stock-entries'=> 'Stock Entries',
     'add-stock'=> 'Add',
     'stock-list'=> 'Stock List',
-    'stock-requisition' => 'Requisition List',    
+    'stock-requisition' => 'Stockbook',    
     'edit-stock-entry'=> 'Edit',
     'stock-succesfully-deleted' => 'Stock has been succesfully deleted',
     'stock-succesfully-added' => 'Successifully added a new stock entry',

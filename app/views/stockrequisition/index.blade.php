@@ -10,60 +10,60 @@
 @if (Session::has('message'))
   <div class="alert alert-info">{{ trans(Session::get('message')) }}</div>
 @endif
-<div class="panel panel-primary">
-  <div class="panel-heading ">
-    <span class="glyphicon glyphicon-user"></span>
-        Internal Requisition and Issue Voucher
-    <div class="panel-btn">
+  <p class="bg-primary col-sm-3">
+                <span class="label"><strong>Item code:</strong></span>
+              </p>  
+              <p class="bg-primary col-sm-7">
+                <span class="label"><strong>Item description:</strong></span>
+              </p>  
+              <p class="bg-primary col-sm-2">
+                <span class="label"><strong>Pack size:</strong></span>
+              </p>
 
-      <a class="btn btn-sm btn-info" href="javascript:void(0)"
-                                data-toggle="modal" data-target="#new-stock-modal">
-                                <span class="glyphicon glyphicon-plus-sign"></span>
-                                {{trans('messages.add-stock')}}
-                            </a>
-      
-    </div>
-  </div>
-
+<div class="panel panel-default">
 
   <div class="panel-body">
+            
+            
+      <div class="table-responsive">
+        <table class="table table-condensed table-striped search-table">
 
-  
-<div class="table-responsive">
-  <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Issue date</th>
-          <th>Item</th>
-          <th>Facility</th> 
-          <th>District</th>
-          <th>Year</th>
-          <th>Issued to</th>
-          <th>Voucher number</th>
-          <th>Quantity required</th>
-          <th>Quantity issued</th>
-          <th>Batch No.</th>
-          <th>Balance on Hand</th>
-          <th>Initials</th>                 
-        </tr>
-      </thead>
-      <tbody>
-        <td>Aspirin</td>
-        <td>20-Jun-2016</td>
-        <td></td>
-        <td>9016</td>
-        <td>20</td>
-        <td>10</td>
-        <td>10</td>
-        <td>3</td>
-        <td>2-Feb-2019</td>
-        <td>A6y888</td>
-        <td></td>
-        <td>PA</td>
-      </tbody>
-  </table>
-</div>
-
+            <thead>
+              <tr>
+                <th>Period</th>
+                <th class="text-right">Quantity received</th> 
+                <th class="text-right">Quantity issued</th>
+                <th class="text-right">Days out of stock</th>
+                <th class="text-right">Losses & Adjustments</th>
+                <th class="text-right">Balance on Hand</th>
+                <th class="text-right">AMC</th>
+                <th class="text-right">Quantity to order</th>            
+              </tr>
+            </thead>
+            <tbody>
+              <tr>              
+                <td>June 2016</td>
+                <td class="text-right">10</td>
+                <td class="text-right">9016</td>
+                <td class="text-right">20</td>
+                <td class="text-right">10</td>
+                <td class="text-right text-danger">10</td>
+                <td class="text-right">3</td>
+                <td class="text-right">2</td>
+              </tr>
+              <tr>              
+                <td>July 2016</td>
+                <td class="text-right">10</td>
+                <td class="text-right">9016</td>
+                <td class="text-right">20</td>
+                <td class="text-right">10</td>
+                <td class="text-right">10</td>
+                <td class="text-right">3</td>
+                <td class="text-right">2</td>
+              </tr>
+            </tbody>
+        </table>
+      </div>
 
 
 <div class="modal fade" tabindex="-1" role="dialog" id="new-stock-modal">

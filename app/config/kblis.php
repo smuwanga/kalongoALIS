@@ -8,7 +8,7 @@ return array(
 	|
 	*/
 
-	'name' => 'BLIS',
+	'name' => 'UBLIS',
 	
 	/*
 	|--------------------------------------------------------------------------
@@ -17,7 +17,7 @@ return array(
 	|
 	*/
 
-	'version' => 'v2.5',
+	'version' => 'v1.0',
 
 	/*
 
@@ -37,7 +37,7 @@ return array(
 	|
 	*/
 
-	'organization' => 'Basic Laboratory Information System',
+	'organization' => 'Laboratory Information Management System',
 	
 
 
@@ -50,7 +50,7 @@ return array(
 	'address-info' => 'COUNTY REFERRAL HOSPITAL, BLIS<br>
                     REFERRAL HOSPITAL LOCATION<br>
                     P.O. BOX PRIVATE BAG,<br>
-                    KENYA.<br>
+                    UGANDA.<br>
                     Phone: +0000000 Ext 203/208</p>',
 	
 	/*
@@ -60,7 +60,7 @@ return array(
 	|
 	*/
 
-	'organization-logo' => '/i/org_logo_90x90.png',
+	'organization-logo' => '/i/coat_of_arms.png',
 	
 	/*
 	|--------------------------------------------------------------------------
@@ -91,5 +91,5 @@ return array(
 	|
 	*/
 
-	'kenas-logo' => '/i/kenas_logo.png',
+	'kenas-logo' => '/i/coat_of_arms.png',
 );
