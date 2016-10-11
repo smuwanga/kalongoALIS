@@ -52,7 +52,11 @@
 				<div class="row">
 					<div class="col-sm-2"><strong>Nature of Incident/Occurrence</strong></div>
 					<!--<div class="col-sm-4">{{ $bbincidence->occurrence }} </div>-->
-					<div class="col-sm-4">{{ $bbincidence->nature->name }}</div>
+					<div class="col-sm-4">
+						@foreach ($bbincidence->bbnature as $nature)
+							{{$nature->name}} ({{$nature->priority}}/{{$nature->class}})<br>
+						@endforeach
+					</div>
 			
 					<div class="col-sm-2"><strong>Completion Status</strong></div>
 					<div class="col-sm-4">{{ $bbincidence->status }}</div>

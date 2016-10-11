@@ -34,7 +34,7 @@
 		<div class="form-group">
 			{{ Form::hidden('facility_id', Auth::user()->facility->id) }}
 			{{ Form::label('facility_id', 'Facility', array('class' => 'col-sm-2')) }}
-			{{ Form::textarea('', '<<code>> - '.Auth::user()->facility->name.' - <<district>>', array('size' => '10x2','class' => 'form-control col-sm-4','readonly' => 'readonly')) }}
+			{{ Form::textarea('', Auth::user()->facility->code.' - '.Auth::user()->facility->name.' - '.Auth::user()->facility->district->name, array('size' => '10x2','class' => 'form-control col-sm-4','readonly' => 'readonly')) }}
 			
 			{{ Form::label('occurrence_date', 'Occurence Date', array('class' => 'col-sm-2')) }}
 			{{ Form::text('occurrence_date', Input::old('occurrence_date'), array('class' => 'form-control standard-datepicker col-sm-4')) }}

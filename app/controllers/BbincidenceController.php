@@ -15,6 +15,7 @@ class BbincidenceController extends \BaseController {
 	 */
 	public function index()
 	{
+
 		$search = Input::get('search');
 		$datefrom = Input::get('datefrom');
 		$dateto = Input::get('dateto');
@@ -151,6 +152,60 @@ class BbincidenceController extends \BaseController {
 				$bbincidence_nature_intermediate->bbincidence_id = $bbincidence->id;
 				$bbincidence_nature_intermediate->nature_id = $occurrence;
 				$bbincidence_nature_intermediate->save();
+
+				/*$connected = fopen("http://www.google.com:80/","r");
+  				if($connected){
+     				return true;
+     			} else {
+   					return false;
+  				}*/
+
+				
+
+				/*$options = Bbincidence::with(array('bbnature' => function($q) use ($occurrence) {
+    				$q->wherePivot('nature_id', '=', $occurrence);
+    				}))->get();
+
+				foreach ($options as $option){
+				if($option->priority=='Major'){
+					Mail::send('bbincidence.bbmajornotice', array(), function($message){
+        			$message->to(explode(',','justusashaba@gmail.com,Ajustus_IC@aslm.org'))->subject('[BLIS UG] Major Incident Notice');
+    				});
+				}
+				}*/
+
+				}
+
+			/*This is working
+			foreach ($bbincidence->bbnature as $option){
+				if($option->priority=='Major'){
+					Mail::send('bbincidence.bbmajornotice', array('occurrence'=>$option->name,
+						'priority'=>$option->priority,'class'=>$option->class,'serial'=>$bbincidenceSerialNo,'entrant'=>Auth::user()->name,
+						'description'=>$bbincidence->description, 'hfacility'=>Auth::user()->facility->name, 
+						'district'=>Auth::user()->facility->district->name),
+						 function($message){
+        			$message->to(explode(',','justusashaba@gmail.com,kasuled@gmail.com,agnesnakakawa@gmail.com'))->subject('[UG BLIS] Major Incident Notification');
+    				});
+				}
+				}*/
+
+				$majorincidents='';
+				$incidentpriorities='';
+				foreach ($bbincidence->bbnature as $option){		
+					if($option->priority=='Major'){
+					$incidentpriorities = $incidentpriorities.'Major';
+					$majorincidents = $majorincidents.$option->name.'; ';
+					}
+				}
+
+				if(strpos($incidentpriorities, 'Major') !== false){
+					Mail::send('bbincidence.bbmajornotice', array('majorincidents'=>$majorincidents,
+						'serial'=>$bbincidenceSerialNo,'entrant'=>Auth::user()->name,
+						'description'=>$bbincidence->description, 'hfacility'=>Auth::user()->facility->name, 
+						'district'=>Auth::user()->facility->district->name),
+						 function($message){
+        			$message->to(explode(',','justusashaba@gmail.com'))->subject('[UG BLIS] Major Incident Notification');
+    				});
 				}
 				
 			$url = Session::get('SOURCE_URL');
@@ -176,7 +231,7 @@ class BbincidenceController extends \BaseController {
 	{
 		//Show a bbincidence
 		$bbincidence = Bbincidence::find($id);
-		
+
 		$firstInsertedId = DB::table('unhls_bbincidences')->min('id');
 		$lastInsertedId = DB::table('unhls_bbincidences')->max('id');
 		
