@@ -476,6 +476,85 @@ Route::group(array("before" => "auth"), function()
         Route::resource('stockrequisition', 'StockRequisitionController');
 
 
+        //Equipment supplier form
+       Route::post("/equipmentsupplier/index", array(
+            "as"   => "equipmentsupplier.index",
+            "uses" => "EquipmentSupplierController@index"
+        ));        
+        Route::post("/equipmentsupplier/create", array(
+            "as"   => "equipmentsupplier.create",
+            "uses" => "EquipmentSupplierController@create"
+        ));
+        Route::post("/equipmentsupplier/store", array(
+            "as"   => "equipmentsupplier.store",
+            "uses" => "EquipmentSupplierController@store"
+        ));        
+        Route::get("/equipmentsupplier/{id}/delete", array(
+            "as"   => "equipmentsupplier.delete",
+            "uses" => "EquipmentSupplierController@delete"
+        ));
+        Route::resource('equipmentsupplier', 'EquipmentSupplierController');
+ 
+
+        //Equipment inventory
+       Route::post("/equipmentinventory/index", array(
+            "as"   => "equipmentinventory.index",
+            "uses" => "EquipmentInventoryController@index"
+        ));        
+        Route::post("/equipmentinventory/create", array(
+            "as"   => "equipmentinventory.create",
+            "uses" => "EquipmentInventoryController@create"
+        ));
+        Route::post("/equipmentinventory/store", array(
+            "as"   => "equipmentinventory.store",
+            "uses" => "EquipmentInventoryController@store"
+        ));        
+        Route::get("/equipmentinventory/{id}/delete", array(
+            "as"   => "equipmentinventory.delete",
+            "uses" => "EquipmentInventoryController@delete"
+        ));
+        Route::resource('equipmentinventory', 'EquipmentInventoryController');
+
+        //Equipment maintenance
+       Route::post("/equipmentmaintenance/index", array(
+            "as"   => "equipmentmaintenance.index",
+            "uses" => "EquipmentMaintenanceController@index"
+        ));        
+        Route::post("/equipmentmaintenance/create", array(
+            "as"   => "equipmentmaintenance.create",
+            "uses" => "EquipmentMaintenanceController@create"
+        ));
+        Route::post("/equipmentmaintenance/store", array(
+            "as"   => "equipmentmaintenance.store",
+            "uses" => "EquipmentMaintenanceController@store"
+        ));        
+        Route::get("/equipmentmaintenance/{id}/delete", array(
+            "as"   => "equipmentmaintenance.delete",
+            "uses" => "EquipmentMaintenanceController@delete"
+        ));
+        Route::resource('equipmentmaintenance', 'EquipmentMaintenanceController');
+
+
+        //Equipment breakdown
+       Route::post("/equipmentbreakdown/index", array(
+            "as"   => "equipmentbreakdown.index",
+            "uses" => "EquipmentBreakdownController@index"
+        ));        
+        Route::post("/equipmentbreakdown/create", array(
+            "as"   => "equipmentbreakdown.create",
+            "uses" => "EquipmentBreakdownController@create"
+        ));
+        Route::post("/equipmentbreakdown/store", array(
+            "as"   => "equipmentbreakdown.store",
+            "uses" => "EquipmentBreakdownController@store"
+        ));        
+        Route::get("/equipmentbreakdown/{id}/delete", array(
+            "as"   => "equipmentbreakdown.delete",
+            "uses" => "EquipmentBreakdownController@delete"
+        ));
+        Route::resource('equipmentbreakdown', 'EquipmentBreakdownController');
+
+
         //API controller        
         Route::resource('apite', 'ApiController');       
         Route::post("/apite/facility", array(

@@ -723,5 +723,11 @@ return array(
     'stock-succesfully-deleted' => 'Stock has been succesfully deleted',
     'stock-succesfully-added' => 'Successifully added a new stock entry',
     'settings' => 'Settings',
+    'add-stock'=> 'Add',
+    'equipment-list'=> 'Equipment List',      
+    'equipment-breakdown'=> 'Equipment breakdown', 
+    'equipment-maintenance'=> 'Equipment maintenance',         
+    'supplier-list'=> 'Supplier List',    
+    'add'=> 'Add',
 
 );

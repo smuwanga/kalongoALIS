@@ -6,7 +6,7 @@
         <link rel="stylesheet" href="{{ URL::asset('css/ionicons.min.css') }}">  
         <link rel="stylesheet" href="{{ URL::asset('css/style.css') }}">
         <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400&subset=latin-ext,latin" rel="stylesheet" type="text/css">
-
+        <link rel="shortcut icon" href="{{ URL::asset('i/favicon.png') }}" >
         <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/ui-lightness/jquery-ui-min.css') }}" />
         <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/bootstrap.min.css') }}" />
         <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/bootstrap-theme.min.css') }}" />
@@ -33,7 +33,7 @@
 
         <!-- jQuery barcode script -->
         <script type="text/javascript" src="{{ asset('js/jquery-barcode-2.0.2.js') }} "></script>
-        <title>{{ Config::get('kblis.name') }} {{ Config::get('kblis.version') }}</title>
+        <title>{{ Config::get('kblis.name') }} </title>
     </head>
     <body class="side_nav_hover">
         @include("header")

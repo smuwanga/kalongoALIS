@@ -536,3 +536,24 @@ table.table.report-table-border > tbody > tr > td{
   .stat_box .stat_content .stat_count {
     font: 400 18px / 20px "Source Sans Pro", Arial, sans-serif;
 }
+
+.small-font
+{
+  font-size: 10.5px;
+}
+
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.bar {
+  fill: steelblue;
+}
+
+.x.axis path {
+  display: none;
+}

@@ -12,11 +12,9 @@ class UpdateUsersTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::table('users', function(Blueprint $table)
-		{
-			$table->string('facility_id')->after('id');
-			$table->foreign('facility_id')->references('id')->on('unhls_facilities');
-		});
+		//
+		$table->integer('facility_id')->unsigned();
+		$table->foreign('facility_id')->references('id')->on('unhls_facilities');			
 	}
 
 	/**
@@ -26,10 +24,9 @@ class UpdateUsersTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::table('users', function(Blueprint $table)
-		{
-			//
-		});
+		//
+		$table->dropForeign('users_facility_id_foreign');							
+		$table->dropColumn('facility_id');				
 	}
 
 }

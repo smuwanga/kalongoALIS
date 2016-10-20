@@ -1374,19 +1374,7 @@ class TestDataSeeder extends DatabaseSeeder
         //  End prevalence rates seed
 
         //Seed for facilities
-        $facilitiesSeed = array(
-            array('name' => "WALTER REED"),
-            array('name' => "AGA KHAN UNIVERSITY HOSPITAL"),
-            array('name' => "TEL AVIV GENERAL HOSPITAL"),
-            array('name' => "GK PRISON DISPENSARY"),
-            array('name' => "KEMRI ALUPE"),
-            array('name' => "AMPATH")
-        );
 
-        foreach ($facilitiesSeed as $facility) {
-            Facility::create($facility);
-        }
-        $this->command->info('Facilities table seeded');
 
         //Seed for suppliers
         $supplier = Supplier::create(
