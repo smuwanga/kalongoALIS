@@ -12,6 +12,8 @@ class UpdateUnhlsFacilityTable extends Migration {
 	 */
 	public function up()
 	{
+		DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+		
 		Schema::table('unhls_facilities', function($table)
 		{
 		    $table->string('code');
@@ -20,6 +22,8 @@ class UpdateUnhlsFacilityTable extends Migration {
 		    $table->integer('ownership_id')->unsigned();
 		    $table->foreign('ownership_id')->references('id')->on('unhls_facility_ownership');	
 		});
+
+		DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 	}
 
 	/**
