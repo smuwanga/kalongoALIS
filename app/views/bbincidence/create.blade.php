@@ -34,7 +34,7 @@
 		<div class="form-group">
 			{{ Form::hidden('facility_id', Auth::user()->facility->id) }}
 			{{ Form::label('facility_id', 'Facility', array('class' => 'col-sm-2')) }}
-			{{ Form::textarea('', '<<code>> - '.Auth::user()->facility->name.' - <<district>>', array('size' => '10x2','class' => 'form-control col-sm-4','readonly' => 'readonly')) }}
+			{{ Form::textarea('', Auth::user()->facility->code.' - '.Auth::user()->facility->name.' - '.Auth::user()->facility->district->name, array('size' => '10x2','class' => 'form-control col-sm-4','readonly' => 'readonly')) }}
 			
 			{{ Form::label('occurrence_date', 'Occurence Date', array('class' => 'col-sm-2')) }}
 			{{ Form::text('occurrence_date', Input::old('occurrence_date'), array('class' => 'form-control standard-datepicker col-sm-4')) }}
@@ -71,12 +71,12 @@
 						$zebra = "";
 					?>
 					@foreach($natures as $key=>$value)
-						{{ ($cnt%4==0)?"<div class='row $zebra'>":"" }}
+						{{ ($cnt%6==0)?"<div class='row $zebra'>":"" }}
 						<?php
 							$cnt++;
-							$zebra = (((int)$cnt/4)%2==1?"row-striped":"");
+							$zebra = (((int)$cnt/6)%2==1?"row-striped":"");
 						?>
-						<div class="col-md-3">
+						<div class="col-md-2">
 							<!--<label  class="checkbox" title="{{ $value->priority}}/{{ $value->class}}">
 								<input type="checkbox" name="nature[]" value="{{ $value->id}}" />{{$value->name}}
 							</label>-->
@@ -87,9 +87,9 @@
 							</label>
 
 						</div>
-						{{ ($cnt%4==0)?"</div>":"" }}
+						{{ ($cnt%6==0)?"</div>":"" }}
 					@endforeach
-						{{ ($cnt%4!=0)?"</div>":"" }}
+						{{ ($cnt%6!=0)?"</div>":"" }}
 				</div>
 			</div>
 		</div>
