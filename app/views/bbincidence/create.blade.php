@@ -71,12 +71,12 @@
 						$zebra = "";
 					?>
 					@foreach($natures as $key=>$value)
-						{{ ($cnt%4==0)?"<div class='row $zebra'>":"" }}
+						{{ ($cnt%6==0)?"<div class='row $zebra'>":"" }}
 						<?php
 							$cnt++;
-							$zebra = (((int)$cnt/4)%2==1?"row-striped":"");
+							$zebra = (((int)$cnt/6)%2==1?"row-striped":"");
 						?>
-						<div class="col-md-3">
+						<div class="col-md-2">
 							<!--<label  class="checkbox" title="{{ $value->priority}}/{{ $value->class}}">
 								<input type="checkbox" name="nature[]" value="{{ $value->id}}" />{{$value->name}}
 							</label>-->
@@ -87,9 +87,9 @@
 							</label>
 
 						</div>
-						{{ ($cnt%4==0)?"</div>":"" }}
+						{{ ($cnt%6==0)?"</div>":"" }}
 					@endforeach
-						{{ ($cnt%4!=0)?"</div>":"" }}
+						{{ ($cnt%6!=0)?"</div>":"" }}
 				</div>
 			</div>
 		</div>

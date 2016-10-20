@@ -11,4 +11,9 @@ class Facility extends Eloquent
 	{
 		return $this->belongsTo('District', 'district_id', 'id');
 	}
+
+	public function bbincidence()
+    {
+        return $this->hasOne('Bbincidence','facility_id','id');
+    }
 }

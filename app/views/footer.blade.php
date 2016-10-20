@@ -34,5 +34,6 @@
         		{{ HTML::link('http://www.cphl.go.ug', 'UNHLS &copy; ' . date("Y"))}}
         </div>
     </footer>
+
     <!-- End footer section-->
 @show

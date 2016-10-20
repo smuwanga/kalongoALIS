@@ -19,12 +19,21 @@ class BbincidenceController extends \BaseController {
 		$search = Input::get('search');
 		$datefrom = Input::get('datefrom');
 		$dateto = Input::get('dateto');
+
+		if(Entrust::can('manage_national_biorisk')){
+			if($datefrom != ''){
+			$bbincidences = Bbincidence::filterbydate($datefrom,$dateto)->orderBy('id','DESC')->paginate(Config::get('kblis.page-items'))->appends(Input::except('_token'));
+			}
+			else
+			$bbincidences = Bbincidence::search($search)->orderBy('id','DESC')->paginate(Config::get('kblis.page-items'))->appends(Input::except('_token'));		
+		} else{
 		
-		if($datefrom != ''){
-		$bbincidences = Bbincidence::facility_filterbydate($datefrom,$dateto)->orderBy('id','DESC')->paginate(Config::get('kblis.page-items'))->appends(Input::except('_token'));
+			if($datefrom != ''){
+			$bbincidences = Bbincidence::facility_filterbydate($datefrom,$dateto)->orderBy('id','DESC')->paginate(Config::get('kblis.page-items'))->appends(Input::except('_token'));
+			}
+			else
+			$bbincidences = Bbincidence::facility_search($search)->orderBy('id','DESC')->paginate(Config::get('kblis.page-items'))->appends(Input::except('_token'));
 		}
-		else
-		$bbincidences = Bbincidence::facility_search($search)->orderBy('id','DESC')->paginate(Config::get('kblis.page-items'))->appends(Input::except('_token'));
 
 		if (count($bbincidences) == 0) {
 		 	Session::flash('message', trans('messages.no-match'));
@@ -54,7 +63,7 @@ class BbincidenceController extends \BaseController {
 		
 		//$naturesList = DB::table('unhls_bbnatures')->orderBy('priority')->orderBy('class')->lists('name', 'id');
 		
-		$natures = BbincidenceNature::orderBy('class')->get();
+		$natures = BbincidenceNature::orderBy('name')->get();
 		//$causes = BbincidenceCause::orderBy('causename')->get();
 		//$actions = BbincidenceAction::orderBy('actionname')->get();
 		
@@ -135,6 +144,8 @@ class BbincidenceController extends \BaseController {
 			$bbincidence->officer_lname = Input::get('officer_lname');
 			$bbincidence->officer_cadre = Input::get('officer_cadre');
 			$bbincidence->officer_telephone = Input::get('officer_telephone');
+
+			$bbincidence->status = 'Ongoing';
 			
 			$bbincidence->createdby = Auth::user()->id;
 
@@ -623,21 +634,18 @@ class BbincidenceController extends \BaseController {
 		$causes = BbincidenceCause::orderBy('causename')->get();
 		$actions = BbincidenceAction::orderBy('actionname')->get();
 
-        $bbincidentnatureclasses = DB::table('unhls_bbnatures')->select('priority','class', DB::raw('count(*) as total'))->leftjoin('unhls_bbincidences_nature','unhls_bbincidences_nature.nature_id','=','unhls_bbnatures.id')
-					->groupBy('priority','class')
-             		->get();
+        $bbincidentnatureclasses = DB::table('unhls_bbnatures')->distinct()->get(['class']);
 
-        $bbincidentnaturecount = DB::table('unhls_bbnatures')->select('priority','class','name', DB::raw('count(*) as total'))->leftjoin('unhls_bbincidences_nature','unhls_bbincidences_nature.nature_id','=','unhls_bbnatures.id')
+        //$bbincidentstatus = Bbincidence::
+
+      /*  $bbincidentnaturecount = DB::table('unhls_bbnatures')->where('class','=','Mechanical')->select('priority','class','name', DB::raw('count(*) as total'))->join('unhls_bbincidences_nature','unhls_bbincidences_nature.nature_id','=','unhls_bbnatures.id')
 					->groupBy('priority','class','name')
-             		->get();              
+             		->get();         */     
 
 		return View::make('bbincidence.bbfacilityreport') ->with('bbincidentnatureclasses', $bbincidentnatureclasses)
-			->with('bbincidentnaturecount', $bbincidentnaturecount)->with('natures', $natures)
+			->with('natures', $natures)
 			->with('causes', $causes)->with('actions', $actions);
 		
 	}
-
-
-
 
 }

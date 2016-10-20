@@ -112,8 +112,50 @@ class Bbincidence extends Eloquent
 			});
 	}
 
-	public static function countbbincentcategories()
+	public static function countbbincidentcategories($option)
 	{
-		 
+		return DB::table('unhls_bbnatures')->where('class','=',$option)->select('priority','class','name', DB::raw('count(created_at) as total'))->leftjoin('unhls_bbincidences_nature','unhls_bbincidences_nature.nature_id','=','unhls_bbnatures.id')
+					->groupBy('priority','class','name')
+             		->get();
+	}
+
+	public static function countbbincidentreferralstatus()
+	{
+		return Bbincidence::select('referral_status', DB::raw('count(referral_status) as total'))
+					->groupBy('referral_status')
+             		->get();
+	}
+
+	public static function countbbincidentcompletionstatus()
+	{
+		/**$user_facility = Auth::user()->facility_id;
+		return Bbincidence::select('status', DB::raw('count(status) as total'))
+					->where('facility_id','=',$user_facility)
+					->groupBy('status')
+             		->get();**/
+        return Bbincidence::select('status', DB::raw('count(status) as total'))
+					->groupBy('status')
+             		->get();
+	}
+
+	public static function countbbincidentprevalence()
+	{
+		return Bbincidence::select('personnel_category', DB::raw('count(personnel_category) as total'))
+					->groupBy('personnel_category')
+             		->get();
+	}
+
+	public static function countbbincidentcauses()
+	{
+		return DB::table('unhls_bbcauses')->select('causename', DB::raw('count(cause_id) as total'))->leftjoin('unhls_bbincidences_cause','unhls_bbincidences_cause.cause_id','=','unhls_bbcauses.id')
+					->groupBy('causename')
+             		->get();
+	}
+
+	public static function countbbincidentactions()
+	{
+		return DB::table('unhls_bbactions')->select('actionname', DB::raw('count(action_id) as total'))->leftjoin('unhls_bbincidences_action','unhls_bbincidences_action.action_id','=','unhls_bbactions.id')
+					->groupBy('actionname')
+             		->get();
 	}
 }

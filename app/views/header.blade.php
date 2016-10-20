@@ -1,30 +1,61 @@
 @section ("header")
-    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand">{{ Config::get('kblis.name') }} {{ Config::get('kblis.version') }}</a>
-            </div>
-            <div class="grid-2  user-profile">
+
+
+        <header class="navbar navbar-fixed-top" role="banner">
+            <div class="container-fluid">
+
+                <ul class="top_links l_tinynav1">
+                    <li>
+                        <a href="#">
+                            <span><i class="icon ion-chevron-right"></i></span>
+                            {{ \Config::get('constants.DISTRICT_NAME') }}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span><i class="icon ion-chevron-right"></i></span>
+                            {{ \Config::get('constants.FACILITY_NAME') }}
+                        </a>
+                    </li>   
+
+                    <li>
+                        <a href="#">
+                            <span><i class="icon ion-chevron-right"></i></span>
+                            {{ \Config::get('constants.FIN_YEAR_NAME') }}
+                        </a>
+                    </li>   
+
+                    <li>
+                        <a href="#">
+                            <span><i class="icon ion-chevron-right"></i></span>
+                            <?php echo date("F");?>
+                        </a>
+                    </li>   
+
+                </ul>
                 @if (Auth::check())
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="user-link">
-                            <a href="javascript:void(0);">
-                                <strong>{{ Auth::user()->name }}</strong> | {{ Auth::user()->facility->name }}
-                            </a>
-                        </li>
-                    </ul>
-                    <div class="user-settings">
-                        <div>
-                            <span class="glyphicon glyphicon-edit"></span>
-                            <a href='{{ URL::to("user/".Auth::user()->id."/edit") }}'>{{trans('messages.edit-profile')}}</a>
-                        </div>
-                        <div>
-                            <span class="glyphicon glyphicon-log-out"></span>
-                            <a href="{{ URL::route("user.logout") }}">{{trans('messages.logout')}}</a>
-                        </div>
-                    </div>
+                <ul class="nav navbar-nav navbar-right">
+
+                    <li class="user_menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="navbar_el_icon ion-person"></span> <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li><a href='{{ URL::to("user/".Auth::user()->id."/edit") }}'>{{trans('messages.edit-profile')}}</a></li>
+                            <li class="divider"></li>
+                            <li><a href="{{ URL::route("user.logout") }}">{{trans('messages.logout')}}</a></li>
+                        </ul>
+                    </li>
+
+                </ul>
+
                 @endif
+
+
             </div>
-        </div>
-    </div>
+        </header>
+
+
+
+
 @show
