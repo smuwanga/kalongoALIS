@@ -16,7 +16,7 @@ class Culture extends Eloquent
 	 *
 	 * @var string
 	 */
-	protected $table = 'culture_worksheet';
+	protected $table = 'cultures';
 	/**
 	 * User relationship
 	 */

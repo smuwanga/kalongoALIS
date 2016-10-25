@@ -1,6 +1,6 @@
 <?php
 
-class CultureController extends \BaseController {
+class DrugSusceptibilityController extends \BaseController {
 
 	/**
 	 * Display a listing of the resource.
@@ -9,7 +9,8 @@ class CultureController extends \BaseController {
 	 */
 	public function index()
 	{
-		//
+		$drugSusceptibilities = DrugSusceptibility::all();
+		return $drugSusceptibilities;
 	}
 
 
@@ -31,26 +32,17 @@ class CultureController extends \BaseController {
 	 */
 	public function store()
 	{
-		$action = Input::get('action');
-		$workUp = new Culture;
-		$workUp->user_id = Input::get('userId');
-		$workUp->test_id = Input::get('testId');
-		$workUp->observation = Input::get('obs');
-		if($action == 'add'){
-			$workUp->save();
-			return 0;
-		}
-		else if($action == 'draw'){
-			$obsv = Test::find($workUp->test_id)->culture;
+		$drugSusceptibility = new DrugSusceptibility;
+		$drugSusceptibility->user_id = Auth::user()->id;
+		$drugSusceptibility->culture_id = Input::get('culture_id');
+		$drugSusceptibility->isolated_organism_id = Input::get('isolated_organism_id');
+		$drugSusceptibility->drug_id = Input::get('drug_id');
+		$drugSusceptibility->drug_susceptibility_measure_id = Input::get('drug_susceptibility_measure_id');
+		$drugSusceptibility->zone = Input::get('zone');
+		$drugSusceptibility->save();
 
-			foreach ($obsv as $observation) {
-				$observation->user = User::find($observation->user_id)->name;
-				$observation->timeStamp = Culture::showTimeAgo($observation->created_at);
-			}
-			return json_encode($obsv);
-		}
+		return $drugSusceptibility;
 	}
-
 
 	/**
 	 * Display the specified resource.
@@ -98,4 +90,6 @@ class CultureController extends \BaseController {
 	{
 		//
 	}
+
+
 }

@@ -1503,7 +1503,7 @@ class TestDataSeeder extends DatabaseSeeder
         //Control seeding
         $controls = array(
             array('name'=>'Humatrol P', 
-                    'description' =>'HUMATROL P control serum has been designed to provide a suitable basis for the quality control (imprecision, inaccuracy) in the clinical chemical laboratory.', 
+                    'description' =>'HUMATROL P control serum has been designed to provide a suitable basis for the quality control (imprecision, inracy) in the clinical chemical laboratory.', 
                     'lot_id' => 1),
             array('name'=>'Full Blood Count', 'description' => 'Né pas touchér', 'lot_id' => 1,)
             );
@@ -1654,6 +1654,376 @@ class TestDataSeeder extends DatabaseSeeder
         }
         $this->command->info("Control results table seeded");
 
+
+
+        //Seed for drugs
+        $penicillin = Drug::create(array('name' => "PENICILLIN"));
+        $ampicillin = Drug::create(array('name' => "AMPICILLIN"));
+        $clindamycin = Drug::create(array('name' => "CLINDAMYCIN"));
+        $tetracycline = Drug::create(array('name' => "TETRACYCLINE"));
+        $ciprofloxacin = Drug::create(array('name' => "CIPROFLOXACIN"));
+        $trimeth = Drug::create(array('name' => "TRIMETHOPRIM/SULFA"));
+        $nitrofurantoin = Drug::create(array('name' => "NITROFURANTOIN"));
+        $chloramphenicol = Drug::create(array('name' => "CHLORAMPHENICOL"));
+        $cefazolin = Drug::create(array('name' => "CEFAZOLIN"));
+        $gentamicin = Drug::create(array('name' => "GENTAMICIN"));
+        $amoxicillin = Drug::create(array('name' => "AMOXICILLIN-CLAV"));
+        $cephalothin = Drug::create(array('name' => "CEPHALOTHIN"));
+        $cefuroxime = Drug::create(array('name' => "CEFUROXIME"));
+        $cefotaxime = Drug::create(array('name' => "CEFOTAXIME"));
+        $piperacillin = Drug::create(array('name' => "PIPERACILLIN"));
+        $cefixime = Drug::create(array('name' => "CEFIXIME"));
+        $ceftazidime = Drug::create(array('name' => "CEFTAZIDIME"));
+        $cefriaxone = Drug::create(array('name' => "CEFRIAXONE"));
+        $levofloxacin = Drug::create(array('name' => "LEVOFLOXACIN"));
+        $merodenem = Drug::create(array('name' => "MERODENEM"));
+        $tazo = Drug::create(array('name' => "PIPERACILLIN/TAZO"));
+        $imedenem = Drug::create(array('name' => "IMEDENEM"));
+        $oxacillin = Drug::create(array('name' => "OXACILLIN (CEFOXITIN)"));
+        $erythromycin = Drug::create(array('name' => "ERYTHROMYCIN"));
+        $vancomycin = Drug::create(array('name' => "VANCOMYCIN"));
+        $cefoxitin = Drug::create(array('name' => "CEFOXITIN"));
+        $tobramycin = Drug::create(array('name' => "TOBRAMYCIN"));
+        $sulbactam = Drug::create(array('name' => "AMPICILLIN-SULBACTAM"));
+        $trimethoprim = Drug::create(array('name' => "TRIMETHOPRIM"));
+
+        $this->command->info('Drugs table seeded');
+        //Seed for organisims
+        $staphylococci = Organism::create(array('name' => "Staphylococci species"));
+        $gramnegative = Organism::create(array('name' => "Gram negative cocci"));
+        $pseudomonas = Organism::create(array('name' => "Pseudomonas aeruginosa"));
+        $enterococcus = Organism::create(array('name' => "Enterococcus species"));
+        $pneumoniae = Organism::create(array('name' => "Streptococcus pneumoniae"));
+        $streptococcus = Organism::create(array('name' => "Streptococcus species viridans group"));
+        $beta = Organism::create(array('name' => "Beta-haemolytic streptococci"));
+        $haemophilus = Organism::create(array('name' => "Haemophilus influenzae"));
+        $naisseria = Organism::create(array('name' => "Naisseria menengitidis"));
+        $salmonella = Organism::create(array('name' => "Salmonella species"));
+        $shigella = Organism::create(array('name' => "Shigella"));
+        $vibrio = Organism::create(array('name' => "Vibrio cholerae"));
+        $grampositive = Organism::create(array('name' => "Gram positive cocci"));
+
+        $this->command->info('Organisms table seeded');
+        //  Seed for organism_drugs
+        //  Staphylococci species
+/*        DB::table('organism_drugs')->insert(
+            array("organism_id" => $staphylococci->id, "drug_id" => $penicillin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $staphylococci->id, "drug_id" => $oxacillin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $staphylococci->id, "drug_id" => $cefoxitin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $staphylococci->id, "drug_id" => $erythromycin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $staphylococci->id, "drug_id" => $clindamycin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $staphylococci->id, "drug_id" => $trimeth->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $staphylococci->id, "drug_id" => $cefazolin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $staphylococci->id, "drug_id" => $cephalothin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $staphylococci->id, "drug_id" => $chloramphenicol->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $staphylococci->id, "drug_id" => $nitrofurantoin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $staphylococci->id, "drug_id" => $tetracycline->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $staphylococci->id, "drug_id" => $vancomycin->id));
+        $this->command->info('Staphylococci species seeded');
+
+        //  Gram negative cocci
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $gramnegative->id, "drug_id" => $ampicillin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $gramnegative->id, "drug_id" => $cefazolin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $gramnegative->id, "drug_id" => $gentamicin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $gramnegative->id, "drug_id" => $amoxicillin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $gramnegative->id, "drug_id" => $cephalothin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $gramnegative->id, "drug_id" => $cefuroxime->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $gramnegative->id, "drug_id" => $cefotaxime->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $gramnegative->id, "drug_id" => $ciprofloxacin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $gramnegative->id, "drug_id" => $trimeth->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $gramnegative->id, "drug_id" => $nitrofurantoin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $gramnegative->id, "drug_id" => $chloramphenicol->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $gramnegative->id, "drug_id" => $tetracycline->id));
+        $this->command->info('Gram negative cocci seeded');
+
+        //  Pseudomonas aeruginosa
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $pseudomonas->id, "drug_id" => $ceftazidime->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $pseudomonas->id, "drug_id" => $gentamicin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $pseudomonas->id, "drug_id" => $tobramycin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $pseudomonas->id, "drug_id" => $piperacillin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $pseudomonas->id, "drug_id" => $ciprofloxacin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $pseudomonas->id, "drug_id" => $merodenem->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $pseudomonas->id, "drug_id" => $tazo->id));
+        $this->command->info('Pseudomonas aeruginosa seeded');
+
+        //  Enterococcus species
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $enterococcus->id, "drug_id" => $ampicillin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $enterococcus->id, "drug_id" => $gentamicin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $enterococcus->id, "drug_id" => $nitrofurantoin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $enterococcus->id, "drug_id" => $ciprofloxacin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $enterococcus->id, "drug_id" => $tetracycline->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $enterococcus->id, "drug_id" => $chloramphenicol->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $enterococcus->id, "drug_id" => $vancomycin->id));
+        $this->command->info('Enterococcus species seeded');
+
+        //  Streptococcus pneumoniae
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $pneumoniae->id, "drug_id" => $penicillin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $pneumoniae->id, "drug_id" => $cefriaxone->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $pneumoniae->id, "drug_id" => $cefuroxime->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $pneumoniae->id, "drug_id" => $erythromycin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $pneumoniae->id, "drug_id" => $trimeth->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $pneumoniae->id, "drug_id" => $chloramphenicol->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $pneumoniae->id, "drug_id" => $tetracycline->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $pneumoniae->id, "drug_id" => $levofloxacin->id));
+        $this->command->info('Streptococcus pneumoniae seeded');
+
+        //  Streptococcus species viridans group
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $streptococcus->id, "drug_id" => $penicillin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $streptococcus->id, "drug_id" => $cefriaxone->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $streptococcus->id, "drug_id" => $vancomycin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $streptococcus->id, "drug_id" => $chloramphenicol->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $streptococcus->id, "drug_id" => $clindamycin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $streptococcus->id, "drug_id" => $erythromycin->id));
+        $this->command->info('Streptococcus species viridans group seeded');
+
+        //  Beta-haemolytic streptococci
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $beta->id, "drug_id" => $penicillin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $beta->id, "drug_id" => $erythromycin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $beta->id, "drug_id" => $clindamycin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $beta->id, "drug_id" => $cefriaxone->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $beta->id, "drug_id" => $chloramphenicol->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $beta->id, "drug_id" => $vancomycin->id));
+        $this->command->info('Beta-haemolytic streptococci seeded');
+
+        //  Haemophilus influenzae
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $haemophilus->id, "drug_id" => $ampicillin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $haemophilus->id, "drug_id" => $trimeth->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $haemophilus->id, "drug_id" => $sulbactam->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $haemophilus->id, "drug_id" => $cefriaxone->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $haemophilus->id, "drug_id" => $chloramphenicol->id));
+        $this->command->info('Haemophilus influenzae seeded');
+
+        //  Naisseria menengitidis
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $naisseria->id, "drug_id" => $penicillin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $naisseria->id, "drug_id" => $cefriaxone->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $naisseria->id, "drug_id" => $chloramphenicol->id));
+        $this->command->info('Neisseria menengitidis seeded');
+
+        //  Salmonella species
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $salmonella->id, "drug_id" => $ampicillin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $salmonella->id, "drug_id" => $ciprofloxacin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $salmonella->id, "drug_id" => $trimeth->id));
+        $this->command->info('Salmonella species seeded');
+
+        //  Shigella
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $shigella->id, "drug_id" => $ampicillin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $shigella->id, "drug_id" => $ciprofloxacin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $shigella->id, "drug_id" => $trimeth->id));
+        $this->command->info('Shigella seeded');
+
+        //  Vibrio cholerae
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $vibrio->id, "drug_id" => $ampicillin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $vibrio->id, "drug_id" => $ciprofloxacin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $vibrio->id, "drug_id" => $trimeth->id));
+        $this->command->info('Vibrio cholerae seeded');
+
+        //  Gram positive cocci
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $grampositive->id, "drug_id" => $cefoxitin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $grampositive->id, "drug_id" => $clindamycin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $grampositive->id, "drug_id" => $erythromycin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $grampositive->id, "drug_id" => $oxacillin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $grampositive->id, "drug_id" => $penicillin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $grampositive->id, "drug_id" => $tetracycline->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $grampositive->id, "drug_id" => $trimeth->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $grampositive->id, "drug_id" => $vancomycin->id));
+        $this->command->info('Gram positive cocci seeded');
+*/
+        $testTypeAST = TestType::create(
+            array(
+                "name" => "AST",
+                "test_category_id" => $lab_section_microbiology->id,
+                "orderable_test" => 1
+            )
+        );
+
+        $testAST = Test::create(
+            array(
+                "visit_id" => "4",
+                "test_type_id" => $testTypeAST->id,
+                "specimen_id" => "3",
+                "interpretation" => "Format being deliberated",
+                "test_status_id" => Test::VERIFIED,
+                "created_by" => "3",
+                "tested_by" => "2",
+                "verified_by" => "3",
+                "requested_by" => "Genghiz Khan",
+                "time_created" => "2014-10-17 19:16:15",
+                "time_started" => "2014-10-17 19:17:15",
+                "time_completed" => "2014-10-17 19:52:40",
+                "time_verified" => "2014-10-17 19:53:48",
+            )
+        );
+
+        $cultureAST = Culture::create([
+            'user_id' => $user1->id,
+            'test_id' => $testAST->id,
+        ]);
+        $cultureDurationAST12h = CultureDuration::create(['duration' => '12 hours',]);
+        $cultureDurationAST24h = CultureDuration::create(['duration' => '24 hours',]);
+        $cultureDurationAST36h = CultureDuration::create(['duration' => '36 hours',]);
+        $cultureDurationAST48h = CultureDuration::create(['duration' => '48 hours',]);
+        $cultureDurationAST60h = CultureDuration::create(['duration' => '60 hours',]);
+        $cultureDurationAST72h = CultureDuration::create(['duration' => '72 hours',]);
+        $cultureDurationAST4d = CultureDuration::create(['duration' => '4 days',]);
+        $cultureDurationAST5d = CultureDuration::create(['duration' => '5 days',]);
+        $cultureDurationAST6d = CultureDuration::create(['duration' => '6 days',]);
+        $cultureDurationAST7d = CultureDuration::create(['duration' => '7 days',]);
+        $cultureObservationAST = CultureObservation::create([
+            'user_id' => $user1->id,
+            'culture_id' => $cultureAST->id,
+            'culture_duration_id' => $cultureDurationAST48h->id,
+            'observation' => 'NBG',
+        ]);
+        $cultureObservationAST = CultureObservation::create([
+            'user_id' => $user1->id,
+            'culture_id' => $cultureAST->id,
+            'culture_duration_id' => $cultureDurationAST5d->id,
+            'observation' => 'NSG',
+        ]);
+        $cultureObservationAST = CultureObservation::create([
+            'user_id' => $user1->id,
+            'culture_id' => $cultureAST->id,
+            'culture_duration_id' => $cultureDurationAST7d->id,
+            'observation' => 'SG',
+        ]);
+        $isolatedOrganism = IsolatedOrganism::create([
+            'user_id' => $user1->id,
+            'culture_id' => $cultureAST->id,
+            'organism_id' => $pneumoniae->id,
+        ]);
+        $drugSusceptibilityMeasureS = DrugSusceptibilityMeasure::create([
+            'symbol' => 'S',
+            'interpretation'=>'Sensitive',
+        ]);
+        $drugSusceptibilityMeasureI = DrugSusceptibilityMeasure::create([
+            'symbol' => 'I',
+            'interpretation'=>'Intermediate',
+        ]);
+        $drugSusceptibilityMeasureR = DrugSusceptibilityMeasure::create([
+            'symbol' => 'R',
+            'interpretation'=>'Resistant',
+        ]);
+        $drugSusceptibilityChloramphenicol = DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'culture_id' => $cultureAST->id,
+            'isolated_organism_id' => $isolatedOrganism->id,
+            'drug_id' => $chloramphenicol->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureR->id,
+        ]);
+        $drugSusceptibilityClindamycin = DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'culture_id' => $cultureAST->id,
+            'isolated_organism_id' => $isolatedOrganism->id,
+            'drug_id' => $clindamycin->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureS->id,
+        ]);
+        $drugSusceptibilityErythromycin = DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'culture_id' => $cultureAST->id,
+            'isolated_organism_id' => $isolatedOrganism->id,
+            'drug_id' => $erythromycin->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureR->id,
+        ]);
+        $drugSusceptibilityTetracycline = DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'culture_id' => $cultureAST->id,
+            'isolated_organism_id' => $isolatedOrganism->id,
+            'drug_id' => $tetracycline->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureR->id,
+        ]);
+        $drugSusceptibilityTrimethoprim = DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'culture_id' => $cultureAST->id,
+            'isolated_organism_id' => $isolatedOrganism->id,
+            'drug_id' => $trimethoprim->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureR->id,
+        ]);
+        $microbiologyTestType = MicrobiologyTestType::create([
+            'test_type_id' => $testTypeAST->id,
+            'worksheet_required' => '1',
+        ]);
     }
 
     public function createSpecimen(

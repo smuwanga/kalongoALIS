@@ -101,7 +101,7 @@ class Test extends Eloquent
 	 */
 	public function susceptibility()
 	{
-		return $this->hasMany('Susceptibility');
+		return $this->hasMany('DrugSusceptibility');
 	}
 
 	/**

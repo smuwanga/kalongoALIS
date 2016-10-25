@@ -146,6 +146,20 @@ $(function(){
 		window.location.href = $('#delete-url').val();
 	});
 
+	/** 
+	 *	MICROBIOLOGY
+	 */
+     $('.add-another-culture-observation').click(function(){
+		$('.culture-observation').removeClass('hidden');
+		$('.duration option[value=2]').attr('selected','selected');
+		$('.observation').val('NBG');
+     });
+     $('.add-another-drug-susceptibility').click(function(){
+		$('.organism-isolated').removeClass('hidden');
+		$('.antibiotic option[value=2]').attr('selected','selected');
+		$('.susceptibility option[value=I]').attr('selected','selected');
+     });
+
 	UIComponents();
 
 	/* Clicking the label of an radio/checkbox, checks the control*/
