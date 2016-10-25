@@ -26,13 +26,14 @@ class BbincidenceController extends \BaseController {
 			}
 			else
 			$bbincidences = Bbincidence::search($search)->orderBy('id','DESC')->paginate(Config::get('kblis.page-items'))->appends(Input::except('_token'));		
-		} else{
+		}
+		else{
 		
 			if($datefrom != ''){
-			$bbincidences = Bbincidence::facility_filterbydate($datefrom,$dateto)->orderBy('id','DESC')->paginate(Config::get('kblis.page-items'))->appends(Input::except('_token'));
+			$bbincidences = Bbincidence::filterbydate($datefrom,$dateto)->orderBy('id','DESC')->paginate(Config::get('kblis.page-items'))->appends(Input::except('_token'));
 			}
 			else
-			$bbincidences = Bbincidence::facility_search($search)->orderBy('id','DESC')->paginate(Config::get('kblis.page-items'))->appends(Input::except('_token'));
+			$bbincidences = Bbincidence::search($search)->orderBy('id','DESC')->paginate(Config::get('kblis.page-items'))->appends(Input::except('_token'));
 		}
 
 		if (count($bbincidences) == 0) {
@@ -249,6 +250,8 @@ class BbincidenceController extends \BaseController {
 		$id>=$lastInsertedId ? $nextbbincidence=$lastInsertedId : $nextbbincidence = $id+1;
 		$id<=$firstInsertedId ? $previousbbincidence=$firstInsertedId : $previousbbincidence = $id-1;
 
+		//dd($bbincidence);
+		
 		//Show the view and pass the $bbincidence to it
 		return View::make('bbincidence.show')->with('bbincidence', $bbincidence)->with('nextbbincidence', $nextbbincidence)
 		->with('previousbbincidence', $previousbbincidence);
@@ -642,9 +645,15 @@ class BbincidenceController extends \BaseController {
 					->groupBy('priority','class','name')
              		->get();         */     
 
+		$countbbincidentreferralstatus = Bbincidence::select('referral_status', DB::raw('count(referral_status) as total'))
+					->groupBy('referral_status')
+             		->get();
+
 		return View::make('bbincidence.bbfacilityreport') ->with('bbincidentnatureclasses', $bbincidentnatureclasses)
 			->with('natures', $natures)
-			->with('causes', $causes)->with('actions', $actions);
+			->with('causes', $causes)
+			->with('actions', $actions)
+			->with('countbbincidentreferralstatus', $countbbincidentreferralstatus);
 		
 	}
 
