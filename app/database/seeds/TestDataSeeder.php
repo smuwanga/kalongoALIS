@@ -4,80 +4,23 @@ class TestDataSeeder extends DatabaseSeeder
 {
     public function run()
     {
-        /* DISTRICT table */
-        $districtsData = array(
-            array("id" => \Config::get('constants.DISTRICT_ID'), 
-                'name' => \Config::get('constants.DISTRICT_NAME')
-                ),
-            
-        );
-
-        foreach ($districtsData as $district)
-        {
-            $districts[] = District::create($district);
-        }
-        $this->command->info('Districts seeded');
-
-
-        /* Facility Ownership table */
-        $facilityownershipsData = array(
-            array("owner" => "Public"),
-            array("owner" => "PFP"),
-            array("owner" => "PNFP"),
-            array("owner" => "Other"),
-            
-        );
-
-        foreach ($facilityownershipsData as $facilityownership)
-        {
-            $facilityownerships[] = UNHLSFacilityOwnership::create($facilityownership);
-        }
-        $this->command->info('Facility Ownerships seeded');
-
-        
-        /* Facility Levels table */
-        $facilitylevelsData = array(
-            array("level" => "Public NRH"),
-            array("level" => "Public RRH"),
-            array("level" => "Public GH"),
-            array("level" => "Public HCIV"),
-            array("level" => "Public HCIII"),
-            array("level" => "Private Level 3"),
-            array("level" => "Private Level 2"),
-            array("level" => "Private Level 1"),
-        );
-
-        foreach ($facilitylevelsData as $facilitylevel)
-        {
-            $facilitylevels[] = UNHLSFacilityLevel::create($facilitylevel);
-        }
-        $this->command->info('Facility Levels seeded');
-
-
-        /* Facility table */
-        $facilitysData = array(
-            array("id" => \Config::get('constants.FACILITY_ID'),
-                'name' => \Config::get('constants.FACILITY_NAME'),
-                'district_id' => \Config::get('constants.DISTRICT_ID'),
-                'code' => \Config::get('constants.FACILITY_CODE'),
-                'level_id' => \Config::get('constants.FACILITY_LEVEL_ID'),
-                'ownership_id' => \Config::get('constants.FACILITY_OWNERSHIP_ID')
-                ),
-        );
-
-        foreach ($facilitysData as $facility)
-        {
-            $facilitys[] = UNHLSFacility::create($facility);
-        }
-        $this->command->info('Facility seeded');
-
-
         /* Users table */
         $usersData = array(
             array(
-                "username" => "administrator", "password" => Hash::make("password"), 
-                "email" => "", "name" => "UBLIS Administrator", "designation" => "Programmer", 
-                "facility_id" => \Config::get('constants.FACILITY_ID')
+                "username" => "administrator", "password" => Hash::make("password"), "email" => "admin@kblis.org",
+                "name" => "kBLIS Administrator", "designation" => "Programmer"
+            ),
+            array(
+                "username" => "external", "password" => Hash::make("password"), "email" => "admin@kblis.org",
+                "name" => "External System User", "designation" => "Administrator", "image" => "/i/users/user-2.jpg"
+            ),
+            array(
+                "username" => "lmorena", "password" => Hash::make("password"), "email" => "lmorena@kblis.org",
+                "name" => "L. Morena", "designation" => "Lab Technologist", "image" => "/i/users/user-3.png"
+            ),
+            array(
+                "username" => "abumeyang", "password" => Hash::make("password"), "email" => "abumeyang@kblis.org",
+                "name" => "A. Abumeyang", "designation" => "Doctor"
             ),
         );
 
@@ -86,82 +29,8 @@ class TestDataSeeder extends DatabaseSeeder
             $users[] = User::create($user);
         }
         $this->command->info('users seeded');
-
-
-
-        /* BB Actions table */
-        $bbactionsData = array(
-            array("actionname" => "Reported to administration for further action"),
-			array("actionname" => "Referred to mental department"),
-			array("actionname" => "Gave first aid (e.g. arrested bleeding)"),
-			array("actionname" => "Referred to clinician for further management"),
-        );
-
-        foreach ($bbactionsData as $bbaction)
-        {
-            $bbactions[] = BbincidenceAction::create($bbaction);
-        }
-        $this->command->info('BB Actions seeded');
-		
-		
-		/* BB Causes table */
-        $bbcausesData = array(
-			array("causename" => "Defective Equipment"),
-			array("causename" => "Hazardous Chemicals"),
-			array("causename" => "Unsafe Procedure"),
-			array("causename" => "Employee physical emotional condition"),
-			
-        );
-
-        foreach ($bbcausesData as $bbcause)
-        {
-            $bbcauses[] = BbincidenceCause::create($bbcause);
-        }
-        $this->command->info('BB Causes seeded');
-		
-		/* BB Natures table */
-        $bbnaturesData = array(
-            array("name"=>"Assault/Fight among staff","class"=>"Physical","priority"=>"Minor"),
-            array("name"=>"Fainting","class"=>"Physical","priority"=>"Minor"),
-            array("name"=>"Roof leakages","class"=>"Physical","priority"=>"Minor"),
-            array("name"=>"Machine cuts/bruises","class"=>"Mechanical","priority"=>"Minor"),
-            array("name"=>"Electric shock/burn","class"=>"Mechanical","priority"=>"Major"),
-            array("name"=>"Death within lab","class"=>"Ergonometric and Medical","priority"=>"Major"),
-            array("name"=>"Slip or fall","class"=>"Physical","priority"=>"Minor"),
-            array("name"=>"Unnecessary destruction of lab material","class"=>"Physical","priority"=>"Minor"),
-            array("name"=>"Theft of laboratory consumables","class"=>"Physical","priority"=>"Minor"),
-            array("name"=>"Breakage of sample container","class"=>"Physical","priority"=>"Minor"),
-            array("name"=>"Prick/cut by unused sharps","class"=>"Physical","priority"=>"Minor"),
-            array("name"=>"Injury caused by laboratory objects","class"=>"Physical","priority"=>"Minor"),
-            array("name"=>"Chemical burn","class"=>"Chemical","priority"=>"Minor"),
-            array("name"=>"Theft of chemical","class"=>"Chemical","priority"=>"Minor"),
-            array("name"=>"Chemical spillage","class"=>"Chemical","priority"=>"Major"),
-            array("name"=>"Theft of equipment","class"=>"Physical","priority"=>"Major"),
-            array("name"=>"Attack on the Lab","class"=>"Physical","priority"=>"Major"),
-            array("name"=>"Collapsing building","class"=>"Physical","priority"=>"Major"),
-            array("name"=>"Bike rider accident","class"=>"Physical","priority"=>"Major"),
-            array("name"=>"Fire","class"=>"Physical","priority"=>"Major"),
-            array("name"=>"Needle prick or cuts by used sharps","class"=>"Biological","priority"=>"Minor"),
-            array("name"=>"Sample spillage","class"=>"Biological","priority"=>"Minor"),
-            array("name"=>"Theft of samples","class"=>"Biological","priority"=>"Major"),
-            array("name"=>"Contact with VHF suspect","class"=>"Biological","priority"=>"Major"),
-            array("name"=>"Contact with radiological materials","class"=>"Radiological","priority"=>"Major"),
-            array("name"=>"Theft of radiological materials","class"=>"Radiological","priority"=>"Major"),
-            array("name"=>"Poor disposal of radiological materials","class"=>"Radiological","priority"=>"Major"),
-            array("name"=>"Poor vision from inadequate light","class"=>"Ergonometric and Medical","priority"=>"Minor"),
-            array("name"=>"Back pain from posture effects","class"=>"Ergonometric and Medical","priority"=>"Minor"),
-            array("name"=>"Other occupational hazard","class"=>"Ergonometric and Medical","priority"=>"Minor"),
-            array("name"=>"Other","class"=>"Other","priority"=>"Other"),
-        );
-
-        foreach ($bbnaturesData as $bbnature)
-        {
-            $bbnatures[] = BbincidenceNature::create($bbnature);
-        }
-        $this->command->info('BB Natures seeded');
         
 
-       
         /* Specimen Types table */
         $specTypesData = array(
             array("name" => "Ascitic Tap"),
@@ -1681,13 +1550,13 @@ class TestDataSeeder extends DatabaseSeeder
 
         //Control Tests
         $controlTests = array(
-                array('entered_by'=> 1, 'control_id'=> 1, 'created_at'=>date('Y-m-d', strtotime('-10 days'))),
-                array('entered_by'=> 1, 'control_id'=> 1, 'created_at'=>date('Y-m-d', strtotime('-9 days'))),
-                array('entered_by'=> 1, 'control_id'=> 1, 'created_at'=>date('Y-m-d', strtotime('-8 days'))),
-                array('entered_by'=> 1, 'control_id'=> 1, 'created_at'=>date('Y-m-d', strtotime('-7 days'))),
-                array('entered_by'=> 1, 'control_id'=> 1, 'created_at'=>date('Y-m-d', strtotime('-6 days'))),
-                array('entered_by'=> 1, 'control_id'=> 1, 'created_at'=>date('Y-m-d', strtotime('-5 days'))),
-                array('entered_by'=> 1, 'control_id'=> 1, 'created_at'=>date('Y-m-d', strtotime('-4 days'))),
+                array('entered_by'=> 3, 'control_id'=> 1, 'created_at'=>date('Y-m-d', strtotime('-10 days'))),
+                array('entered_by'=> 3, 'control_id'=> 1, 'created_at'=>date('Y-m-d', strtotime('-9 days'))),
+                array('entered_by'=> 3, 'control_id'=> 1, 'created_at'=>date('Y-m-d', strtotime('-8 days'))),
+                array('entered_by'=> 3, 'control_id'=> 1, 'created_at'=>date('Y-m-d', strtotime('-7 days'))),
+                array('entered_by'=> 3, 'control_id'=> 1, 'created_at'=>date('Y-m-d', strtotime('-6 days'))),
+                array('entered_by'=> 3, 'control_id'=> 1, 'created_at'=>date('Y-m-d', strtotime('-5 days'))),
+                array('entered_by'=> 3, 'control_id'=> 1, 'created_at'=>date('Y-m-d', strtotime('-4 days'))),
                 array('entered_by'=> 1, 'control_id'=> 2, 'created_at'=>date('Y-m-d', strtotime('-3 days'))),
                 array('entered_by'=> 1, 'control_id'=> 2, 'created_at'=>date('Y-m-d', strtotime('-2 days'))),
             );

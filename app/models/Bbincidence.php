@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\SoftDeletingTrait;
 class Bbincidence extends Eloquent
 {
 	/**
-	 * Enabling soft deletes for bbincidence details.
+	 * Enabling soft deletes for patient details.
 	 *
 	 */
 	use SoftDeletingTrait;
@@ -24,7 +24,7 @@ class Bbincidence extends Eloquent
 	 */
 	public function facility()
 	{
-		return $this->belongsTo('UNHLSFacility', 'facility_id', 'id');
+		return $this->belongsTo('Facility', 'facility_id', 'id');
 	}
 	
 	/**
@@ -114,7 +114,7 @@ class Bbincidence extends Eloquent
 
 	public static function countbbincidentcategories($option)
 	{
-		return DB::table('unhls_bbnatures')->where('class','=',$option)->select('priority','class','name', DB::raw('count(unhls_bbincidences_nature.created_at) as total'))->leftjoin('unhls_bbincidences_nature','unhls_bbincidences_nature.nature_id','=','unhls_bbnatures.id')
+		return DB::table('unhls_bbnatures')->where('class','=',$option)->select('priority','class','name', DB::raw('count(created_at) as total'))->leftjoin('unhls_bbincidences_nature','unhls_bbincidences_nature.nature_id','=','unhls_bbnatures.id')
 					->groupBy('priority','class','name')
              		->get();
 	}

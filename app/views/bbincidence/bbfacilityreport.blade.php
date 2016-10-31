@@ -62,7 +62,8 @@
         <b>Summary on Facility Incident Management</b><br>
         <table border='1'>
         <tr><td colspan='2'><strong>Referral Status</strong></td></tr>
-       @foreach($countbbincidentreferralstatus as $key => $value)       
+        <?php $countbbincidentreferralstatus = Bbincidence::countbbincidentreferralstatus(); ?>
+        @foreach($countbbincidentreferralstatus as $key => $value)       
         <tr><td>{{$value->referral_status}}</td><td>{{$value->total}}</td></tr>   
         @endforeach
         <tr><td colspan='2'><strong>Completion Status</strong></td></tr>

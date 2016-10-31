@@ -38,8 +38,7 @@
 
                     <li class="user_menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-							{{Auth::user()->facility->name}} | {{Auth::user()->name}}
-							<span class="navbar_el_icon ion-person"></span> <span class="caret"></span>
+                            <span class="navbar_el_icon ion-person"></span> <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right">
                             <li><a href='{{ URL::to("user/".Auth::user()->id."/edit") }}'>{{trans('messages.edit-profile')}}</a></li>
