@@ -607,5 +607,9 @@ Route::group(array("before" => "auth"), function()
         "as"   => "bbincidence.responseupdate",
         "uses" => "BbincidenceController@responseupdate"
     ));
+
+   /* Event::listen('illuminate.query', function($query){
+    var_dump($query);
+    });*/
 	
 });
