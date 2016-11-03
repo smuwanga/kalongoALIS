@@ -106,7 +106,7 @@ label, input {
     }
     .form-group .form-control.duration,
     .form-group .form-control.observation,
-    .form-group .form-control.antibiotic,
+    .form-group .form-control.drug,
     .form-group .form-control.susceptibility {
         width: 100%;
     }

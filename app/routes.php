@@ -206,8 +206,10 @@ Route::group(array("before" => "auth"), function()
         "as"   => "test.verify",
         "uses" => "TestController@verify"
     ));
-    Route::resource('culture', 'CultureObservationController');
+    Route::resource('culture', 'CultureController');
+    Route::resource('cultureobservation', 'CultureObservationController');
     Route::resource('drugsusceptibility', 'DrugSusceptibilityController');
+    Route::resource('isolatedorganism', 'IsolatedOrganismController');
     Route::any("/culture/storeObservation", array(
         "as"   => "culture.worksheet",
         "uses" => "CultureController@store"

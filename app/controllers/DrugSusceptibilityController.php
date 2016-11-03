@@ -9,7 +9,11 @@ class DrugSusceptibilityController extends \BaseController {
 	 */
 	public function index()
 	{
-		$drugSusceptibilities = DrugSusceptibility::all();
+		$drugSusceptibilities = DrugSusceptibility::with(
+			'drug',
+			'isolatedOrganism.organism',
+			'drugSusceptibilityMeasure')->get();
+
 		return $drugSusceptibilities;
 	}
 
@@ -34,14 +38,15 @@ class DrugSusceptibilityController extends \BaseController {
 	{
 		$drugSusceptibility = new DrugSusceptibility;
 		$drugSusceptibility->user_id = Auth::user()->id;
-		$drugSusceptibility->culture_id = Input::get('culture_id');
 		$drugSusceptibility->isolated_organism_id = Input::get('isolated_organism_id');
 		$drugSusceptibility->drug_id = Input::get('drug_id');
 		$drugSusceptibility->drug_susceptibility_measure_id = Input::get('drug_susceptibility_measure_id');
-		$drugSusceptibility->zone = Input::get('zone');
 		$drugSusceptibility->save();
 
-		return $drugSusceptibility;
+		return $drugSusceptibility->load(
+				'drug',
+				'isolatedOrganism.organism',
+				'drugSusceptibilityMeasure');
 	}
 
 	/**
@@ -69,14 +74,23 @@ class DrugSusceptibilityController extends \BaseController {
 
 
 	/**
-	 * Update the specified resource in storage.
+	 * Update the specified resource in storage.de
 	 *
 	 * @param  int  $id
 	 * @return Response
 	 */
 	public function update($id)
 	{
-		//
+		$drugSusceptibility = DrugSusceptibility::find($id);
+		$drugSusceptibility->user_id = Auth::user()->id;
+		$drugSusceptibility->isolated_organism_id = Input::get('isolated_organism_id');
+		$drugSusceptibility->drug_id = Input::get('drug_id');
+		$drugSusceptibility->drug_susceptibility_measure_id = Input::get('drug_susceptibility_measure_id');
+		$drugSusceptibility->save();
+		return $drugSusceptibility->load(
+				'drug',
+				'isolatedOrganism.organism',
+				'drugSusceptibilityMeasure');
 	}
 
 
@@ -88,8 +102,8 @@ class DrugSusceptibilityController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
+		$drugSusceptibility = DrugSusceptibility::find($id);
+		$drugSusceptibility->delete();
+		return $id;
 	}
-
-
 }

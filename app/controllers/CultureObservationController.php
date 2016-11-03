@@ -9,18 +9,9 @@ class CultureObservationController extends \BaseController {
 	 */
 	public function index()
 	{
-		$drugSusceptibilities = DrugSusceptibility::with(
-			'drug',
-			'culture',
-			'isolatedOrganism.organism',
-			'drugSusceptibilityMeasure')->get();
+		$cultureObservations = CultureObservation::with('culture','cultureDuration')->get();
 
-		$cultureObservations = CultureObservation::with(
-			'culture',
-			'cultureDuration')->get();
-
-		return View::make('test.culture.worksheet')->with('drugSusceptibilities', $drugSusceptibilities)
-			->with('cultureObservations', $cultureObservations);
+		return $cultureObservations;
 	}
 
 
@@ -48,7 +39,7 @@ class CultureObservationController extends \BaseController {
 		$observation->culture_duration_id = Input::get('culture_duration_id');
 		$observation->observation = Input::get('observation');
 		$observation->save();
-		return $observation;
+		return $observation->load('culture','cultureDuration');
 	}
 
 
@@ -90,7 +81,7 @@ class CultureObservationController extends \BaseController {
 		$observation->culture_duration_id = Input::get('culture_duration_id');
 		$observation->observation = Input::get('observation');
 		$observation->save();
-		return $observation;
+		return $observation->load('culture','cultureDuration');
 	}
 
 
@@ -102,6 +93,8 @@ class CultureObservationController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
+		$observation = CultureObservation::find($id);
+		$observation->delete();
+		return $id;
 	}
 }

@@ -98,7 +98,6 @@ class CreateMicrobiologyTables extends Migration {
             $table->increments('id')->unsigned();
             $table->integer('user_id')->unsigned();
             $table->integer('drug_id')->unsigned();
-            $table->integer('culture_id')->unsigned();
             $table->integer('isolated_organism_id')->unsigned();
             $table->integer('drug_susceptibility_measure_id')->unsigned();
             $table->string('zone',5)->nullable();
@@ -107,7 +106,6 @@ class CreateMicrobiologyTables extends Migration {
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('drug_id')->references('id')->on('drugs');
-            $table->foreign('culture_id')->references('id')->on('cultures');
             $table->foreign('isolated_organism_id')->references('id')->on('isolated_organisms');
             $table->foreign('drug_susceptibility_measure_id')->references('id')->on('drug_susceptibility_measures');
         });

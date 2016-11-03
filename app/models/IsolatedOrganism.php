@@ -18,6 +18,8 @@ class IsolatedOrganism extends Eloquent
 	{
 		return $this->belongsTo('Organism');
 	}
-
-
+	public function drugSusceptibilities()
+	{
+		return $this->hasMany('DrugSusceptibility');
+	}
 }

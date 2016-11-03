@@ -77,4 +77,18 @@ class Culture extends Eloquent
     
 		return "$difference $periods[$j] {$tense}";
 	}
+	/**
+	 * Isolated Organism relationship
+	 */
+	public function cultureObservations()
+    {
+        return $this->hasMany('CultureObservation');
+    }
+	/**
+	 * Isolated Organism relationship
+	 */
+	public function isolatedOrganisms()
+    {
+        return $this->hasMany('IsolatedOrganism');
+    }
 }

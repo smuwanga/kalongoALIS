@@ -1987,35 +1987,30 @@ class TestDataSeeder extends DatabaseSeeder
         ]);
         $drugSusceptibilityChloramphenicol = DrugSusceptibility::create([
             'user_id' => $user1->id,
-            'culture_id' => $cultureAST->id,
             'isolated_organism_id' => $isolatedOrganism->id,
             'drug_id' => $chloramphenicol->id,
             'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureR->id,
         ]);
         $drugSusceptibilityClindamycin = DrugSusceptibility::create([
             'user_id' => $user1->id,
-            'culture_id' => $cultureAST->id,
             'isolated_organism_id' => $isolatedOrganism->id,
             'drug_id' => $clindamycin->id,
             'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureS->id,
         ]);
         $drugSusceptibilityErythromycin = DrugSusceptibility::create([
             'user_id' => $user1->id,
-            'culture_id' => $cultureAST->id,
             'isolated_organism_id' => $isolatedOrganism->id,
             'drug_id' => $erythromycin->id,
             'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureR->id,
         ]);
         $drugSusceptibilityTetracycline = DrugSusceptibility::create([
             'user_id' => $user1->id,
-            'culture_id' => $cultureAST->id,
             'isolated_organism_id' => $isolatedOrganism->id,
             'drug_id' => $tetracycline->id,
             'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureR->id,
         ]);
         $drugSusceptibilityTrimethoprim = DrugSusceptibility::create([
             'user_id' => $user1->id,
-            'culture_id' => $cultureAST->id,
             'isolated_organism_id' => $isolatedOrganism->id,
             'drug_id' => $trimethoprim->id,
             'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureR->id,

@@ -8,10 +8,6 @@ class DrugSusceptibility extends Eloquent
 	 * @var string
 	 */
 	protected $table = 'drug_susceptibility';
-	public function culture()
-	{
-		return $this->belongsTo('Culture');
-	}
 
 	public function isolatedOrganism()
 	{
