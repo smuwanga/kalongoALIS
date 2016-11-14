@@ -35,7 +35,6 @@
                     <table class="table">
                       <thead>
                         <tr>
-                          <th>#</th>
                           <th>Duration</th>
                           <th>Observation</th>
                           <th><!-- Action --></th>
@@ -44,7 +43,6 @@
                       <tbody class="culture-observation-tbody">
                         @foreach($culture->culture_observations as $culture_observation)
                             <tr class="culture-observation-tr-{{$culture_observation->id}}">
-                              <td><!-- id --></td>
                               <td class="duration-entry">
                                 {{$culture_observation->culture_duration->duration}}</td>
                               <td class="observation-entry">{{$culture_observation->observation}}</td>
@@ -129,7 +127,6 @@
                     <table class="table">
                       <thead>
                         <tr>
-                          <th>#</th>
                           <th>Organisms</th>
                           <th><!-- Action --></th>
                         </tr>
@@ -137,7 +134,6 @@
                       <tbody class="isolated-organism-tbody">
                         @foreach($culture->isolated_organisms as $isolated_organism)
                             <tr class="isolated-organism-tr-{{$isolated_organism->id}}">
-                              <td><!-- id --></td>
                               <td class="isolated-organism-entry">{{$isolated_organism->organism->name}}</td>
                               <td>
                                 <a class="btn btn-sm btn-success add-drug-susceptibility"
@@ -194,7 +190,6 @@
                     <table class="table">
                       <thead>
                         <tr>
-                          <th>#</th>
                           <th>Organism</th>
                           <th>Drug</th>
                           <th>Result</th>
@@ -205,7 +200,6 @@
                         @foreach($culture->isolated_organisms as $isolated_organism)
                             @foreach($isolated_organism->drug_susceptibilities as $drug_susceptibility)
                             <tr class="drug-susceptibility-tr-{{$drug_susceptibility->id}}">
-                              <td><!-- id --></td>
                               <td class="isolated-organism-entry">
                                 {{$isolated_organism->organism->name}}</td>
                               <td class="drug-entry">
@@ -289,11 +283,37 @@
                     </div>
                 </div>
             </div>
-
+            <div class="col-md-12">
+                <div class="form-group actions-row">
+                    {{ Form::button(
+                        '<span class="glyphicon glyphicon-save"></span> '.trans('messages.set-to-completed'), 
+                            ['class' => 'btn btn-primary prepare-culture-sensitivity-completion']
+                    ) }}
+                </div>
+            </div>
+            <div class="col-md-12 hidden complete-culture-sensitivity">
+                <div class="form-group">
+                    <div class="form-group">
+                        {{ Form::label('interpretation', trans('messages.comment')) }}
+                        {{ Form::textarea('interpretation', Input::old('interpretation'),
+                            ['class' => 'form-control', 'rows' => '2']) }}
+                    </div>
+                </div>
+                <div class="form-group actions-row">
+                    {{ Form::button(
+                        '<span class="glyphicon glyphicon-save"></span> '.trans('messages.submit'), [
+                            'class' => 'btn btn-primary submit-completed-culture-sensitivity-analysis', 
+                            'data-redirect-url' => URL::route('test.viewDetails',[$culture->test_id]),
+                            'data-url' => URL::route('test.saveResults',[$culture->test_id])]
+                    ) }}
+                    {{ Form::button(trans('messages.cancel'),
+                        ['class' => 'btn btn-default cancel-completion-of-culture-sensitivity-analysis']) }}
+                </div>
+            </div>
         </div>
     </div>
+
 <!-- culture observation -->
-<!-- todo... check whether these empty things down here are neccessary data-url="" -->
                     <table>
                         <tbody class="hidden cultureObservationEntryLoader">
                             <tr class="new-culture-observation-tr">

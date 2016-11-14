@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
+// todo: perhaps this module and and table is not neccesary see if we can work work directly from the test table
 class Culture extends Eloquent
 {
 	/**

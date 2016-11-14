@@ -1654,8 +1654,6 @@ class TestDataSeeder extends DatabaseSeeder
         }
         $this->command->info("Control results table seeded");
 
-
-
         //Seed for drugs
         $penicillin = Drug::create(array('name' => "PENICILLIN"));
         $ampicillin = Drug::create(array('name' => "AMPICILLIN"));
@@ -1677,7 +1675,6 @@ class TestDataSeeder extends DatabaseSeeder
         $cefriaxone = Drug::create(array('name' => "CEFRIAXONE"));
         $levofloxacin = Drug::create(array('name' => "LEVOFLOXACIN"));
         $merodenem = Drug::create(array('name' => "MERODENEM"));
-        $tazo = Drug::create(array('name' => "PIPERACILLIN/TAZO"));
         $imedenem = Drug::create(array('name' => "IMEDENEM"));
         $oxacillin = Drug::create(array('name' => "OXACILLIN (CEFOXITIN)"));
         $erythromycin = Drug::create(array('name' => "ERYTHROMYCIN"));
@@ -1686,6 +1683,13 @@ class TestDataSeeder extends DatabaseSeeder
         $tobramycin = Drug::create(array('name' => "TOBRAMYCIN"));
         $sulbactam = Drug::create(array('name' => "AMPICILLIN-SULBACTAM"));
         $trimethoprim = Drug::create(array('name' => "TRIMETHOPRIM"));
+        $amikacin = Drug::create(['name' => 'AMIKACIN']);
+        $augmentin = Drug::create(['name' => 'AUGMENTIN']);
+        $ceftriaxione = Drug::create(['name' => 'CEFTRIAXIONE']);
+        $cotrimoxazole = Drug::create(['name' => 'CO-TRIMOXAZOLE']);
+        $imipenem = Drug::create(['name' => 'IMIPENEM']);
+        $meropenem = Drug::create(['name' => 'MEROPENEM']);
+        $peperacillintazobactam = Drug::create(['name' => 'PIPERACILLIN/TAZO']);
 
         $this->command->info('Drugs table seeded');
         //Seed for organisims
@@ -1702,6 +1706,8 @@ class TestDataSeeder extends DatabaseSeeder
         $shigella = Organism::create(array('name' => "Shigella"));
         $vibrio = Organism::create(array('name' => "Vibrio cholerae"));
         $grampositive = Organism::create(array('name' => "Gram positive cocci"));
+        $ecoli = Organism::create(['name' => 'E.coli']);
+        $oralPharyngealFlora = Organism::create(['name' => 'Oral-pharyngeal flora']);
 
         $this->command->info('Organisms table seeded');
         //  Seed for organism_drugs
@@ -1910,16 +1916,59 @@ class TestDataSeeder extends DatabaseSeeder
             array("organism_id" => $grampositive->id, "drug_id" => $vancomycin->id));
         $this->command->info('Gram positive cocci seeded');
 */
-        $testTypeAST = TestType::create(
-            array(
+        $testTypeAST = TestType::create([
                 "name" => "AST",
                 "test_category_id" => $lab_section_microbiology->id,
                 "orderable_test" => 1
-            )
-        );
+        ]);
+        $testTypeAppearance = TestType::create([
+            'name' => 'Appearance',
+            'test_category_id' => $lab_section_microbiology->id,
+            'orderable_test' => 1
+        ]);
+        $testTypeGramStain = TestType::create([
+            'name' => 'Gram stain',
+            'test_category_id' => $lab_section_microbiology->id,
+            'orderable_test' => 1
+        ]);
+        $testTypeZnStain = TestType::create([
+            'name' => 'ZN stain',
+            'test_category_id' => $lab_section_microbiology->id,
+            'orderable_test' => 1
+        ]);
+        $testTypeModifiedZn = TestType::create([
+            'name' => 'Modified ZN',
+            'test_category_id' => $lab_section_microbiology->id,
+            'orderable_test' => 1
+        ]);
+        $testTypeWetSalineIodinePrep = TestType::create([
+            'name' => 'Wet Saline Iodine Prep',
+            'test_category_id' => $lab_section_microbiology->id,
+            'orderable_test' => 1
+        ]);
 
-        $testAST = Test::create(
-            array(
+        // Microbiology Tests Config list determines appearance on report and need for work sheet
+        $microbiologyTests = [
+            ['test_type_id'=> $testTypeAppearance->id, 'worksheet_required' => '0'],
+            ['test_type_id'=> $testTypeGramStain->id, 'worksheet_required' => '0'],
+            ['test_type_id'=> $testTypeZnStain->id, 'worksheet_required' => '0'],
+            ['test_type_id'=> $testTypeModifiedZn->id, 'worksheet_required' => '0'],
+            ['test_type_id'=> $testTypeWetSalineIodinePrep->id, 'worksheet_required' => '0'],
+            ['test_type_id'=> $testTypeAST->id, 'worksheet_required' => '1'],
+        ];
+        foreach ($microbiologyTests as $microbiologyTest) {
+            MicrobiologyTestType::create($microbiologyTest);
+        }
+        $this->command->info("Microbiology tests list table seeded");
+
+        $measureAppearance = Measure::create(['measure_type_id' => '4', 'name' => 'Appearance', 'unit' => '']);
+        $measureGramStain = Measure::create(['measure_type_id' => '4', 'name' => 'Gram stain', 'unit' => '']);
+        $measureZnStain = Measure::create(['measure_type_id' => '4', 'name' => 'ZN stain', 'unit' => '']);
+        $measureModifiedZn = Measure::create(['measure_type_id' => '4', 'name' => 'Modified ZN', 'unit' => '']);
+        $measureWetSalineIodinePrep = Measure::create(['measure_type_id' => '4', 'name' => 'Wet Saline Iodine Prep', 'unit' => '']);
+        $measureAST = Measure::create(['measure_type_id' => '4', 'name' => 'AST', 'unit' => '']);
+
+        $testAST = Test::create([
                 "visit_id" => "4",
                 "test_type_id" => $testTypeAST->id,
                 "specimen_id" => "3",
@@ -1933,13 +1982,141 @@ class TestDataSeeder extends DatabaseSeeder
                 "time_started" => "2014-10-17 19:17:15",
                 "time_completed" => "2014-10-17 19:52:40",
                 "time_verified" => "2014-10-17 19:53:48",
-            )
-        );
+        ]);
+        $testAppearanceMucoSalivary = Test::create([
+            'visit_id' => '4',
+            'test_type_id' => $testTypeAppearance->id,
+            'specimen_id' => '1',
+            'interpretation' => '',
+            'test_status_id' => Test::VERIFIED,
+            'created_by' => '3',
+            'tested_by' => '2',
+            'verified_by' => '3',
+            'requested_by' => 'Genghiz Khan',
+            'time_created' => '2014-10-17 19:16:15',
+            'time_started' => '2014-10-17 19:17:15',
+            'time_completed' => '2014-10-17 19:52:40',
+            'time_verified' => '2014-10-17 19:53:48',
+        ]);
+        $testGramStain = Test::create([
+            'visit_id' => '4',
+            'test_type_id' => $testTypeGramStain->id,
+            'specimen_id' => '1',
+            'interpretation' => '',
+            'test_status_id' => Test::VERIFIED,
+            'created_by' => '3',
+            'tested_by' => '2',
+            'verified_by' => '3',
+            'requested_by' => 'Genghiz Khan',
+            'time_created' => '2014-10-17 19:16:15',
+            'time_started' => '2014-10-17 19:17:15',
+            'time_completed' => '2014-10-17 19:52:40',
+            'time_verified' => '2014-10-17 19:53:48',
+        ]);
+        $testZnStain = Test::create([
+            'visit_id' => '4',
+            'test_type_id' => $testTypeZnStain->id,
+            'specimen_id' => '1',
+            'interpretation' => '',
+            'test_status_id' => Test::VERIFIED,
+            'created_by' => '3',
+            'tested_by' => '2',
+            'verified_by' => '3',
+            'requested_by' => 'Genghiz Khan',
+            'time_created' => '2014-10-17 19:16:15',
+            'time_started' => '2014-10-17 19:17:15',
+            'time_completed' => '2014-10-17 19:52:40',
+            'time_verified' => '2014-10-17 19:53:48',
+        ]);
+        $testASToralPharyngealFlora = Test::create([
+            'visit_id' => '4',
+            'test_type_id' => $testTypeAST->id,
+            'specimen_id' => '1',
+            'interpretation' => '',
+            'test_status_id' => Test::PENDING,
+            'created_by' => '3',
+            'tested_by' => '2',
+            'verified_by' => '3',
+            'requested_by' => 'Genghiz Khan',
+            'time_created' => '2014-10-17 19:16:15',
+            'time_started' => '2014-10-17 19:17:15',
+            'time_completed' => '2014-10-17 19:52:40',
+            'time_verified' => '2014-10-17 19:53:48',
+        ]);
+        $testAppearanceFormed = Test::create([
+            'visit_id' => '4',
+            'test_type_id' => $testTypeAppearance->id,
+            'specimen_id' => '2',
+            'interpretation' => '',
+            'test_status_id' => Test::VERIFIED,
+            'created_by' => '3',
+            'tested_by' => '2',
+            'verified_by' => '3',
+            'requested_by' => 'Genghiz Khan',
+            'time_created' => '2014-10-17 19:16:15',
+            'time_started' => '2014-10-17 19:17:15',
+            'time_completed' => '2014-10-17 19:52:40',
+            'time_verified' => '2014-10-17 19:53:48',
+        ]);
+        $testModifiedZn = Test::create([
+            'visit_id' => '4',
+            'test_type_id' => $testTypeModifiedZn->id,
+            'specimen_id' => '2',
+            'interpretation' => '',
+            'test_status_id' => Test::VERIFIED,
+            'created_by' => '3',
+            'tested_by' => '2',
+            'verified_by' => '3',
+            'requested_by' => 'Genghiz Khan',
+            'time_created' => '2014-10-17 19:16:15',
+            'time_started' => '2014-10-17 19:17:15',
+            'time_completed' => '2014-10-17 19:52:40',
+            'time_verified' => '2014-10-17 19:53:48',
+        ]);
+        $testWetSalineIodinePrep = Test::create([
+            'visit_id' => '4',
+            'test_type_id' => $testTypeWetSalineIodinePrep->id,
+            'specimen_id' => '2',
+            'interpretation' => '',
+            'test_status_id' => Test::VERIFIED,
+            'created_by' => '3',
+            'tested_by' => '2',
+            'verified_by' => '3',
+            'requested_by' => 'Genghiz Khan',
+            'time_created' => '2014-10-17 19:16:15',
+            'time_started' => '2014-10-17 19:17:15',
+            'time_completed' => '2014-10-17 19:52:40',
+            'time_verified' => '2014-10-17 19:53:48',
+        ]);
+        $testASTecoli = Test::create([
+            'visit_id' => '4',
+            'test_type_id' => $testTypeAST->id,
+            'specimen_id' => '2',
+            'interpretation' => '',
+            'test_status_id' => Test::PENDING,
+            'created_by' => '3',
+            'tested_by' => '2',
+            'verified_by' => '3',
+            'requested_by' => 'Genghiz Khan',
+            'time_created' => '2014-10-17 19:16:15',
+            'time_started' => '2014-10-17 19:17:15',
+            'time_completed' => '2014-10-17 19:52:40',
+            'time_verified' => '2014-10-17 19:53:48',
+        ]);
 
         $cultureAST = Culture::create([
             'user_id' => $user1->id,
             'test_id' => $testAST->id,
         ]);
+        $cultureEcoli = Culture::create([
+            'user_id' => $user1->id,
+            'test_id' => $testASToralPharyngealFlora->id,
+        ]);
+        $cultureOralPharyngealFlora = Culture::create([
+            'user_id' => $user1->id,
+            'test_id' => $testASTecoli->id,
+        ]);
+
         $cultureDurationAST12h = CultureDuration::create(['duration' => '12 hours',]);
         $cultureDurationAST24h = CultureDuration::create(['duration' => '24 hours',]);
         $cultureDurationAST36h = CultureDuration::create(['duration' => '36 hours',]);
@@ -1968,11 +2145,23 @@ class TestDataSeeder extends DatabaseSeeder
             'culture_duration_id' => $cultureDurationAST7d->id,
             'observation' => 'SG',
         ]);
+
         $isolatedOrganism = IsolatedOrganism::create([
             'user_id' => $user1->id,
             'culture_id' => $cultureAST->id,
             'organism_id' => $pneumoniae->id,
         ]);
+        $isolatedOrganismOralPharyngealFlora = IsolatedOrganism::create([
+            'user_id' => $user1->id,
+            'culture_id' => $cultureOralPharyngealFlora->id,
+            'organism_id' => $oralPharyngealFlora->id,
+        ]);
+        $isolatedOrganismEcoli = IsolatedOrganism::create([
+            'user_id' => $user1->id,
+            'culture_id' => $cultureEcoli->id,
+            'organism_id' => $ecoli->id,
+        ]);
+
         $drugSusceptibilityMeasureS = DrugSusceptibilityMeasure::create([
             'symbol' => 'S',
             'interpretation'=>'Sensitive',
@@ -2015,9 +2204,124 @@ class TestDataSeeder extends DatabaseSeeder
             'drug_id' => $trimethoprim->id,
             'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureR->id,
         ]);
-        $microbiologyTestType = MicrobiologyTestType::create([
-            'test_type_id' => $testTypeAST->id,
-            'worksheet_required' => '1',
+        DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganismEcoli->id,
+            'drug_id' => $amikacin->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureI->id,
+        ]);
+        DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganismEcoli->id,
+            'drug_id' => $ampicillin->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureR->id,
+        ]);
+        DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganismEcoli->id,
+            'drug_id' => $augmentin->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureR->id,
+        ]);
+        DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganismEcoli->id,
+            'drug_id' => $cefotaxime->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureR->id,
+        ]);
+        DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganismEcoli->id,
+            'drug_id' => $ceftriaxione->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureR->id,
+        ]);
+        DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganismEcoli->id,
+            'drug_id' => $cefuroxime->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureR->id,
+        ]);
+        DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganismEcoli->id,
+            'drug_id' => $chloramphenicol->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureS->id,
+        ]);
+        DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganismEcoli->id,
+            'drug_id' => $ciprofloxacin->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureR->id,
+        ]);
+        DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganismEcoli->id,
+            'drug_id' => $cotrimoxazole->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureR->id,
+        ]);
+        DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganismEcoli->id,
+            'drug_id' => $gentamicin->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureR->id,
+        ]);
+        DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganismEcoli->id,
+            'drug_id' => $imipenem->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureS->id,
+        ]);
+        DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganismEcoli->id,
+            'drug_id' => $meropenem->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureI->id,
+        ]);
+        DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganismEcoli->id,
+            'drug_id' => $peperacillintazobactam->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureI->id,
+        ]);
+
+        TestResult::create([
+            'test_id' => $testAppearanceMucoSalivary->id,
+            'measure_id' => $measureAppearance->id,
+            'result' => 'Muco-Salivary',
+        ]);
+        TestResult::create([
+            'test_id' => $testGramStain->id,
+            'measure_id' => $measureGramStain->id,
+            'result' => '3+ Gram positive diplococci,1+ Gram negative cocci,<5 pmns and 5-10 epithelial cells seen.',
+        ]);
+        TestResult::create([
+            'test_id' => $testZnStain->id,
+            'measure_id' => $measureZnStain->id,
+            'result' => 'No AFB seen',
+        ]);
+        TestResult::create([
+            'test_id' => $testASToralPharyngealFlora->id,
+            'measure_id' => $measureAST->id,
+            'result' => '',
+        ]);
+        TestResult::create([
+            'test_id' => $testAppearanceFormed->id,
+            'measure_id' => $measureAppearance->id,
+            'result' => 'Formed',
+        ]);
+        TestResult::create([
+            'test_id' => $testModifiedZn->id,
+            'measure_id' => $measureModifiedZn->id,
+            'result' => 'No Oocysts seen.',
+        ]);
+        TestResult::create([
+            'test_id' => $testWetSalineIodinePrep->id,
+            'measure_id' => $measureWetSalineIodinePrep->id,
+            'result' => 'No Ova/cysts seen.',
+        ]);
+        TestResult::create([
+            'test_id' => $testASTecoli->id,
+            'measure_id' => $measureAST->id,
+            'result' => 'ESBL Positive',
         ]);
     }
 

@@ -407,6 +407,33 @@ $(function(){
         $('.susceptibility').val('');
         $('.susceptibility-result').addClass('hidden');
     });
+    /*completing the culture and sensitivity analysis*/
+    // prepare to complete culture sensitivity
+    $('.prepare-culture-sensitivity-completion').click(function(){
+        $(this).addClass('hidden');
+        $('.complete-culture-sensitivity').removeClass('hidden');
+    });
+
+    // cancel culture sensitivity completion
+    $('.cancel-completion-of-culture-sensitivity-analysis').click(function(){
+        $('.prepare-culture-sensitivity-completion').removeClass('hidden');
+        $('.complete-culture-sensitivity').addClass('hidden');
+    });
+
+    // complete culture sensitivity
+    $('.submit-completed-culture-sensitivity-analysis').click(function(){
+        $.ajax({
+            type: 'POST',
+            url:  $(this).data('url'),
+            data: {
+                interpretation: $('.interpretation').val()
+            },
+            success: function(){
+                location.href = $('.submit-completed-culture-sensitivity-analysis')
+                    .data('redirect-url');
+            }
+        });
+    });
 
 	UIComponents();
 

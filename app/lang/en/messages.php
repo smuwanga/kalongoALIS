@@ -16,6 +16,7 @@ return array(
     'cancel' => 'Cancel',
     'close' => 'Close',
     'create' => 'Create',
+    'comment' => 'Comment',
     'date-created' => 'Date Created',
     'delete' => 'Delete',
     'description' => 'Description',
@@ -40,6 +41,7 @@ return array(
     'photo' => 'Photo',
     'role' => 'Role|Roles',
     'save' => 'Save',
+    'submit' => 'Submit',
     'save-all' => 'Save All',
     'type' => 'Type',
     'unit' => 'Unit',
@@ -269,6 +271,7 @@ return array(
     'select-isolates'   =>  'Select Isolated Organisms',
     'zone-size' =>  'Zone size (mm)',
     'interp'    =>  'Interpretation (S, I, R)',
+    'set-to-completed' =>  'Set to Completed',
 
     /**
      *  Tests

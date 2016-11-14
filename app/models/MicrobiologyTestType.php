@@ -8,8 +8,12 @@ class MicrobiologyTestType extends Eloquent
 	 * @var string
 	 */
 	protected $table = 'microbiology_test_types';
+
 	public $timestamps = false;
 
+	/**
+	 * Test Type relationship
+	 */
 	public function testType()
 	{
 		return $this->belongsTo('TestType');
