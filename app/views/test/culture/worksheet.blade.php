@@ -206,7 +206,7 @@
                                 {{$drug_susceptibility->drug->name}}</td>
                               <td class="result-entry">
                                 {{$drug_susceptibility->drug_susceptibility_measure->interpretation}}</td>
-                              <td>
+                              <td class="col-md-4">
                                 <a class="btn btn-sm btn-info edit-drug-susceptibility"
                                     data-url="{{ URL::route('drugsusceptibility.update',
                                         [$drug_susceptibility->id]) }}"
@@ -317,7 +317,6 @@
                     <table>
                         <tbody class="hidden cultureObservationEntryLoader">
                             <tr class="new-culture-observation-tr">
-                              <td><!-- id --></td>
                               <td class="duration-entry"></td>
                               <td class="observation-entry"></td>
                               <td>
@@ -341,7 +340,6 @@
                     <table>
                         <tbody class="hidden isolatedOrganismEntryLoader">
                             <tr class="new-isolated-organism-tr">
-                              <td><!-- id --></td>
                               <td class="isolated-organism-entry"></td>
                               <td>
                                 <a class="btn btn-sm btn-success add-drug-susceptibility"
@@ -363,7 +361,6 @@
                     <table>
                         <tbody class="hidden drugSusceptibilityEntryLoader">
                             <tr class="new-drug-susceptibility-tr">
-                              <td><!-- id --></td>
                               <td class="isolated-organism-entry"></td>
                               <td class="drug-entry"></td>
                               <td class="result-entry"></td>
