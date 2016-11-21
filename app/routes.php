@@ -608,7 +608,52 @@ Route::group(array("before" => "auth"), function()
         "uses" => "BbincidenceController@responseupdate"
     ));
 
-   /* Event::listen('illuminate.query', function($query){
+
+    Route::resource('bike', 'BikeController'); /* Added by Justus */
+
+    Route::resource('event', 'EventController'); /* Added by Justus */
+
+    Route::any("/event/{id}/editobjectives", array(
+        "as"   => "event.editobjectives",
+        "uses" => "EventController@editobjectives"
+    ));
+
+    Route::any("/event/{id}/updateobjectives", array(
+        "as"   => "event.updateobjectives",
+        "uses" => "EventController@updateobjectives"
+    ));
+
+    Route::any("/event/{id}/editlessons", array(
+        "as"   => "event.editlessons",
+        "uses" => "EventController@editlessons"
+    ));
+
+    Route::any("/event/{id}/updatelessons", array(
+        "as"   => "event.updatelessons",
+        "uses" => "EventController@updatelessons"
+    ));
+
+    Route::any("/event/{id}/editrecommendations", array(
+        "as"   => "event.editrecommendations",
+        "uses" => "EventController@editrecommendations"
+    ));
+
+    Route::any("/event/{id}/updaterecommendations", array(
+        "as"   => "event.updaterecommendations",
+        "uses" => "EventController@updaterecommendations"
+    ));
+
+    Route::any("/event/{id}/editactions", array(
+        "as"   => "event.editactions",
+        "uses" => "EventController@editactions"
+    ));
+
+    Route::any("/event/{id}/updateactions", array(
+        "as"   => "event.updateactions",
+        "uses" => "EventController@updateactions"
+    ));
+
+/*   Event::listen('illuminate.query', function($query){
     var_dump($query);
     });*/
 	
