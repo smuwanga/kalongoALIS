@@ -1,5 +1,12 @@
 @extends("layout")
 @section("content")
+<script>
+$('#location').on('change', function() {
+var el = $('#field-location');
+if (this.value === 'Field Activity') { el.show();} 
+else { el.hide();}
+});
+</script>
 	<div>
 		<ol class="breadcrumb">
 		  <li><a href="{{{URL::route('user.home')}}}">{{ trans('messages.home') }}</a></li>
@@ -44,7 +51,14 @@
 			{{ Form::text('department', Input::old('department'), array('class' => 'form-control col-sm-4')) }}
 
 			{{ Form::label('type', 'Type', array('class' => 'col-sm-2')) }}
-			{{ Form::text('type', Input::old('type'), array('class' => 'form-control col-sm-4')) }}	
+			<input list="type" name="type" class="form-control col-sm-4" placeholder="Double click for options or write">
+					<datalist id="type">
+						<option value="CPHL Staff">
+						<option value="Health Managers">
+						<option value="Meeting of Lab Services Coordinators">
+						<option value="Multi sectoral">
+						<option value="National stakeholders meeting">
+					</datalist>
 		</div>
 
 		<div class="form-group">
@@ -53,6 +67,44 @@
 
 			{{ Form::label('end_date', 'End Date', array('class' => 'col-sm-2')) }}
 			{{ Form::text('end_date', Input::old('end_date'), array('class' => 'form-control standard-datepicker col-sm-4')) }}	
+		</div>
+
+		<div class="form-group">
+			{{ Form::label('location', 'Location', array('class' => 'col-sm-2')) }}
+			{{ Form::select('location', [
+					'' => '',
+					'CPHL' => 'CPHL',
+					'Field Activity' => 'Field Activity'], 
+					Input::old('location'), array('id' => 'location', 'class' => 'form-control col-sm-4')) }}
+			
+			{{ Form::label('premise', 'Hotel/Premise', array('class' => 'col-sm-2')) }}
+			{{ Form::text('premise', Input::old('premise'), array('class' => 'form-control col-sm-4')) }}
+		</div>
+
+		<div class="form-group" style="" id="field-location">
+			{{ Form::label('region', 'Health Region', array('class' => 'col-sm-2')) }}
+			{{ Form::text('region', Input::old('region'), array('class' => 'form-control col-sm-4')) }}
+
+			{{ Form::label('district', 'District', array('class' => 'col-sm-2')) }}
+			{{ Form::select('district', $districts, array('class' => 'form-control col-sm-4')) }}	
+			
+			
+		</div>
+
+		<div class="form-group">
+			{{ Form::label('sponsor', 'Sponsor', array('class' => 'col-sm-2')) }}
+			{{ Form::text('sponsor', Input::old('sponsor'), array('class' => 'form-control col-sm-4')) }}
+
+			{{ Form::label('organiser', 'Organiser', array('class' => 'col-sm-2')) }}
+			{{ Form::text('organiser', Input::old('organiser'), array('class' => 'form-control col-sm-4')) }}	
+		</div>
+
+		<div class="form-group">
+			{{ Form::label('audience', 'Target Audience', array('class' => 'col-sm-2')) }}
+			{{ Form::textarea('audience', Input::old('audience'), array('size' => '10x1','class' => 'form-control col-sm-10')) }}
+			
+			{{ Form::label('participants_no', 'No of Participants', array('class' => 'col-sm-2')) }}
+			{{ Form::input('number','participants_no', Input::old('participants_no'), array('class' => 'form-control col-sm-4')) }}	
 		</div>
 
 		<div class="form-group">

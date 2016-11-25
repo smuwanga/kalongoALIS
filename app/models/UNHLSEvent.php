@@ -12,6 +12,11 @@ class UNHLSEvent extends Eloquent
 		return $this->belongsTo('User', 'user_id', 'id');
 	}
 
+	public function district()
+	{
+		return $this->belongsTo('District', 'district_id', 'id');
+	}
+
 	public function objective()
     {
         return $this->hasMany('UNHLSEventObjective','event_id','id');

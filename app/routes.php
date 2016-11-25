@@ -613,6 +613,9 @@ Route::group(array("before" => "auth"), function()
 
     Route::resource('event', 'EventController'); /* Added by Justus */
 
+    // Route for downloading event reports
+    Route::get('/attachments', 'EventController@downloadAttachment');
+
     Route::any("/event/{id}/editobjectives", array(
         "as"   => "event.editobjectives",
         "uses" => "EventController@editobjectives"
@@ -651,6 +654,11 @@ Route::group(array("before" => "auth"), function()
     Route::any("/event/{id}/updateactions", array(
         "as"   => "event.updateactions",
         "uses" => "EventController@updateactions"
+    ));
+
+    Route::any("/event/eventfilter/eventfilter", array(
+        "as"   => "event.eventfilter",
+        "uses" => "EventController@eventfilter"
     ));
 
 /*   Event::listen('illuminate.query', function($query){

@@ -3,14 +3,9 @@
 <div>
 	<ol class="breadcrumb">
 	  <li><a href="{{{URL::route('user.home')}}}">{{trans('messages.home')}}</a></li>
-	  <li class="active">Events</li>
+	  <li class="active">Events Filter</li>
 	</ol>
 </div>
-<!--
-<div class='container-fluid'>
-
-</div>-->
-
 
 @if (Session::has('message'))
 	<div class="alert alert-info">{{ trans(Session::get('message')) }}</div>
@@ -19,15 +14,7 @@
 <div class="panel panel-primary">
 	<div class="panel-heading ">
 		<span class="glyphicon glyphicon-dashboard"></span>
-		List of Events  ({{ count($events); }})
-		
-		<div class="panel-btn">
-			<a class="btn btn-sm btn-info" href="{{ URL::route('event.create') }}">
-				<span class="glyphicon glyphicon-plus-sign"></span>
-				New Event
-			</a>
-		</div>
-		
+		Filtered Events  ({{ count($events); }})
 	</div>
 	
 	<div class="panel-body">
