@@ -47,7 +47,7 @@ class TestDataSeeder extends DatabaseSeeder
             array("name" => "Semen"),
             array("name" => "Serum"),
             array("name" => "Skin"),
-            array("name" => "Sputum"),
+            array("name" => "Vomitus"),
             array("name" => "Stool"),
             array("name" => "Synovial Fluid"),
             array("name" => "Throat Swab"),
@@ -1916,6 +1916,14 @@ class TestDataSeeder extends DatabaseSeeder
             array("organism_id" => $grampositive->id, "drug_id" => $vancomycin->id));
         $this->command->info('Gram positive cocci seeded');
 */
+        $specimenTypeSputum = SpecimenType::create(["name" => "Sputum"]);
+
+        $specimenSputum = Specimen::create([
+            "specimen_type_id" => $specimenTypeSputum->id,
+            "specimen_status_id" => Specimen::ACCEPTED,
+            "accepted_by" => 1,
+            "time_accepted" => date('Y-m-d H:i:s')]);
+
         $testTypeAST = TestType::create([
                 "name" => "AST",
                 "test_category_id" => $lab_section_microbiology->id,
@@ -1946,7 +1954,6 @@ class TestDataSeeder extends DatabaseSeeder
             'test_category_id' => $lab_section_microbiology->id,
             'orderable_test' => 1
         ]);
-
         // Microbiology Tests Config list determines appearance on report and need for work sheet
         $microbiologyTests = [
             ['test_type_id'=> $testTypeAppearance->id, 'worksheet_required' => '0'],
@@ -1971,7 +1978,7 @@ class TestDataSeeder extends DatabaseSeeder
         $testAST = Test::create([
                 "visit_id" => "4",
                 "test_type_id" => $testTypeAST->id,
-                "specimen_id" => "3",
+                'specimen_id' => $specimenSputum->id,
                 "interpretation" => "Format being deliberated",
                 "test_status_id" => Test::VERIFIED,
                 "created_by" => "3",
@@ -1986,7 +1993,7 @@ class TestDataSeeder extends DatabaseSeeder
         $testAppearanceMucoSalivary = Test::create([
             'visit_id' => '4',
             'test_type_id' => $testTypeAppearance->id,
-            'specimen_id' => '1',
+            'specimen_id' => $specimenSputum->id,
             'interpretation' => '',
             'test_status_id' => Test::VERIFIED,
             'created_by' => '3',
@@ -2001,7 +2008,7 @@ class TestDataSeeder extends DatabaseSeeder
         $testGramStain = Test::create([
             'visit_id' => '4',
             'test_type_id' => $testTypeGramStain->id,
-            'specimen_id' => '1',
+            'specimen_id' => $specimenSputum->id,
             'interpretation' => '',
             'test_status_id' => Test::VERIFIED,
             'created_by' => '3',
@@ -2016,7 +2023,7 @@ class TestDataSeeder extends DatabaseSeeder
         $testZnStain = Test::create([
             'visit_id' => '4',
             'test_type_id' => $testTypeZnStain->id,
-            'specimen_id' => '1',
+            'specimen_id' => $specimenSputum->id,
             'interpretation' => '',
             'test_status_id' => Test::VERIFIED,
             'created_by' => '3',
@@ -2046,7 +2053,7 @@ class TestDataSeeder extends DatabaseSeeder
         $testAppearanceFormed = Test::create([
             'visit_id' => '4',
             'test_type_id' => $testTypeAppearance->id,
-            'specimen_id' => '2',
+            'specimen_id' => $specimenSputum->id,
             'interpretation' => '',
             'test_status_id' => Test::VERIFIED,
             'created_by' => '3',
@@ -2061,7 +2068,7 @@ class TestDataSeeder extends DatabaseSeeder
         $testModifiedZn = Test::create([
             'visit_id' => '4',
             'test_type_id' => $testTypeModifiedZn->id,
-            'specimen_id' => '2',
+            'specimen_id' => $specimenSputum->id,
             'interpretation' => '',
             'test_status_id' => Test::VERIFIED,
             'created_by' => '3',
@@ -2076,7 +2083,7 @@ class TestDataSeeder extends DatabaseSeeder
         $testWetSalineIodinePrep = Test::create([
             'visit_id' => '4',
             'test_type_id' => $testTypeWetSalineIodinePrep->id,
-            'specimen_id' => '2',
+            'specimen_id' => $specimenSputum->id,
             'interpretation' => '',
             'test_status_id' => Test::VERIFIED,
             'created_by' => '3',

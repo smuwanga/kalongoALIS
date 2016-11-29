@@ -37,7 +37,7 @@ return array(
 	|
 	*/
 
-	'organization' => 'Basic Laboratory Information System',
+	'organization' => 'National Microbiology Reference Loboratory',
 	
 
 
@@ -47,10 +47,9 @@ return array(
 	|--------------------------------------------------------------------------
 	|
 	*/
-	'address-info' => 'COUNTY REFERRAL HOSPITAL, BLIS<br>
-                    REFERRAL HOSPITAL LOCATION<br>
-                    P.O. BOX PRIVATE BAG,<br>
-                    KENYA.<br>
+	'address-info' => 'P.O. BOX PRIVATE BAG,<br>
+                    BUTABIKA<br>
+                    UGANDA.<br>
                     Phone: +0000000 Ext 203/208</p>',
 	
 	/*
@@ -60,7 +59,7 @@ return array(
 	|
 	*/
 
-	'organization-logo' => '/i/org_logo_90x90.png',
+	'organization-logo' => '/i/coat_of_arms_of_uganda.png',
 	
 	/*
 	|--------------------------------------------------------------------------

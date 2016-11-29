@@ -44,6 +44,29 @@ class CultureController extends \BaseController {
 	public function show($id)
 	{
 		$culture = Culture::find($id);
+		$culture->load(
+			'cultureObservations.cultureDuration',
+			'isolatedOrganisms.organism',
+			'isolatedOrganisms.drugSusceptibilities.drug',
+			'isolatedOrganisms.drugSusceptibilities.drugSusceptibilityMeasure');
+
+		$content = View::make('test.culture.microbiologyreport')
+			->with('culture', $culture);
+		$pdf = App::make('dompdf');
+		$pdf->loadHTML($content);
+		return $pdf->stream('microbiology.pdf');
+	}
+
+
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function edit($id)
+	{
+		$culture = Culture::find($id);
 
 		$culture->load(
 			'cultureObservations.cultureDuration',
@@ -62,18 +85,6 @@ class CultureController extends \BaseController {
 			->with('organisms', $organisms)
 			->with('culture', $culture)
 			->with('drugs', $drugs);
-	}
-
-
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		//
 	}
 
 
