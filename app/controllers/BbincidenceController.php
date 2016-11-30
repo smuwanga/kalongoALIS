@@ -15,15 +15,26 @@ class BbincidenceController extends \BaseController {
 	 */
 	public function index()
 	{
+
 		$search = Input::get('search');
 		$datefrom = Input::get('datefrom');
 		$dateto = Input::get('dateto');
-		
-		if($datefrom != ''){
-		$bbincidences = Bbincidence::facility_filterbydate($datefrom,$dateto)->orderBy('id','DESC')->paginate(Config::get('kblis.page-items'))->appends(Input::except('_token'));
+
+		if(Entrust::can('manage_national_biorisk')){
+			if($datefrom != ''){
+			$bbincidences = Bbincidence::filterbydate($datefrom,$dateto)->orderBy('id','DESC')->paginate(Config::get('kblis.page-items'))->appends(Input::except('_token'));
+			}
+			else
+			$bbincidences = Bbincidence::search($search)->orderBy('id','DESC')->paginate(Config::get('kblis.page-items'))->appends(Input::except('_token'));		
 		}
-		else
-		$bbincidences = Bbincidence::facility_search($search)->orderBy('id','DESC')->paginate(Config::get('kblis.page-items'))->appends(Input::except('_token'));
+		else{
+		
+			if($datefrom != ''){
+			$bbincidences = Bbincidence::filterbydate($datefrom,$dateto)->orderBy('id','DESC')->paginate(Config::get('kblis.page-items'))->appends(Input::except('_token'));
+			}
+			else
+			$bbincidences = Bbincidence::search($search)->orderBy('id','DESC')->paginate(Config::get('kblis.page-items'))->appends(Input::except('_token'));
+		}
 
 		if (count($bbincidences) == 0) {
 		 	Session::flash('message', trans('messages.no-match'));
@@ -53,7 +64,7 @@ class BbincidenceController extends \BaseController {
 		
 		//$naturesList = DB::table('unhls_bbnatures')->orderBy('priority')->orderBy('class')->lists('name', 'id');
 		
-		$natures = BbincidenceNature::orderBy('class')->get();
+		$natures = BbincidenceNature::orderBy('name')->get();
 		//$causes = BbincidenceCause::orderBy('causename')->get();
 		//$actions = BbincidenceAction::orderBy('actionname')->get();
 		
@@ -134,6 +145,8 @@ class BbincidenceController extends \BaseController {
 			$bbincidence->officer_lname = Input::get('officer_lname');
 			$bbincidence->officer_cadre = Input::get('officer_cadre');
 			$bbincidence->officer_telephone = Input::get('officer_telephone');
+
+			$bbincidence->status = 'Ongoing';
 			
 			$bbincidence->createdby = Auth::user()->id;
 
@@ -151,6 +164,70 @@ class BbincidenceController extends \BaseController {
 				$bbincidence_nature_intermediate->bbincidence_id = $bbincidence->id;
 				$bbincidence_nature_intermediate->nature_id = $occurrence;
 				$bbincidence_nature_intermediate->save();
+
+				/*$connected = fopen("http://www.google.com:80/","r");
+  				if($connected){
+     				return true;
+     			} else {
+   					return false;
+  				}*/
+
+				
+
+				/*$options = Bbincidence::with(array('bbnature' => function($q) use ($occurrence) {
+    				$q->wherePivot('nature_id', '=', $occurrence);
+    				}))->get();
+
+				foreach ($options as $option){
+				if($option->priority=='Major'){
+					Mail::send('bbincidence.bbmajornotice', array(), function($message){
+        			$message->to(explode(',','justusashaba@gmail.com,Ajustus_IC@aslm.org'))->subject('[BLIS UG] Major Incident Notice');
+    				});
+				}
+				}*/
+
+				}
+
+			/*This is working
+			foreach ($bbincidence->bbnature as $option){
+				if($option->priority=='Major'){
+					Mail::send('bbincidence.bbmajornotice', array('occurrence'=>$option->name,
+						'priority'=>$option->priority,'class'=>$option->class,'serial'=>$bbincidenceSerialNo,'entrant'=>Auth::user()->name,
+						'description'=>$bbincidence->description, 'hfacility'=>Auth::user()->facility->name, 
+						'district'=>Auth::user()->facility->district->name),
+						 function($message){
+        			$message->to(explode(',','justusashaba@gmail.com,kasuled@gmail.com,agnesnakakawa@gmail.com'))->subject('[UG BLIS] Major Incident Notification');
+    				});
+				}
+				}*/
+
+				$majorincidents='';
+				$incidentpriorities='';
+				foreach ($bbincidence->bbnature as $option){		
+					if($option->priority=='Major'){
+					$incidentpriorities = $incidentpriorities.'Major';
+					$majorincidents = $majorincidents.$option->name.'; ';
+					}
+				}
+
+			/*	if(strpos($incidentpriorities, 'Major') !== false){
+					Mail::send('bbincidence.bbmajornotice', array('majorincidents'=>$majorincidents,
+						'serial'=>$bbincidenceSerialNo,'entrant'=>Auth::user()->name,
+						'description'=>$bbincidence->description, 'hfacility'=>Auth::user()->facility->name, 
+						'district'=>Auth::user()->facility->district->name),
+						 function($message){
+        			$message->to(explode(',','justusashaba@gmail.com,Ajustus_IC@ASLM.org'))->subject('[UG BLIS] Major Incident Notification');
+    				});
+				}*/
+
+				if(strpos($incidentpriorities, 'Major') !== false){
+					Mail::later(300,'bbincidence.bbmajornotice', array('majorincidents'=>$majorincidents,
+						'serial'=>$bbincidenceSerialNo,'entrant'=>Auth::user()->name,
+						'description'=>$bbincidence->description, 'hfacility'=>Auth::user()->facility->name, 
+						'district'=>Auth::user()->facility->district->name),
+						 function($message){
+        			$message->to(explode(',','justusashaba@gmail.com,Ajustus_IC@ASLM.org'))->subject('[UG BLIS] Major Incident Notification');
+    				});
 				}
 				
 			$url = Session::get('SOURCE_URL');
@@ -176,13 +253,15 @@ class BbincidenceController extends \BaseController {
 	{
 		//Show a bbincidence
 		$bbincidence = Bbincidence::find($id);
-		
+
 		$firstInsertedId = DB::table('unhls_bbincidences')->min('id');
 		$lastInsertedId = DB::table('unhls_bbincidences')->max('id');
 		
 		$id>=$lastInsertedId ? $nextbbincidence=$lastInsertedId : $nextbbincidence = $id+1;
 		$id<=$firstInsertedId ? $previousbbincidence=$firstInsertedId : $previousbbincidence = $id-1;
 
+		//dd($bbincidence);
+		
 		//Show the view and pass the $bbincidence to it
 		return View::make('bbincidence.show')->with('bbincidence', $bbincidence)->with('nextbbincidence', $nextbbincidence)
 		->with('previousbbincidence', $previousbbincidence);
@@ -568,21 +647,24 @@ class BbincidenceController extends \BaseController {
 		$causes = BbincidenceCause::orderBy('causename')->get();
 		$actions = BbincidenceAction::orderBy('actionname')->get();
 
-        $bbincidentnatureclasses = DB::table('unhls_bbnatures')->select('priority','class', DB::raw('count(*) as total'))->leftjoin('unhls_bbincidences_nature','unhls_bbincidences_nature.nature_id','=','unhls_bbnatures.id')
-					->groupBy('priority','class')
+        $bbincidentnatureclasses = DB::table('unhls_bbnatures')->distinct()->get(['class']);
+
+        //$bbincidentstatus = Bbincidence::
+
+      /*  $bbincidentnaturecount = DB::table('unhls_bbnatures')->where('class','=','Mechanical')->select('priority','class','name', DB::raw('count(*) as total'))->join('unhls_bbincidences_nature','unhls_bbincidences_nature.nature_id','=','unhls_bbnatures.id')
+					->groupBy('priority','class','name')
+             		->get();         */     
+
+		$countbbincidentreferralstatus = Bbincidence::select('referral_status', DB::raw('count(referral_status) as total'))
+					->groupBy('referral_status')
              		->get();
 
-        $bbincidentnaturecount = DB::table('unhls_bbnatures')->select('priority','class','name', DB::raw('count(*) as total'))->leftjoin('unhls_bbincidences_nature','unhls_bbincidences_nature.nature_id','=','unhls_bbnatures.id')
-					->groupBy('priority','class','name')
-             		->get();              
-
 		return View::make('bbincidence.bbfacilityreport') ->with('bbincidentnatureclasses', $bbincidentnatureclasses)
-			->with('bbincidentnaturecount', $bbincidentnaturecount)->with('natures', $natures)
-			->with('causes', $causes)->with('actions', $actions);
+			->with('natures', $natures)
+			->with('causes', $causes)
+			->with('actions', $actions)
+			->with('countbbincidentreferralstatus', $countbbincidentreferralstatus);
 		
 	}
-
-
-
 
 }
