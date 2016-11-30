@@ -104,6 +104,12 @@ label, input {
     .form-group .form-control {
         width: 270px;
     }
+    .form-group .form-control.duration,
+    .form-group .form-control.observation,
+    .form-group .form-control.drug,
+    .form-group .form-control.susceptibility {
+        width: 100%;
+    }
     .form-group .form-pane {
         clear:both;
         overflow: hidden;

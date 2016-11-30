@@ -18,13 +18,6 @@ class Organism extends Eloquent
 	 */
 	protected $table = 'organisms';
 	/**
-	 * Drugs relationship
-	 */
-	public function drugs()
-	{
-	  return $this->belongsToMany('Drug', 'organism_drugs');
-	}
-	/**
 	 * Set compatible drugs
 	 *
 	 * @return void
@@ -57,7 +50,7 @@ class Organism extends Eloquent
 	 */
 	public function susceptibility()
 	{
-	  return $this->hasMany('Susceptibility');
+	  return $this->hasMany('DrugSusceptibility');
 	}
 	/**
 	 * sensitivity relationship for a single test

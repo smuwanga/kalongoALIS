@@ -47,7 +47,7 @@ return array(
 	|--------------------------------------------------------------------------
 	|
 	*/
-	'address-info' => 'COUNTY REFERRAL HOSPITAL, BLIS<br>
+	'address-info' => 'REGIONAL REFERRAL HOSPITAL, BLIS<br>
                     REFERRAL HOSPITAL LOCATION<br>
                     P.O. BOX PRIVATE BAG,<br>
                     UGANDA.<br>
@@ -60,7 +60,7 @@ return array(
 	|
 	*/
 
-	'organization-logo' => '/i/coat_of_arms.png',
+	'organization-logo' => '/i/coat_of_arms_of_uganda.png',
 	
 	/*
 	|--------------------------------------------------------------------------

@@ -14,7 +14,7 @@ class UpdateUsersTable extends Migration {
 	{
 		Schema::table('users', function(Blueprint $table)
 		{
-			$table->string('facility_id')->after('id');
+			$table->integer('facility_id')->unsigned()->after('id');
 			$table->foreign('facility_id')->references('id')->on('unhls_facilities');
 		});
 	}
