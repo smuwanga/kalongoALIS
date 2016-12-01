@@ -234,7 +234,7 @@ class TestType extends Eloquent
 				->join('testtype_measures', 'test_types.id', '=', 'testtype_measures.test_type_id')
 				->join('measure_ranges', 'testtype_measures.measure_id', '=', 'measure_ranges.measure_id')
 				->join('test_results', function($join){
-					$join->on('tests.id', '=', 'test_results.test_id')
+					$join->on('unhlstests.id', '=', 'testresults.test_id')
 						 ->on('testtype_measures.measure_id', '=', 'test_results.measure_id');
 					})
 				->join('measures', 'testtype_measures.measure_id', '=', 'measures.id')

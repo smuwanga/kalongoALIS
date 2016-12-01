@@ -39,7 +39,7 @@ return array(
 	|
 	*/
 
-	'timezone' => 'Africa/Kampala',
+	'timezone' => 'Africa/Nairobi',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -107,6 +107,7 @@ return array(
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 		'Zizaco\Entrust\EntrustServiceProvider',
+		'Way\Generators\GeneratorsServiceProvider'
 
 	),
 

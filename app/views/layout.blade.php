@@ -10,6 +10,8 @@
         <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/layout.css') }}" />
         <script type="text/javascript" src="{{ URL::asset('js/jquery.js') }}"></script>
         <script type="text/javascript" src="{{ URL::asset('js/jquery-ui-min.js') }}"></script>
+        <script type="text/javascript" src="{{URL::asset('js/moment.js')}}"></script>
+        <script type="text/javascript" src="{{URL::asset('js/combodate.js')}}"></script>
         <script type="text/javascript" src="{{ URL::asset('js/bootstrap.min.js') }}"></script>
         <script type="text/javascript" src="{{ URL::asset('js/jquery.dataTables.js') }}"></script>
         <script type="text/javascript" src="{{ URL::asset('js/dataTables.bootstrap.js') }}"></script>

@@ -4,7 +4,8 @@
 	$key = explode("?",str_replace("/", "?", Request::path()));
 	switch ($key[0]) {
 		case 'home': $active[0] = "active"; break;
-		case 'patient': $active[1] = "active"; break;
+		case 'patient': $active[0] = "active"; break;
+		case 'patient_unhls': $active[1] = "active"; break;
 		case 'test': $active[2] = "active"; break;
 		case 'labconfig': 
 		case 'instrument':
@@ -59,17 +60,54 @@
 			</div>
 		</li>
 		<li>
-			<div class="main-menu {{$active[1]}}">
+			<div class="main-menu {{$active[0]}}">
 				<a href="{{ URL::route('patient.index')}}">
 					<span class="glyphicon glyphicon-download-alt"></span> {{ Lang::choice('messages.patient', 2)}}</a>
 			</div>
 		</li>
+		<!-- Patient Link for UNHLS !-->
+		<li>
+			<div class="main-menu {{$active[1]}}">
+				<a href="#">
+					<span class="glyphicon glyphicon-download-alt"></span> {{ Lang::choice('messages.patient-unhls', 1)}}</a>
+			</div>
+			<div class="sub-menu {{$active[1]}}">
+				<ul class="sub-menu-items">
+					<li>
+						<div>
+							<a href="{{ URL::route('unhls_patient.create')}}">
+								<span class="glyphicon glyphicon-tag"></span>
+								{{Lang::choice('messages.register-new-patient', 1)}}</a>
+						</div>
+					</li>
+				</ul>
+				<ul class="sub-menu-items">
+					<li>
+						<div>
+							<a href="{{ URL::route('unhls_patient.index') }}">
+								<span class="glyphicon glyphicon-tag"></span>
+									{{Lang::choice('messages.view-patients', 1)}}
+							</a>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</li>
+		<!-- Patient Link for UNHLS ends !-->
 		<li>
 			<div class="main-menu {{$active[2]}}">
 				<a href="{{ URL::route('test.index')}}">
 					<span class="glyphicon glyphicon-filter"></span> {{Lang::choice('messages.test', 2)}}</a>
 			</div>
 		</li>
+		<!-- Test Link for UNHLS -->
+		<li>
+			<div class="main-menu {{$active[2]}}">
+				<a href="{{ URL::route('unhls_test.index')}}">
+					<span class="glyphicon glyphicon-filter"></span> {{Lang::choice('messages.test-unhls', 2)}}</a>
+			</div>
+		</li>
+		<!-- Patient link for UNHLS ends -->
 
 		@if(Entrust::can('manage_lab_configurations'))
 		<li>
