@@ -28,7 +28,6 @@
                         data-culture-id="{{ $culture->id }}"
                         title="Add Observation">
                         <span class="glyphicon glyphicon-plus"></span>
-                        Add Observation
                     </a>
                 </h5>
                 <div class="col-md-6">
@@ -55,7 +54,6 @@
                                     data-observation="{{ $culture_observation->observation }}"
                                     title="Edit">
                                     <span class="glyphicon glyphicon-edit"></span>
-                                    Edit
                                 </a>
                                 <a class="btn btn-sm btn-danger delete-culture-observation"
                                     data-url="{{ URL::route('cultureobservation.destroy',
@@ -63,7 +61,6 @@
                                     data-id="{{ $culture_observation->id }}"
                                     title="Delete">
                                     <span class="glyphicon glyphicon-trash"></span>
-                                    Delete
                                 </a>
                               </td>
                             </tr>
@@ -120,7 +117,6 @@
                         data-drug-susceptibility-store-url="{{ URL::route('drugsusceptibility.store') }}"
                         title="Add Organism">
                         <span class="glyphicon glyphicon-plus"></span>
-                        Add Organism
                     </a>
                 </h5>
                 <div class="col-md-6">
@@ -216,7 +212,6 @@
                                     data-drug-susceptibility-measure-id="{{ $drug_susceptibility->drug_susceptibility_measure_id }}"
                                     title="Edit">
                                     <span class="glyphicon glyphicon-edit"></span>
-                                    Edit
                                 </a>
                                 <a class="btn btn-sm btn-danger delete-drug-susceptibility"
                                     data-url="{{ URL::route('drugsusceptibility.destroy',
@@ -224,7 +219,6 @@
                                     data-id="{{ $drug_susceptibility->id }}"
                                     title="Delete">
                                     <span class="glyphicon glyphicon-trash"></span>
-                                    Delete
                                 </a>
                               </td>
                             </tr>
@@ -324,13 +318,11 @@
                                     data-url-verb="PUT"
                                     title="Edit">
                                     <span class="glyphicon glyphicon-edit"></span>
-                                    Edit
                                 </a>
                                 <a class="btn btn-sm btn-danger delete-culture-observation"
                                     data-url-verb="DELETE"
                                     title="Delete">
                                     <span class="glyphicon glyphicon-trash"></span>
-                                    Delete
                                 </a>
                               </td>
                             </tr>
@@ -343,15 +335,13 @@
                               <td class="isolated-organism-entry"></td>
                               <td>
                                 <a class="btn btn-sm btn-success add-drug-susceptibility"
-                                    title="Add Susceptibility Test">
+                                    title="Add Susceptibility Test Results">
                                     <span class="glyphicon glyphicon-plus"></span>
-                                    Add Results
                                 </a>
                                 <a class="btn btn-sm btn-danger delete-isolated-organism"
                                     data-url-verb="DELETE"
                                     title="Delete Organism">
                                     <span class="glyphicon glyphicon-trash"></span>
-                                    Delete Organism
                                 </a>
                               </td>
                             </tr>
@@ -369,13 +359,11 @@
                                     data-url-verb="PUT"
                                     title="Edit">
                                     <span class="glyphicon glyphicon-edit"></span>
-                                    Edit
                                 </a>
                                 <a class="btn btn-sm btn-danger delete-drug-susceptibility"
                                     data-url-verb="DELETE"
                                     title="Delete">
                                     <span class="glyphicon glyphicon-trash"></span>
-                                    Delete
                                 </a>
                               </td>
                             </tr>
