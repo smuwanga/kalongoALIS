@@ -2032,6 +2032,8 @@ class TestDataSeeder extends DatabaseSeeder
             array("organism_id" => $grampositive->id, "drug_id" => $vancomycin->id));
         $this->command->info('Gram positive cocci seeded');
 */
+        $microbiologyVisit = Visit::create(["patient_id" => 1]);
+
         $specimenTypeSputum = SpecimenType::create(["name" => "Sputum"]);
 
         $specimenSputum = Specimen::create([
@@ -2092,7 +2094,7 @@ class TestDataSeeder extends DatabaseSeeder
         $measureAST = Measure::create(['measure_type_id' => '4', 'name' => 'AST', 'unit' => '']);
 
         $testAST = Test::create([
-                "visit_id" => "4",
+                "visit_id" => $microbiologyVisit->id,
                 "test_type_id" => $testTypeAST->id,
                 'specimen_id' => $specimenSputum->id,
                 "interpretation" => "Format being deliberated",
@@ -2107,7 +2109,7 @@ class TestDataSeeder extends DatabaseSeeder
                 "time_verified" => "2014-10-17 19:53:48",
         ]);
         $testAppearanceMucoSalivary = Test::create([
-            'visit_id' => '4',
+            'visit_id' => $microbiologyVisit->id,
             'test_type_id' => $testTypeAppearance->id,
             'specimen_id' => $specimenSputum->id,
             'interpretation' => '',
@@ -2122,7 +2124,7 @@ class TestDataSeeder extends DatabaseSeeder
             'time_verified' => '2014-10-17 19:53:48',
         ]);
         $testGramStain = Test::create([
-            'visit_id' => '4',
+            'visit_id' => $microbiologyVisit->id,
             'test_type_id' => $testTypeGramStain->id,
             'specimen_id' => $specimenSputum->id,
             'interpretation' => '',
@@ -2137,7 +2139,7 @@ class TestDataSeeder extends DatabaseSeeder
             'time_verified' => '2014-10-17 19:53:48',
         ]);
         $testZnStain = Test::create([
-            'visit_id' => '4',
+            'visit_id' => $microbiologyVisit->id,
             'test_type_id' => $testTypeZnStain->id,
             'specimen_id' => $specimenSputum->id,
             'interpretation' => '',
@@ -2152,7 +2154,7 @@ class TestDataSeeder extends DatabaseSeeder
             'time_verified' => '2014-10-17 19:53:48',
         ]);
         $testASToralPharyngealFlora = Test::create([
-            'visit_id' => '4',
+            'visit_id' => $microbiologyVisit->id,
             'test_type_id' => $testTypeAST->id,
             'specimen_id' => '1',
             'interpretation' => '',
@@ -2167,7 +2169,7 @@ class TestDataSeeder extends DatabaseSeeder
             'time_verified' => '2014-10-17 19:53:48',
         ]);
         $testAppearanceFormed = Test::create([
-            'visit_id' => '4',
+            'visit_id' => $microbiologyVisit->id,
             'test_type_id' => $testTypeAppearance->id,
             'specimen_id' => $specimenSputum->id,
             'interpretation' => '',
@@ -2182,7 +2184,7 @@ class TestDataSeeder extends DatabaseSeeder
             'time_verified' => '2014-10-17 19:53:48',
         ]);
         $testModifiedZn = Test::create([
-            'visit_id' => '4',
+            'visit_id' => $microbiologyVisit->id,
             'test_type_id' => $testTypeModifiedZn->id,
             'specimen_id' => $specimenSputum->id,
             'interpretation' => '',
@@ -2197,7 +2199,7 @@ class TestDataSeeder extends DatabaseSeeder
             'time_verified' => '2014-10-17 19:53:48',
         ]);
         $testWetSalineIodinePrep = Test::create([
-            'visit_id' => '4',
+            'visit_id' => $microbiologyVisit->id,
             'test_type_id' => $testTypeWetSalineIodinePrep->id,
             'specimen_id' => $specimenSputum->id,
             'interpretation' => '',
@@ -2212,7 +2214,7 @@ class TestDataSeeder extends DatabaseSeeder
             'time_verified' => '2014-10-17 19:53:48',
         ]);
         $testASTecoli = Test::create([
-            'visit_id' => '4',
+            'visit_id' => $microbiologyVisit->id,
             'test_type_id' => $testTypeAST->id,
             'specimen_id' => '2',
             'interpretation' => '',
@@ -2424,7 +2426,7 @@ class TestDataSeeder extends DatabaseSeeder
         TestResult::create([
             'test_id' => $testASToralPharyngealFlora->id,
             'measure_id' => $measureAST->id,
-            'result' => '',
+            'result' => '-',
         ]);
         TestResult::create([
             'test_id' => $testAppearanceFormed->id,
@@ -2445,6 +2447,11 @@ class TestDataSeeder extends DatabaseSeeder
             'test_id' => $testASTecoli->id,
             'measure_id' => $measureAST->id,
             'result' => 'ESBL Positive',
+        ]);
+        TestResult::create([
+            'test_id' => $testAST->id,
+            'measure_id' => $measureAST->id,
+            'result' => 'General Comment',
         ]);
     }
 

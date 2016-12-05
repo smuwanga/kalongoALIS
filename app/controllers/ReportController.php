@@ -110,6 +110,53 @@ class ReportController extends \BaseController {
 						->withInput(Input::all());
 		}
 	}
+
+
+	/**
+	 *
+	 *
+	 * @return Response
+	 */
+	public function viewVisitReport($id){
+		$date = date('Y-m-d');
+		$error = '';
+
+		$visit = Visit::find($id);
+		$visit->load(
+			'patient',
+			'tests.testType',
+			'tests.testResults',
+			'tests.culture.isolatedOrganisms.organism',
+			'tests.culture.isolatedOrganisms.drugSusceptibilities.drug',
+			'tests.culture.isolatedOrganisms.drugSusceptibilities.drugSusceptibilityMeasure');
+		return View::make('reports.visit.report')
+					->with('error', $error)
+					->with('visit', $visit)
+					->withInput(Input::all());
+	}
+
+	/**
+	 *
+	 *
+	 * @return Response
+	 */
+	public function printVisitReport($id){
+		$visit = Visit::find($id);
+		$visit->load(
+			'patient',
+			'tests.testType',
+			'tests.testResults',
+			'tests.culture.isolatedOrganisms.organism',
+			'tests.culture.isolatedOrganisms.drugSusceptibilities.drug',
+			'tests.culture.isolatedOrganisms.drugSusceptibilities.drugSusceptibilityMeasure');
+
+		$content = View::make('reports.visit.printreport')
+			->with('visit', $visit);
+		$pdf = App::make('dompdf');
+		$pdf->loadHTML($content);
+		return $pdf->stream('microbiology.pdf');
+
+	}
 	//	End patient report functions
 
 	/**
