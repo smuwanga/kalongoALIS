@@ -36,12 +36,12 @@
 				<tr>
 					<th>#</th>
 					<th>Serial No</th>
-					<th>Start Date</th>
-					<th>End Date</th>
 					<th>Event Name</th>
 					<th>Department</th>
 					<th>Type</th>
 					<th>Objectives</th>
+					<th>Start Date</th>
+					<th>End Date</th>
 
 					<th>Report</th>
 					
@@ -57,22 +57,23 @@
 				>
 					<td>{{ $event->id }}</td>
 					<td>{{ $event->serial_no }}</td>
-					<td>{{ date('d M Y', strtotime($event->start_date)) }}</td>
-					<td>{{ date('d M Y', strtotime($event->end_date)) }}</td>
 					<td>{{ $event->name }}</td>
 					<td>{{ $event->department }}</td>
 					<td>{{ $event->type }}</td>
 					<td title ="@foreach ($event->objective as $objective)
               		{{$objective->objective}}
            			@endforeach"> <a href='#'>Point here</a> </td>
-					
+					<td>{{ $event->start_date }}</td>
+					<td>{{ $event->end_date }}</td>
 
 					<td>
-					@if ($event->report_filename)
-          			<a href="{{ URL::to( 'attachments/' . $event->report_filename) }}"
-            			target="_blank">Download</a>
-          			@else Pending
-          			@endif	
+						<?php
+						if($event->report_path=='') {echo "Pending";}
+						else{
+						?>
+						<a href="{{ 'file:'.'\\'.public_path().'\attachments'.'\\'.$event->report_path }}">
+							Uploaded</a>
+						<?php }?>	
 					</td>
 					
 					<td>
@@ -81,7 +82,7 @@
   							<span class="caret"></span></button>
   							<ul class="dropdown-menu">
     							<li><a href="{{ URL::route('event.show', array($event->id)) }}">
-    								View Details</a></li>
+    								{{trans('messages.view')}}</a></li>
     							<li><a href="{{ URL::route('event.edit', array($event->id)) }}">
     								Update Event Information</a></li>
     							<li><a href="{{ URL::route('event.editobjectives', array($event->id)) }}">

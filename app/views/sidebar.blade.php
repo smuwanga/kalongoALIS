@@ -111,10 +111,6 @@
 							<a href="{{ URL::route('event.create')}}">
 								<span class="glyphicon glyphicon-plus-sign"></span> Register</a>
 							</li>
-							<li>
-								<a href="{{ URL::route('event.eventfilter')}}">
-								<span class="glyphicon glyphicon-list"></span> Events Filter</a>
-							</li>
 							</ul>
 
 						<div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 3px; width: 215px; display: none;"><div class="ps-scrollbar-x" style="left: 0px; width: 0px;"></div></div><div class="ps-scrollbar-y-rail" style="top: 0px; right: 3px; height: 620px; display: none;"><div class="ps-scrollbar-y" style="top: 0px; height: 0px;"></div></div></div>

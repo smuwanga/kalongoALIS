@@ -16,14 +16,6 @@ class EventController extends \BaseController {
 	}
 
 
-	public function downloadAttachment($report_filename){
-        $path=public_path().'/attachments/'.$report_filename;
-        //return response()->download($path);
-        return Response::download($path);
-}
-
-
-
 	/**
 	 * Show the form for creating a new resource.
 	 *
@@ -32,10 +24,7 @@ class EventController extends \BaseController {
 	public function create()
 	{
 		//
-		//$districts = District::orderBy('name')->get();
-		$districts = District::orderBy('name')->lists('name','id');
-		
-		return View::make('event.create')->with('districts', $districts);
+		return View::make('event.create');
 	}
 
 
@@ -72,15 +61,6 @@ class EventController extends \BaseController {
 		$event->type = Input::get('type');
 		$event->start_date = Input::get('start_date');
 		$event->end_date = Input::get('end_date');
-		$event->location = Input::get('location');
-		$event->premise = Input::get('premise');
-		$event->district = Input::get('district');
-		$event->region = Input::get('region');
-		$event->sponsor = Input::get('sponsor');
-		$event->organiser = Input::get('organiser');
-		$event->audience = Input::get('audience');
-		$event->participants_no = Input::get('participants_no');
-		
 
 		$event->save();
 
@@ -89,11 +69,11 @@ class EventController extends \BaseController {
         	$file = Input::file('report_path');
         	$destinationPath = public_path().'\attachments';
         	//$filename = str_random(3) . '_' . $file->getClientOriginalName();
-        	$filename = 'Report'.$event->id . '_' . $file->getClientOriginalName();
+        	$filename = $event->id . '_' . $file->getClientOriginalName();
         	$uploadSuccess = $file->move($destinationPath, $filename);
 
         	//$event->report_path = $destinationPath .'\\'. $filename;
-        	$event->report_filename = $filename;
+        	$event->report_path = $filename;
         	$event->save();
     	}
 
@@ -119,6 +99,8 @@ class EventController extends \BaseController {
 		$id>=$lastInsertedId ? $nextevent=$lastInsertedId : $nextevent = $id+1;
 		$id<=$firstInsertedId ? $previousevent=$firstInsertedId : $previousevent = $id-1;
 
+		//dd($event);
+		
 		//Show the view and pass the $event to it
 		return View::make('event.show')->with('event', $event)
 		->with('nextevent', $nextevent)
@@ -135,9 +117,9 @@ class EventController extends \BaseController {
 	public function edit($id)
 	{
 		$event = UNHLSEvent::find($id);
-		$districts = District::orderBy('name')->lists('name','id');
-		
-		return View::make('event.edit')->with('event', $event)->with('districts', $districts);
+
+
+		return View::make('event.edit')->with('event', $event);
 	}
 
 
@@ -174,15 +156,6 @@ class EventController extends \BaseController {
 		$event->type = Input::get('type');
 		$event->start_date = Input::get('start_date');
 		$event->end_date = Input::get('end_date');
-		$event->location = Input::get('location');
-		$event->premise = Input::get('premise');
-		$event->district_id = Input::get('district');
-		$event->region = Input::get('region');
-		$event->sponsor = Input::get('sponsor');
-		$event->organiser = Input::get('organiser');
-		$event->audience = Input::get('audience');
-		$event->participants_no = Input::get('participants_no');
-		
 
 		$event->save();
 
@@ -191,13 +164,14 @@ class EventController extends \BaseController {
         	$file = Input::file('report_path');
         	$destinationPath = public_path().'\attachments';
         	//$filename = str_random(3) . '_' . $file->getClientOriginalName();
-        	$filename = 'Report'.$event->id . '_' . $file->getClientOriginalName();
+        	$filename = $event->id . '_' . $file->getClientOriginalName();
         	$uploadSuccess = $file->move($destinationPath, $filename);
 
         	//$event->report_path = $destinationPath .'\\'. $filename;
-        	$event->report_filename = $filename;
+        	$event->report_path = $filename;
         	$event->save();
     	}
+
 		return Redirect::to('event')->with('message', 'Successfully updated event information for ID No '.$event->id);
 	
 		}
@@ -302,15 +276,6 @@ class EventController extends \BaseController {
     	
 
 		return Redirect::to('event/'.$action->event_id.'/editactions')->with('message', 'Successfully updated recommendations for for ID No '.$action->event_id);
-	}
-
-
-	public function eventfilter()
-	{
-		//
-		$events = UNHLSEvent::orderBy('id','DESC')->get();		
-		
-		return View::make('event.eventfilter')->with('events', $events);
 	}
 
 
