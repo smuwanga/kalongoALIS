@@ -308,20 +308,8 @@ class EventController extends \BaseController {
 	public function eventfilter()
 	{
 		//
-		$datefrom = Input::get('datefrom');
-		$dateto = Input::get('dateto');
-		$name = Input::get('name');
-
-		//$events = UNHLSEvent::get();
+		$events = UNHLSEvent::orderBy('id','DESC')->get();		
 		
-		
-		if($datefrom != ''){
-			$events = UNHLSEvent::filtereventsbydate($datefrom,$dateto,$name);
-		}
-		else{
-		$events = '';
-		}
-
 		return View::make('event.eventfilter')->with('events', $events);
 	}
 
