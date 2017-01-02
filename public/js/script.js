@@ -194,6 +194,7 @@ $(function(){
                     $('.culture-observation-tbody')
                         .find('.new-culture-observation-tr')
                         .addClass('culture-observation-tr-'+cultureObservation.id)
+                        .removeClass('new-culture-observation-tr')
                         .find('.edit-culture-observation')
                             .attr('data-id',cultureObservation.id)
                             .attr('data-url',cultureObservationUrl+'/'+cultureObservation.id)
@@ -208,6 +209,8 @@ $(function(){
                         .find('.edit-culture-observation')
                             .attr('data-duration-id',cultureObservation.culture_duration_id)
                             .attr('data-observation',cultureObservation.observation);
+                        $('.culture-observation-tr-'+cultureObservation.id+' .duration-entry').empty();
+                        $('.culture-observation-tr-'+cultureObservation.id+' .observation-entry').empty();
                 }
                 // update rows with edition already made in the database
                 $('.culture-observation-tr-'+cultureObservation.id+' .duration-entry')
