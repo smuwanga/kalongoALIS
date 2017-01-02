@@ -2093,6 +2093,293 @@ class TestDataSeeder extends DatabaseSeeder
         $measureWetSalineIodinePrep = Measure::create(['measure_type_id' => '4', 'name' => 'Wet Saline Iodine Prep', 'unit' => '']);
         $measureAST = Measure::create(['measure_type_id' => '4', 'name' => 'AST', 'unit' => '']);
 
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[0]->id]);// Ascitic Tap
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[1]->id]);// Aspirate
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[2]->id]);// CSF
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[3]->id]);// Dried Blood Spot
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[4]->id]);// High Vaginal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[5]->id]);// Nasal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[6]->id]);// Plasma
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[7]->id]);// Plasma EDTA
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[8]->id]);// Pleural Tap
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[9]->id]);// Pus Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[10]->id]);// Rectal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[11]->id]);// Semen
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[12]->id]);// Serum
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[13]->id]);// Skin
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[14]->id]);// Vomitus
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[15]->id]);// Stool
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[16]->id]);// Synovial Fluid
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[17]->id]);// Throat Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[18]->id]);// Urethral Smear
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[19]->id]);// Urine
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[20]->id]);// Vaginal Smear
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[21]->id]);// Water
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[22]->id]);// Whole Blood
+
+
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[0]->id]);// Ascitic Tap
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[1]->id]);// Aspirate
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[2]->id]);// CSF
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[3]->id]);// Dried Blood Spot
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[4]->id]);// High Vaginal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[5]->id]);// Nasal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[6]->id]);// Plasma
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[7]->id]);// Plasma EDTA
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[8]->id]);// Pleural Tap
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[9]->id]);// Pus Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[10]->id]);// Rectal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[11]->id]);// Semen
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[12]->id]);// Serum
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[13]->id]);// Skin
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[14]->id]);// Vomitus
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[15]->id]);// Stool
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[16]->id]);// Synovial Fluid
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[17]->id]);// Throat Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[18]->id]);// Urethral Smear
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[19]->id]);// Urine
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[20]->id]);// Vaginal Smear
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[21]->id]);// Water
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[22]->id]);// Whole Blood
+
+
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[0]->id]);// Ascitic Tap
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[1]->id]);// Aspirate
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[2]->id]);// CSF
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[3]->id]);// Dried Blood Spot
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[4]->id]);// High Vaginal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[5]->id]);// Nasal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[6]->id]);// Plasma
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[7]->id]);// Plasma EDTA
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[8]->id]);// Pleural Tap
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[9]->id]);// Pus Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[10]->id]);// Rectal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[11]->id]);// Semen
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[12]->id]);// Serum
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[13]->id]);// Skin
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[14]->id]);// Vomitus
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[15]->id]);// Stool
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[16]->id]);// Synovial Fluid
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[17]->id]);// Throat Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[18]->id]);// Urethral Smear
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[19]->id]);// Urine
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[20]->id]);// Vaginal Smear
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[21]->id]);// Water
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[22]->id]);// Whole Blood
+
+
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[0]->id]);// Ascitic Tap
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[1]->id]);// Aspirate
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[2]->id]);// CSF
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[3]->id]);// Dried Blood Spot
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[4]->id]);// High Vaginal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[5]->id]);// Nasal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[6]->id]);// Plasma
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[7]->id]);// Plasma EDTA
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[8]->id]);// Pleural Tap
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[9]->id]);// Pus Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[10]->id]);// Rectal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[11]->id]);// Semen
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[12]->id]);// Serum
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[13]->id]);// Skin
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[14]->id]);// Vomitus
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[15]->id]);// Stool
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[16]->id]);// Synovial Fluid
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[17]->id]);// Throat Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[18]->id]);// Urethral Smear
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[19]->id]);// Urine
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[20]->id]);// Vaginal Smear
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[21]->id]);// Water
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[22]->id]);// Whole Blood
+
+
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[0]->id]);// Ascitic Tap
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[1]->id]);// Aspirate
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[2]->id]);// CSF
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[3]->id]);// Dried Blood Spot
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[4]->id]);// High Vaginal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[5]->id]);// Nasal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[6]->id]);// Plasma
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[7]->id]);// Plasma EDTA
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[8]->id]);// Pleural Tap
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[9]->id]);// Pus Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[10]->id]);// Rectal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[11]->id]);// Semen
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[12]->id]);// Serum
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[13]->id]);// Skin
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[14]->id]);// Vomitus
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[15]->id]);// Stool
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[16]->id]);// Synovial Fluid
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[17]->id]);// Throat Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[18]->id]);// Urethral Smear
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[19]->id]);// Urine
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[20]->id]);// Vaginal Smear
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[21]->id]);// Water
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[22]->id]);// Whole Blood
+
+
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[0]->id]);// Ascitic Tap
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[1]->id]);// Aspirate
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[2]->id]);// CSF
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[3]->id]);// Dried Blood Spot
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[4]->id]);// High Vaginal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[5]->id]);// Nasal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[6]->id]);// Plasma
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[7]->id]);// Plasma EDTA
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[8]->id]);// Pleural Tap
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[9]->id]);// Pus Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[10]->id]);// Rectal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[11]->id]);// Semen
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[12]->id]);// Serum
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[13]->id]);// Skin
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[14]->id]);// Vomitus
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[15]->id]);// Stool
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[16]->id]);// Synovial Fluid
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[17]->id]);// Throat Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[18]->id]);// Urethral Smear
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[19]->id]);// Urine
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[20]->id]);// Vaginal Smear
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[21]->id]);// Water
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[22]->id]);// Whole Blood
+
         $testAST = Test::create([
                 "visit_id" => $microbiologyVisit->id,
                 "test_type_id" => $testTypeAST->id,
