@@ -166,6 +166,38 @@
             </tr>
           </tbody>
         </table>
+
+            <hr style="border: 1px solid black;">
+        <table class="table table-bordered"  width="100%">
+          <tbody>
+            <tr>
+              <td><strong>{{ trans('messages.authorized-by') }}</strong></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>{{ trans('messages.signature-holder') }}</td>
+              <td>{{ trans('messages.signature-holder') }}</td>
+              <td>{{ trans('messages.signature-holder') }}</td>
+            </tr>
+            <tr>
+              <td>{{ 'Antony Sangolo' }}</td>
+              <td>{{ 'Joan Wasike' }}</td>
+              <td>{{ 'Dr. Sylvester Mutoro' }}</td>
+            </tr>
+            <tr>
+              <td><u><strong>{{ trans('messages.quality-manager') }}</strong></u></td>
+              <td><u><strong>{{ trans('messages.lab-manager') }}</strong></u></td>
+              <td><u><strong>{{ trans('messages.lab-director') }}</strong></u></td>
+            </tr>
+            <tr>
+              <td><strong>{{ trans('messages.patient-report-no') }}</strong></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+
       </div>
     </div>
   </body>
