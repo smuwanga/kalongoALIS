@@ -15,6 +15,16 @@
     .report-body tr td {
       border-top: 1px solid #cecfd5;
     }
+    td.organism,
+    td.antibiotic,
+    td.comment {
+      width: 154px;
+    }
+
+    td.result {
+      width: 115px;
+    }
+
     .ast-head tr th {
       border-bottom: 1px solid #cecfd5;
     }
@@ -32,6 +42,8 @@
     caption{
       text-align: left;
     }
+
+   .ast-table { page-break-inside:avoid; page-break-after:auto }
     </style>
   </head>
   <body>
@@ -126,40 +138,41 @@
           <caption>Antimicrobial Susceptibility Testing(AST)</caption>
           <thead class="ast-head">
             <tr>
-                <th scope="col">Organism(s)</th>
-                <th scope="col">Antibiotic(s)</th>
-                <th scope="col">Result(s)</th>
-                <th scope="col">Comment(s)</th>
+                <th class="organism" scope="col">Organism(s)</th>
+                <th class="antibiotic" scope="col">Antibiotic(s)</th>
+                <th class="result" scope="col">Result(s)</th>
+                <th class="comment" scope="col">Comment(s)</th>
             </tr>
           </thead>
-          @foreach($visit->tests as $test)
-			@if($test->testType->microbiologyTestType->worksheet_required)   
-	          @foreach($test->culture->isolated_organisms as $isolated_organism)
-	          <tbody class="ast-body">
-	            <tr>
-	              <td rowspan="{{$isolated_organism->drug_susceptibilities->count()}}"
-	                class="organism">{{$isolated_organism->organism->name}}</td>
-	                <?php $i = 1; ?>
-	              @foreach($isolated_organism->drug_susceptibilities as $drug_susceptibility)
-	              @if ($i != 1)
-	            <tr>
-	              @endif <?php $i++; ?>
-	              <td>{{$drug_susceptibility->drug->name}}</td>
-	              <td>{{$drug_susceptibility->drug_susceptibility_measure->symbol}}</td>
-	              <td>-</td>
-	            </tr>
-	            @endforeach
-	          </tbody>
-	          @endforeach
-			@endif
-          @endforeach
         </table>
+        @foreach($visit->tests as $test)
+        @if($test->testType->microbiologyTestType->worksheet_required)   
+        @foreach($test->culture->isolated_organisms as $isolated_organism)
+        <table class="ast-table">
+            <tbody class="ast-body">
+              <tr>
+                <td rowspan="{{$isolated_organism->drug_susceptibilities->count()}}"
+                  class="organism">{{$isolated_organism->organism->name}}</td>
+                  <?php $i = 1; ?>
+                @foreach($isolated_organism->drug_susceptibilities as $drug_susceptibility)
+                @if ($i > 1)
+              <tr>
+                @endif <?php $i++; ?>
+                <td class="antibiotic">{{$drug_susceptibility->drug->name}}</td>
+                <td class="result">{{$drug_susceptibility->drug_susceptibility_measure->symbol}}</td>
+                <td class="comment">-</td>
+              </tr>
+              @endforeach
+            </tbody>
+        </table>
+        @endforeach
+        @endif
+        @endforeach
+
+        </hr>
+
         <table>
           <tbody class="report-body">
-            <tr>
-               <th>Comment</th>
-               <td>ESBL Positive</td>
-            </tr>
             <tr>
                <td>Result Guide</td>
                <td>S-Sensitive | R-Resistant | I-Intermediate</td>
@@ -167,33 +180,24 @@
           </tbody>
         </table>
 
-            <hr style="border: 1px solid black;">
-        <table class="table table-bordered"  width="100%">
+        <hr style="border: 1px solid black;">
+        <table>
           <tbody>
             <tr>
-              <td><strong>{{ trans('messages.authorized-by') }}</strong></td>
-              <td></td>
-              <td></td>
+              <td>Comment(s)</td>
+              <td colspan="2">
+              ...................................................................................................................
+              </td>
             </tr>
             <tr>
+              <td><strong>Reviewed by:</strong></td>
+              <td>Name of Officer</td>
+              <td>Signed</td>
+            </tr>
+            <tr>
+              <td></td>
               <td>{{ trans('messages.signature-holder') }}</td>
               <td>{{ trans('messages.signature-holder') }}</td>
-              <td>{{ trans('messages.signature-holder') }}</td>
-            </tr>
-            <tr>
-              <td>{{ 'Antony Sangolo' }}</td>
-              <td>{{ 'Joan Wasike' }}</td>
-              <td>{{ 'Dr. Sylvester Mutoro' }}</td>
-            </tr>
-            <tr>
-              <td><u><strong>{{ trans('messages.quality-manager') }}</strong></u></td>
-              <td><u><strong>{{ trans('messages.lab-manager') }}</strong></u></td>
-              <td><u><strong>{{ trans('messages.lab-director') }}</strong></u></td>
-            </tr>
-            <tr>
-              <td><strong>{{ trans('messages.patient-report-no') }}</strong></td>
-              <td></td>
-              <td></td>
             </tr>
           </tbody>
         </table>
@@ -202,5 +206,3 @@
     </div>
   </body>
 </html>
-
-
