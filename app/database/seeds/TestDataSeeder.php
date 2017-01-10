@@ -178,7 +178,7 @@ class TestDataSeeder extends DatabaseSeeder
             array("name" => "Semen"),
             array("name" => "Serum"),
             array("name" => "Skin"),
-            array("name" => "Sputum"),
+            array("name" => "Vomitus"),
             array("name" => "Stool"),
             array("name" => "Synovial Fluid"),
             array("name" => "Throat Swab"),
@@ -1504,9 +1504,6 @@ class TestDataSeeder extends DatabaseSeeder
         $this->command->info('Test results seeded again');
         //  End prevalence rates seed
 
-        //Seed for facilities
-
-
         //Seed for suppliers
         $supplier = Supplier::create(
             array(
@@ -1622,7 +1619,7 @@ class TestDataSeeder extends DatabaseSeeder
         //Control seeding
         $controls = array(
             array('name'=>'Humatrol P', 
-                    'description' =>'HUMATROL P control serum has been designed to provide a suitable basis for the quality control (imprecision, inaccuracy) in the clinical chemical laboratory.', 
+                    'description' =>'HUMATROL P control serum has been designed to provide a suitable basis for the quality control (imprecision, inracy) in the clinical chemical laboratory.', 
                     'lot_id' => 1),
             array('name'=>'Full Blood Count', 'description' => 'Né pas touchér', 'lot_id' => 1,)
             );
@@ -1773,6 +1770,976 @@ class TestDataSeeder extends DatabaseSeeder
         }
         $this->command->info("Control results table seeded");
 
+        //Seed for drugs
+        $penicillin = Drug::create(array('name' => "PENICILLIN"));
+        $ampicillin = Drug::create(array('name' => "AMPICILLIN"));
+        $clindamycin = Drug::create(array('name' => "CLINDAMYCIN"));
+        $tetracycline = Drug::create(array('name' => "TETRACYCLINE"));
+        $ciprofloxacin = Drug::create(array('name' => "CIPROFLOXACIN"));
+        $trimeth = Drug::create(array('name' => "TRIMETHOPRIM/SULFA"));
+        $nitrofurantoin = Drug::create(array('name' => "NITROFURANTOIN"));
+        $chloramphenicol = Drug::create(array('name' => "CHLORAMPHENICOL"));
+        $cefazolin = Drug::create(array('name' => "CEFAZOLIN"));
+        $gentamicin = Drug::create(array('name' => "GENTAMICIN"));
+        $amoxicillin = Drug::create(array('name' => "AMOXICILLIN-CLAV"));
+        $cephalothin = Drug::create(array('name' => "CEPHALOTHIN"));
+        $cefuroxime = Drug::create(array('name' => "CEFUROXIME"));
+        $cefotaxime = Drug::create(array('name' => "CEFOTAXIME"));
+        $piperacillin = Drug::create(array('name' => "PIPERACILLIN"));
+        $cefixime = Drug::create(array('name' => "CEFIXIME"));
+        $ceftazidime = Drug::create(array('name' => "CEFTAZIDIME"));
+        $cefriaxone = Drug::create(array('name' => "CEFRIAXONE"));
+        $levofloxacin = Drug::create(array('name' => "LEVOFLOXACIN"));
+        $merodenem = Drug::create(array('name' => "MERODENEM"));
+        $imedenem = Drug::create(array('name' => "IMEDENEM"));
+        $oxacillin = Drug::create(array('name' => "OXACILLIN (CEFOXITIN)"));
+        $erythromycin = Drug::create(array('name' => "ERYTHROMYCIN"));
+        $vancomycin = Drug::create(array('name' => "VANCOMYCIN"));
+        $cefoxitin = Drug::create(array('name' => "CEFOXITIN"));
+        $tobramycin = Drug::create(array('name' => "TOBRAMYCIN"));
+        $sulbactam = Drug::create(array('name' => "AMPICILLIN-SULBACTAM"));
+        $trimethoprim = Drug::create(array('name' => "TRIMETHOPRIM"));
+        $amikacin = Drug::create(['name' => 'AMIKACIN']);
+        $augmentin = Drug::create(['name' => 'AUGMENTIN']);
+        $ceftriaxione = Drug::create(['name' => 'CEFTRIAXIONE']);
+        $cotrimoxazole = Drug::create(['name' => 'CO-TRIMOXAZOLE']);
+        $imipenem = Drug::create(['name' => 'IMIPENEM']);
+        $meropenem = Drug::create(['name' => 'MEROPENEM']);
+        $peperacillintazobactam = Drug::create(['name' => 'PIPERACILLIN/TAZO']);
+
+        $this->command->info('Drugs table seeded');
+        //Seed for organisims
+        $staphylococci = Organism::create(array('name' => "Staphylococci species"));
+        $gramnegative = Organism::create(array('name' => "Gram negative cocci"));
+        $pseudomonas = Organism::create(array('name' => "Pseudomonas aeruginosa"));
+        $enterococcus = Organism::create(array('name' => "Enterococcus species"));
+        $pneumoniae = Organism::create(array('name' => "Streptococcus pneumoniae"));
+        $streptococcus = Organism::create(array('name' => "Streptococcus species viridans group"));
+        $beta = Organism::create(array('name' => "Beta-haemolytic streptococci"));
+        $haemophilus = Organism::create(array('name' => "Haemophilus influenzae"));
+        $naisseria = Organism::create(array('name' => "Naisseria menengitidis"));
+        $salmonella = Organism::create(array('name' => "Salmonella species"));
+        $shigella = Organism::create(array('name' => "Shigella"));
+        $vibrio = Organism::create(array('name' => "Vibrio cholerae"));
+        $grampositive = Organism::create(array('name' => "Gram positive cocci"));
+        $ecoli = Organism::create(['name' => 'E.coli']);
+        $oralPharyngealFlora = Organism::create(['name' => 'Oral-pharyngeal flora']);
+
+        $this->command->info('Organisms table seeded');
+        //  Seed for organism_drugs
+        //  Staphylococci species
+/*        DB::table('organism_drugs')->insert(
+            array("organism_id" => $staphylococci->id, "drug_id" => $penicillin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $staphylococci->id, "drug_id" => $oxacillin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $staphylococci->id, "drug_id" => $cefoxitin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $staphylococci->id, "drug_id" => $erythromycin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $staphylococci->id, "drug_id" => $clindamycin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $staphylococci->id, "drug_id" => $trimeth->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $staphylococci->id, "drug_id" => $cefazolin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $staphylococci->id, "drug_id" => $cephalothin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $staphylococci->id, "drug_id" => $chloramphenicol->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $staphylococci->id, "drug_id" => $nitrofurantoin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $staphylococci->id, "drug_id" => $tetracycline->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $staphylococci->id, "drug_id" => $vancomycin->id));
+        $this->command->info('Staphylococci species seeded');
+
+        //  Gram negative cocci
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $gramnegative->id, "drug_id" => $ampicillin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $gramnegative->id, "drug_id" => $cefazolin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $gramnegative->id, "drug_id" => $gentamicin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $gramnegative->id, "drug_id" => $amoxicillin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $gramnegative->id, "drug_id" => $cephalothin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $gramnegative->id, "drug_id" => $cefuroxime->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $gramnegative->id, "drug_id" => $cefotaxime->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $gramnegative->id, "drug_id" => $ciprofloxacin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $gramnegative->id, "drug_id" => $trimeth->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $gramnegative->id, "drug_id" => $nitrofurantoin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $gramnegative->id, "drug_id" => $chloramphenicol->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $gramnegative->id, "drug_id" => $tetracycline->id));
+        $this->command->info('Gram negative cocci seeded');
+
+        //  Pseudomonas aeruginosa
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $pseudomonas->id, "drug_id" => $ceftazidime->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $pseudomonas->id, "drug_id" => $gentamicin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $pseudomonas->id, "drug_id" => $tobramycin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $pseudomonas->id, "drug_id" => $piperacillin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $pseudomonas->id, "drug_id" => $ciprofloxacin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $pseudomonas->id, "drug_id" => $merodenem->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $pseudomonas->id, "drug_id" => $tazo->id));
+        $this->command->info('Pseudomonas aeruginosa seeded');
+
+        //  Enterococcus species
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $enterococcus->id, "drug_id" => $ampicillin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $enterococcus->id, "drug_id" => $gentamicin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $enterococcus->id, "drug_id" => $nitrofurantoin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $enterococcus->id, "drug_id" => $ciprofloxacin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $enterococcus->id, "drug_id" => $tetracycline->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $enterococcus->id, "drug_id" => $chloramphenicol->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $enterococcus->id, "drug_id" => $vancomycin->id));
+        $this->command->info('Enterococcus species seeded');
+
+        //  Streptococcus pneumoniae
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $pneumoniae->id, "drug_id" => $penicillin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $pneumoniae->id, "drug_id" => $cefriaxone->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $pneumoniae->id, "drug_id" => $cefuroxime->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $pneumoniae->id, "drug_id" => $erythromycin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $pneumoniae->id, "drug_id" => $trimeth->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $pneumoniae->id, "drug_id" => $chloramphenicol->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $pneumoniae->id, "drug_id" => $tetracycline->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $pneumoniae->id, "drug_id" => $levofloxacin->id));
+        $this->command->info('Streptococcus pneumoniae seeded');
+
+        //  Streptococcus species viridans group
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $streptococcus->id, "drug_id" => $penicillin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $streptococcus->id, "drug_id" => $cefriaxone->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $streptococcus->id, "drug_id" => $vancomycin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $streptococcus->id, "drug_id" => $chloramphenicol->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $streptococcus->id, "drug_id" => $clindamycin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $streptococcus->id, "drug_id" => $erythromycin->id));
+        $this->command->info('Streptococcus species viridans group seeded');
+
+        //  Beta-haemolytic streptococci
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $beta->id, "drug_id" => $penicillin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $beta->id, "drug_id" => $erythromycin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $beta->id, "drug_id" => $clindamycin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $beta->id, "drug_id" => $cefriaxone->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $beta->id, "drug_id" => $chloramphenicol->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $beta->id, "drug_id" => $vancomycin->id));
+        $this->command->info('Beta-haemolytic streptococci seeded');
+
+        //  Haemophilus influenzae
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $haemophilus->id, "drug_id" => $ampicillin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $haemophilus->id, "drug_id" => $trimeth->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $haemophilus->id, "drug_id" => $sulbactam->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $haemophilus->id, "drug_id" => $cefriaxone->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $haemophilus->id, "drug_id" => $chloramphenicol->id));
+        $this->command->info('Haemophilus influenzae seeded');
+
+        //  Naisseria menengitidis
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $naisseria->id, "drug_id" => $penicillin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $naisseria->id, "drug_id" => $cefriaxone->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $naisseria->id, "drug_id" => $chloramphenicol->id));
+        $this->command->info('Neisseria menengitidis seeded');
+
+        //  Salmonella species
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $salmonella->id, "drug_id" => $ampicillin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $salmonella->id, "drug_id" => $ciprofloxacin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $salmonella->id, "drug_id" => $trimeth->id));
+        $this->command->info('Salmonella species seeded');
+
+        //  Shigella
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $shigella->id, "drug_id" => $ampicillin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $shigella->id, "drug_id" => $ciprofloxacin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $shigella->id, "drug_id" => $trimeth->id));
+        $this->command->info('Shigella seeded');
+
+        //  Vibrio cholerae
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $vibrio->id, "drug_id" => $ampicillin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $vibrio->id, "drug_id" => $ciprofloxacin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $vibrio->id, "drug_id" => $trimeth->id));
+        $this->command->info('Vibrio cholerae seeded');
+
+        //  Gram positive cocci
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $grampositive->id, "drug_id" => $cefoxitin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $grampositive->id, "drug_id" => $clindamycin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $grampositive->id, "drug_id" => $erythromycin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $grampositive->id, "drug_id" => $oxacillin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $grampositive->id, "drug_id" => $penicillin->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $grampositive->id, "drug_id" => $tetracycline->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $grampositive->id, "drug_id" => $trimeth->id));
+        DB::table('organism_drugs')->insert(
+            array("organism_id" => $grampositive->id, "drug_id" => $vancomycin->id));
+        $this->command->info('Gram positive cocci seeded');
+*/
+        $microbiologyVisit = Visit::create(["patient_id" => 1]);
+
+        $specimenTypeSputum = SpecimenType::create(["name" => "Sputum"]);
+
+        $specimenSputum = Specimen::create([
+            "specimen_type_id" => $specimenTypeSputum->id,
+            "specimen_status_id" => Specimen::ACCEPTED,
+            "accepted_by" => 1,
+            "time_accepted" => date('Y-m-d H:i:s')]);
+
+        $testTypeAST = TestType::create([
+                "name" => "AST",
+                "test_category_id" => $lab_section_microbiology->id,
+                "orderable_test" => 1
+        ]);
+        $testTypeAppearance = TestType::create([
+            'name' => 'Appearance',
+            'test_category_id' => $lab_section_microbiology->id,
+            'orderable_test' => 1
+        ]);
+        $testTypeGramStain = TestType::create([
+            'name' => 'Gram stain',
+            'test_category_id' => $lab_section_microbiology->id,
+            'orderable_test' => 1
+        ]);
+        $testTypeZnStain = TestType::create([
+            'name' => 'ZN stain',
+            'test_category_id' => $lab_section_microbiology->id,
+            'orderable_test' => 1
+        ]);
+        $testTypeModifiedZn = TestType::create([
+            'name' => 'Modified ZN',
+            'test_category_id' => $lab_section_microbiology->id,
+            'orderable_test' => 1
+        ]);
+        $testTypeWetSalineIodinePrep = TestType::create([
+            'name' => 'Wet Saline Iodine Prep',
+            'test_category_id' => $lab_section_microbiology->id,
+            'orderable_test' => 1
+        ]);
+        // Microbiology Tests Config list determines appearance on report and need for work sheet
+        $microbiologyTests = [
+            ['test_type_id'=> $testTypeAppearance->id, 'worksheet_required' => '0'],
+            ['test_type_id'=> $testTypeGramStain->id, 'worksheet_required' => '0'],
+            ['test_type_id'=> $testTypeZnStain->id, 'worksheet_required' => '0'],
+            ['test_type_id'=> $testTypeModifiedZn->id, 'worksheet_required' => '0'],
+            ['test_type_id'=> $testTypeWetSalineIodinePrep->id, 'worksheet_required' => '0'],
+            ['test_type_id'=> $testTypeAST->id, 'worksheet_required' => '1'],
+        ];
+        foreach ($microbiologyTests as $microbiologyTest) {
+            MicrobiologyTestType::create($microbiologyTest);
+        }
+        $this->command->info("Microbiology tests list table seeded");
+
+        $measureAppearance = Measure::create(['measure_type_id' => '4', 'name' => 'Appearance', 'unit' => '']);
+        $measureGramStain = Measure::create(['measure_type_id' => '4', 'name' => 'Gram stain', 'unit' => '']);
+        $measureZnStain = Measure::create(['measure_type_id' => '4', 'name' => 'ZN stain', 'unit' => '']);
+        $measureModifiedZn = Measure::create(['measure_type_id' => '4', 'name' => 'Modified ZN', 'unit' => '']);
+        $measureWetSalineIodinePrep = Measure::create(['measure_type_id' => '4', 'name' => 'Wet Saline Iodine Prep', 'unit' => '']);
+        $measureAST = Measure::create(['measure_type_id' => '4', 'name' => 'AST', 'unit' => '']);
+
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[0]->id]);// Ascitic Tap
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[1]->id]);// Aspirate
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[2]->id]);// CSF
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[3]->id]);// Dried Blood Spot
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[4]->id]);// High Vaginal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[5]->id]);// Nasal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[6]->id]);// Plasma
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[7]->id]);// Plasma EDTA
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[8]->id]);// Pleural Tap
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[9]->id]);// Pus Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[10]->id]);// Rectal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[11]->id]);// Semen
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[12]->id]);// Serum
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[13]->id]);// Skin
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[14]->id]);// Vomitus
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[15]->id]);// Stool
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[16]->id]);// Synovial Fluid
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[17]->id]);// Throat Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[18]->id]);// Urethral Smear
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[19]->id]);// Urine
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[20]->id]);// Vaginal Smear
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[21]->id]);// Water
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[22]->id]);// Whole Blood
+
+
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[0]->id]);// Ascitic Tap
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[1]->id]);// Aspirate
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[2]->id]);// CSF
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[3]->id]);// Dried Blood Spot
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[4]->id]);// High Vaginal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[5]->id]);// Nasal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[6]->id]);// Plasma
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[7]->id]);// Plasma EDTA
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[8]->id]);// Pleural Tap
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[9]->id]);// Pus Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[10]->id]);// Rectal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[11]->id]);// Semen
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[12]->id]);// Serum
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[13]->id]);// Skin
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[14]->id]);// Vomitus
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[15]->id]);// Stool
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[16]->id]);// Synovial Fluid
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[17]->id]);// Throat Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[18]->id]);// Urethral Smear
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[19]->id]);// Urine
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[20]->id]);// Vaginal Smear
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[21]->id]);// Water
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[22]->id]);// Whole Blood
+
+
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[0]->id]);// Ascitic Tap
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[1]->id]);// Aspirate
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[2]->id]);// CSF
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[3]->id]);// Dried Blood Spot
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[4]->id]);// High Vaginal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[5]->id]);// Nasal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[6]->id]);// Plasma
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[7]->id]);// Plasma EDTA
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[8]->id]);// Pleural Tap
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[9]->id]);// Pus Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[10]->id]);// Rectal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[11]->id]);// Semen
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[12]->id]);// Serum
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[13]->id]);// Skin
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[14]->id]);// Vomitus
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[15]->id]);// Stool
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[16]->id]);// Synovial Fluid
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[17]->id]);// Throat Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[18]->id]);// Urethral Smear
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[19]->id]);// Urine
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[20]->id]);// Vaginal Smear
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[21]->id]);// Water
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[22]->id]);// Whole Blood
+
+
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[0]->id]);// Ascitic Tap
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[1]->id]);// Aspirate
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[2]->id]);// CSF
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[3]->id]);// Dried Blood Spot
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[4]->id]);// High Vaginal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[5]->id]);// Nasal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[6]->id]);// Plasma
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[7]->id]);// Plasma EDTA
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[8]->id]);// Pleural Tap
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[9]->id]);// Pus Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[10]->id]);// Rectal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[11]->id]);// Semen
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[12]->id]);// Serum
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[13]->id]);// Skin
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[14]->id]);// Vomitus
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[15]->id]);// Stool
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[16]->id]);// Synovial Fluid
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[17]->id]);// Throat Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[18]->id]);// Urethral Smear
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[19]->id]);// Urine
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[20]->id]);// Vaginal Smear
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[21]->id]);// Water
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[22]->id]);// Whole Blood
+
+
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[0]->id]);// Ascitic Tap
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[1]->id]);// Aspirate
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[2]->id]);// CSF
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[3]->id]);// Dried Blood Spot
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[4]->id]);// High Vaginal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[5]->id]);// Nasal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[6]->id]);// Plasma
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[7]->id]);// Plasma EDTA
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[8]->id]);// Pleural Tap
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[9]->id]);// Pus Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[10]->id]);// Rectal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[11]->id]);// Semen
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[12]->id]);// Serum
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[13]->id]);// Skin
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[14]->id]);// Vomitus
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[15]->id]);// Stool
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[16]->id]);// Synovial Fluid
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[17]->id]);// Throat Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[18]->id]);// Urethral Smear
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[19]->id]);// Urine
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[20]->id]);// Vaginal Smear
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[21]->id]);// Water
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[22]->id]);// Whole Blood
+
+
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[0]->id]);// Ascitic Tap
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[1]->id]);// Aspirate
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[2]->id]);// CSF
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[3]->id]);// Dried Blood Spot
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[4]->id]);// High Vaginal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[5]->id]);// Nasal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[6]->id]);// Plasma
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[7]->id]);// Plasma EDTA
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[8]->id]);// Pleural Tap
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[9]->id]);// Pus Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[10]->id]);// Rectal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[11]->id]);// Semen
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[12]->id]);// Serum
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[13]->id]);// Skin
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[14]->id]);// Vomitus
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[15]->id]);// Stool
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[16]->id]);// Synovial Fluid
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[17]->id]);// Throat Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[18]->id]);// Urethral Smear
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[19]->id]);// Urine
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[20]->id]);// Vaginal Smear
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[21]->id]);// Water
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[22]->id]);// Whole Blood
+
+        $testAST = Test::create([
+                "visit_id" => $microbiologyVisit->id,
+                "test_type_id" => $testTypeAST->id,
+                'specimen_id' => $specimenSputum->id,
+                "interpretation" => "Format being deliberated",
+                "test_status_id" => Test::VERIFIED,
+                "created_by" => "3",
+                "tested_by" => "2",
+                "verified_by" => "3",
+                "requested_by" => "Genghiz Khan",
+                "time_created" => "2014-10-17 19:16:15",
+                "time_started" => "2014-10-17 19:17:15",
+                "time_completed" => "2014-10-17 19:52:40",
+                "time_verified" => "2014-10-17 19:53:48",
+        ]);
+        $testAppearanceMucoSalivary = Test::create([
+            'visit_id' => $microbiologyVisit->id,
+            'test_type_id' => $testTypeAppearance->id,
+            'specimen_id' => $specimenSputum->id,
+            'interpretation' => '',
+            'test_status_id' => Test::VERIFIED,
+            'created_by' => '3',
+            'tested_by' => '2',
+            'verified_by' => '3',
+            'requested_by' => 'Genghiz Khan',
+            'time_created' => '2014-10-17 19:16:15',
+            'time_started' => '2014-10-17 19:17:15',
+            'time_completed' => '2014-10-17 19:52:40',
+            'time_verified' => '2014-10-17 19:53:48',
+        ]);
+        $testGramStain = Test::create([
+            'visit_id' => $microbiologyVisit->id,
+            'test_type_id' => $testTypeGramStain->id,
+            'specimen_id' => $specimenSputum->id,
+            'interpretation' => '',
+            'test_status_id' => Test::VERIFIED,
+            'created_by' => '3',
+            'tested_by' => '2',
+            'verified_by' => '3',
+            'requested_by' => 'Genghiz Khan',
+            'time_created' => '2014-10-17 19:16:15',
+            'time_started' => '2014-10-17 19:17:15',
+            'time_completed' => '2014-10-17 19:52:40',
+            'time_verified' => '2014-10-17 19:53:48',
+        ]);
+        $testZnStain = Test::create([
+            'visit_id' => $microbiologyVisit->id,
+            'test_type_id' => $testTypeZnStain->id,
+            'specimen_id' => $specimenSputum->id,
+            'interpretation' => '',
+            'test_status_id' => Test::VERIFIED,
+            'created_by' => '3',
+            'tested_by' => '2',
+            'verified_by' => '3',
+            'requested_by' => 'Genghiz Khan',
+            'time_created' => '2014-10-17 19:16:15',
+            'time_started' => '2014-10-17 19:17:15',
+            'time_completed' => '2014-10-17 19:52:40',
+            'time_verified' => '2014-10-17 19:53:48',
+        ]);
+        $testASToralPharyngealFlora = Test::create([
+            'visit_id' => $microbiologyVisit->id,
+            'test_type_id' => $testTypeAST->id,
+            'specimen_id' => '1',
+            'interpretation' => '',
+            'test_status_id' => Test::PENDING,
+            'created_by' => '3',
+            'tested_by' => '2',
+            'verified_by' => '3',
+            'requested_by' => 'Genghiz Khan',
+            'time_created' => '2014-10-17 19:16:15',
+            'time_started' => '2014-10-17 19:17:15',
+            'time_completed' => '2014-10-17 19:52:40',
+            'time_verified' => '2014-10-17 19:53:48',
+        ]);
+        $testAppearanceFormed = Test::create([
+            'visit_id' => $microbiologyVisit->id,
+            'test_type_id' => $testTypeAppearance->id,
+            'specimen_id' => $specimenSputum->id,
+            'interpretation' => '',
+            'test_status_id' => Test::VERIFIED,
+            'created_by' => '3',
+            'tested_by' => '2',
+            'verified_by' => '3',
+            'requested_by' => 'Genghiz Khan',
+            'time_created' => '2014-10-17 19:16:15',
+            'time_started' => '2014-10-17 19:17:15',
+            'time_completed' => '2014-10-17 19:52:40',
+            'time_verified' => '2014-10-17 19:53:48',
+        ]);
+        $testModifiedZn = Test::create([
+            'visit_id' => $microbiologyVisit->id,
+            'test_type_id' => $testTypeModifiedZn->id,
+            'specimen_id' => $specimenSputum->id,
+            'interpretation' => '',
+            'test_status_id' => Test::VERIFIED,
+            'created_by' => '3',
+            'tested_by' => '2',
+            'verified_by' => '3',
+            'requested_by' => 'Genghiz Khan',
+            'time_created' => '2014-10-17 19:16:15',
+            'time_started' => '2014-10-17 19:17:15',
+            'time_completed' => '2014-10-17 19:52:40',
+            'time_verified' => '2014-10-17 19:53:48',
+        ]);
+        $testWetSalineIodinePrep = Test::create([
+            'visit_id' => $microbiologyVisit->id,
+            'test_type_id' => $testTypeWetSalineIodinePrep->id,
+            'specimen_id' => $specimenSputum->id,
+            'interpretation' => '',
+            'test_status_id' => Test::VERIFIED,
+            'created_by' => '3',
+            'tested_by' => '2',
+            'verified_by' => '3',
+            'requested_by' => 'Genghiz Khan',
+            'time_created' => '2014-10-17 19:16:15',
+            'time_started' => '2014-10-17 19:17:15',
+            'time_completed' => '2014-10-17 19:52:40',
+            'time_verified' => '2014-10-17 19:53:48',
+        ]);
+        $testASTecoli = Test::create([
+            'visit_id' => $microbiologyVisit->id,
+            'test_type_id' => $testTypeAST->id,
+            'specimen_id' => '2',
+            'interpretation' => '',
+            'test_status_id' => Test::PENDING,
+            'created_by' => '3',
+            'tested_by' => '2',
+            'verified_by' => '3',
+            'requested_by' => 'Genghiz Khan',
+            'time_created' => '2014-10-17 19:16:15',
+            'time_started' => '2014-10-17 19:17:15',
+            'time_completed' => '2014-10-17 19:52:40',
+            'time_verified' => '2014-10-17 19:53:48',
+        ]);
+
+        $cultureAST = Culture::create([
+            'user_id' => $user1->id,
+            'test_id' => $testAST->id,
+        ]);
+        $cultureEcoli = Culture::create([
+            'user_id' => $user1->id,
+            'test_id' => $testASToralPharyngealFlora->id,
+        ]);
+        $cultureOralPharyngealFlora = Culture::create([
+            'user_id' => $user1->id,
+            'test_id' => $testASTecoli->id,
+        ]);
+
+        $cultureDurationAST12h = CultureDuration::create(['duration' => '12 hours',]);
+        $cultureDurationAST24h = CultureDuration::create(['duration' => '24 hours',]);
+        $cultureDurationAST36h = CultureDuration::create(['duration' => '36 hours',]);
+        $cultureDurationAST48h = CultureDuration::create(['duration' => '48 hours',]);
+        $cultureDurationAST60h = CultureDuration::create(['duration' => '60 hours',]);
+        $cultureDurationAST72h = CultureDuration::create(['duration' => '72 hours',]);
+        $cultureDurationAST4d = CultureDuration::create(['duration' => '4 days',]);
+        $cultureDurationAST5d = CultureDuration::create(['duration' => '5 days',]);
+        $cultureDurationAST6d = CultureDuration::create(['duration' => '6 days',]);
+        $cultureDurationAST7d = CultureDuration::create(['duration' => '7 days',]);
+        $cultureObservationAST = CultureObservation::create([
+            'user_id' => $user1->id,
+            'culture_id' => $cultureAST->id,
+            'culture_duration_id' => $cultureDurationAST48h->id,
+            'observation' => 'NBG',
+        ]);
+        $cultureObservationAST = CultureObservation::create([
+            'user_id' => $user1->id,
+            'culture_id' => $cultureAST->id,
+            'culture_duration_id' => $cultureDurationAST5d->id,
+            'observation' => 'NSG',
+        ]);
+        $cultureObservationAST = CultureObservation::create([
+            'user_id' => $user1->id,
+            'culture_id' => $cultureAST->id,
+            'culture_duration_id' => $cultureDurationAST7d->id,
+            'observation' => 'SG',
+        ]);
+
+        $isolatedOrganism = IsolatedOrganism::create([
+            'user_id' => $user1->id,
+            'culture_id' => $cultureAST->id,
+            'organism_id' => $pneumoniae->id,
+        ]);
+        $isolatedOrganismOralPharyngealFlora = IsolatedOrganism::create([
+            'user_id' => $user1->id,
+            'culture_id' => $cultureOralPharyngealFlora->id,
+            'organism_id' => $oralPharyngealFlora->id,
+        ]);
+        $isolatedOrganismEcoli = IsolatedOrganism::create([
+            'user_id' => $user1->id,
+            'culture_id' => $cultureEcoli->id,
+            'organism_id' => $ecoli->id,
+        ]);
+
+        $drugSusceptibilityMeasureS = DrugSusceptibilityMeasure::create([
+            'symbol' => 'S',
+            'interpretation'=>'Sensitive',
+        ]);
+        $drugSusceptibilityMeasureI = DrugSusceptibilityMeasure::create([
+            'symbol' => 'I',
+            'interpretation'=>'Intermediate',
+        ]);
+        $drugSusceptibilityMeasureR = DrugSusceptibilityMeasure::create([
+            'symbol' => 'R',
+            'interpretation'=>'Resistant',
+        ]);
+        $drugSusceptibilityChloramphenicol = DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganism->id,
+            'drug_id' => $chloramphenicol->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureR->id,
+        ]);
+        $drugSusceptibilityClindamycin = DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganism->id,
+            'drug_id' => $clindamycin->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureS->id,
+        ]);
+        $drugSusceptibilityErythromycin = DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganism->id,
+            'drug_id' => $erythromycin->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureR->id,
+        ]);
+        $drugSusceptibilityTetracycline = DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganism->id,
+            'drug_id' => $tetracycline->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureR->id,
+        ]);
+        $drugSusceptibilityTrimethoprim = DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganism->id,
+            'drug_id' => $trimethoprim->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureR->id,
+        ]);
+        DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganismEcoli->id,
+            'drug_id' => $amikacin->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureI->id,
+        ]);
+        DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganismEcoli->id,
+            'drug_id' => $ampicillin->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureR->id,
+        ]);
+        DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganismEcoli->id,
+            'drug_id' => $augmentin->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureR->id,
+        ]);
+        DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganismEcoli->id,
+            'drug_id' => $cefotaxime->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureR->id,
+        ]);
+        DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganismEcoli->id,
+            'drug_id' => $ceftriaxione->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureR->id,
+        ]);
+        DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganismEcoli->id,
+            'drug_id' => $cefuroxime->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureR->id,
+        ]);
+        DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganismEcoli->id,
+            'drug_id' => $chloramphenicol->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureS->id,
+        ]);
+        DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganismEcoli->id,
+            'drug_id' => $ciprofloxacin->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureR->id,
+        ]);
+        DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganismEcoli->id,
+            'drug_id' => $cotrimoxazole->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureR->id,
+        ]);
+        DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganismEcoli->id,
+            'drug_id' => $gentamicin->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureR->id,
+        ]);
+        DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganismEcoli->id,
+            'drug_id' => $imipenem->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureS->id,
+        ]);
+        DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganismEcoli->id,
+            'drug_id' => $meropenem->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureI->id,
+        ]);
+        DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganismEcoli->id,
+            'drug_id' => $peperacillintazobactam->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureI->id,
+        ]);
+
+        TestResult::create([
+            'test_id' => $testAppearanceMucoSalivary->id,
+            'measure_id' => $measureAppearance->id,
+            'result' => 'Muco-Salivary',
+        ]);
+        TestResult::create([
+            'test_id' => $testGramStain->id,
+            'measure_id' => $measureGramStain->id,
+            'result' => '3+ Gram positive diplococci,1+ Gram negative cocci,<5 pmns and 5-10 epithelial cells seen.',
+        ]);
+        TestResult::create([
+            'test_id' => $testZnStain->id,
+            'measure_id' => $measureZnStain->id,
+            'result' => 'No AFB seen',
+        ]);
+        TestResult::create([
+            'test_id' => $testASToralPharyngealFlora->id,
+            'measure_id' => $measureAST->id,
+            'result' => '-',
+        ]);
+        TestResult::create([
+            'test_id' => $testAppearanceFormed->id,
+            'measure_id' => $measureAppearance->id,
+            'result' => 'Formed',
+        ]);
+        TestResult::create([
+            'test_id' => $testModifiedZn->id,
+            'measure_id' => $measureModifiedZn->id,
+            'result' => 'No Oocysts seen.',
+        ]);
+        TestResult::create([
+            'test_id' => $testWetSalineIodinePrep->id,
+            'measure_id' => $measureWetSalineIodinePrep->id,
+            'result' => 'No Ova/cysts seen.',
+        ]);
+        TestResult::create([
+            'test_id' => $testASTecoli->id,
+            'measure_id' => $measureAST->id,
+            'result' => 'ESBL Positive',
+        ]);
+        TestResult::create([
+            'test_id' => $testAST->id,
+            'measure_id' => $measureAST->id,
+            'result' => 'General Comment',
+        ]);
     }
 
     public function createSpecimen(

@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
+// todo: perhaps this module and and table is not neccesary see if we can work work directly from the test table
 class Culture extends Eloquent
 {
 	/**
@@ -16,7 +17,7 @@ class Culture extends Eloquent
 	 *
 	 * @var string
 	 */
-	protected $table = 'culture_worksheet';
+	protected $table = 'cultures';
 	/**
 	 * User relationship
 	 */
@@ -77,4 +78,18 @@ class Culture extends Eloquent
     
 		return "$difference $periods[$j] {$tense}";
 	}
+	/**
+	 * Isolated Organism relationship
+	 */
+	public function cultureObservations()
+    {
+        return $this->hasMany('CultureObservation');
+    }
+	/**
+	 * Isolated Organism relationship
+	 */
+	public function isolatedOrganisms()
+    {
+        return $this->hasMany('IsolatedOrganism');
+    }
 }

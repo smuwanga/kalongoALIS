@@ -60,11 +60,10 @@ class TestType extends Eloquent
 	  return $this->belongsToMany('Instrument', 'instrument_testtypes');
 	}
 	/**
-	 * Organisms relationship
+	 * Microbiology test type relationship
 	 */
-	public function organisms()
-	{
-	  return $this->belongsToMany('Organism', 'testtype_organisms');
+	public function microbiologyTestType(){
+		return $this->hasOne('MicrobiologyTestType');
 	}
 	/**
 	 * Set compatible specimen types

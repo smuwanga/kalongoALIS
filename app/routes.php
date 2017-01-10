@@ -208,13 +208,17 @@ Route::group(array("before" => "auth"), function()
         "as"   => "test.verify",
         "uses" => "TestController@verify"
     ));
+    Route::resource('culture', 'CultureController');
+    Route::resource('cultureobservation', 'CultureObservationController');
+    Route::resource('drugsusceptibility', 'DrugSusceptibilityController');
+    Route::resource('isolatedorganism', 'IsolatedOrganismController');
     Route::any("/culture/storeObservation", array(
         "as"   => "culture.worksheet",
         "uses" => "CultureController@store"
     ));
     Route::any("/susceptibility/saveSusceptibility", array(
         "as"   => "drug.susceptibility",
-        "uses" => "SusceptibilityController@store"
+        "uses" => "DrugSusceptibilityController@store"
     ));
     Route::group(array("before" => "admin"), function()
     {
@@ -279,6 +283,14 @@ Route::group(array("before" => "auth"), function()
         Route::any("/patientreport/{id}/{visit}/{testId?}", array(
             "as" => "reports.patient.report", 
             "uses" => "ReportController@viewPatientReport"
+        ));
+        Route::any("/visitreport/{id}", array(
+            "as" => "reports.visit.report", 
+            "uses" => "ReportController@viewVisitReport"
+        ));
+        Route::any("/visitreport/{id}/print", array(
+            "as" => "reports.visit.report.print", 
+            "uses" => "ReportController@printVisitReport"
         ));
         Route::any("/dailylog", array(
             "as"   => "reports.daily.log",
@@ -608,60 +620,7 @@ Route::group(array("before" => "auth"), function()
         "uses" => "BbincidenceController@responseupdate"
     ));
 
-
-    Route::resource('bike', 'BikeController'); /* Added by Justus */
-
-    Route::resource('event', 'EventController'); /* Added by Justus */
-
-    // Route for downloading event reports
-    Route::get('/attachments', 'EventController@downloadAttachment');
-
-    Route::any("/event/{id}/editobjectives", array(
-        "as"   => "event.editobjectives",
-        "uses" => "EventController@editobjectives"
-    ));
-
-    Route::any("/event/{id}/updateobjectives", array(
-        "as"   => "event.updateobjectives",
-        "uses" => "EventController@updateobjectives"
-    ));
-
-    Route::any("/event/{id}/editlessons", array(
-        "as"   => "event.editlessons",
-        "uses" => "EventController@editlessons"
-    ));
-
-    Route::any("/event/{id}/updatelessons", array(
-        "as"   => "event.updatelessons",
-        "uses" => "EventController@updatelessons"
-    ));
-
-    Route::any("/event/{id}/editrecommendations", array(
-        "as"   => "event.editrecommendations",
-        "uses" => "EventController@editrecommendations"
-    ));
-
-    Route::any("/event/{id}/updaterecommendations", array(
-        "as"   => "event.updaterecommendations",
-        "uses" => "EventController@updaterecommendations"
-    ));
-
-    Route::any("/event/{id}/editactions", array(
-        "as"   => "event.editactions",
-        "uses" => "EventController@editactions"
-    ));
-
-    Route::any("/event/{id}/updateactions", array(
-        "as"   => "event.updateactions",
-        "uses" => "EventController@updateactions"
-    ));
-
-    Route::any("/event/eventfilter/eventfilter", array(
-        "as"   => "event.eventfilter",
-        "uses" => "EventController@eventfilter"
-    ));
-
-/*   Event::listen('illuminate.query', function($query){
+   /* Event::listen('illuminate.query', function($query){
     var_dump($query);
     });*/
 	

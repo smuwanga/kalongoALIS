@@ -1,6 +1,6 @@
 <?php
 
-class BikeController extends \BaseController {
+class IsolatedOrganismController extends \BaseController {
 
 	/**
 	 * Display a listing of the resource.
@@ -9,10 +9,9 @@ class BikeController extends \BaseController {
 	 */
 	public function index()
 	{
-		//
-		$bikes = Bike::orderBy('id','DESC')->get();		
-		
-		return View::make('bike.index')->with('bikes', $bikes);
+		$isolatedOrganisms = IsolatedOrganism::with('culture','organism')->get();
+
+		return $isolatedOrganisms;
 	}
 
 
@@ -24,7 +23,6 @@ class BikeController extends \BaseController {
 	public function create()
 	{
 		//
-		return View::make('bike.create');
 	}
 
 
@@ -35,16 +33,13 @@ class BikeController extends \BaseController {
 	 */
 	public function store()
 	{
-		//
-
-		$bike = new Bike;
-
-		$bike->reg_no = Input::get('reg_no');
-		$bike->facility_id = Input::get('facility_id');
-
-		$bike->save();
-
-		return Redirect::to('bike')->with('message', 'Successfully created Bike with Registration '.$bike->reg_no);
+Log::info('storing isolated organism');
+		$isolatedOrganism = new IsolatedOrganism;
+		$isolatedOrganism->user_id = Auth::user()->id;
+		$isolatedOrganism->culture_id = Input::get('culture_id');
+		$isolatedOrganism->organism_id = Input::get('organism_id');
+		$isolatedOrganism->save();
+		return $isolatedOrganism->load('culture','organism');
 	}
 
 
@@ -69,18 +64,6 @@ class BikeController extends \BaseController {
 	public function edit($id)
 	{
 		//
-		$bike = Bike::find($id);
-
-		$firstInsertedId = DB::table('bikes')->min('id');
-		$lastInsertedId = DB::table('bikes')->max('id');
-		
-		$id>=$lastInsertedId ? $nextbike=$lastInsertedId : $nextbike = $id+1;
-		$id<=$firstInsertedId ? $previousbike=$firstInsertedId : $previousbike = $id-1;
-
-		return View::make('bike.edit')->with('bike', $bike)
-		->with('nextbike', $nextbike)
-		->with('previousbike', $previousbike);
-	
 	}
 
 
@@ -92,7 +75,12 @@ class BikeController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		//
+		$isolatedOrganism = IsolatedOrganism::find($id);
+		$isolatedOrganism->user_id = Auth::user()->id;
+		$isolatedOrganism->culture_id = Input::get('culture_id');
+		$isolatedOrganism->organism_id = Input::get('organism_id');
+		$isolatedOrganism->save();
+		return $isolatedOrganism->load('culture','organism');
 	}
 
 
@@ -104,8 +92,8 @@ class BikeController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
+		$isolatedOrganism = IsolatedOrganism::find($id);
+		$isolatedOrganism->delete();
+		return $id;
 	}
-
-
 }
