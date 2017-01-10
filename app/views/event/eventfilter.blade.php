@@ -3,6 +3,7 @@
 <div>
 	<ol class="breadcrumb">
 	  <li><a href="{{{URL::route('user.home')}}}">{{trans('messages.home')}}</a></li>
+	  <li><a href="{{ URL::route('event.index') }}">Events</a></li>
 	  <li class="active">Events Filter</li>
 	</ol>
 </div>
@@ -12,6 +13,42 @@
 @endif
 
 <div class="panel panel-primary">
+	
+	<div class='container-fluid'>
+	<div class='row'>
+		<div class='row col-sm-12'>
+		{{ Form::open(array('route' => array('event.eventfilter'), 'class'=>'form-inline',
+				'role'=>'form', 'method'=>'GET')) }}			
+			<div class="form-group">
+			{{ Form::label('datefrom', 'Date From', array('class' => 'col-sm-2')) }}
+			{{ Form::text('datefrom', Input::get('datefrom'), 
+			array('class' => 'form-control standard-datepicker col-sm-4', 
+			'required' => 'required')) }}
+
+			{{ Form::label('dateto', 'Date To', array('class' => 'col-sm-2')) }}
+			{{ Form::text('dateto', Input::get('dateto'), 
+			array('class' => 'form-control standard-datepicker col-sm-4', 
+			'required' => 'required')) }}	
+			</div>
+
+			<div class="form-group">
+			{{ Form::label('name', 'Keyword in event', array('class' => 'col-sm-2')) }}
+			{{ Form::text('name', Input::get('name'), array('placeholder' => 'Only one keyword', 'class' => 'form-control col-sm-4')) }}
+
+			{{ Form::label('', '', array('class' => 'col-sm-2')) }}
+			{{ Form::button("<span class='glyphicon glyphicon-search'></span> ".trans('messages.filter'), 
+				        array('class' => 'btn btn-primary', 'type' => 'submit')) }}
+
+			&nbsp;&nbsp;&nbsp;&nbsp;<a href="{{ URL::route('event.index') }}">Clear</a>
+			</div>
+		{{ Form::close() }}
+		</div>
+	</div>
+	</div>
+
+	<hr>
+
+<?php if($events){ ?>
 	<div class="panel-heading ">
 		<span class="glyphicon glyphicon-dashboard"></span>
 		Filtered Events  ({{ count($events); }})
@@ -88,5 +125,6 @@
 			</tbody>
 		</table>
 	</div>
+<?php } ?>
 </div>
 @stop
