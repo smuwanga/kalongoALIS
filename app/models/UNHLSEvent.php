@@ -37,20 +37,4 @@ class UNHLSEvent extends Eloquent
         return $this->hasMany('UNHLSEventAction','event_id','id');
 	}
 
-	public static function filtereventsbydate($datefrom,$dateto,$name)
-	{
-		return UNHLSEvent::Where(function ($query) use ($datefrom,$dateto,$name){
-			$query->orWhere('name','LIKE','%$name%');
-		})
-		->orWhere(function ($query) use ($datefrom,$dateto,$name){
-			$query->where('start_date','>=',$datefrom)
-			->where('start_date','<=',$dateto);
-		})
-		->orWhere(function ($query) use ($datefrom,$dateto,$name){
-			$query->where('end_date','>=',$datefrom)
-			->where('end_date','<=',$dateto);
-		})
-		->get();
-	}
-
 }
