@@ -15,10 +15,11 @@ class UpdateUsersTable extends Migration {
 		//
 		DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 		
-		Schema::table('unhls_users', function($table)
+
+		Schema::table('users', function($table)
 		{		
 			$table->integer('facility_id')->unsigned();
-			$table->foreign('facility_id')->references('id')->on('unhls_facilities');		
+			$table->foreign('facility_id')->references('id')->on('unhls_facilities');	
 		});
 
 		DB::statement('SET FOREIGN_KEY_CHECKS=1;');			
@@ -32,7 +33,8 @@ class UpdateUsersTable extends Migration {
 	public function down()
 	{
 		//
-		Schema::table('unhls_users', function(Blueprint $table)
+
+		Schema::table('users', function(Blueprint $table)
 		{	
 			$table->dropForeign('users_facility_id_foreign');							
 			$table->dropColumn('facility_id');			

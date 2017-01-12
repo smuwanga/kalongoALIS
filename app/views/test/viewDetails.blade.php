@@ -33,7 +33,8 @@
 						@if($test->isCompleted() || $test->isVerified())
 						<div class="panel-btn">
 							@if(Auth::user()->can('view_reports'))
-								<a class="btn btn-sm btn-default" href="{{ URL::to('patientreport/'.$test->visit->patient->id.'/'.$test->visit->id) }}">
+								<a class="btn btn-sm btn-default"
+									href="{{ URL::to('visitreport/'.$test->visit->id.'/print') }}">
 									<span class="glyphicon glyphicon-eye-open"></span>
 									{{trans('messages.view-visit-report')}}
 								</a>

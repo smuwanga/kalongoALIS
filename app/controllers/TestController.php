@@ -96,8 +96,7 @@ class TestController extends \BaseController {
 		if ($patientID == 0) {
 			$patientID = Input::get('patient_id');
 		}
-
-		$testTypes = TestType::where('orderable_test', 1)-> orderBy('name', 'asc')->get();
+		$testTypes = TestType::orderBy('name', 'asc')->get();
 		$patient = Patient::find($patientID);
 
 		//Load Test Create View
@@ -266,7 +265,7 @@ class TestController extends \BaseController {
 		return Redirect::route('test.viewDetails', array($specimen->test->id));
 	}
 
-/**
+	/**
 	 * Starts Test
 	 *
 	 * @param
@@ -278,7 +277,13 @@ class TestController extends \BaseController {
 		$test->test_status_id = Test::STARTED;
 		$test->time_started = date('Y-m-d H:i:s');
 		$test->save();
-
+		// if the test being carried out requires a culture worksheet
+		if ($test->testType->microbiologyTestType->worksheet_required) {
+			$culture = new Culture;
+			$culture->user_id = Auth::user()->id;
+			$culture->test_id = $test->id;
+			$culture->save();
+		}
 		return $test->test_status_id;
 	}
 
@@ -291,7 +296,13 @@ class TestController extends \BaseController {
 	public function enterResults($testID)
 	{
 		$test = Test::find($testID);
-		return View::make('test.enterResults')->with('test', $test);
+		// if the test being carried out requires a culture worksheet
+		try {
+			$test->testType->microbiologyTestType->worksheet_required;
+			return Redirect::route('culture.edit', [$test->culture->id]);
+		} catch (Exception $e){
+			return View::make('test.enterResults')->with('test', $test);
+		}
 	}
 
 	/**

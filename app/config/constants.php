@@ -3,9 +3,12 @@
 return [
 
     'DISTRICT_ID' => '1',
-    'DISTRICT_NAME' => 'Kampala',    
+    'DISTRICT_NAME' => 'Kampala',
+    'FACILITY_LEVEL_ID' => '1',
     'FACILITY_ID' => '1',
     'FACILITY_NAME' => 'Lab Kampala 1',
+    'FACILITY_CODE' => 'LBK1',
+    'FACILITY_OWNERSHIP_ID' => '1',
     'FIN_YEAR_ID' => '1',
     'FIN_YEAR_NAME' => '2016/2017',
     'INCOMING_STOCK_FLAG' => 'I',    
