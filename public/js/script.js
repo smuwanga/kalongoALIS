@@ -146,6 +146,298 @@ $(function(){
 		window.location.href = $('#delete-url').val();
 	});
 
+    /** 
+     *  MICROBIOLOGY
+     */
+    var cultureID;
+    var isolatedOrganismID;
+    var isolatedOrganismUrl;
+    var isolatedOrganismUrlVerb;
+    var cultureObservationUrl;
+    var cultureObservationUrlVerb;
+    var cultureObservationEditionId;
+    var drugSusceptibilityUrl;
+    var drugSusceptibilityUrlVerb;
+    var drugSusceptibilityEditionId;
+    /*culture observation*/
+    $('.add-culture-observation').click(function(){
+        $('.duration').val('');
+        $('.observation').val('');
+        cultureID = $(this).data('culture-id');
+        cultureObservationUrl = $(this).data('url');
+        cultureObservationUrlVerb = 'POST';
+        $('.culture-observation').removeClass('hidden');
+    });
+    $('.culture-observation-tbody').on('click', '.edit-culture-observation', function(){
+        cultureObservationUrl = $(this).data('url');
+        cultureObservationUrlVerb = 'PUT';
+        $('.duration').val($(this).data('duration-id'));
+        $('.observation').val($(this).data('observation'));
+        $('.culture-observation').removeClass('hidden');
+    });
+    // save culture observation addition or editon
+    $('.save-culture-observation').click(function(){
+        var duration = $('.duration').val();
+        var observation = $('.observation').val();
+        $.ajax({
+            type: cultureObservationUrlVerb,
+            url:  cultureObservationUrl,
+            data: {
+                culture_id: cultureID,
+                culture_duration_id: duration,
+                observation: observation
+            },
+            success: function(cultureObservation){
+                if (cultureObservationUrlVerb == 'POST') {
+                    var cultureObservationEntry = $('.cultureObservationEntryLoader').html();
+                    $('.culture-observation-tbody').append(cultureObservationEntry);
+                    $('.culture-observation-tbody')
+                        .find('.new-culture-observation-tr')
+                        .addClass('culture-observation-tr-'+cultureObservation.id)
+                        .removeClass('new-culture-observation-tr')
+                        .find('.edit-culture-observation')
+                            .attr('data-id',cultureObservation.id)
+                            .attr('data-url',cultureObservationUrl+'/'+cultureObservation.id)
+                            .attr('data-duration-id',cultureObservation.culture_duration_id)
+                            .attr('data-observation',cultureObservation.observation);
+                    $('.culture-observation-tr-'+cultureObservation.id)
+                        .find('.delete-culture-observation')
+                            .attr('data-url',cultureObservationUrl+'/'+cultureObservation.id)
+                            .attr('data-id',cultureObservation.id);
+                } else {
+                    $('.culture-observation-tr-'+cultureObservation.id)
+                        .find('.edit-culture-observation')
+                            .attr('data-duration-id',cultureObservation.culture_duration_id)
+                            .attr('data-observation',cultureObservation.observation);
+                        $('.culture-observation-tr-'+cultureObservation.id+' .duration-entry').empty();
+                        $('.culture-observation-tr-'+cultureObservation.id+' .observation-entry').empty();
+                }
+                // update rows with edition already made in the database
+                $('.culture-observation-tr-'+cultureObservation.id+' .duration-entry')
+                    .append(cultureObservation.culture_duration.duration);
+                $('.culture-observation-tr-'+cultureObservation.id+' .observation-entry')
+                    .append(cultureObservation.observation);
+
+                // hide input fields for culutre observations
+                $('.culture-observation').addClass('hidden');
+            }
+        });
+
+    });
+    // delete culture observation entry from database and dynamicallly remove from UI
+    /*
+    hint: (parent).on(element) can find javascript added elements which
+    (element).click() is incapable of
+    */
+    $('.culture-observation-tbody').on('click', '.delete-culture-observation', function(){
+        var url = $(this).data('url');
+        $.ajax({
+            type: 'DELETE',
+            url:  url,
+            success: function(id){
+            // remove newly deleted(dynamically) entry of culture observation
+            $('.culture-observation-tr-'+id).remove();
+            }
+        });
+    });
+    $('.cancel-culture-observation-edition').click(function(){
+            $('.culture-observation').addClass('hidden');
+        $('.duration').val('');
+        $('.observation').val('');
+    });
+    /*isolated organism*/
+    $('.add-isolated-organism').click(function(){
+        $('.organism').val('');
+        $('.save-isolated-organism').attr('data-url',$(this).data('url'))
+        // update global varible so that it's available in the save isolated organism function
+        isolatedOrganismUrl = $(this).data('url');
+        drugSusceptibilityUrl = $(this).data('drug-susceptibility-store-url');
+        isolatedOrganismUrlVerb = 'POST';
+        cultureID = $(this).data('culture-id');
+        $('.isolated-organism-addition').removeClass('hidden');
+    });
+    // save isolated organism addition
+    $('.save-isolated-organism').click(function(){
+        var organismID = $('.isolated-organism-input').val();
+
+        $.ajax({
+            type: isolatedOrganismUrlVerb,
+            url:  isolatedOrganismUrl,
+            data: {
+                organism_id: organismID,
+                culture_id: cultureID
+            },
+            success: function(isolatedOrganism){
+                // update rows with edition already made in the database
+                var isolatedOrganismEntry = $('.isolatedOrganismEntryLoader').html();
+                $('.isolated-organism-tbody').append(isolatedOrganismEntry);
+                $('.isolated-organism-tbody')
+                    .find('.new-isolated-organism-tr')
+                    .addClass('isolated-organism-tr-'+isolatedOrganism.id)
+                    .removeClass('new-isolated-organism-tr')
+                    .find('.add-drug-susceptibility')
+                            .attr('data-url',drugSusceptibilityUrl)
+                            .attr('data-isolated-organism-id',isolatedOrganism.id)
+                            .attr('data-isolated-organism-name',isolatedOrganism.organism.name);
+                    $('.isolated-organism-tr-'+isolatedOrganism.id)
+                        .find('.delete-isolated-organism')
+                            .attr('data-url',isolatedOrganismUrl+'/'+isolatedOrganism.id)
+                            .attr('data-id',isolatedOrganism.id);
+                // hide input fields for isolated organism
+                $('.isolated-organism-addition').addClass('hidden');
+                $('.isolated-organism-tr-'+isolatedOrganism.id+' .isolated-organism-entry')
+                        .append(isolatedOrganism.organism.name);
+
+            }
+        });
+    });
+    // delete drug susceptbility entry from database and dynamicallly remove from UI
+    $('.isolated-organism-tbody').on('click', '.delete-isolated-organism', function(){
+        var url = $(this).data('url');
+        $.ajax({
+            type: 'DELETE',
+            url:  url,
+            success: function(id){
+            // remove newly deleted(dynamically) entry of drug susceptibility
+            $('.isolated-organism-tr-'+id).remove();
+            }
+        });
+    });
+    // cancel a drug susceptibility addition or edition
+    $('.cancel-isolated-organism-addition').click(function(){
+        $('.susceptibility-result').addClass('hidden');
+        $('.drug').val('');
+        $('.susceptibility').val('');
+    });
+    /*drug susceptibility*/
+    $('.isolated-organism-tbody').on('click', '.add-drug-susceptibility', function(){
+        $('.drug').val('');
+        $('.susceptibility').val('');
+        // update url value in the save button
+        $('.save-drug-susceptibility').attr('data-url',$(this).data('url'));
+        // update global varible so that it's available in the save susceptibility function
+        isolatedOrganismID = $(this).data('isolated-organism-id');
+        drugSusceptibilityUrlVerb = 'POST';
+        drugSusceptibilityUrl = $(this).data('url');
+        // insert name of isolated organism to be subjected to a drug above the input for drug and result
+        $('.isolated-organism-input-header').append($(this).data('isolated-organism-name'));
+        $('.susceptibility-result').removeClass('hidden');
+    });
+    $('.drug-susceptibility-tbody').on('click', '.edit-drug-susceptibility', function(){
+        // update url value in the save button
+        $('.save-drug-susceptibility').attr('data-url',$(this).data('url'));
+        // update global varible so that it's available in the save susceptibility function
+        drugSusceptibilityUrlVerb = 'PUT';
+        drugSusceptibilityUrl = $(this).data('url');
+        drugSusceptibilityEditionId = $(this).data('id');
+        isolatedOrganismID = $(this).data('isolated-organism-id');
+        // populate with initial values fields tobe edited
+        $('.drug').val($(this).data('drug-id'));
+        $('.susceptibility').val($(this).data('drug-susceptibility-measure-id'));
+        // hide input fields after submission
+        $('.susceptibility-result').removeClass('hidden');
+    });
+    // save drug susceptibility addition or editon
+    $('.save-drug-susceptibility').click(function(){
+        var drug = $('.drug').val();
+        var susceptibility = $('.susceptibility').val();
+        $.ajax({
+            type: drugSusceptibilityUrlVerb,
+            url:  drugSusceptibilityUrl,
+            data: {
+                isolated_organism_id: isolatedOrganismID,
+                drug_id: drug,
+                drug_susceptibility_measure_id: susceptibility
+            },
+            success: function(drugSusceptibility){
+
+                if (drugSusceptibilityUrlVerb == 'POST') {
+                    // update rows with addition already made in the database
+                    var drugSusceptibilityEntry = $('.drugSusceptibilityEntryLoader').html();
+                    $('.drug-susceptibility-tbody').append(drugSusceptibilityEntry);
+                    $('.drug-susceptibility-tbody')
+                        .find('.new-drug-susceptibility-tr')
+                        .addClass('drug-susceptibility-tr-'+drugSusceptibility.id)
+                        .removeClass('new-drug-susceptibility')
+                        .find('.edit-drug-susceptibility')
+                            .attr('data-url',drugSusceptibilityUrl+'/'+drugSusceptibility.id)
+                            .attr('data-id',drugSusceptibility.id)
+                            .attr('data-drug-id',drugSusceptibility.drug_id)
+                            .attr('data-isolated-organism-id',drugSusceptibility.isolated_organism_id)
+                            .attr('data-drug-susceptibility-measure-id',drugSusceptibility.drug_susceptibility_measure_id)
+                    $('.drug-susceptibility-tbody')
+                        .find('.delete-drug-susceptibility')
+                            .attr('data-url',drugSusceptibilityUrl+'/'+drugSusceptibility.id)
+                            .attr('data-id',drugSusceptibility.id);
+                } else {
+                // clear rows before updating with new values from the backend
+                $('.drug-susceptibility-tr-'+drugSusceptibility.id+' .isolated-organism-entry').empty();
+                $('.drug-susceptibility-tr-'+drugSusceptibility.id+' .drug-entry').empty();
+                $('.drug-susceptibility-tr-'+drugSusceptibility.id+' .result-entry').empty();
+                    $('.drug-susceptibility-tr-'+drugSusceptibility.id)
+                        .find('.edit-drug-susceptibility')
+                            .attr('data-drug-id',drugSusceptibility.drug_id)
+                            .attr('data-isolated-organism-id',drugSusceptibility.isolated_organism_id)
+                            .attr('data-drug-susceptibility-measure-id',drugSusceptibility.drug_susceptibility_measure_id)
+                }
+                // update rows with edition already made in the database
+                $('.drug-susceptibility-tr-'+drugSusceptibility.id+' .isolated-organism-entry')
+                    .append(drugSusceptibility.isolated_organism.organism.name);
+                $('.drug-susceptibility-tr-'+drugSusceptibility.id+' .drug-entry')
+                    .append(drugSusceptibility.drug.name);
+                $('.drug-susceptibility-tr-'+drugSusceptibility.id+' .result-entry')
+                    .append(drugSusceptibility.drug_susceptibility_measure.interpretation);
+                // hide input fields for drug susceptibility
+                $('.susceptibility-result').addClass('hidden');
+            }
+        });
+    });
+    // delete drug susceptbility entry from database and dynamicallly remove from UI
+    $('.drug-susceptibility-tbody').on('click', '.delete-drug-susceptibility', function(){
+        var url = $(this).data('url');
+        $.ajax({
+            type: 'DELETE',
+            url:  url,
+            success: function(id){
+            // remove newly deleted(dynamically) entry of drug susceptibility
+            $('.drug-susceptibility-tr-'+id).remove();
+            }
+        });
+    });
+    // cancel a drug susceptibility addition or edition
+    $('.cancel-drug-susceptibility-edition').click(function(){
+        $('.drug').val('');
+        $('.susceptibility').val('');
+        $('.susceptibility-result').addClass('hidden');
+    });
+    /*completing the culture and sensitivity analysis*/
+    // prepare to complete culture sensitivity
+    $('.prepare-culture-sensitivity-completion').click(function(){
+        $(this).addClass('hidden');
+        $('.complete-culture-sensitivity').removeClass('hidden');
+    });
+
+    // cancel culture sensitivity completion
+    $('.cancel-completion-of-culture-sensitivity-analysis').click(function(){
+        $('.prepare-culture-sensitivity-completion').removeClass('hidden');
+        $('.complete-culture-sensitivity').addClass('hidden');
+    });
+
+    // complete culture sensitivity
+    $('.submit-completed-culture-sensitivity-analysis').click(function(){
+        $.ajax({
+            type: 'POST',
+            url:  $(this).data('url'),
+            data: {
+                interpretation: $('.interpretation').val()
+            },
+            success: function(){
+                location.href = $('.submit-completed-culture-sensitivity-analysis')
+                    .data('redirect-url');
+            }
+        });
+    });
+
 	UIComponents();
 
 	/* Clicking the label of an radio/checkbox, checks the control*/

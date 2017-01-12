@@ -208,13 +208,17 @@ Route::group(array("before" => "auth"), function()
         "as"   => "test.verify",
         "uses" => "TestController@verify"
     ));
+    Route::resource('culture', 'CultureController');
+    Route::resource('cultureobservation', 'CultureObservationController');
+    Route::resource('drugsusceptibility', 'DrugSusceptibilityController');
+    Route::resource('isolatedorganism', 'IsolatedOrganismController');
     Route::any("/culture/storeObservation", array(
         "as"   => "culture.worksheet",
         "uses" => "CultureController@store"
     ));
     Route::any("/susceptibility/saveSusceptibility", array(
         "as"   => "drug.susceptibility",
-        "uses" => "SusceptibilityController@store"
+        "uses" => "DrugSusceptibilityController@store"
     ));
     Route::group(array("before" => "admin"), function()
     {
@@ -279,6 +283,14 @@ Route::group(array("before" => "auth"), function()
         Route::any("/patientreport/{id}/{visit}/{testId?}", array(
             "as" => "reports.patient.report", 
             "uses" => "ReportController@viewPatientReport"
+        ));
+        Route::any("/visitreport/{id}", array(
+            "as" => "reports.visit.report", 
+            "uses" => "ReportController@viewVisitReport"
+        ));
+        Route::any("/visitreport/{id}/print", array(
+            "as" => "reports.visit.report.print", 
+            "uses" => "ReportController@printVisitReport"
         ));
         Route::any("/dailylog", array(
             "as"   => "reports.daily.log",
@@ -607,5 +619,9 @@ Route::group(array("before" => "auth"), function()
         "as"   => "bbincidence.responseupdate",
         "uses" => "BbincidenceController@responseupdate"
     ));
+
+   /* Event::listen('illuminate.query', function($query){
+    var_dump($query);
+    });*/
 	
 });

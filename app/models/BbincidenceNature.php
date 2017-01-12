@@ -9,7 +9,6 @@ class BbincidenceNature extends Eloquent
 	 *
 	 * @var string
 	 */
-	//protected $table = 'unhls_bbincidences_nature';
 	protected $table = 'unhls_bbnatures';
 
 

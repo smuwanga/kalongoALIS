@@ -18,7 +18,7 @@ class UpdateUsersTable extends Migration {
 		Schema::table('users', function($table)
 		{		
 			$table->integer('facility_id')->unsigned();
-			$table->foreign('facility_id')->references('id')->on('unhls_facilities');		
+			$table->foreign('facility_id')->references('id')->on('unhls_facilities');	
 		});
 
 		DB::statement('SET FOREIGN_KEY_CHECKS=1;');			
