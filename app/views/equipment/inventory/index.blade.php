@@ -27,7 +27,7 @@
 
 	<div class="panel-body">
 	<div class="table-responsive">
-  	<table class="table table-striped search-table small-font">
+  		<table class="table table-striped search-table small-font">
 			<thead>
 				<tr>
 					<th>Type</th>
@@ -50,27 +50,29 @@
 			<tbody>
 			
 				<tr>
-				<td> $equipment->name }}</td>
-				<td> $equipment->phone }}</td>
-				<td> $equipment->email }}</td>
-				<td> $equipment->address }}</td>
-				<td> $equipment->name }}</td>
-				<td> $equipment->phone }}</td>
-				<td> $equipment->email }}</td>
-				<td> $equipment->address }}</td>
-				<td> $equipment->name }}</td>
-				<td> $equipment->phone }}</td>
-				<td> $equipment->email }}</td>
-				<td> $equipment->address }}</td>
-				<td> $equipment->name }}</td>
-				<td> $equipment->phone }}</td>
-				<td> $equipment->email }}</td>
+				<td>  </td>
+				<td>  </td>
+				<td>  </td>
+				<td>  </td>
+				<td>  </td>
+
+				<td>  </td>
+				<td>  </td>
+				<td>  </td>
+				<td>  </td>
+				<td>  </td>
+
+				<td>  </td>
+				<td>  </td>
+				<td>  </td>
+				<td>  </td>
+				<td>  </td>
 							
 				</tr>
 	
 			</tbody>
-  </table>
-</div>
+  		</table>
+	</div>
 
 		<?php Session::put('SOURCE_URL', URL::full());?>
 	</div>

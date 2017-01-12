@@ -45,15 +45,16 @@
 			<tbody>
 			
 				<tr>
-					<td class="col-sm-1"> $equipment->name }}</td>
-					<td class="col-sm-1"> $equipment->phone }}</td>
-					<td class="col-sm-2"> $equipment->email }}</td>
-					<td class="col-sm-2"> $equipment->address }}</td>
-					<td class="col-sm-2"> $equipment->name }}</td>
-					<td class="col-sm-1"> $equipment->phone }}</td>
-					<td class="col-sm-1"> $equipment->email }}</td>
-					<td class="col-sm-1"> $equipment->address }}</td>
-					<td class="col-sm-1"> $equipment->name }}</td>							
+				<td>  </td>
+				<td>  </td>
+				<td>  </td>
+				<td>  </td>
+				<td>  </td>
+				<td>  </td>
+				<td>  </td>
+				<td>  </td>
+				<td>  </td>
+						
 				</tr>
 	
 			</tbody>

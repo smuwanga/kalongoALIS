@@ -22,7 +22,7 @@
       <div class="col-lg-10">
         <select class="form-control" id="select">
           <option>Select item</option>
-          <option>Ampicillin</option>          
+          <option>Sysmex Lysing Reagents </option>          
         </select>
       </div>
     </div>
@@ -30,7 +30,7 @@
 
           <div class="form-group">
             <div class="col-lg-10 col-lg-offset-2">
-              <button type="submit" class="btn btn-primary">Submit</button>
+              <a id="btn_get_stock_book" class="btn btn-primary">Submit</a>
             </div>
           </div>
 
@@ -41,7 +41,7 @@
 
 </div>
 <hr>
-<div class="row" id="stockcard_table">
+<div class="row hidden" id="stockcard_table">
   
   <div class="col-md-12">
     <p class="bg-primary col-sm-3">
@@ -84,16 +84,7 @@
                       <td class="text-right">3</td>
                       <td class="text-right">2</td>
                     </tr>
-                    <tr>              
-                      <td>July 2016</td>
-                      <td class="text-right">10</td>
-                      <td class="text-right">9016</td>
-                      <td class="text-right">20</td>
-                      <td class="text-right">10</td>
-                      <td class="text-right">10</td>
-                      <td class="text-right">3</td>
-                      <td class="text-right">2</td>
-                    </tr>
+
                   </tbody>
               </table>
             </div>
@@ -111,31 +102,9 @@
 
 <script type="text/javascript">
   $(document).ready(function($){
-   $('#district-id').change(function(e){
+   $('#btn_get_stock_book').click(function(e){
 
-            var data = {
-                districtId: e.target.value
-            };
-
-
-        $.ajax({
-            type: 'POST',
-            url: '/apite/facility',
-            data: data
-        }).done(function(response) {
-          $('#div-facility').removeClass('hidden');
-          $('#facility').remove();
-          var sel = $('<select>').appendTo('#facility-id');
-            sel.attr('id', 'facility').attr('name', 'facility').addClass('form-control');
-              $.each(response, function(index,value) {   
-
-          console.log(value.id);
-          sel.append($('<option>', { value : value.id }).text(value.name)); 
-      });
-        }).fail(function (jqXHR, textStatus, errorThrown) {
-            //TODO handle fails on note post backs.
-            console.log(textStatus + ' : ' + errorThrown);
-        });
+      $("#stockcard_table").removeClass("hidden").addClass("visible");
 
   });
 });
