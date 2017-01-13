@@ -388,7 +388,14 @@ class TestController extends \BaseController {
 	{
 		$test = Test::find($testID);
 
-		return View::make('test.edit')->with('test', $test);
+		// if the test being carried out requires a culture worksheet
+		try {
+			$test->testType->microbiologyTestType->worksheet_required;
+			return Redirect::route('culture.edit', [$test->culture->id]);
+		} catch (Exception $e){
+			return View::make('test.edit')->with('test', $test);
+		}
+
 	}
 
 	/**
