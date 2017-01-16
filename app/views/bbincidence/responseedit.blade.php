@@ -3,7 +3,7 @@
 	<div>
 		<ol class="breadcrumb">
 		  <li><a href="{{{URL::route('user.home')}}}">{{trans('messages.home')}}</a></li>
-		  <li><a href="{{ URL::route('bbincidence.index') }}">BB Incidences</a></li>
+		  <li><a href="{{ URL::route('bbincidence.index') }}">BB Incidents</a></li>
 		  <li class="active">Updating Major Incident Response</li>
 		</ol>
 	</div>

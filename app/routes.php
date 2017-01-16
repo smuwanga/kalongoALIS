@@ -691,8 +691,8 @@ Route::group(array("before" => "auth"), function()
         //Route::get('api/facility-by-district/{districtId}', 'ApiController@getFacilityListByDistrict');
 
     });
-	
-	Route::resource('bbincidence', 'BbincidenceController'); /* Added by Justus */
+	//BB Incidents
+	Route::resource('bbincidence', 'BbincidenceController');
     
 	Route::get("/bbincidence/clinical/clinical", array(
         "as"   => "bbincidence.clinical",
@@ -734,11 +734,13 @@ Route::group(array("before" => "auth"), function()
         "uses" => "BbincidenceController@responseupdate"
     ));
 
-    Route::resource('bike', 'BikeController'); /* Added by Justus */
+    //Bike Management
+    Route::resource('bike', 'BikeController');
 
-    Route::resource('event', 'EventController'); /* Added by Justus */
+    //Events/Activities Reporting
+    Route::resource('event', 'EventController');
 
-    // Route for downloading event reports
+    // Route for downloading Activity/Event reports
     Route::get('/attachments', 'EventController@downloadAttachment');
 
     Route::any("/event/{id}/editobjectives", array(
