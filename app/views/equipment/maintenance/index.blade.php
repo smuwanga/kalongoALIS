@@ -46,17 +46,18 @@
 			<tbody>
 			
 				<tr>
-					<td> $equipment->name }}</td>
-					<td> $equipment->phone }}</td>
-					<td> $equipment->email }}</td>
-					<td> $equipment->address }}</td>
-					<td> $equipment->name }}</td>
-					<td> $equipment->phone }}</td>
-					<td> $equipment->email }}</td>
-					<td> $equipment->address }}</td>
-					<td> $equipment->name }}</td>
-					<td> $equipment->phone }}</td>
-					<td> $equipment->email }}</td>							
+				<td>  </td>
+				<td>  </td>
+				<td>  </td>
+				<td>  </td>
+				<td>  </td>
+				<td>  </td>
+				<td>  </td>
+				<td>  </td>
+				<td>  </td>
+				<td>  </td>
+				<td>  </td>
+						
 				</tr>
 	
 			</tbody>

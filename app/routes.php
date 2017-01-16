@@ -398,6 +398,14 @@ Route::group(array("before" => "auth"), function()
             "as" => "reports.patient.report", 
             "uses" => "UnhlsReportController@viewPatientReport"
         ));
+        Route::any("/visitreport/{id}", array(
+            "as" => "reports.visit.report", 
+            "uses" => "ReportController@viewVisitReport"
+        ));
+        Route::any("/visitreport/{id}/print", array(
+            "as" => "reports.visit.report.print", 
+            "uses" => "ReportController@printVisitReport"
+        ));
         Route::any("/dailylog", array(
             "as"   => "reports.daily.log",
             "uses" => "ReportController@dailyLog"
@@ -726,6 +734,7 @@ Route::group(array("before" => "auth"), function()
         "uses" => "BbincidenceController@responseupdate"
     ));
 
+<<<<<<< HEAD
 
     Route::resource('bike', 'BikeController'); /* Added by Justus */
 
@@ -783,5 +792,9 @@ Route::group(array("before" => "auth"), function()
     Event::listen('illuminate.query', function($query)
     {
         var_dump($query);
+=======
+   /* Event::listen('illuminate.query', function($query){
+    var_dump($query);
+>>>>>>> b4a0ae928120e1d97fba0b85f14dfff45d22bce6
     });*/
 });

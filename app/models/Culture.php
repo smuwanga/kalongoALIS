@@ -30,7 +30,7 @@ class Culture extends Eloquent
 	 */
 	public function test()
     {
-        return $this->hasOne('Test', 'test_id');
+        return $this->belongsTo('Test');
     }
     /*Get well formatted dates*/
 	public static function showTimeAgo($date)

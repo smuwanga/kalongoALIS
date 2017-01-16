@@ -69,8 +69,9 @@ class CultureController extends \BaseController {
 		$culture = Culture::find($id);
 
 		$culture->load(
-			'cultureObservations.cultureDuration',
+			'test',
 			'isolatedOrganisms.organism',
+			'cultureObservations.cultureDuration',
 			'isolatedOrganisms.drugSusceptibilities.drug',
 			'isolatedOrganisms.drugSusceptibilities.drugSusceptibilityMeasure');
 

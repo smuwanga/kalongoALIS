@@ -77,7 +77,6 @@ class CultureObservationController extends \BaseController {
 	{
 		$observation = CultureObservation::find($id);
 		$observation->user_id = Auth::user()->id;
-		$observation->culture_id = Input::get('culture_id');
 		$observation->culture_duration_id = Input::get('culture_duration_id');
 		$observation->observation = Input::get('observation');
 		$observation->save();

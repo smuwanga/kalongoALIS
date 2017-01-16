@@ -216,19 +216,9 @@ class BbincidenceController extends \BaseController {
 						'description'=>$bbincidence->description, 'hfacility'=>Auth::user()->facility->name, 
 						'district'=>Auth::user()->facility->district->name),
 						 function($message){
-        			$message->to(explode(',','justusashaba@gmail.com,Ajustus_IC@ASLM.org'))->subject('[UG BLIS] Major Incident Notification');
+        			$message->to(explode(',','justusashaba@gmail.com'))->subject('[UG BLIS] Major Incident Notification');
     				});
 				}*/
-
-				if(strpos($incidentpriorities, 'Major') !== false){
-					Mail::later(300,'bbincidence.bbmajornotice', array('majorincidents'=>$majorincidents,
-						'serial'=>$bbincidenceSerialNo,'entrant'=>Auth::user()->name,
-						'description'=>$bbincidence->description, 'hfacility'=>Auth::user()->facility->name, 
-						'district'=>Auth::user()->facility->district->name),
-						 function($message){
-        			$message->to(explode(',','justusashaba@gmail.com,Ajustus_IC@ASLM.org'))->subject('[UG BLIS] Major Incident Notification');
-    				});
-				}
 				
 			$url = Session::get('SOURCE_URL');
 			return Redirect::to($url)
