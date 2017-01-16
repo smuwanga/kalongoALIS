@@ -103,6 +103,13 @@ class Test extends Eloquent
 	{
 		return $this->hasMany('DrugSusceptibility');
 	}
+	/***
+	 * Requesting staff relationship
+	 */
+	/*public function staffDetails()
+	{
+		return $this->belongsTo('StaffDetail');
+	}*/
 
 	/**
 	 * Check to see if test is external or internal

@@ -75,7 +75,7 @@ class TestDataSeeder extends DatabaseSeeder
         /* Users table */
         $usersData = array(
             array(
-                "username" => "administrator", "password" => Hash::make("password"), 
+                "username" => "ublis_admin", "password" => Hash::make("password"), 
                 "email" => "", "name" => "UBLIS Administrator", "designation" => "Programmer", 
                 "facility_id" => \Config::get('constants.FACILITY_ID')
             ),
@@ -95,6 +95,21 @@ class TestDataSeeder extends DatabaseSeeder
 			array("actionname" => "Referred to mental department"),
 			array("actionname" => "Gave first aid (e.g. arrested bleeding)"),
 			array("actionname" => "Referred to clinician for further management"),
+            array("actionname" => "Conducted risk assessment"),
+            array("actionname" => "Intervened to interrupt/arrest progress of incident (e.g. Used neutralizing agent, stopping a fight)"),
+            array("actionname" => "Disposed off broken container to designated waste bin/sharps"),
+            array("actionname" => "Patient sample taken & referred to testing lab Isolated suspected patient"),
+            array("actionname" => "Reported to or engaged national level BRM for intervention"),
+            array("actionname" => "Victim counseled"),
+            array("actionname" => "Contacted Police"),
+            array("actionname" => "Used spill kit"),
+            array("actionname" => "Administered PEP"),
+            array("actionname" => "Referred to disciplinary committee"),
+            array("actionname" => "Contained the spillage"),
+            array("actionname" => "Disinfected the place"),
+            array("actionname" => "Switched off the Electricity Mains"),
+            array("actionname" => "Washed punctured area"),
+            array("actionname" => "Others"),
         );
 
         foreach ($bbactionsData as $bbaction)
@@ -109,8 +124,14 @@ class TestDataSeeder extends DatabaseSeeder
 			array("causename" => "Defective Equipment"),
 			array("causename" => "Hazardous Chemicals"),
 			array("causename" => "Unsafe Procedure"),
-			array("causename" => "Employee physical emotional condition"),
-			
+			array("causename" => "Psychological causes (e.g. emotional condition, depression, mental confusion)"),
+            array("causename" => "Unsafe storage of laboratory chemicals"),
+            array("causename" => "Lack of Skill or Knowledge"),
+            array("causename" => "Lack of Personal Protective Equipment"),
+            array("causename" => "Unsafe Working Environment"),
+            array("causename" => "Lack of Adequate Physical Security"),
+            array("causename" => "Unsafe location of laboratory equipment"),
+            array("causename" => "Other"),
         );
 
         foreach ($bbcausesData as $bbcause)

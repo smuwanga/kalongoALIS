@@ -1,18 +1,128 @@
 @section("sidebar")
-
+<?php
+	$active = array("","","","","","", "", "", "");
+	$key = explode("?",str_replace("/", "?", Request::path()));
+	switch ($key[0]) {
+		case 'home': $active[0] = "active"; break;
+		case 'patient': $active[0] = "active"; break;
+		case 'patient_unhls': $active[1] = "active"; break;
+		case 'test': $active[2] = "active"; break;
+		case 'labconfig': 
+		case 'instrument':
+		case 'reportconfig':
+		case 'barcode':
+		case 'blisclient':
+		case 'facility': 
+			$active[3] = "active"; break;
+		case 'testcategory': 
+		case 'testtype': 
+		case 'measure': 
+		case 'specimentype': 
+		case 'specimenrejection': 
+		case 'drug':
+		case 'organism':
+			$active[4] = "active"; break;
+		case 'patientreport': 
+		case 'dailylog': 
+		case 'prevalence':
+		case 'surveillance':
+		case 'counts':
+		case 'tat':
+		case 'infection':
+		case 'userstatistics':
+		case 'moh706':
+		case 'cd4':
+		case 'qualitycontrol':
+		case 'inventory':
+			$active[5] = "active"; break;
+		case 'permission': 
+		case 'assign':
+		case 'user': 
+		case 'role': 
+			$active[6] = "active"; break;
+		case 'issue': 
+		case 'receipt': 
+		case 'topup': 
+		case 'metric':
+		case 'supplier':
+		case 'commodity':
+			$active[7] = "active"; break;
+		case 'controlresults':
+		case 'control':
+		case 'lot': $active[8] = "active"; break;
+	}
+?>
+	<ul class="nav nav-sidebar">
+		<li>
+			<div class="main-menu {{$active[0]}}">
+				<a href="{{ URL::route('user.home')}}" title="{{trans('messages.home')}}">
+					<span class="glyphicon glyphicon-home"></span> {{trans('messages.home')}}</a>
+			</div>
+		</li>
+		<li>
+			<div class="main-menu {{$active[0]}}">
+				<a href="{{ URL::route('patient.index')}}">
+					<span class="glyphicon glyphicon-download-alt"></span> {{ Lang::choice('messages.patient', 2)}}</a>
+			</div>
+		</li>
 <nav id="side_nav">
 			<ul>
 
 				<li>
 					<a href="{{ URL::route('user.home')}}"><span class="ion-speedometer"></span> <span class="nav_title">Dashboard</span></a>
 				</li>
-				<li>
-					<a href="{{ URL::route('patient.index')}}">
-					<span class="ion-person"></span> <span class="nav_title">Patient Information</span></a>
+				<li class="nav_trigger">
+					<a href="#"><span class="ion-person"></span><span class="nav_title">Patient Information</span>
+					</a>
+					<div class="sub_panel" style="left: -220px;">
+						<div class="side_inner ps-ready ps-container" style="height: 620px;">
+							<h4 class="panel_heading panel_heading_first">{{ Lang::choice('messages.patient-unhls', 1)}}</h4>
+							<ul>
+								<li>
+									<div>
+										<a href="{{ URL::route('unhls_patient.create')}}">
+											<span class="glyphicon glyphicon-tag"></span> {{Lang::choice('messages.register-new-patient', 1)}}</a>
+									</div>
+								</li>
+								<li>
+									<div>
+										<a href="{{ URL::route('unhls_patient.index') }}">
+											<span class="glyphicon glyphicon-tag"></span> {{Lang::choice('messages.view-patients', 1)}}</a>
+									</div>
+								</li>
+
+							</ul>
+
+						<div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 3px; width: 215px; display: none;"><div class="ps-scrollbar-x" style="left: 0px; width: 0px;"></div></div><div class="ps-scrollbar-y-rail" style="top: 0px; right: 3px; height: 620px; display: none;"><div class="ps-scrollbar-y" style="top: 0px; height: 0px;"></div></div></div>
+					</div>
 				</li>
-				<li>
-					<a href="{{ URL::route('test.index')}}">
-					<span class="ion-erlenmeyer-flask"></span> <span class="nav_title">RRT</span></a>
+				<li class="nav_trigger">
+					<a href="#">
+						<span class="ion-erlenmeyer-flask"></span>
+						<span class="nav_title">RRT</span>
+					</a>
+					<div class="sub_panel" style="left: -220px;">
+						<div class="side_inner ps-ready ps-container" style="height: 620px;">
+							<h4 class="panel_heading panel_heading_first">Tests</h4>
+							<ul>
+								<li>
+									<div>
+										<a href="{{ URL::route('unhls_test.index')}}">
+											<span class="glyphicon glyphicon-tag"></span> {{Lang::choice('messages.test-unhls', 2)}}</a>
+									</div>
+								</li>
+	                            <li>
+									<div>
+										<a href="javascript:void(0)" data-toggle="modal" data-target="#new-test-modal-unhls">
+											<span class="glyphicon glyphicon-plus-sign"></span>{{trans('messages.new-test')}}
+										</a>
+									</div>
+								</li> 
+
+							</ul>
+
+						<div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 3px; width: 215px; display: none;"><div class="ps-scrollbar-x" style="left: 0px; width: 0px;"></div></div><div class="ps-scrollbar-y-rail" style="top: 0px; right: 3px; height: 620px; display: none;"><div class="ps-scrollbar-y" style="top: 0px; height: 0px;"></div></div></div>
+					</div>
 				</li>
 
 

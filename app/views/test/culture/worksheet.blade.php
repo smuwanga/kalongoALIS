@@ -31,44 +31,7 @@
                     </a>
                 </h5>
                 <div class="col-md-6">
-                    <table class="table">
-                      <thead>
-                        <tr>
-                          <th>Duration</th>
-                          <th>Observation</th>
-                          <th><!-- Action --></th>
-                        </tr>
-                      </thead>
-                      <tbody class="culture-observation-tbody">
-                        @foreach($culture->culture_observations as $culture_observation)
-                            <tr class="culture-observation-tr-{{$culture_observation->id}}">
-                              <td class="duration-entry">
-                                {{$culture_observation->culture_duration->duration}}</td>
-                              <td class="observation-entry">{{$culture_observation->observation}}</td>
-                              <td>
-                                <a class="btn btn-sm btn-info edit-culture-observation"
-                                    data-url="{{ URL::route('cultureobservation.update',
-                                        [$culture_observation->id]) }}"
-                                    data-id="{{ $culture_observation->id }}"
-                                    data-duration-id="{{ $culture_observation->culture_duration->id }}"
-                                    data-observation="{{ $culture_observation->observation }}"
-                                    title="Edit">
-                                    <span class="glyphicon glyphicon-edit"></span>
-                                </a>
-                                <a class="btn btn-sm btn-danger delete-culture-observation"
-                                    data-url="{{ URL::route('cultureobservation.destroy',
-                                        [$culture_observation->id]) }}"
-                                    data-id="{{ $culture_observation->id }}"
-                                    title="Delete">
-                                    <span class="glyphicon glyphicon-trash"></span>
-                                </a>
-                              </td>
-                            </tr>
-                        @endforeach
-                      </tbody>
-                    </table>
-                </div>
-                <div class="col-md-6 hidden culture-observation">
+                <div class="hidden culture-observation">
                     <div class="col-md-12">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -106,6 +69,45 @@
                             ['class' => 'btn btn-default cancel-culture-observation-edition']) }}
                     </div>
                 </div>
+                </div>
+                <div class="col-md-6">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Duration</th>
+                          <th>Observation</th>
+                          <th><!-- Action --></th>
+                        </tr>
+                      </thead>
+                      <tbody class="culture-observation-tbody">
+                        @foreach($culture->culture_observations as $culture_observation)
+                            <tr class="culture-observation-tr-{{$culture_observation->id}}">
+                              <td class="duration-entry">
+                                {{$culture_observation->culture_duration->duration}}</td>
+                              <td class="observation-entry">{{$culture_observation->observation}}</td>
+                              <td>
+                                <a class="btn btn-sm btn-info edit-culture-observation"
+                                    data-url="{{ URL::route('cultureobservation.update',
+                                        [$culture_observation->id]) }}"
+                                    data-id="{{ $culture_observation->id }}"
+                                    data-duration-id="{{ $culture_observation->culture_duration->id }}"
+                                    data-observation="{{ $culture_observation->observation }}"
+                                    title="Edit">
+                                    <span class="glyphicon glyphicon-edit"></span>
+                                </a>
+                                <a class="btn btn-sm btn-danger delete-culture-observation"
+                                    data-url="{{ URL::route('cultureobservation.destroy',
+                                        [$culture_observation->id]) }}"
+                                    data-id="{{ $culture_observation->id }}"
+                                    title="Delete">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </a>
+                              </td>
+                            </tr>
+                        @endforeach
+                      </tbody>
+                    </table>
+                </div>
             </div> 
 <!-- isolated organism -->
             <div class="row isolated-organism">
@@ -120,41 +122,7 @@
                     </a>
                 </h5>
                 <div class="col-md-6">
-                    <table class="table">
-                      <thead>
-                        <tr>
-                          <th>Organisms</th>
-                          <th><!-- Action --></th>
-                        </tr>
-                      </thead>
-                      <tbody class="isolated-organism-tbody">
-                        @foreach($culture->isolated_organisms as $isolated_organism)
-                            <tr class="isolated-organism-tr-{{$isolated_organism->id}}">
-                              <td class="isolated-organism-entry">{{$isolated_organism->organism->name}}</td>
-                              <td>
-                                <a class="btn btn-sm btn-success add-drug-susceptibility"
-                                    data-url="{{ URL::route('drugsusceptibility.store') }}"
-                                    data-isolated-organism-id="{{ $isolated_organism->id }}"
-                                    data-isolated-organism-name="{{ $isolated_organism->organism->name }}"
-                                    title="Add Susceptibility Test">
-                                    <span class="glyphicon glyphicon-plus"></span>
-                                    Add Results
-                                </a>
-                                <a class="btn btn-sm btn-danger delete-isolated-organism"
-                                    data-url="{{ URL::route('isolatedorganism.destroy',
-                                        [$isolated_organism->id]) }}"
-                                    data-id="{{ $isolated_organism->id }}"
-                                    title="Delete Organism">
-                                    <span class="glyphicon glyphicon-trash"></span>
-                                    Delete Organism
-                                </a>
-                              </td>
-                            </tr>
-                        @endforeach
-                      </tbody>
-                    </table>
-                </div>
-                <div class="col-md-6 hidden isolated-organism-addition">
+                <div class="hidden isolated-organism-addition">
                     <div class="col-md-12">
                        <div class="form-group">
                            {{ Form::label('isolated-organism', 'Organism Isolated') }}
@@ -178,55 +146,44 @@
                             ['class' => 'btn btn-default cancel-isolated-organism-addition']) }}
                     </div>
                 </div>
-            </div> 
-<!-- drug susceptibility -->
-            <div class="row drug-susceptibility">
-                <h5 class="col-md-12">Drug Susceptibility</h5>
+                </div>
                 <div class="col-md-6">
                     <table class="table">
                       <thead>
                         <tr>
-                          <th>Organism</th>
-                          <th>Drug</th>
-                          <th>Result</th>
+                          <th>Organisms</th>
                           <th><!-- Action --></th>
                         </tr>
                       </thead>
-                      <tbody class="drug-susceptibility-tbody">
+                      <tbody class="isolated-organism-tbody">
                         @foreach($culture->isolated_organisms as $isolated_organism)
-                            @foreach($isolated_organism->drug_susceptibilities as $drug_susceptibility)
-                            <tr class="drug-susceptibility-tr-{{$drug_susceptibility->id}}">
-                              <td class="isolated-organism-entry">
-                                {{$isolated_organism->organism->name}}</td>
-                              <td class="drug-entry">
-                                {{$drug_susceptibility->drug->name}}</td>
-                              <td class="result-entry">
-                                {{$drug_susceptibility->drug_susceptibility_measure->interpretation}}</td>
-                              <td class="col-md-4">
-                                <a class="btn btn-sm btn-info edit-drug-susceptibility"
-                                    data-url="{{ URL::route('drugsusceptibility.update',
-                                        [$drug_susceptibility->id]) }}"
-                                    data-id="{{ $drug_susceptibility->id }}"
-                                    data-drug-id="{{ $drug_susceptibility->drug_id }}"
-                                    data-isolated-organism-id="{{ $drug_susceptibility->isolated_organism_id }}"
-                                    data-drug-susceptibility-measure-id="{{ $drug_susceptibility->drug_susceptibility_measure_id }}"
-                                    title="Edit">
-                                    <span class="glyphicon glyphicon-edit"></span>
+                            <tr class="isolated-organism-tr-{{$isolated_organism->id}}">
+                              <td class="isolated-organism-entry">{{$isolated_organism->organism->name}}</td>
+                              <td>
+                                <a class="btn btn-sm btn-success add-drug-susceptibility"
+                                    data-url="{{ URL::route('drugsusceptibility.store') }}"
+                                    data-isolated-organism-id="{{ $isolated_organism->id }}"
+                                    data-isolated-organism-name="{{ $isolated_organism->organism->name }}"
+                                    title="Add Susceptibility Test">
+                                    <span class="glyphicon glyphicon-plus"></span>
                                 </a>
-                                <a class="btn btn-sm btn-danger delete-drug-susceptibility"
-                                    data-url="{{ URL::route('drugsusceptibility.destroy',
-                                        [$drug_susceptibility->id]) }}"
-                                    data-id="{{ $drug_susceptibility->id }}"
-                                    title="Delete">
+                                <a class="btn btn-sm btn-danger delete-isolated-organism"
+                                    data-url="{{ URL::route('isolatedorganism.destroy',
+                                        [$isolated_organism->id]) }}"
+                                    data-id="{{ $isolated_organism->id }}"
+                                    title="Delete Organism">
                                     <span class="glyphicon glyphicon-trash"></span>
                                 </a>
                               </td>
                             </tr>
-                            @endforeach
                         @endforeach
                       </tbody>
                     </table>
                 </div>
+            </div> 
+<!-- drug susceptibility -->
+            <div class="row drug-susceptibility">
+                <h5 class="col-md-12">Drug Susceptibility</h5>
                 <div class="col-md-6">
                     <div class="susceptibility-result hidden">
                         <h5 class="col-md-12 isolated-organism-input-header"></h5>
@@ -276,7 +233,53 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-md-6">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Organism</th>
+                          <th>Drug</th>
+                          <th>Result</th>
+                          <th><!-- Action --></th>
+                        </tr>
+                      </thead>
+                      <tbody class="drug-susceptibility-tbody">
+                        @foreach($culture->isolated_organisms as $isolated_organism)
+                            @foreach($isolated_organism->drug_susceptibilities as $drug_susceptibility)
+                            <tr class="drug-susceptibility-tr-{{$drug_susceptibility->id}}">
+                              <td class="isolated-organism-entry">
+                                {{$isolated_organism->organism->name}}</td>
+                              <td class="drug-entry">
+                                {{$drug_susceptibility->drug->name}}</td>
+                              <td class="result-entry">
+                                {{$drug_susceptibility->drug_susceptibility_measure->interpretation}}</td>
+                              <td class="col-md-4">
+                                <a class="btn btn-sm btn-info edit-drug-susceptibility"
+                                    data-url="{{ URL::route('drugsusceptibility.update',
+                                        [$drug_susceptibility->id]) }}"
+                                    data-id="{{ $drug_susceptibility->id }}"
+                                    data-drug-id="{{ $drug_susceptibility->drug_id }}"
+                                    data-isolated-organism-id="{{ $drug_susceptibility->isolated_organism_id }}"
+                                    data-drug-susceptibility-measure-id="{{ $drug_susceptibility->drug_susceptibility_measure_id }}"
+                                    title="Edit">
+                                    <span class="glyphicon glyphicon-edit"></span>
+                                </a>
+                                <a class="btn btn-sm btn-danger delete-drug-susceptibility"
+                                    data-url="{{ URL::route('drugsusceptibility.destroy',
+                                        [$drug_susceptibility->id]) }}"
+                                    data-id="{{ $drug_susceptibility->id }}"
+                                    title="Delete">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </a>
+                              </td>
+                            </tr>
+                            @endforeach
+                        @endforeach
+                      </tbody>
+                    </table>
+                </div>
             </div>
+            @if(!$culture->test->isCompleted())
             <div class="col-md-12">
                 <div class="form-group actions-row">
                     {{ Form::button(
@@ -285,12 +288,13 @@
                     ) }}
                 </div>
             </div>
+            @endif
             <div class="col-md-12 hidden complete-culture-sensitivity">
                 <div class="form-group">
                     <div class="form-group">
                         {{ Form::label('interpretation', trans('messages.comment')) }}
                         {{ Form::textarea('interpretation', Input::old('interpretation'),
-                            ['class' => 'form-control', 'rows' => '2']) }}
+                            ['class' => 'form-control interpretation', 'rows' => '2']) }}
                     </div>
                 </div>
                 <div class="form-group actions-row">

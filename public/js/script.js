@@ -469,6 +469,157 @@ $(function(){
 		$(this).parent().parent().parent().remove();
 	});
 
+	/**
+	 *Fetch tests for selected Lab category when requesting 
+	 */
+
+	 //Jquery for UNHLS kind of test menu goes in here!!!!!
+	$('#test_cat').on('change', function() {
+		var testCatId = this.value;
+        var labSec = $(this).find("option:selected").text();
+		var cnt =0;
+		var zebra ="";
+	 	$.ajax(
+		{
+		    url: "/unhls_test/testlist",
+		    type: 'POST',
+		    dataType: 'json',
+		    data: {id: testCatId}, 
+		}).done( 
+		    function(data) 
+		    {
+      	        var myHTML = '';
+      	        var count = 0;
+				var item_per_row = 4;
+                myHTML += '<h4 align="left">' + labSec + '</h4></br>';
+				$.each(data, function(i, item) {
+				    /*optional stuff to do after success */
+					if (count === 0) { // Start of a row
+						myHTML += '<div class = "row">';
+					}
+					myHTML += '<div class = "col-md-3">';
+					myHTML += "<td><label class ='editor-active'><input type ='checkbox' name='testtypes[]' value = "+ item.id + "></label>" + item.name + "</td>";
+					myHTML += '</div>';
+					++count;
+					if (count === item_per_row) {  // End of row
+						myHTML += '</div>';
+					}
+				});
+
+				if (count > 0) {  // Close the last row if it exist.
+					myHTML += '</div>';
+				}
+
+				$('#test_list').append(myHTML);		    	
+		    }
+		);
+
+	});
+
+    /**
+	 * formatting date and time text/input fields as dropdown selection
+	 */
+	$(function(){
+		$('#dob').combodate({
+			format: 'DD-MM-YYYY', 
+			template: 'D / MMM / YYYY',
+			//min year
+			minYear: '1916'
+		});
+	});
+
+    $(function(){
+    	$('#datetime12').combodate();  
+	});
+
+	/**
+	 *Convert Age to date and visa viz
+	 */
+	$("#dob").change(function(){
+		set_age();			
+	});
+
+	$("#age").change(function(){
+		set_dob();		
+	});
+
+	$("#id_age_units").change(function(){
+		set_dob();			
+	});
+
+	function round1(val){
+		return Math.round(val*10)/10;
+	}
+
+	function set_dob(){
+		var date_now = new Date();
+		var now_s = date_now.getTime();
+		var age = $("#age").val();
+		var units = $("#id_age_units").val();
+		if(units=='M'){
+			var age = age/12;
+		}
+		var age_s = age*365*24*3600*1000;
+		var dob_s = now_s-age_s;
+		var dob = new Date(dob_s);
+		$("#dob").combodate('setValue', dob);
+	}
+
+	function set_age(){
+
+		var dob = new Date($("#dob").val());
+		var dob_s = dob.getTime();
+		var yrs = (now_s-dob_s)/(365*24*3600*1000) || 0;
+		if(yrs<1){
+			var mths = yrs*12;
+			$("#age").val(round1(mths));
+			$("#id_age_units").val("M");
+		}else{
+			$("#age").val(round1(yrs));
+			$("#id_age_units").val("Y");
+		}
+	}
+
+	
+	/**
+	 * Disable Bed No: input field  based on Visit type selected
+	 */
+	 $("#visit_type").on('change', function() {
+    	if(this.value === "0" || this.value === "null") {
+    		$("#bed_no").prop("disabled", true);
+    	} else{
+    		$("#bed_no").prop("disabled", false);
+    	}
+	});
+
+	/**
+	 * Display other (specify) text field when other is selected during specimen refferal storage condition selection
+	 */
+
+	$(function () {
+		$("#storage_condition").on('change',function () {
+            if ($(this).val() == "3") {
+                $("#other_storage").show();
+            } else {
+                $("#other_storage").hide();
+            }
+        });
+    }); 
+
+    /**
+	 * Display other (specify) text field when other is selected during specimen refferal type of transport selection
+	 */
+
+	$(function () {
+		$("#transport_type").on('change',function () {
+            if ($(this).val() == "4") {
+                $("#other_transport").show();
+            } else {
+                $("#other_transport").hide();
+            }
+        });
+    }); 
+
 	/** 
 	 * Fetch Test results
 	 */
@@ -512,18 +663,57 @@ $(function(){
 			}
 		});
 	});
+	/**
+	 * Repeat of above AJAX request for UNHLS test pages
+	 */
+
+	 $('#new-test-modal-unhls .search-patient').click(function(){
+		var searchText = $('#new-test-modal-unhls .search-text').val();
+		var url = location.protocol+ "//"+location.host+ "/unhls_patient/search";
+		var output = "";
+		var cnt = 0;
+		$.post(url, { text: searchText}).done(function(data){
+			$.each($.parseJSON(data), function (index, obj) {
+				output += "<tr>";
+				output += "<td><input type='radio' value='" + obj.id + "' name='pat_id'></td>";
+				output += "<td>" + obj.patient_number + "</td>";
+				output += "<td>" + obj.name + "</td>";
+				output += "</tr>";
+				cnt++;
+			});
+			$('#new-test-modal-unhls .table tbody').html( output );
+			if (cnt === 0) {
+				$('#new-test-modal-unhls .table').hide();
+			} else {
+				$('#new-test-modal-unhls .table').removeClass('hide');
+				$('#new-test-modal-unhls .table').show();
+			}
+		});
+	});
 
 
 	/* 
 	* Prevent patient search modal form submit (default action) when the ENTER key is pressed
 	*/
 
-	$('#new-test-modal .search-text').keypress(function( event ) {
+	$('#new-test-modal, #new-test-modal-unhls .search-text').keypress(function( event ) {
 		if ( event.which == 13 ) {
 			event.preventDefault();
 			$('#new-test-modal .search-patient').click();
 		}
 	});
+
+	/* 
+	* Repeat of above code for UNHLS to Prevent patient search modal form submit (default action) when the ENTER key is pressed
+	
+
+	$('#new-test-modal-unhls .search-text').keypress(function( event ) {
+		if ( event.which == 13 ) {
+			event.preventDefault();
+			$('#new-test-modal-unhls .search-patient').click();
+		}
+	}); */
+
 
 	/** - Get a Test->id from the button clicked,
 	 *  - Fetch corresponding test and default specimen data
@@ -723,6 +913,32 @@ $(function(){
 			theRadio.prop("checked", true);
 			$('#new-test-modal #patient_id').val(theRadio.val());
 			$('#new-test-modal .modal-footer .next').prop('disabled', false);
+		});
+	});
+
+	/**
+	 *-----------------------------------
+	 * Section for AJAX loaded components ----A repeat of above code for UNHLS test
+	 *-----------------------------------
+	 */
+	$( document ).ajaxComplete(function() {
+		/* - Identify the selected patient by setting the hidden input field
+		   - Enable the 'Next' button on the modal
+		*/
+		$('#new-test-modal-unhls .table input[type=radio]').click(function(){
+			$('#new-test-modal-unhls #patient_id').val($(this).val());
+			$('#new-test-modal-unhls .modal-footer .next').prop('disabled', false);
+
+		});
+		/* - Check the radio button when the row is clicked
+		   - Identify the selected patient by setting the hidden input field
+		   - Enable the 'Next' button on the modal
+		*/
+		$('#new-test-modal-unhls .patient-search-result tr td').click(function(){
+			var theRadio = $(this).parent().find('td input[type=radio]');
+			theRadio.prop("checked", true);
+			$('#new-test-modal-unhls #patient_id').val(theRadio.val());
+			$('#new-test-modal-unhls .modal-footer .next').prop('disabled', false);
 		});
 	});
 
@@ -1096,5 +1312,8 @@ $(function(){
 					);
 				}
 			);                               
-        }                            
+        }  
+                         
     }
+
+

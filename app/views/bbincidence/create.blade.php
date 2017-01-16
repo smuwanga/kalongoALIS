@@ -3,14 +3,14 @@
 	<div>
 		<ol class="breadcrumb">
 		  <li><a href="{{{URL::route('user.home')}}}">{{ trans('messages.home') }}</a></li>
-		  <li><a href="{{ URL::route('bbincidence.index') }}">BB Incidences</a></li>
-		  <li class="active">New BB Incidence</li>
+		  <li><a href="{{ URL::route('bbincidence.index') }}">BB Incidents</a></li>
+		  <li class="active">New BB Incident</li>
 		</ol>
 	</div>
 	<div class="panel panel-primary">
 		<div class="panel-heading ">
 			<span class="glyphicon glyphicon-user"></span>
-			New BB Incidence 
+			New BB Incident 
 		</div>
 		<div class="panel-body">
 		<!-- if there are creation errors, they will show here -->
