@@ -92,7 +92,7 @@ class EquipmentInventoryController extends \BaseController {
 			$item->model = Input::get('model');
 			$item->serial_number = Input::get('serial_number');
 			$item->location = Input::get('location');
-			$item->procurement_type = Input::get('service_contract'); 
+			$item->procurement_type = Input::get('procurement_type'); 
 			$item->purchase_date = Input::get('purchase_date');      
 			$item->delivery_date = Input::get('delivery_date');      
 			$item->verification_date = Input::get('verification_date');      

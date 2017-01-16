@@ -10,7 +10,9 @@ class EquipmentMaintenanceController extends \BaseController {
 	public function index()
 	{
 		//
-		return View::make('equipment.maintenance.index');		
+		$list = UNHLSEquipmentMaintenance::get();
+		return View::make('equipment.maintenance.index')
+			->with('list',$list);		
 	}
 
 
@@ -22,7 +24,12 @@ class EquipmentMaintenanceController extends \BaseController {
 	public function create()
 	{
 		//
-		return View::make('equipment.maintenance.create');
+
+		$equipment_list = UNHLSEquipmentInventory::get()->lists('name','id');
+		$supplier_list = Supplier::get()->lists('name','id');
+		return View::make('equipment.maintenance.create')
+				->with('equipment_list',$equipment_list)
+				->with('supplier_list',$supplier_list);
 
 	}
 
@@ -35,6 +42,41 @@ class EquipmentMaintenanceController extends \BaseController {
 	public function store()
 	{
 		//
+		$rules = array(
+		'equipment_id' => 'required',
+		'service_date' => 'required',
+		'next_service_date' => 'required',
+		'serviced_by' => 'required',
+		'serviced_by_phone' => 'required',
+		'supplier_id' => 'required'									
+
+		);
+		
+		$validator = Validator::make(Input::all(), $rules);
+
+		if ($validator->fails()) {
+			return Redirect::back()->withErrors($validator);
+		} else {
+
+			$item = new UNHLSEquipmentMaintenance;
+
+        	$item->district_id = \Config::get('constants.DISTRICT_ID') ;
+        	$item->facility_id = \Config::get('constants.FACILITY_ID');        
+        	$item->year_id = \Config::get('constants.FIN_YEAR_ID');  
+
+			$item->equipment_id = Input::get('equipment_id');
+			$item->last_service_date = Input::get('service_date');
+			$item->next_service_date = Input::get('next_service_date');
+			$item->serviced_by_name = Input::get('serviced_by');
+			$item->serviced_by_contact = Input::get('serviced_by_phone'); 
+			$item->supplier_id = Input::get('supplier_id');      
+			$item->comment = Input::get('comment');          
+
+			$item->save();
+
+			return Redirect::to('equipmentmaintenance');
+		}
+
 	}
 
 
