@@ -18,7 +18,6 @@ class CreateRejectionReasons extends Migration {
 			$table->string("reason", 100);
 		});
 
-		Schema::rename($unhls_test_results, $unhlstest_results$)
 	}
 
 
