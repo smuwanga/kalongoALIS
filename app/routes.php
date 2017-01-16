@@ -734,8 +734,6 @@ Route::group(array("before" => "auth"), function()
         "uses" => "BbincidenceController@responseupdate"
     ));
 
-<<<<<<< HEAD
-
     Route::resource('bike', 'BikeController'); /* Added by Justus */
 
     Route::resource('event', 'EventController'); /* Added by Justus */
@@ -788,13 +786,4 @@ Route::group(array("before" => "auth"), function()
         "uses" => "EventController@eventfilter"
     ));
 
-  /*  // Display all SQL executed in Eloquent
-    Event::listen('illuminate.query', function($query)
-    {
-        var_dump($query);
-=======
-   /* Event::listen('illuminate.query', function($query){
-    var_dump($query);
->>>>>>> b4a0ae928120e1d97fba0b85f14dfff45d22bce6
-    });*/
 });
