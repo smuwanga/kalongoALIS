@@ -53,7 +53,9 @@ Route::group(array("before" => "auth"), function()
         "uses" => "UserController@updateOwnPassword"
         ));
     Route::resource('patient', 'PatientController');
-    Route::get("/patient/{id}/delete", array(
+	Route::resource('bbincidence', 'BbincidenceController'); /* Added by Justus */
+    
+	Route::get("/patient/{id}/delete", array(
         "as"   => "patient.delete",
         "uses" => "PatientController@delete"
     ));
@@ -320,13 +322,17 @@ Route::group(array("before" => "auth"), function()
         "as"   => "test.verify",
         "uses" => "TestController@verify"
     ));
+    Route::resource('culture', 'CultureController');
+    Route::resource('cultureobservation', 'CultureObservationController');
+    Route::resource('drugsusceptibility', 'DrugSusceptibilityController');
+    Route::resource('isolatedorganism', 'IsolatedOrganismController');
     Route::any("/culture/storeObservation", array(
         "as"   => "culture.worksheet",
         "uses" => "CultureController@store"
     ));
     Route::any("/susceptibility/saveSusceptibility", array(
         "as"   => "drug.susceptibility",
-        "uses" => "SusceptibilityController@store"
+        "uses" => "DrugSusceptibilityController@store"
     ));
     Route::group(array("before" => "admin"), function()
     {
@@ -382,15 +388,15 @@ Route::group(array("before" => "auth"), function()
     {
         Route::any("/patientreport", array(
             "as"   => "reports.patient.index",
-            "uses" => "ReportController@loadPatients"
+            "uses" => "UnhlsReportController@loadPatients"
         ));
         Route::any("/patientreport/{id}", array(
             "as" => "reports.patient.report", 
-            "uses" => "ReportController@viewPatientReport"
+            "uses" => "UnhlsReportController@viewPatientReport"
         ));
         Route::any("/patientreport/{id}/{visit}/{testId?}", array(
             "as" => "reports.patient.report", 
-            "uses" => "ReportController@viewPatientReport"
+            "uses" => "UnhlsReportController@viewPatientReport"
         ));
         Route::any("/dailylog", array(
             "as"   => "reports.daily.log",
@@ -549,7 +555,230 @@ Route::group(array("before" => "auth"), function()
             "as"   => "receipt.delete",
             "uses" => "ReceiptController@delete"
         ));
+        //Stock card
+        Route::post("/stockcard/index", array(
+            "as"   => "stockcard.index",
+            "uses" => "StockCardController@index"
+        ));        
+        Route::post("/stockcard/create", array(
+            "as"   => "stockcard.create",
+            "uses" => "StockCardController@create"
+        ));
+        Route::post("/stockcard/store", array(
+            "as"   => "stockcard.store",
+            "uses" => "StockCardController@store"
+        ));
+        Route::get("/stockcard/{id}/delete", array(
+            "as"   => "stockcard.delete",
+            "uses" => "StockCardController@delete"
+        ));
+        Route::resource('stockcard', 'StockCardController');   
+
+        //Stock requisition form
+        Route::post("/stockrequisition/index", array(
+            "as"   => "stockrequisition.index",
+            "uses" => "StockRequisitionController@index"
+        ));        
+        Route::post("/stockrequisition/create", array(
+            "as"   => "stockrequisition.create",
+            "uses" => "StockRequisitionController@create"
+        ));
+        Route::post("/stockrequisition/store", array(
+            "as"   => "stockrequisition.store",
+            "uses" => "StockRequisitionController@store"
+        ));        
+        Route::get("/stockrequisition/{id}/delete", array(
+            "as"   => "stockrequisition.delete",
+            "uses" => "StockRequisitionController@delete"
+        ));
+        Route::resource('stockrequisition', 'StockRequisitionController');
+
+
+        //Equipment supplier form
+       Route::post("/equipmentsupplier/index", array(
+            "as"   => "equipmentsupplier.index",
+            "uses" => "EquipmentSupplierController@index"
+        ));        
+        Route::post("/equipmentsupplier/create", array(
+            "as"   => "equipmentsupplier.create",
+            "uses" => "EquipmentSupplierController@create"
+        ));
+        Route::post("/equipmentsupplier/store", array(
+            "as"   => "equipmentsupplier.store",
+            "uses" => "EquipmentSupplierController@store"
+        ));        
+        Route::get("/equipmentsupplier/{id}/delete", array(
+            "as"   => "equipmentsupplier.delete",
+            "uses" => "EquipmentSupplierController@delete"
+        ));
+        Route::resource('equipmentsupplier', 'EquipmentSupplierController');
+ 
+
+        //Equipment inventory
+       Route::post("/equipmentinventory/index", array(
+            "as"   => "equipmentinventory.index",
+            "uses" => "EquipmentInventoryController@index"
+        ));        
+        Route::post("/equipmentinventory/create", array(
+            "as"   => "equipmentinventory.create",
+            "uses" => "EquipmentInventoryController@create"
+        ));
+        Route::post("/equipmentinventory/store", array(
+            "as"   => "equipmentinventory.store",
+            "uses" => "EquipmentInventoryController@store"
+        ));        
+        Route::get("/equipmentinventory/{id}/delete", array(
+            "as"   => "equipmentinventory.delete",
+            "uses" => "EquipmentInventoryController@delete"
+        ));
+        Route::resource('equipmentinventory', 'EquipmentInventoryController');
+
+        //Equipment maintenance
+       Route::post("/equipmentmaintenance/index", array(
+            "as"   => "equipmentmaintenance.index",
+            "uses" => "EquipmentMaintenanceController@index"
+        ));        
+        Route::post("/equipmentmaintenance/create", array(
+            "as"   => "equipmentmaintenance.create",
+            "uses" => "EquipmentMaintenanceController@create"
+        ));
+        Route::post("/equipmentmaintenance/store", array(
+            "as"   => "equipmentmaintenance.store",
+            "uses" => "EquipmentMaintenanceController@store"
+        ));        
+        Route::get("/equipmentmaintenance/{id}/delete", array(
+            "as"   => "equipmentmaintenance.delete",
+            "uses" => "EquipmentMaintenanceController@delete"
+        ));
+        Route::resource('equipmentmaintenance', 'EquipmentMaintenanceController');
+
+
+        //Equipment breakdown
+       Route::post("/equipmentbreakdown/index", array(
+            "as"   => "equipmentbreakdown.index",
+            "uses" => "EquipmentBreakdownController@index"
+        ));        
+        Route::post("/equipmentbreakdown/create", array(
+            "as"   => "equipmentbreakdown.create",
+            "uses" => "EquipmentBreakdownController@create"
+        ));
+        Route::post("/equipmentbreakdown/store", array(
+            "as"   => "equipmentbreakdown.store",
+            "uses" => "EquipmentBreakdownController@store"
+        ));        
+        Route::get("/equipmentbreakdown/{id}/delete", array(
+            "as"   => "equipmentbreakdown.delete",
+            "uses" => "EquipmentBreakdownController@delete"
+        ));
+        Route::resource('equipmentbreakdown', 'EquipmentBreakdownController');
+
+
+        //API controller        
+        Route::resource('apite', 'ApiController');       
+        Route::post("/apite/facility", array(
+            "as"   => "apite.facility",
+            "uses" => "ApiController@facility"
+        ));
+
+        //Route::get('api/facility-by-district/{districtId}', 'ApiController@getFacilityListByDistrict');
+
     });
+	
+	Route::resource('bbincidence', 'BbincidenceController'); /* Added by Justus */
+    
+	Route::get("/bbincidence/clinical/clinical", array(
+        "as"   => "bbincidence.clinical",
+        "uses" => "BbincidenceController@clinical"
+    ));
+	
+	Route::get("/bbincidence/{id}/clinicaledit", array(
+        "as"   => "bbincidence.clinicaledit",
+        "uses" => "BbincidenceController@clinicaledit"
+    ));
+
+    Route::any("/bbincidence/{id}/clinicalupdate", array(
+        "as"   => "bbincidence.clinicalupdate",
+        "uses" => "BbincidenceController@clinicalupdate"
+    ));
+
+    Route::any("/bbincidence/bbfacilityreport/bbfacilityreport", array(
+        "as"   => "bbincidence.bbfacilityreport",
+        "uses" => "BbincidenceController@bbfacilityreport"
+    ));
+
+    Route::get("/bbincidence/{id}/analysisedit", array(
+        "as"   => "bbincidence.analysisedit",
+        "uses" => "BbincidenceController@analysisedit"
+    ));
+
+    Route::any("/bbincidence/{id}/analysisupdate", array(
+        "as"   => "bbincidence.analysisupdate",
+        "uses" => "BbincidenceController@analysisupdate"
+    ));
+
+    Route::get("/bbincidence/{id}/responseedit", array(
+        "as"   => "bbincidence.responseedit",
+        "uses" => "BbincidenceController@responseedit"
+    ));
+
+    Route::any("/bbincidence/{id}/responseupdate", array(
+        "as"   => "bbincidence.responseupdate",
+        "uses" => "BbincidenceController@responseupdate"
+    ));
+
+
+    Route::resource('bike', 'BikeController'); /* Added by Justus */
+
+    Route::resource('event', 'EventController'); /* Added by Justus */
+
+    // Route for downloading event reports
+    Route::get('/attachments', 'EventController@downloadAttachment');
+
+    Route::any("/event/{id}/editobjectives", array(
+        "as"   => "event.editobjectives",
+        "uses" => "EventController@editobjectives"
+    ));
+
+    Route::any("/event/{id}/updateobjectives", array(
+        "as"   => "event.updateobjectives",
+        "uses" => "EventController@updateobjectives"
+    ));
+
+    Route::any("/event/{id}/editlessons", array(
+        "as"   => "event.editlessons",
+        "uses" => "EventController@editlessons"
+    ));
+
+    Route::any("/event/{id}/updatelessons", array(
+        "as"   => "event.updatelessons",
+        "uses" => "EventController@updatelessons"
+    ));
+
+    Route::any("/event/{id}/editrecommendations", array(
+        "as"   => "event.editrecommendations",
+        "uses" => "EventController@editrecommendations"
+    ));
+
+    Route::any("/event/{id}/updaterecommendations", array(
+        "as"   => "event.updaterecommendations",
+        "uses" => "EventController@updaterecommendations"
+    ));
+
+    Route::any("/event/{id}/editactions", array(
+        "as"   => "event.editactions",
+        "uses" => "EventController@editactions"
+    ));
+
+    Route::any("/event/{id}/updateactions", array(
+        "as"   => "event.updateactions",
+        "uses" => "EventController@updateactions"
+    ));
+
+    Route::any("/event/eventfilter/eventfilter", array(
+        "as"   => "event.eventfilter",
+        "uses" => "EventController@eventfilter"
+    ));
+
   /*  // Display all SQL executed in Eloquent
     Event::listen('illuminate.query', function($query)
     {

@@ -91,27 +91,22 @@
 			<div class="form-group organismsClass" <?php if($checked==true){ ?>style="dispaly:block;"<?php }else{ ?>style="display:none;"<?php } ?>>
 				{{ Form::label('organisms', trans('messages.select-organisms')) }}
 				<div class="form-pane panel panel-default">
+
+
 					<div class="container-fluid">
-						<?php 
-							$counter = 0;
-							$alternator = "";
-						?>
-						@foreach($organisms as $key=>$val)
-							{{ ($counter%4==0)?"<div class='row $alternator'>":"" }}
-							<?php
-								$counter++;
-								$alternator = (((int)$counter/4)%2==1?"row-striped":"");
-							?>
+						<div class='row $alternator'>
 							<div class="col-md-3">
 								<label  class="checkbox">
-									<input type="checkbox" name="organisms[]" value="{{ $val->id}}" 
-										{{ in_array($val->id, $testtype->organisms->lists('id'))?"checked":"" }} >
-										{{ $val->name }}
+									<input type="checkbox" name="organisms[]" value="1">
+										fmgnbdfg
 								</label>
 							</div>
-							{{ ($counter%4==0)?"</div>":"" }}
-						@endforeach
 						</div>
+					</div>
+
+
+
+
 				</div>
 			</div>
 		</div>

@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
-class Susceptibility extends Eloquent
+class DrugSusceptibility extends Eloquent
 {
 	/**
 	 * Enabling soft deletes for drug susceptibility.

@@ -208,5 +208,13 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 
 		return $tests->get();
 	}
+	
+	/**
+	 * Facility relationship
+	 */
+	public function facility()
+	{
+		return $this->belongsTo('UNHLSFacility', 'facility_id', 'id');
+	}
 
 }

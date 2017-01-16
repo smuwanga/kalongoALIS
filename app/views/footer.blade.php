@@ -27,11 +27,33 @@
 			</div>
 		</div>
 	</div>
-
+<hr>
     <footer class="footer">
+        <div class="row">
+        	<div class="col-md-2 col-md-offset-3">
+        		<a href="http://health.go.ug/" target="_blank">
+        			<img src="{{ Config::get('kblis.uganda-logo') }}" alt="Government of Uganda">
+        		</a>	
+        	</div>
+
+            <div class="col-md-2">
+                <a href="http://www.cdc.gov/" target="_blank">
+        			<img src="{{ Config::get('kblis.cdc-logo') }}" alt="Centres for Disease Control and Prevention">
+        		</a>
+        	</div>
+
+            <div class="col-md-2">
+                <a href="http://www.cdc.gov/" target="_blank">
+        			<img src="{{ Config::get('kblis.aslm-logo') }}" alt="African Society for Laboratory Medicine">
+        		</a>
+        	</div>
+
+        </div>
+
         <div>
-        		{{ HTML::link('http://www.ilabafrica.ac.ke', 'iLabAfrica')}} &copy; {{date("Y")}}
+        		{{ HTML::link('http://www.cphl.go.ug', 'UNHLS &copy; ' . date("Y"))}}
         </div>
     </footer>
+
     <!-- End footer section-->
 @show

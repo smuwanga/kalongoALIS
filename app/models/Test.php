@@ -94,14 +94,14 @@ class Test extends Eloquent
 	 */
 	public function culture()
 	{
-		return $this->hasMany('Culture');
+		return $this->hasOne('Culture');
 	}
 	/**
 	 * Drug susceptibility relationship
 	 */
 	public function susceptibility()
 	{
-		return $this->hasMany('Susceptibility');
+		return $this->hasMany('DrugSusceptibility');
 	}
 	/***
 	 * Requesting staff relationship
@@ -635,4 +635,7 @@ class Test extends Eloquent
 	public function external(){
 		return ExternalDump::where('lab_no', '=', $this->external_id)->get()->first();
 	}
+	/**
+	 * Check if the test requires a culture and sensitivity analysis worksheet
+	 */
 }

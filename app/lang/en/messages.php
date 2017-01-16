@@ -16,6 +16,7 @@ return array(
     'cancel' => 'Cancel',
     'close' => 'Close',
     'create' => 'Create',
+    'comment' => 'Comment',
     'date-created' => 'Date Created',
     'delete' => 'Delete',
     'description' => 'Description',
@@ -41,6 +42,7 @@ return array(
     'photo' => 'Photo',
     'role' => 'Role|Roles',
     'save' => 'Save',
+    'submit' => 'Submit',
     'save-all' => 'Save All',
     'type' => 'Type',
     'unit' => 'Unit',
@@ -295,6 +297,7 @@ return array(
     'select-isolates'   =>  'Select Isolated Organisms',
     'zone-size' =>  'Zone size (mm)',
     'interp'    =>  'Interpretation (S, I, R)',
+    'set-to-completed' =>  'Set to Completed',
 
     /**
      *  Tests
@@ -724,4 +727,39 @@ return array(
     'follow-up' =>  'Follow Up',
     'cd4-less'  =>  '< 500',
     'cd4-greater'   =>  '> 500',   
+	
+	
+	/**
+	* BB Incidences
+	*/
+	'bbincidence' => 'BB Incidence | BB Incidences',
+	'new-bbincidence' => 'New BB Incidence',
+	'incident-serial-number' => 'Incident Serial Number',
+	'date-of-occurrence' => 'Date of Occurrence',
+	'time-of-occurrence' => 'Time of Occurrence',
+	'age' => 'Age',
+	'dob' => 'Date of Birth',
+	'filter' => 'Filter',
+	
+	
+
+    //BLIS uganda
+    'stock-card' => 'Stock card' ,   
+    'equipment-log' => 'Equipment log',
+    'requisition-voucher'=>'Requisition voucher',
+    'stock-entries'=> 'Stock Entries',
+    'add-stock'=> 'Add',
+    'stock-list'=> 'Stock List',
+    'stock-requisition' => 'Stockbook',    
+    'edit-stock-entry'=> 'Edit',
+    'stock-succesfully-deleted' => 'Stock has been succesfully deleted',
+    'stock-succesfully-added' => 'Successifully added a new stock entry',
+    'settings' => 'Settings',
+    'add-stock'=> 'Add',
+    'equipment-list'=> 'Equipment List',      
+    'equipment-breakdown'=> 'Equipment breakdown', 
+    'equipment-maintenance'=> 'Equipment maintenance',         
+    'supplier-list'=> 'Supplier List',    
+    'add'=> 'Add',
+
 );
