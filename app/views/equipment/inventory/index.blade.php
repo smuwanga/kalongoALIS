@@ -30,7 +30,7 @@
   		<table class="table table-striped search-table small-font">
 			<thead>
 				<tr>
-					<th>Type</th>
+
 					<th>Name</th>
 					<th>Model</th>
 					<th>Serial number</th>
@@ -48,28 +48,28 @@
 				</tr>
 			</thead>			
 			<tbody>
-			
+			@foreach($items as $item)
 				<tr>
-				<td>  </td>
-				<td>  </td>
-				<td>  </td>
-				<td>  </td>
-				<td>  </td>
 
-				<td>  </td>
-				<td>  </td>
-				<td>  </td>
-				<td>  </td>
-				<td>  </td>
+				<td> {{ $item->name }} </td>
+				<td> {{ $item->model }} </td>
+				<td> {{ $item->serial_number }}  </td>
+				<td> {{ $location[$item->location] }}</td>
+				<td> {{ $procurement_type[$item->procurement_type] }}</td>
 
-				<td>  </td>
-				<td>  </td>
-				<td>  </td>
-				<td>  </td>
-				<td>  </td>
+				<td>  {{ date('d M Y', strtotime($item->purchase_date)) }}</td>
+				<td>  {{ date('d M Y', strtotime($item->delivery_date)) }}</td>
+				<td>  {{ date('d M Y', strtotime($item->verification_date)) }}</td>
+				<td>  {{ date('d M Y', strtotime($item->installation_date)) }}</td>
+
+				<td class="text-center">  {{ $yes_no[$item->spare_parts]  }}</td>
+				<td>  {{ $item->warranty. ' years' }}</td>
+				<td>  {{ $item->life_span . ' years'}}</td>
+				<td>  {{ $service_frequency[$item->service_frequency] }}</td>
+				<td class="text-center">  {{ $yes_no[$item->service_contract] }}</td>
 							
 				</tr>
-	
+			@endforeach	
 			</tbody>
   		</table>
 	</div>

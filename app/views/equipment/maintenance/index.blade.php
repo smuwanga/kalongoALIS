@@ -31,13 +31,11 @@
 			<thead>
 				<tr>
 					<th>Date</th>
-					<th>Type</th>
 					<th>Name</th>
 					<th>Frequency</th>
 					<th>Last Service</th>
 					<th>Next Service</th>
 					<th>Serviced by</th>
-					<th>Maintained by</th>
 					<th>Contact</th>
 					<th>Supplier</th>
 					<th>Comment</th>																			
@@ -46,18 +44,15 @@
 			<tbody>
 			
 				<tr>
-				<td>  </td>
-				<td>  </td>
-				<td>  </td>
-				<td>  </td>
-				<td>  </td>
-				<td>  </td>
-				<td>  </td>
-				<td>  </td>
-				<td>  </td>
-				<td>  </td>
-				<td>  </td>
-						
+					<td>  </td>
+					<td>  </td>
+					<td>  </td>
+					<td>  </td>
+					<td>  </td>
+					<td>  </td>
+					<td>  </td>
+					<td>  </td>
+					<td>  </td>
 				</tr>
 	
 			</tbody>
