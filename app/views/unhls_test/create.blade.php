@@ -113,8 +113,8 @@
 									</div>
 							</div> <!--div that closes the panel div for clinical and sample information -->
 							<div class="form-group">
-								{{ Form::label('sample_date', 'Date of Sample Collection') }}
-								{{Form::text('sample_date', Input::old('sample_date'), array('class' => 'form-control standard-datepicker'))}}
+								{{ Form::label('collection_date', 'Date of Sample Collection') }}
+								{{Form::text('collection_date', Input::old('collection_date'), array('class' => 'form-control standard-datepicker'))}}
 								{{ Form::label('sample_time', 'Time of Sample Collection') }}
 								{{Form::text('sample_time', Input::old('sample_time'), array('class' => 'form-control', 'placeholder' => 'HH:MM'))}}
 							</div>
@@ -125,8 +125,8 @@
 								{{Form::text('cadre_obtainer', Input::old('cadre_obtainer'), array('class' => 'form-control'))}}
 							</div>
 							<div class="form-group">
-								{{ Form::label('sample_date', 'Date sample recieved in Lab') }}
-								{{Form::text('sample_date', Input::old('sample_date'), array('class' => 'form-control standard-datepicker'))}}
+								{{ Form::label('recieved_date', 'Date sample recieved in Lab') }}
+								{{Form::text('recieved_date', Input::old('recieved_date'), array('class' => 'form-control standard-datepicker'))}}
 								{{ Form::label('sample_time', 'Time Sample Recieved in Lab') }}
 								{{Form::text('sample_time', Input::old('sample_time'), array('class' => 'form-control', 'placeholder' => 'HH:MM'))}}
 							</div>
