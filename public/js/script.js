@@ -470,68 +470,12 @@ $(function(){
 	 *Fetch tests for selected Lab category when requesting 
 	 */
 
-	 //Jquery for UNHLS goes in here!!!!!
-	$('#test_cat2').on('change', function() {
-		var testCatId = this.value;
-	 	//alert("You succesfully hooked onto test_cat");
-	 	$.ajax(
-		{
-		    url: "/unhls_test/testlist",
-		    type: 'POST',
-		    dataType: 'json',
-		    data: {id: testCatId}, 
-		}).done( 
-		    function(data) 
-		    {
-		        //$('#details').html(data);
-		        //alert("Done with request");
-		        //$.('#test_list').html();
-		        //<label  class="editor-active">
-												//<input type="checkbox" name="testtypes[]" value="1" />
-												//</label>
-				//var json = JSON.parse(data);
-
-		        /*$.each(data, function() {
-		        	//var x=0;
-		        	var ths = "<thead><tr><th>{{ Lang::choice('messages.test',2) }}<th><th>{{ trans('messages.actions') }}</th></tr></thead>";
-      	        	var tds = "";
-		        	$.each(this, function(item){
-		        		//console.log( i + '=' + item);
-		        		console.log(item.name);
-		        		//if(i == "id"){
-		        			tds += "<td>" + item.name + "</td>" +
-		        			"<td><label class ='editor-active'><input type ='checkbox' name='testtypes[]' value = "+ this.name + "></label></td>"; 
-		        		//}
-		        	});
-		        	$('#test_list').append("<tr>" + tds + "</tr>");
-		        });*/
-				    $.each(data, function(i, item) {
-		        	//var x=0;
-		        	//var ths = "<thead><tr><th>{{ Lang::choice('messages.test',2) }}<th><th>{{ trans('messages.actions') }}</th></tr></thead>";
-      	        	var tds = "";
-		        	//$.each(this, function(item){
-		        		//console.log( i + '=' + item);
-		        		console.log(item.id);
-		        		//if(i == "id"){
-		        			tds += "<td>" + item.name + "</td>" +
-		        			"<td><label class ='editor-active'><input type ='checkbox' name='testtypes[]' value = "+ item.id + "></label></td>"; 
-		        		//}
-		        	//});
-		        	$('#test_list').append("<tr>" + tds + "</tr>");
-		        });
-		        
-		        
-		    }
-		);
-
-	});
-
-	 //Jquery for UNHLS goes in here!!!!!
+	 //Jquery for UNHLS kind of test menu goes in here!!!!!
 	$('#test_cat').on('change', function() {
 		var testCatId = this.value;
+        var labSec = $(this).find("option:selected").text();
 		var cnt =0;
 		var zebra ="";
-	 	//alert("You succesfully hooked onto test_cat");
 	 	$.ajax(
 		{
 		    url: "/unhls_test/testlist",
@@ -544,6 +488,7 @@ $(function(){
       	        var myHTML = '';
       	        var count = 0;
 				var item_per_row = 4;
+                myHTML += '<h4 align="left">' + labSec + '</h4></br>';
 				$.each(data, function(i, item) {
 				    /*optional stuff to do after success */
 					if (count === 0) { // Start of a row
@@ -592,8 +537,7 @@ $(function(){
 	});
 
 	$("#age").change(function(){
-		set_dob();	
-		//alert("some action");		
+		set_dob();		
 	});
 
 	$("#id_age_units").change(function(){
@@ -619,8 +563,7 @@ $(function(){
 	}
 
 	function set_age(){
-		//var date_now = new Date();
-		//var now_s = date_now.getTime();
+
 		var dob = new Date($("#dob").val());
 		var dob_s = dob.getTime();
 		var yrs = (now_s-dob_s)/(365*24*3600*1000) || 0;
@@ -750,7 +693,7 @@ $(function(){
 	* Prevent patient search modal form submit (default action) when the ENTER key is pressed
 	*/
 
-	$('#new-test-modal .search-text').keypress(function( event ) {
+	$('#new-test-modal, #new-test-modal-unhls .search-text').keypress(function( event ) {
 		if ( event.which == 13 ) {
 			event.preventDefault();
 			$('#new-test-modal .search-patient').click();
@@ -759,14 +702,14 @@ $(function(){
 
 	/* 
 	* Repeat of above code for UNHLS to Prevent patient search modal form submit (default action) when the ENTER key is pressed
-	*/
+	
 
 	$('#new-test-modal-unhls .search-text').keypress(function( event ) {
 		if ( event.which == 13 ) {
 			event.preventDefault();
 			$('#new-test-modal-unhls .search-patient').click();
 		}
-	});
+	}); */
 
 
 	/** - Get a Test->id from the button clicked,
