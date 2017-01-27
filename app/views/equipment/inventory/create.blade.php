@@ -3,7 +3,7 @@
 <div>
 	<ol class="breadcrumb">
         <li><a href="{{{URL::route('user.home')}}}">{{trans('messages.home')}}</a></li>
-        <li><a href="{{{URL::route('equipmentsupplier.index')}}}">{{trans('messages.equipment-list')}}</a></li>
+        <li><a href="{{{URL::route('equipmentinventory.index')}}}">{{trans('messages.equipment-list')}}</a></li>
         <li class="active">{{ Lang::choice('messages.equipment',2) }}</li>
 	</ol>
 
@@ -26,19 +26,19 @@
 	<div class="panel-body">
 
 	
-      {{ Form::open(array('url' => 'equipmentsupplier/store', 'autocomplete' => 'off', 'class' => 'form-horizontal', 'data-toggle' => 'validator')) }}
+      {{ Form::open(array('url' => 'equipmentinventory/store', 'autocomplete' => 'off', 'class' => 'form-horizontal', 'data-toggle' => 'validator')) }}
 
                             <fieldset> 
 
 
                                 <div class="form-group">
-                                {{ Form::label('supplier_name', 'Name', ['class' => 'col-md-2 control-label']) }}
+                                {{ Form::label('equipment_name', 'Name', ['class' => 'col-md-2 control-label']) }}
                                   <div class="col-md-3">
-                                        {{ Form::text('supplier_name',null,['class' => 'form-control','placeholder' => 'Name', 'required' => 'true']) }}
+                                        {{ Form::text('equipment_name',null,['class' => 'form-control','placeholder' => 'Name', 'required' => 'true']) }}
 
-                                        @if ($errors->has('supplier_name'))
+                                        @if ($errors->has('equipment_name'))
                                             <span class="text-danger">
-                                                <strong>{{ $errors->first('supplier_name') }}</strong>
+                                                <strong>{{ $errors->first('equipment_name') }}</strong>
                                             </span>
                                         @endif
 
@@ -74,13 +74,13 @@
                                 </div>
 
                                 <div class="form-group">
-                                {{  Form::label('service_contract', 'Location', array('class'=>'control-label')) }}
+                                {{  Form::label('location', 'Location', array('class'=>'control-label')) }}
                                   <div class="col-md-4">
-                                        {{ Form::select('service_contract', array(null => '')+ array('0' => 'Chemistry', '1' => 'Microbiology'), Input::old('service_contract'), array('class' => 'form-control', 'id' => 'service_contract_id')) }}  
+                                        {{ Form::select('location', array(null => 'Select')+ array('0' => 'Chemistry', '1' => 'Microbiology'), Input::old('location'), array('class' => 'form-control', 'id' => 'location_contract_id')) }}  
                                       
-                                        @if ($errors->has('life_time'))
+                                        @if ($errors->has('location'))
                                             <span class="text-danger">
-                                                <strong>{{ $errors->first('life_time') }}</strong>
+                                                <strong>{{ $errors->first('location') }}</strong>
                                             </span>
                                         @endif
 
@@ -88,13 +88,13 @@
                                 </div>  
 
                                 <div class="form-group">
-                                {{  Form::label('service_contract', 'Procurement type', array('class'=>'control-label')) }}
+                                {{  Form::label('procurement_type', 'Procurement type', array('class'=>'control-label')) }}
                                   <div class="col-md-4">
-                                        {{ Form::select('service_contract', array(null => '')+ array('0' => 'Placement', '1' => 'Procured'), Input::old('service_contract'), array('class' => 'form-control', 'id' => 'service_contract_id')) }}  
+                                        {{ Form::select('procurement_type', array(null => 'Select')+ array('0' => 'Placement', '1' => 'Procured'), Input::old('procurement_type'), array('class' => 'form-control', 'id' => 'procurement_type_id')) }}  
                                       
-                                        @if ($errors->has('life_time'))
+                                        @if ($errors->has('procurement_type'))
                                             <span class="text-danger">
-                                                <strong>{{ $errors->first('life_time') }}</strong>
+                                                <strong>{{ $errors->first('procurement_type') }}</strong>
                                             </span>
                                         @endif
 
@@ -119,7 +119,7 @@
                                 <div class="form-group">
                                 {{ Form::label('delivery_date', 'Delivery date', ['class' => 'col-md-2 control-label']) }}
                                   <div class="col-md-4">
-                                        {{ Form::text('delivery_date', Input::old('purchase_date'),array('class' => 'form-control standard-datepicker','required'=>'required')) }}
+                                        {{ Form::text('delivery_date', Input::old('delivery_date'),array('class' => 'form-control standard-datepicker','required'=>'required')) }}
 
                                         @if ($errors->has('delivery_date'))
                                             <span class="text-danger">
@@ -161,13 +161,13 @@
                                 </div>
 
                                 <div class="form-group">
-                                {{  Form::label('service_contract', 'Spare parts', array('class'=>'control-label')) }}
+                                {{  Form::label('spare_parts', 'Spare parts', array('class'=>'control-label')) }}
                                   <div class="col-md-4">
-                                        {{ Form::select('service_contract', array(null => '')+ array('0' => 'Yes', '1' => 'No'), Input::old('service_contract'), array('class' => 'form-control', 'id' => 'service_contract_id')) }}  
+                                        {{ Form::select('spare_parts', array(null => 'Select')+ $yes_no_list, Input::old('spare_parts'), array('class' => 'form-control', 'id' => 'spare_parts_id','required'=>'required')) }}  
                                       
-                                        @if ($errors->has('life_time'))
+                                        @if ($errors->has('spare_parts'))
                                             <span class="text-danger">
-                                                <strong>{{ $errors->first('life_time') }}</strong>
+                                                <strong>{{ $errors->first('spare_parts') }}</strong>
                                             </span>
                                         @endif
 
@@ -175,13 +175,13 @@
                                 </div>                                  
 
                                 <div class="form-group">
-                                {{  Form::label('service_frequency', 'Warranty period', array('class'=>'control-label')) }}
+                                {{  Form::label('warranty', 'Warranty period', array('class'=>'control-label')) }}
                                   <div class="col-md-4">
-                                        {{ Form::select('service_frequency', array(null => '')+ array('0' => '1 year', '1' => '2 years', '2' => '3 years', '4' => '4 years', '5' => '5 years'), Input::old('service_frequency'), array('class' => 'form-control', 'id' => 'service_frequency_id')) }}  
+                                        {{ Form::select('warranty', array(null => 'Select')+ $warranty_list, Input::old('warranty'), array('class' => 'form-control', 'id' => 'warranty_id','required'=>'required')) }}  
                                       
-                                        @if ($errors->has('service_frequency'))
+                                        @if ($errors->has('warranty'))
                                             <span class="text-danger">
-                                                <strong>{{ $errors->first('service_frequency') }}</strong>
+                                                <strong>{{ $errors->first('warranty') }}</strong>
                                             </span>
                                         @endif
 
@@ -190,7 +190,7 @@
 
                                 <div class="form-group">
                                 {{ Form::label('life_time', 'Lifetime', ['class' => 'col-md-2 control-label']) }}
-                                  <div class="col-md-3">
+                                  <div class="col-md-2">
                                         <div class="input-group">
                                             {{ Form::number('life_time',null,['class' => 'form-control','placeholder' => 'Lifetime', 'required' => 'true']) }}
                                               <span class="input-group-addon">Years</span>
@@ -209,7 +209,7 @@
                                 <div class="form-group">
                                 {{  Form::label('service_frequency', 'Service frequency', array('class'=>'control-label')) }}
                                   <div class="col-md-4">
-                                        {{ Form::select('service_frequency', array(null => '')+ array('0' => '3 months', '1' => '6 months', '2' => '9 months', '4' => '12 months'), Input::old('service_frequency'), array('class' => 'form-control', 'id' => 'service_frequency_id')) }}  
+                                        {{ Form::select('service_frequency', array(null => 'Select')+ $service_frequency_list, Input::old('service_frequency'), array('class' => 'form-control', 'id' => 'service_frequency_id','required'=>'required')) }}  
                                       
                                         @if ($errors->has('service_frequency'))
                                             <span class="text-danger">
@@ -223,11 +223,11 @@
                                 <div class="form-group">
                                 {{  Form::label('service_contract', 'Service Contract', array('class'=>'control-label')) }}
                                   <div class="col-md-4">
-                                        {{ Form::select('service_contract', array(null => '')+ array('0' => 'Yes', '1' => 'No'), Input::old('service_contract'), array('class' => 'form-control', 'id' => 'service_contract_id')) }}  
+                                        {{ Form::select('service_contract', array(null => 'Select')+ $yes_no_list, Input::old('service_contract'), array('class' => 'form-control', 'id' => 'service_contract_id','required'=>'required')) }}  
                                       
-                                        @if ($errors->has('life_time'))
+                                        @if ($errors->has('service_contract'))
                                             <span class="text-danger">
-                                                <strong>{{ $errors->first('life_time') }}</strong>
+                                                <strong>{{ $errors->first('service_contract') }}</strong>
                                             </span>
                                         @endif
 
@@ -237,7 +237,7 @@
 
                                     <div class="form-group">
                                       <div class="col-lg-10 col-lg-offset-2">
-                                        <a href="{{url('/equipmentsupplier')}}" class="btn btn-default">Cancel</a>
+                                        <a href="{{url('/equipmentinventory')}}" class="btn btn-default">Cancel</a>
                                         <button type="submit" class="btn btn-primary">Submit</button>
                                       </div>
                                     </div>

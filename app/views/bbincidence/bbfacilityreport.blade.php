@@ -3,7 +3,7 @@
     <div>
         <ol class="breadcrumb">
           <li><a href="{{{URL::route('user.home')}}}">{{ trans('messages.home') }}</a></li>
-          <li><a href="{{ URL::route('bbincidence.index') }}">BB Incidences</a></li>
+          <li><a href="{{ URL::route('bbincidence.index') }}">BB Incidents</a></li>
           <li class="active">Facility Report</li>
         </ol>
     </div>
@@ -63,7 +63,7 @@
         <table border='1'>
         <tr><td colspan='2'><strong>Referral Status</strong></td></tr>
        @foreach($countbbincidentreferralstatus as $key => $value)       
-        <tr><td>{{$value->referral_status}}</td><td>{{$value->total}}</td></tr>   
+        <tr><td>@if($value->referral_status=='') -- @else {{$value->referral_status}} @endif </td><td>{{$value->total}}</td></tr>   
         @endforeach
         <tr><td colspan='2'><strong>Completion Status</strong></td></tr>
         <?php $countbbincidentcompletionstatus = Bbincidence::countbbincidentcompletionstatus(); ?>
@@ -80,7 +80,7 @@
         <table border='1'>      
             <?php $bbincidentprevalencecount = Bbincidence::countbbincidentprevalence(); ?>
             @foreach($bbincidentprevalencecount as $k => $v)
-            <tr><td>{{$v->personnel_category}}</td><td>{{$v->total}}</td></tr>              
+            <tr><td>@if($v->personnel_category=='') -- @else {{$v->personnel_category}} @endif</td><td>{{$v->total}}</td></tr>              
             @endforeach
         </table>
         </div>
