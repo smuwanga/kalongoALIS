@@ -36,7 +36,7 @@ class UnhlsTestController extends \BaseController {
 		// Search Conditions
 		if($searchString||$testStatusId||$dateFrom||$dateTo){
 
-			$tests = UnhlsTest::search($searchString, $testStatusId, $dateFrom, $dateTo);
+			$tests = Test::search($searchString, $testStatusId, $dateFrom, $dateTo);
 
 			if (count($tests) == 0) {
 			 	Session::flash('message', trans('messages.empty-search'));
@@ -45,7 +45,7 @@ class UnhlsTestController extends \BaseController {
 		else
 		{
 		// List all the active tests
-			$tests = UnhlsTest::orderBy('time_created', 'DESC');
+			$tests = Test::orderBy('time_created', 'DESC');
 		}
 
 		// Create Test Statuses array. Include a first entry for ALL
@@ -77,8 +77,8 @@ class UnhlsTestController extends \BaseController {
 	 */
 	public function receive($id)
 	{
-		$test = UnhlsTest::find($id);
-		$test->test_status_id = UnhlsTest::PENDING;
+		$test = Test::find($id);
+		$test->test_status_id = Test::PENDING;
 		$test->time_created = date('Y-m-d H:i:s');
 		$test->created_by = Auth::user()->id;
 		$test->save();
@@ -198,7 +198,7 @@ class UnhlsTestController extends \BaseController {
 					$test->visit_id = $visit->id;
 					$test->test_type_id = $testTypeID;
 					$test->specimen_id = $specimen->id;
-					$test->test_status_id = UnhlsTest::PENDING;
+					$test->test_status_id = Test::PENDING;
 					$test->created_by = Auth::user()->id;
 					$test->requested_by = Input::get('physician');
 					$test->save();
@@ -238,7 +238,7 @@ class UnhlsTestController extends \BaseController {
 	{
 		$specimen = UnhlsSpecimen::find($specimenID);
 		$referralReason = ReferralReason::all();
-		$test = UnhlsTest::find($specimenID);
+		$test = Test::find($specimenID);
 		return View::make('unhls_test.refer')->with('specimen', $specimen)->with('test', $test)
 						->with('referralReason', $referralReason);
 	}
@@ -303,7 +303,7 @@ class UnhlsTestController extends \BaseController {
 	 */
 	public function changeSpecimenType()
 	{
-		$test = UnhlsTest::find(Input::get('id'));
+		$test = Test::find(Input::get('id'));
 		return View::make('unhls_test.changeSpecimenType')->with('test', $test);
 	}
 
@@ -330,8 +330,8 @@ class UnhlsTestController extends \BaseController {
 	 */
 	public function start()
 	{
-		$test = UnhlsTest::find(Input::get('id'));
-		$test->test_status_id = UnhlsTest::STARTED;
+		$test = Test::find(Input::get('id'));
+		$test->test_status_id = Test::STARTED;
 		$test->time_started = date('Y-m-d H:i:s');
 		$test->save();
 
@@ -346,7 +346,7 @@ class UnhlsTestController extends \BaseController {
 	 */
 	public function enterResults($testID)
 	{
-		$test = UnhlsTest::find($testID);
+		$test = Test::find($testID);
 		return View::make('unhls_test.enterResults')->with('test', $test);
 	}
 
@@ -379,8 +379,8 @@ class UnhlsTestController extends \BaseController {
 	 */
 	public function saveResults($testID)
 	{
-		$test = UnhlsTest::find($testID);
-		$test->test_status_id = UnhlsTest::COMPLETED;
+		$test = Test::find($testID);
+		$test->test_status_id = Test::COMPLETED;
 		$test->interpretation = Input::get('interpretation');
 		$test->tested_by = Auth::user()->id;
 		$test->time_completed = date('Y-m-d H:i:s');
@@ -431,7 +431,7 @@ class UnhlsTestController extends \BaseController {
 	 */
 	public function edit($testID)
 	{
-		$test = UnhlsTest::find($testID);
+		$test = Test::find($testID);
 
 		return View::make('unhls_test.edit')->with('test', $test);
 	}
@@ -444,9 +444,9 @@ class UnhlsTestController extends \BaseController {
 	 */
 	public function viewDetails($testID)
 	{
-		//$result = UnhlsTest::find($testID)->toSql(); to be deleted for debuging
+		//$result = Test::find($testID)->toSql(); to be deleted for debuging
 		//dd($result);
-		return View::make('unhls_test.viewDetails')->with('test', UnhlsTest::find($testID));
+		return View::make('unhls_test.viewDetails')->with('test', Test::find($testID));
 		//var_dump($test);
 	}
 
@@ -458,8 +458,8 @@ class UnhlsTestController extends \BaseController {
 	 */
 	public function verify($testID)
 	{
-		$test = UnhlsTest::find($testID);
-		$test->test_status_id = UnhlsTest::VERIFIED;
+		$test = Test::find($testID);
+		$test->test_status_id = Test::VERIFIED;
 		$test->time_verified = date('Y-m-d H:i:s');
 		$test->verified_by = Auth::user()->id;
 		$test->save();
