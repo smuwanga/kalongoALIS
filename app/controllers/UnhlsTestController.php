@@ -189,7 +189,7 @@ class UnhlsTestController extends \BaseController {
 				foreach ($testTypes as $value) {
 					$testTypeID = (int)$value;
 					// Create Specimen - specimen_type_id, accepted_by, referred_from, referred_to
-					$specimen = new UnhlsSpecimen;
+					$specimen = new Specimen;
 					$specimen->specimen_type_id = TestType::find($testTypeID)->specimenTypes->lists('id')[0];
 					$specimen->accepted_by = Auth::user()->id;
 					$specimen->save();
@@ -222,7 +222,7 @@ class UnhlsTestController extends \BaseController {
 	 */
 	public function reject($specimenID)
 	{
-		$specimen = UnhlsSpecimen::find($specimenID);
+		$specimen = Specimen::find($specimenID);
 		$rejectionReason = RejectionReason::all();
 		return View::make('unhls_test.reject')->with('specimen', $specimen)
 						->with('rejectionReason', $rejectionReason);
@@ -236,7 +236,7 @@ class UnhlsTestController extends \BaseController {
 	 */
 	public function refer($specimenID)
 	{
-		$specimen = UnhlsSpecimen::find($specimenID);
+		$specimen = Specimen::find($specimenID);
 		$referralReason = ReferralReason::all();
 		$test = Test::find($specimenID);
 		return View::make('unhls_test.refer')->with('specimen', $specimen)->with('test', $test)
@@ -263,9 +263,9 @@ class UnhlsTestController extends \BaseController {
 				->withInput()
 				->withErrors($validator);
 		} else {
-			$specimen = UnhlsSpecimen::find(Input::get('specimen_id'));
+			$specimen = Specimen::find(Input::get('specimen_id'));
 			$specimen->rejection_reason_id = Input::get('rejectionReason');
-			$specimen->specimen_status_id = UnhlsSpecimen::REJECTED;
+			$specimen->specimen_status_id = Specimen::REJECTED;
 			$specimen->rejected_by = Auth::user()->id;
 			$specimen->time_rejected = date('Y-m-d H:i:s');
 			$specimen->reject_explained_to = Input::get('reject_explained_to');
@@ -286,8 +286,8 @@ class UnhlsTestController extends \BaseController {
 	 */
 	public function accept()
 	{
-		$specimen = UnhlsSpecimen::find(Input::get('id'));
-		$specimen->specimen_status_id = UnhlsSpecimen::ACCEPTED;
+		$specimen = Specimen::find(Input::get('id'));
+		$specimen->specimen_status_id = Specimen::ACCEPTED;
 		$specimen->accepted_by = Auth::user()->id;
 		$specimen->time_accepted = date('Y-m-d H:i:s');
 		$specimen->save();
@@ -315,7 +315,7 @@ class UnhlsTestController extends \BaseController {
 	 */
 	public function updateSpecimenType()
 	{
-		$specimen = UnhlsSpecimen::find(Input::get('specimen_id'));
+		$specimen = Specimen::find(Input::get('specimen_id'));
 		$specimen->specimen_type_id = Input::get('specimen_type');
 		$specimen->save();
 
@@ -478,7 +478,7 @@ class UnhlsTestController extends \BaseController {
 	 */
 	public function showRefer($specimenId)
 	{
-		$unhlsspecimen = UnhlsSpecimen::find($specimenId);
+		$unhlsspecimen = Specimen::find($specimenId);
 		$unhlspatient = UnhlsPatient::find('$specimenId');
 		$facilities = Facility::all();
 		//Referral facilities
@@ -522,7 +522,7 @@ class UnhlsTestController extends \BaseController {
 		$referral->user_id = Auth::user()->id;
 
 		//Update specimen referral status
-		$specimen = UnhlsSpecimen::find($specimenId);
+		$specimen = Specimen::find($specimenId);
 
 		DB::transaction(function() use ($referral, $specimen) {
 			$referral->save();
