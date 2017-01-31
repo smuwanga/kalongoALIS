@@ -39,12 +39,17 @@ class CreatekBLIStables extends Migration {
         {
             $table->increments('id')->unsigned();
             $table->string('patient_number')->unique();
+            $table->string('ulin')->nullable();//todo: should be unique
+            $table->string('nin')->nullable();//todo: should be unique
             $table->string('name', 100);
             $table->date('dob');
             $table->tinyInteger('gender')->default(0);
             $table->string('email', 100)->nullable();
             $table->string('address', 150)->nullable();
+            $table->string('village_residence', 150)->nullable();
+            $table->string('village_workplace', 150)->nullable();
             $table->string('phone_number')->nullable();
+            $table->string('occupation')->nullable();
             $table->string('external_patient_number', 20)->nullable();
             $table->integer('created_by')->unsigned()->default(0);
 

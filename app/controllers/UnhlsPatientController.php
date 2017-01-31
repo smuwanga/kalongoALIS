@@ -49,7 +49,7 @@ class UnhlsPatientController extends \BaseController {
 	{
 		//
 		$rules = array(
-			'patient_number' => 'required|unique:unhls_patients,patient_number',
+			'patient_number' => 'required|unique:patients,patient_number',
 			//'nin'			=> 'required|unique:unhls_patients, nin',
 			'name'       => 'required',
 			'gender' => 'required',
