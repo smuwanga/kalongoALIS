@@ -194,7 +194,7 @@ class UnhlsTestController extends \BaseController {
 					$specimen->accepted_by = Auth::user()->id;
 					$specimen->save();
 
-					$test = new UnhlsTest;
+					$test = new Test;
 					$test->visit_id = $visit->id;
 					$test->test_type_id = $testTypeID;
 					$test->specimen_id = $specimen->id;

@@ -7,7 +7,7 @@ class UnhlsVisit extends Eloquent
 	 *
 	 * @var string
 	 */
-	protected $table = 'unhls_visits';
+	protected $table = 'visits';
 
 	public $timestamps = true;
 
