@@ -388,15 +388,15 @@ Route::group(array("before" => "auth"), function()
     {
         Route::any("/patientreport", array(
             "as"   => "reports.patient.index",
-            "uses" => "UnhlsReportController@loadPatients"
+            "uses" => "ReportController@loadPatients"
         ));
         Route::any("/patientreport/{id}", array(
             "as" => "reports.patient.report", 
-            "uses" => "UnhlsReportController@viewPatientReport"
+            "uses" => "ReportController@viewPatientReport"
         ));
         Route::any("/patientreport/{id}/{visit}/{testId?}", array(
             "as" => "reports.patient.report", 
-            "uses" => "UnhlsReportController@viewPatientReport"
+            "uses" => "ReportController@viewPatientReport"
         ));
         Route::any("/visitreport/{id}", array(
             "as" => "reports.visit.report", 

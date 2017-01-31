@@ -169,7 +169,7 @@
 								@endforeach</td>
 							<td>{{ $test->interpretation == '' ? 'N/A' : $test->interpretation }}</td>
 							<td>{{ $test->testedBy->name or trans('messages.pending')}}</td>
-							<td>{{ $test->testResults->last()->time_entered }}</td>
+							<td>{{ $test->testResults->count() ? $test->testResults->last()->time_entered : '' }}</td>
 							<td>{{ $test->time_completed }}</td>
 							<td>{{ $test->verifiedBy->name or trans('messages.verification-pending')}}</td>
 							<td>{{ $test->time_verified }}</td>
