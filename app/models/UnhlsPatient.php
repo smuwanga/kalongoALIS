@@ -90,4 +90,13 @@ class UnhlsPatient extends Eloquent
 						->orWhere('name', 'LIKE', '%'.$searchText.'%')
 						->orWhere('external_patient_number', '=', $searchText);
 	}
+	/**
+	* Get patients facility Id Number
+	*
+	*/
+	public function getFacilityCode()
+	{
+		$facilityCode ==\Config::get('constants.FACILITY_CODE');
+	
+	}
 }
