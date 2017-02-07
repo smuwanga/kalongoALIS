@@ -3,7 +3,7 @@
 <div>
 	<ol class="breadcrumb">
 	  <li><a href="{{{URL::route('user.home')}}}">{{trans('messages.home')}}</a></li>
-	  <li class="active">BB Incidences</li>
+	  <li class="active">BB Incidents</li>
 	</ol>
 </div>
 
@@ -53,7 +53,7 @@
 <div class="panel panel-primary">
 	<div class="panel-heading ">
 		<span class="glyphicon glyphicon-book"></span>
-		List of BB Incidences  ({{ count($bbincidences); }})
+		List of BB Incidents  ({{ count($bbincidences); }})
 		@if(Entrust::can('create_bbincidences'))
 		<div class="panel-btn">
 			<a class="btn btn-sm btn-info" href="{{ URL::route('bbincidence.create') }}">

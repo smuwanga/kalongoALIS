@@ -121,7 +121,7 @@ class ReportController extends \BaseController {
 		$date = date('Y-m-d');
 		$error = '';
 
-		$visit = Visit::find($id);
+		$visit = UnhlsVisit::find($id);
 		$visit->load(
 			'patient',
 			'tests.testType',
@@ -141,7 +141,7 @@ class ReportController extends \BaseController {
 	 * @return Response
 	 */
 	public function printVisitReport($id){
-		$visit = Visit::find($id);
+		$visit = UnhlsVisit::find($id);
 		$visit->load(
 			'patient',
 			'tests.testType',
@@ -205,7 +205,7 @@ class ReportController extends \BaseController {
 						$error = trans('messages.check-date-range');
 				}
 				else{
-					$visits = Visit::whereBetween('created_at', array($from, $toPlusOne))->get();
+					$visits = UnhlsVisit::whereBetween('created_at', array($from, $toPlusOne))->get();
 				}
 				if (count($visits) == 0) {
 				 	Session::flash('message', trans('messages.no-match'));
@@ -213,7 +213,7 @@ class ReportController extends \BaseController {
 			}
 			else{
 
-				$visits = Visit::where('created_at', 'LIKE', $date.'%')->orderBy('patient_id')->get();
+				$visits = UnhlsVisit::where('created_at', 'LIKE', $date.'%')->orderBy('patient_id')->get();
 			}
 			if(Input::has('word')){
 				$date = date("Ymdhi");

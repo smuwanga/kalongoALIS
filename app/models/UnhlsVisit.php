@@ -7,7 +7,7 @@ class UnhlsVisit extends Eloquent
 	 *
 	 * @var string
 	 */
-	protected $table = 'unhls_visits';
+	protected $table = 'visits';
 
 	public $timestamps = true;
 
@@ -16,7 +16,7 @@ class UnhlsVisit extends Eloquent
 	 */
     public function tests()
     {
-        return $this->hasMany('UnhlsTest');
+        return $this->hasMany('Test', 'visit_id');
     }
 
 	/**

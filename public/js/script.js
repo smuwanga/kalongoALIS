@@ -840,7 +840,7 @@ $(function(){
 		parent.append(newButtons);
 
 		// Set properties for the new buttons
-		var resultURL = location.protocol+ "//"+location.host+ "/test/" + testID+ "/enterresults";
+		var resultURL = location.protocol+ "//"+location.host+ "/unhls_test/" + testID+ "/enterresults";
 		parent.children('.enter-result').attr('id',"enter-results-" + testID + "-link");
 		parent.children('.enter-result').attr('href',resultURL);
 

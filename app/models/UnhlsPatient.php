@@ -20,7 +20,7 @@ class UnhlsPatient extends Eloquent
 	 *
 	 * @var string
 	 */
-	protected $table = 'unhls_patients';
+	protected $table = 'patients';
 
 	/**
 	 * Visits relationship

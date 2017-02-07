@@ -36,7 +36,7 @@ class UnhlsTestController extends \BaseController {
 		// Search Conditions
 		if($searchString||$testStatusId||$dateFrom||$dateTo){
 
-			$tests = UnhlsTest::search($searchString, $testStatusId, $dateFrom, $dateTo);
+			$tests = Test::search($searchString, $testStatusId, $dateFrom, $dateTo);
 
 			if (count($tests) == 0) {
 			 	Session::flash('message', trans('messages.empty-search'));
@@ -45,7 +45,7 @@ class UnhlsTestController extends \BaseController {
 		else
 		{
 		// List all the active tests
-			$tests = UnhlsTest::orderBy('time_created', 'DESC');
+			$tests = Test::orderBy('time_created', 'DESC');
 		}
 
 		// Create Test Statuses array. Include a first entry for ALL
@@ -77,8 +77,8 @@ class UnhlsTestController extends \BaseController {
 	 */
 	public function receive($id)
 	{
-		$test = UnhlsTest::find($id);
-		$test->test_status_id = UnhlsTest::PENDING;
+		$test = Test::find($id);
+		$test->test_status_id = Test::PENDING;
 		$test->time_created = date('Y-m-d H:i:s');
 		$test->created_by = Auth::user()->id;
 		$test->save();
@@ -189,16 +189,16 @@ class UnhlsTestController extends \BaseController {
 				foreach ($testTypes as $value) {
 					$testTypeID = (int)$value;
 					// Create Specimen - specimen_type_id, accepted_by, referred_from, referred_to
-					$specimen = new UnhlsSpecimen;
+					$specimen = new Specimen;
 					$specimen->specimen_type_id = TestType::find($testTypeID)->specimenTypes->lists('id')[0];
 					$specimen->accepted_by = Auth::user()->id;
 					$specimen->save();
 
-					$test = new UnhlsTest;
+					$test = new Test;
 					$test->visit_id = $visit->id;
 					$test->test_type_id = $testTypeID;
 					$test->specimen_id = $specimen->id;
-					$test->test_status_id = UnhlsTest::PENDING;
+					$test->test_status_id = Test::PENDING;
 					$test->created_by = Auth::user()->id;
 					$test->requested_by = Input::get('physician');
 					$test->save();
@@ -222,7 +222,7 @@ class UnhlsTestController extends \BaseController {
 	 */
 	public function reject($specimenID)
 	{
-		$specimen = UnhlsSpecimen::find($specimenID);
+		$specimen = Specimen::find($specimenID);
 		$rejectionReason = RejectionReason::all();
 		return View::make('unhls_test.reject')->with('specimen', $specimen)
 						->with('rejectionReason', $rejectionReason);
@@ -236,9 +236,9 @@ class UnhlsTestController extends \BaseController {
 	 */
 	public function refer($specimenID)
 	{
-		$specimen = UnhlsSpecimen::find($specimenID);
+		$specimen = Specimen::find($specimenID);
 		$referralReason = ReferralReason::all();
-		$test = UnhlsTest::find($specimenID);
+		$test = Test::find($specimenID);
 		return View::make('unhls_test.refer')->with('specimen', $specimen)->with('test', $test)
 						->with('referralReason', $referralReason);
 	}
@@ -263,9 +263,9 @@ class UnhlsTestController extends \BaseController {
 				->withInput()
 				->withErrors($validator);
 		} else {
-			$specimen = UnhlsSpecimen::find(Input::get('specimen_id'));
+			$specimen = Specimen::find(Input::get('specimen_id'));
 			$specimen->rejection_reason_id = Input::get('rejectionReason');
-			$specimen->specimen_status_id = UnhlsSpecimen::REJECTED;
+			$specimen->specimen_status_id = Specimen::REJECTED;
 			$specimen->rejected_by = Auth::user()->id;
 			$specimen->time_rejected = date('Y-m-d H:i:s');
 			$specimen->reject_explained_to = Input::get('reject_explained_to');
@@ -286,8 +286,8 @@ class UnhlsTestController extends \BaseController {
 	 */
 	public function accept()
 	{
-		$specimen = UnhlsSpecimen::find(Input::get('id'));
-		$specimen->specimen_status_id = UnhlsSpecimen::ACCEPTED;
+		$specimen = Specimen::find(Input::get('id'));
+		$specimen->specimen_status_id = Specimen::ACCEPTED;
 		$specimen->accepted_by = Auth::user()->id;
 		$specimen->time_accepted = date('Y-m-d H:i:s');
 		$specimen->save();
@@ -303,7 +303,7 @@ class UnhlsTestController extends \BaseController {
 	 */
 	public function changeSpecimenType()
 	{
-		$test = UnhlsTest::find(Input::get('id'));
+		$test = Test::find(Input::get('id'));
 		return View::make('unhls_test.changeSpecimenType')->with('test', $test);
 	}
 
@@ -315,14 +315,14 @@ class UnhlsTestController extends \BaseController {
 	 */
 	public function updateSpecimenType()
 	{
-		$specimen = UnhlsSpecimen::find(Input::get('specimen_id'));
+		$specimen = Specimen::find(Input::get('specimen_id'));
 		$specimen->specimen_type_id = Input::get('specimen_type');
 		$specimen->save();
 
 		return Redirect::route('unhls_test.viewDetails', array($specimen->test->id));
 	}
 
-/**
+	/**
 	 * Starts Test
 	 *
 	 * @param
@@ -330,11 +330,17 @@ class UnhlsTestController extends \BaseController {
 	 */
 	public function start()
 	{
-		$test = UnhlsTest::find(Input::get('id'));
-		$test->test_status_id = UnhlsTest::STARTED;
+		$test = Test::find(Input::get('id'));
+		$test->test_status_id = Test::STARTED;
 		$test->time_started = date('Y-m-d H:i:s');
 		$test->save();
-
+		// if the test being carried out requires a culture worksheet
+		if ($test->testType->microbiologyTestType->worksheet_required) {
+			$culture = new Culture;
+			$culture->user_id = Auth::user()->id;
+			$culture->test_id = $test->id;
+			$culture->save();
+		}
 		return $test->test_status_id;
 	}
 
@@ -346,8 +352,14 @@ class UnhlsTestController extends \BaseController {
 	 */
 	public function enterResults($testID)
 	{
-		$test = UnhlsTest::find($testID);
-		return View::make('unhls_test.enterResults')->with('test', $test);
+		$test = Test::find($testID);
+		// if the test being carried out requires a culture worksheet
+		try {
+			$test->testType->microbiologyTestType->worksheet_required;
+			return Redirect::route('culture.edit', [$test->culture->id]);
+		} catch (Exception $e){
+			return View::make('unhls_test.enterResults')->with('test', $test);
+		}
 	}
 
 	/**
@@ -379,8 +391,8 @@ class UnhlsTestController extends \BaseController {
 	 */
 	public function saveResults($testID)
 	{
-		$test = UnhlsTest::find($testID);
-		$test->test_status_id = UnhlsTest::COMPLETED;
+		$test = Test::find($testID);
+		$test->test_status_id = Test::COMPLETED;
 		$test->interpretation = Input::get('interpretation');
 		$test->tested_by = Auth::user()->id;
 		$test->time_completed = date('Y-m-d H:i:s');
@@ -431,9 +443,15 @@ class UnhlsTestController extends \BaseController {
 	 */
 	public function edit($testID)
 	{
-		$test = UnhlsTest::find($testID);
+		$test = Test::find($testID);
+		// if the test being carried out requires a culture worksheet
+		try {
+			$test->testType->microbiologyTestType->worksheet_required;
+			return Redirect::route('culture.edit', [$test->culture->id]);
+		} catch (Exception $e){
+			return View::make('unhls_test.edit')->with('test', $test);
+		}
 
-		return View::make('unhls_test.edit')->with('test', $test);
 	}
 
 	/**
@@ -444,9 +462,9 @@ class UnhlsTestController extends \BaseController {
 	 */
 	public function viewDetails($testID)
 	{
-		//$result = UnhlsTest::find($testID)->toSql(); to be deleted for debuging
+		//$result = Test::find($testID)->toSql(); to be deleted for debuging
 		//dd($result);
-		return View::make('unhls_test.viewDetails')->with('test', UnhlsTest::find($testID));
+		return View::make('unhls_test.viewDetails')->with('test', Test::find($testID));
 		//var_dump($test);
 	}
 
@@ -458,8 +476,8 @@ class UnhlsTestController extends \BaseController {
 	 */
 	public function verify($testID)
 	{
-		$test = UnhlsTest::find($testID);
-		$test->test_status_id = UnhlsTest::VERIFIED;
+		$test = Test::find($testID);
+		$test->test_status_id = Test::VERIFIED;
 		$test->time_verified = date('Y-m-d H:i:s');
 		$test->verified_by = Auth::user()->id;
 		$test->save();
@@ -478,7 +496,7 @@ class UnhlsTestController extends \BaseController {
 	 */
 	public function showRefer($specimenId)
 	{
-		$unhlsspecimen = UnhlsSpecimen::find($specimenId);
+		$unhlsspecimen = Specimen::find($specimenId);
 		$unhlspatient = UnhlsPatient::find('$specimenId');
 		$facilities = Facility::all();
 		//Referral facilities
@@ -522,7 +540,7 @@ class UnhlsTestController extends \BaseController {
 		$referral->user_id = Auth::user()->id;
 
 		//Update specimen referral status
-		$specimen = UnhlsSpecimen::find($specimenId);
+		$specimen = Specimen::find($specimenId);
 
 		DB::transaction(function() use ($referral, $specimen) {
 			$referral->save();

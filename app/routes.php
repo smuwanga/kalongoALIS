@@ -274,11 +274,6 @@ Route::group(array("before" => "auth"), function()
         "as"   => "unhls_test.start",
         "uses" => "UnhlsTestController@start"
     ));
-     Route::get("/test/{test}/enterresults", array(
-        "before" => "checkPerms:enter_test_results",
-        "as"   => "test.enterResults",
-        "uses" => "TestController@enterResults"
-    ));
      //Repeat of above route for UNHLS
      Route::get("/unhls_test/{test}/enterresults", array(
         "before" => "checkPerms:enter_test_results",
@@ -388,15 +383,15 @@ Route::group(array("before" => "auth"), function()
     {
         Route::any("/patientreport", array(
             "as"   => "reports.patient.index",
-            "uses" => "UnhlsReportController@loadPatients"
+            "uses" => "ReportController@loadPatients"
         ));
         Route::any("/patientreport/{id}", array(
             "as" => "reports.patient.report", 
-            "uses" => "UnhlsReportController@viewPatientReport"
+            "uses" => "ReportController@viewPatientReport"
         ));
         Route::any("/patientreport/{id}/{visit}/{testId?}", array(
             "as" => "reports.patient.report", 
-            "uses" => "UnhlsReportController@viewPatientReport"
+            "uses" => "ReportController@viewPatientReport"
         ));
         Route::any("/visitreport/{id}", array(
             "as" => "reports.visit.report", 
@@ -691,8 +686,8 @@ Route::group(array("before" => "auth"), function()
         //Route::get('api/facility-by-district/{districtId}', 'ApiController@getFacilityListByDistrict');
 
     });
-	
-	Route::resource('bbincidence', 'BbincidenceController'); /* Added by Justus */
+	//BB Incidents
+	Route::resource('bbincidence', 'BbincidenceController');
     
 	Route::get("/bbincidence/clinical/clinical", array(
         "as"   => "bbincidence.clinical",
@@ -734,11 +729,13 @@ Route::group(array("before" => "auth"), function()
         "uses" => "BbincidenceController@responseupdate"
     ));
 
-    Route::resource('bike', 'BikeController'); /* Added by Justus */
+    //Bike Management
+    Route::resource('bike', 'BikeController');
 
-    Route::resource('event', 'EventController'); /* Added by Justus */
+    //Events/Activities Reporting
+    Route::resource('event', 'EventController');
 
-    // Route for downloading event reports
+    // Route for downloading Activity/Event reports
     Route::get('/attachments', 'EventController@downloadAttachment');
 
     Route::any("/event/{id}/editobjectives", array(

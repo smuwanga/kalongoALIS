@@ -31,35 +31,29 @@
 			<thead>
 				<tr>
 					<th>Date</th>
-					<th>Type</th>
 					<th>Name</th>
-					<th>Frequency</th>
 					<th>Last Service</th>
 					<th>Next Service</th>
 					<th>Serviced by</th>
-					<th>Maintained by</th>
 					<th>Contact</th>
 					<th>Supplier</th>
 					<th>Comment</th>																			
 				</tr>
 			</thead>			
 			<tbody>
-			
+			@foreach($list as $item)
 				<tr>
-				<td>  </td>
-				<td>  </td>
-				<td>  </td>
-				<td>  </td>
-				<td>  </td>
-				<td>  </td>
-				<td>  </td>
-				<td>  </td>
-				<td>  </td>
-				<td>  </td>
-				<td>  </td>
-						
+					<td>  {{ date('d M Y', strtotime($item->created_at)) }} </td>
+					<td>  {{ $item->equipment->name }}</td>
+					<td>  {{ date('d M Y', strtotime($item->last_service_date)) }}</td>
+					<td>  {{ date('d M Y', strtotime($item->next_service_date)) }}</td>
+					<td>  {{ $item->serviced_by_name }}</td>
+					<td>  {{ $item->serviced_by_contact }}</td>
+					<td>  {{ $item->supplier->name }}</td>
+					<td>  {{ $item->comment }}</td>
+					<td>  </td>
 				</tr>
-	
+			@endforeach
 			</tbody>
   </table>
 </div>

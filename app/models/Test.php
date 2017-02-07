@@ -30,7 +30,7 @@ class Test extends Eloquent
 	 */
 	public function visit()
 	{
-		return $this->belongsTo('Visit');
+		return $this->belongsTo('UnhlsVisit', 'visit_id');
 	}
 
 	/**
