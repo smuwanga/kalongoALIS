@@ -274,11 +274,6 @@ Route::group(array("before" => "auth"), function()
         "as"   => "unhls_test.start",
         "uses" => "UnhlsTestController@start"
     ));
-     Route::get("/test/{test}/enterresults", array(
-        "before" => "checkPerms:enter_test_results",
-        "as"   => "test.enterResults",
-        "uses" => "TestController@enterResults"
-    ));
      //Repeat of above route for UNHLS
      Route::get("/unhls_test/{test}/enterresults", array(
         "before" => "checkPerms:enter_test_results",

@@ -322,7 +322,7 @@ class UnhlsTestController extends \BaseController {
 		return Redirect::route('unhls_test.viewDetails', array($specimen->test->id));
 	}
 
-/**
+	/**
 	 * Starts Test
 	 *
 	 * @param
@@ -334,7 +334,13 @@ class UnhlsTestController extends \BaseController {
 		$test->test_status_id = Test::STARTED;
 		$test->time_started = date('Y-m-d H:i:s');
 		$test->save();
-
+		// if the test being carried out requires a culture worksheet
+		if ($test->testType->microbiologyTestType->worksheet_required) {
+			$culture = new Culture;
+			$culture->user_id = Auth::user()->id;
+			$culture->test_id = $test->id;
+			$culture->save();
+		}
 		return $test->test_status_id;
 	}
 
@@ -347,7 +353,13 @@ class UnhlsTestController extends \BaseController {
 	public function enterResults($testID)
 	{
 		$test = Test::find($testID);
-		return View::make('unhls_test.enterResults')->with('test', $test);
+		// if the test being carried out requires a culture worksheet
+		try {
+			$test->testType->microbiologyTestType->worksheet_required;
+			return Redirect::route('culture.edit', [$test->culture->id]);
+		} catch (Exception $e){
+			return View::make('unhls_test.enterResults')->with('test', $test);
+		}
 	}
 
 	/**
@@ -432,8 +444,14 @@ class UnhlsTestController extends \BaseController {
 	public function edit($testID)
 	{
 		$test = Test::find($testID);
+		// if the test being carried out requires a culture worksheet
+		try {
+			$test->testType->microbiologyTestType->worksheet_required;
+			return Redirect::route('culture.edit', [$test->culture->id]);
+		} catch (Exception $e){
+			return View::make('unhls_test.edit')->with('test', $test);
+		}
 
-		return View::make('unhls_test.edit')->with('test', $test);
 	}
 
 	/**
