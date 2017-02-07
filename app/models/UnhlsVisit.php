@@ -16,7 +16,7 @@ class UnhlsVisit extends Eloquent
 	 */
     public function tests()
     {
-        return $this->hasMany('Test');
+        return $this->hasMany('Test', 'visit_id');
     }
 
 	/**

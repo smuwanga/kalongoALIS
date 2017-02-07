@@ -107,8 +107,8 @@ return array(
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 		'Zizaco\Entrust\EntrustServiceProvider',
-		'Way\Generators\GeneratorsServiceProvider'
-		//'Barryvdh\DomPDF\ServiceProvider'
+		'Way\Generators\GeneratorsServiceProvider',
+		'Barryvdh\DomPDF\ServiceProvider'
 	),
 
 	/*
