@@ -301,8 +301,8 @@
                     {{ Form::button(
                         '<span class="glyphicon glyphicon-save"></span> '.trans('messages.submit'), [
                             'class' => 'btn btn-primary submit-completed-culture-sensitivity-analysis', 
-                            'data-redirect-url' => URL::route('test.viewDetails',[$culture->test_id]),
-                            'data-url' => URL::route('test.saveResults',[$culture->test_id])]
+                            'data-redirect-url' => URL::route('unhls_test.viewDetails',[$culture->test_id]),
+                            'data-url' => URL::route('unhls_test.saveResults',[$culture->test_id])]
                     ) }}
                     {{ Form::button(trans('messages.cancel'),
                         ['class' => 'btn btn-default cancel-completion-of-culture-sensitivity-analysis']) }}

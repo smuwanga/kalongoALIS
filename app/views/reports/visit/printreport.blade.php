@@ -116,19 +116,6 @@
                   <td colspan="3">{{trans("messages.no-records-found")}}</td>
                </tr>
             @endforelse
-               <tr>
-                  <td rowspan="3">Culture Findings</td>
-                  <td><strong>Microorganism(s)</strong></td>
-                  <td><strong>Corresponding Serotype(s)</strong></td>
-               </tr>
-               <tr>
-                  <td>Microorganism1</td>
-                  <td>Corresponding Serotype1</td>
-               </tr>
-               <tr>
-                  <td>Microorganism2</td>
-                  <td>Corresponding Serotype2</td>
-               </tr>
          </tbody>
       </table>
         </br>
