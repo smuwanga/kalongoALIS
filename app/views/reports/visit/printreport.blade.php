@@ -76,7 +76,7 @@
 		<table>
 			<tbody class="report-body">
 				<tr>
-					<th colspan="5">{{trans('messages.specimen')}}</th>
+					<th colspan="2">{{trans('messages.specimen')}}</th>
 				</tr>
 				<tr>
 					<th>{{ Lang::choice('messages.specimen-type', 1)}}</th>
@@ -89,7 +89,7 @@
 						</tr>
 				@empty
 					<tr>
-						<td colspan="5">{{trans("messages.no-records-found")}}</td>
+						<td colspan="2">{{trans("messages.no-records-found")}}</td>
 					</tr>
 				@endforelse
 
