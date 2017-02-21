@@ -14,16 +14,18 @@ class CreateUnhlsFacilitiesTable extends Migration {
 	{
 
 		Schema::create('unhls_facilities', function($table)
-
 		{
-		    $table->increments('id');
-		    $table->string('name');
-		   	$table->integer('district_id')->unsigned();
-		    $table->foreign('district_id')->references('id')->on('unhls_districts');
-		    $table->timestamps();
-
+			$table->increments('id');
+			$table->string('code');
+			$table->string('name');
+			$table->integer('district_id')->unsigned();
+			$table->foreign('district_id')->references('id')->on('unhls_districts');
+			$table->integer('level_id')->unsigned();
+			$table->foreign('level_id')->references('id')->on('unhls_facility_level');
+			$table->integer('ownership_id')->unsigned();
+			$table->foreign('ownership_id')->references('id')->on('unhls_facility_ownership');
+			$table->timestamps();
 		});
-
 	}
 
 	/**
@@ -33,9 +35,7 @@ class CreateUnhlsFacilitiesTable extends Migration {
 	 */
 	public function down()
 	{
-
 		Schema::drop('unhls_facilities');
-
 	}
 
 }
