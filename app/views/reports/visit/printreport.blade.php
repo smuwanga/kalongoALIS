@@ -76,7 +76,7 @@
 		<table>
 			<tbody class="report-body">
 				<tr>
-					<th colspan="5">{{trans('messages.specimen')}}</th>
+					<th colspan="2">{{trans('messages.specimen')}}</th>
 				</tr>
 				<tr>
 					<th>{{ Lang::choice('messages.specimen-type', 1)}}</th>
@@ -89,7 +89,7 @@
 						</tr>
 				@empty
 					<tr>
-						<td colspan="5">{{trans("messages.no-records-found")}}</td>
+						<td colspan="2">{{trans("messages.no-records-found")}}</td>
 					</tr>
 				@endforelse
 
@@ -116,19 +116,6 @@
                   <td colspan="3">{{trans("messages.no-records-found")}}</td>
                </tr>
             @endforelse
-               <tr>
-                  <td rowspan="3">Culture Findings</td>
-                  <td><strong>Microorganism(s)</strong></td>
-                  <td><strong>Corresponding Serotype(s)</strong></td>
-               </tr>
-               <tr>
-                  <td>Microorganism1</td>
-                  <td>Corresponding Serotype1</td>
-               </tr>
-               <tr>
-                  <td>Microorganism2</td>
-                  <td>Corresponding Serotype2</td>
-               </tr>
          </tbody>
       </table>
         </br>
