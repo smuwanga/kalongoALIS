@@ -91,11 +91,10 @@ class UnhlsTestController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function testList(){
-		//Log::info(Input::all());
+	public function testList()
+	{
 		$id =Input::get('id');
-		//$tests = DB::table('test_types')->where('test_category_id', $id)->get();
-		$tests = DB::table('test_types')->select('id', 'name')->where('test_category_id', $id)->get(); //UNHLS
+		$tests = DB::table('test_types')->select('id', 'name')->where('test_category_id', $id)->get(); 
 
 		return $tests;
 	}
@@ -212,6 +211,66 @@ class UnhlsTestController extends \BaseController {
 			return Redirect::to($url)->with('message', 'messages.success-creating-test')
 					->with('activeTest', $activeTest);
 		}
+	}
+
+	/**
+	 * Display Collect page 
+	 *
+	 * @param
+	 * @return
+	 */
+	public function collectSpecimen($specimenID)
+	{
+		$specimen = Specimen::find($specimenID);
+		
+
+		return View::make('unhls_test.collect')->with('specimen', $specimen);
+	}
+
+	/**
+	 * Refer action
+	 *
+	 * @return View
+	 */
+	public function collectSpecimenAction()
+	{
+		//Validate
+		/*$rules = array(
+			'referral-status' => 'required',
+			'facility_id' => 'required|non_zero_key',
+			'person',
+			'contacts'
+			);
+		$validator = Validator::make(Input::all(), $rules);
+		$specimenId = Input::get('specimen_id');
+
+		if ($validator->fails())
+		{
+			return Redirect::route('unhls_test.refer', array($specimenId))-> withInput()->withErrors($validator);
+		} */
+
+		//Insert into referral table
+		
+
+		//Update specimen referral statuss
+		//$specimen = Specimen::find($specimenId);
+		$specimen =Input::get('specimen_id');
+
+		/*DB::transaction(function() use ($referral, $specimen) {
+			$referral->save();
+			$specimen->referral_id = $referral->id;
+			//$specimen->save();
+		});*/
+
+		//Start test
+		//Input::merge(array('id' => $specimen->test->id)); //Add the testID to the Input
+		//$this->start();
+
+		//Return view
+		$url = Session::get('SOURCE_URL');
+
+		return Redirect::to($url)->with('message', 'You have successfully captured specimen collection details');
+					//->with('activeTest', array($specimen->test->id));
 	}
 
 	/**
@@ -577,4 +636,5 @@ class UnhlsTestController extends \BaseController {
 
 		return View::make('test.viewDetails')->with('test', $test);
 	}
+
 }
