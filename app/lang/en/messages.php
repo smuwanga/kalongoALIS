@@ -134,6 +134,7 @@ return array(
     'change-specimen' => 'Change',
     'change-specimen-title' => 'Change Specimen Type',
     'create-specimen-type' => 'Create Specimen Type',
+    'collect-specimen-title' => 'Collect Sample',
     'edit-specimen-type' => 'Edit Specimen Type',
     'list-specimen-types' => 'List Specimen Types',
     'new-specimen-type' => 'New Specimen Type',
@@ -176,8 +177,10 @@ return array(
     'originating-from' => 'Originating From',
     'referred-by' => 'Referred by',
     'recieved-by' => 'Recieved by',
+    'collect-specimen' => 'Collect Sample',
     'time-specimen-collected' => 'Time Specimen Collected', //UNHLS terminolgy
     'time-dispatch' => 'Time of Sample dispatch: ', //UNHLS terminolgy
+    'specimen-collected-by' => 'Specimen Collected and Recieved By', //UNHLS terminology
 
     /** 
      *   Test Catalog

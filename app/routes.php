@@ -221,7 +221,7 @@ Route::group(array("before" => "auth"), function()
     Route::get("/test/{id}/reject", array(
         "before" => "checkPerms:reject_test_specimen",
         "as"   => "test.reject",
-        "uses" => "TestController@reject"
+        "uses" => "UnhlsTestController@reject"
     ));
     //Repeat of above code for UNHLS
     Route::get("/unhls_test/{id}/reject", array(
@@ -232,7 +232,7 @@ Route::group(array("before" => "auth"), function()
     Route::post("/test/rejectaction", array(
         "before" => "checkPerms:reject_test_specimen",
         "as"   => "test.rejectAction",
-        "uses" => "TestController@rejectAction"
+        "uses" => "UnhlsTestController@rejectAction"
     ));
     //Repeat of above code for UNHLS
     Route::post("/unhls_test/rejectaction", array(
@@ -306,6 +306,14 @@ Route::group(array("before" => "auth"), function()
         "as"   => "test.viewDetails",
         "uses" => "TestController@viewDetails"
     ));
+    Route::get("unhls_test/{test}/collectspecimen", array(
+        "as" => "unhls_test.collectSpecimen",
+        "uses" => "UnhlsTestController@collectSpecimen"));
+    Route::post("/unhls_test/collectspecimenaction", array(
+        "before" => "checkPerms:refer_specimens", //TODO create permissions for collecting sample and update acordingly
+        "as"   => "unhls_test.collectSpecimenAction",
+        "uses" => "UnhlsTestController@collectSpecimenAction"
+    ));
     //Test viewDetails start
     Route::get("/unhls_test/{test}/viewdetails", array(
         "as"   => "unhls_test.viewDetails",
@@ -315,7 +323,7 @@ Route::group(array("before" => "auth"), function()
     Route::any("/test/{test}/verify", array(
         "before" => "checkPerms:verify_test_results",
         "as"   => "test.verify",
-        "uses" => "TestController@verify"
+        "uses" => "UnhlsTestController@verify"
     ));
     Route::resource('culture', 'CultureController');
     Route::resource('cultureobservation', 'CultureObservationController');

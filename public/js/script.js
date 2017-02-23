@@ -491,23 +491,23 @@ $(function(){
       	        var myHTML = '';
       	        var count = 0;
 				var item_per_row = 4;
-                myHTML += '<h4 align="left">' + labSec + '</h4></br>';
+                myHTML += '<br><h4 align="left">' + labSec + ' Tests' +'</h4>';
 				$.each(data, function(i, item) {
 				    /*optional stuff to do after success */
 					if (count === 0) { // Start of a row
-						myHTML += '<div class = "row">';
+						myHTML += '<br><tr>';
 					}
 					myHTML += '<div class = "col-md-3">';
 					myHTML += "<td><label class ='editor-active'><input type ='checkbox' name='testtypes[]' value = "+ item.id + "></label>" + item.name + "</td>";
 					myHTML += '</div>';
 					++count;
 					if (count === item_per_row) {  // End of row
-						myHTML += '</div>';
+						myHTML += '<tr></br>';
 					}
 				});
 
 				if (count > 0) {  // Close the last row if it exist.
-					myHTML += '</div>';
+					myHTML += '</br></tr>';
 				}
 
 				$('#test_list').append(myHTML);		    	

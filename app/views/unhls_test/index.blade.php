@@ -183,6 +183,23 @@
                                 <span class="glyphicon glyphicon-eye-open"></span>
                                 {{trans('messages.view-details')}}
                             </a>
+
+                                <a class="btn btn-sm btn-info" id="collect-{{$test->id}}-link"
+                                    href="{{URL::route('unhls_test.collectSpecimen', array($test->specimen_id))}}"
+                                    title="{{trans('messages.collect-specimen-title')}}">
+                                    <span class="glyphicon glyphicon-ambulance"></span>
+                                    {{trans('messages.collect-specimen')}}
+                                </a> 
+                                     
+                         <!--       <a class="btn btn-sm btn-info" href="javascript:void(0)"
+                                    data-test-id ="{{$test->id}}" data-specimen-id ="{{$test->specimen->id}}"
+                                    title="{{trans('messages.collect-specimen-title')}}"
+                                    data-url="{{URL::ROUTE('unhls_test.collectSpecimen')}}">
+                                    <span class="glyphicon glyphicon-ambulance"></span>
+                                    {{trans('messages.collect-specimen')}}
+                                </a> -->
+                            
+                            
                             
                         @if ($test->isNotReceived()) 
                             @if(Auth::user()->can('receive_external_test') && $test->isPaid())
@@ -412,6 +429,15 @@
             </div>
         </div>
     </div> <!-- /. started-test-accepted-specimen -->
+
+    <div class=" hidden collect-specimen-button">
+        <a class="btn btn-sm btn-info collect-specimen" href="javascript:void(0)"
+            title="{{trans('messages.collect-specimen-title')}}"
+            data-url="{{ URL::route('unhls_test.collectSpecimen')}}">
+            <span class="glyphicon glyphicon-ambulance"></span>
+            {{trans('messages.collect-specimen')}}
+        </a>
+    </div><!-- /. colllect-specimen button -->
 
     <div class="hidden accept-button">
         <a class="btn btn-sm btn-info accept-specimen" href="javascript:void(0)"

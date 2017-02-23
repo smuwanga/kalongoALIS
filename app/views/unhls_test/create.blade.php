@@ -133,8 +133,8 @@
 							<div class="form-group">
 								{{ Form::label('sample_reciever', 'Sample Recieved by') }}
 								{{Form::text('sample_reciever', Input::old('sample_reciever'), array('class' => 'form-control'))}}
-								{{ Form::label('cadre_obtainer', 'Cadre') }}
-								{{Form::text('cadre_obtainer', Input::old('cadre_obtainer'), array('class' => 'form-control'))}}
+								{{ Form::label('cadre_reciever', 'Cadre') }}
+								{{Form::text('cadre_reciever', Input::old('cadre_reciever'), array('class' => 'form-control'))}}
 							</div>
 
 								<div class="form-group actions-row">
