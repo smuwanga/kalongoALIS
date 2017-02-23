@@ -124,11 +124,11 @@ class ReportController extends \BaseController {
 		$visit = UnhlsVisit::find($id);
 		$visit->load(
 			'patient',
-			'tests.testType',
-			'tests.testResults',
-			'tests.culture.isolatedOrganisms.organism',
-			'tests.culture.isolatedOrganisms.drugSusceptibilities.drug',
-			'tests.culture.isolatedOrganisms.drugSusceptibilities.drugSusceptibilityMeasure');
+			'tests_cphl.testType',
+			'tests_cphl.testResults',
+			'tests_cphl.culture.isolatedOrganisms.organism',
+			'tests_cphl.culture.isolatedOrganisms.drugSusceptibilities.drug',
+			'tests_cphl.culture.isolatedOrganisms.drugSusceptibilities.drugSusceptibilityMeasure');
 		return View::make('reports.visit.report')
 					->with('error', $error)
 					->with('visit', $visit)
@@ -1113,7 +1113,7 @@ class ReportController extends \BaseController {
 		if(!$to) $to = $date;
 		$accredited = array();
 
-		$surveillance = Test::getSurveillanceData($from, $to.' 23:59:59');
+		$surveillance = UnhlsTest::getSurveillanceData($from, $to.' 23:59:59');
 		$accredited = array();
 		$tests = array();
 
@@ -1231,7 +1231,7 @@ class ReportController extends \BaseController {
 		$toPlusOne = date_add(new DateTime($end), date_interval_create_from_date_string('1 day'));
 		$to = date_add(new DateTime($end), date_interval_create_from_date_string('1 day'))->format('Y-m-d');
 		$ageRanges = array('0-5', '5-14', '14-120');
-		$sex = array(Patient::MALE, Patient::FEMALE);
+		$sex = array(UnhlsPatient::MALE, UnhlsPatient::FEMALE);
 		$ranges = array('Low', 'Normal', 'High');
 		$specimen_types = array('Urine', 'Pus', 'HVS', 'Throat', 'Stool', 'Blood', 'CSF', 'Water', 'Food', 'Other fluids');
 		$isolates = array('Naisseria', 'Klebsiella', 'Staphylococci', 'Streptoccoci'. 'Proteus', 'Shigella', 'Salmonella', 'V. cholera', 
@@ -1287,7 +1287,7 @@ class ReportController extends \BaseController {
 						}
 						$table.='<td>'.($this->getGroupedTestCounts($urinalysis, null, null, $from, $toPlusOne)+$this->getGroupedTestCounts($urineChemistry, null, null, $from, $toPlusOne)).'</td>';
 						foreach ($ageRanges as $ageRange) {
-							$table.='<td>'.($this->getGroupedTestCounts($urinalysis, [Patient::MALE, Patient::FEMALE], $ageRange, $from, $toPlusOne)+$this->getGroupedTestCounts($urineChemistry, [Patient::MALE, Patient::FEMALE], $ageRange, $from, $toPlusOne)).'</td>';
+							$table.='<td>'.($this->getGroupedTestCounts($urinalysis, [UnhlsPatient::MALE, UnhlsPatient::FEMALE], $ageRange, $from, $toPlusOne)+$this->getGroupedTestCounts($urineChemistry, [UnhlsPatient::MALE, UnhlsPatient::FEMALE], $ageRange, $from, $toPlusOne)).'</td>';
 						}	
 					$table.='</tr>';
 				
@@ -1345,7 +1345,7 @@ class ReportController extends \BaseController {
 						}
 						$table.='<td>'.($this->getGroupedTestCounts($urinalysis, null, null, $from, $toPlusOne)+$this->getGroupedTestCounts($urineMicroscopy, null, null, $from, $toPlusOne)).'</td>';
 						foreach ($ageRanges as $ageRange) {
-							$table.='<td>'.($this->getGroupedTestCounts($urinalysis, [Patient::MALE, Patient::FEMALE], $ageRange, $from, $toPlusOne)+$this->getGroupedTestCounts($urineMicroscopy, [Patient::MALE, Patient::FEMALE], $ageRange, $from, $toPlusOne)).'</td>';
+							$table.='<td>'.($this->getGroupedTestCounts($urinalysis, [UnhlsPatient::MALE, UnhlsPatient::FEMALE], $ageRange, $from, $toPlusOne)+$this->getGroupedTestCounts($urineMicroscopy, [UnhlsPatient::MALE, UnhlsPatient::FEMALE], $ageRange, $from, $toPlusOne)).'</td>';
 						}	
 					$table.='</tr>';
 				
@@ -1401,7 +1401,7 @@ class ReportController extends \BaseController {
 					}
 					$table.='<td>'.$this->getGroupedTestCounts($bloodChemistry, null, null, $from, $toPlusOne).'</td>';
 					foreach ($ageRanges as $ageRange) {
-						$table.='<td>'.$this->getGroupedTestCounts($bloodChemistry, [Patient::MALE, Patient::FEMALE], $ageRange, $from, $toPlusOne).'</td>';
+						$table.='<td>'.$this->getGroupedTestCounts($bloodChemistry, [UnhlsPatient::MALE, UnhlsPatient::FEMALE], $ageRange, $from, $toPlusOne).'</td>';
 					}
 					foreach ($measures as $measure) {
 						$tMeasure = Measure::find($measure->measure_id);	
@@ -1454,7 +1454,7 @@ class ReportController extends \BaseController {
 					}
 					$table.='<td>'.$this->getGroupedTestCounts($rft, null, null, $from, $toPlusOne).'</td>';
 					foreach ($ageRanges as $ageRange) {
-						$table.='<td>'.$this->getGroupedTestCounts($rft, [Patient::MALE, Patient::FEMALE], $ageRange, $from, $toPlusOne).'</td>';
+						$table.='<td>'.$this->getGroupedTestCounts($rft, [UnhlsPatient::MALE, UnhlsPatient::FEMALE], $ageRange, $from, $toPlusOne).'</td>';
 					}	
 				$table.='</tr>';
 				foreach ($measures as $measure) {
@@ -1503,7 +1503,7 @@ class ReportController extends \BaseController {
 						}
 						$table.='<td>'.$this->getGroupedTestCounts($lft, null, null, $from, $toPlusOne).'</td>';
 						foreach ($ageRanges as $ageRange) {
-							$table.='<td>'.$this->getGroupedTestCounts($lft, [Patient::MALE, Patient::FEMALE], $ageRange, $from, $toPlusOne).'</td>';
+							$table.='<td>'.$this->getGroupedTestCounts($lft, [UnhlsPatient::MALE, UnhlsPatient::FEMALE], $ageRange, $from, $toPlusOne).'</td>';
 						}	
 					$table.='</tr>';
 				foreach ($measures as $measure) {
@@ -1655,7 +1655,7 @@ class ReportController extends \BaseController {
 					}
 					$table.='<td>'.$this->getGroupedTestCounts($bioCsf, null, null, $from, $toPlusOne).'</td>';
 					foreach ($ageRanges as $ageRange) {
-						$table.='<td>'.$this->getGroupedTestCounts($bioCsf, [Patient::MALE, Patient::FEMALE], $ageRange, $from, $toPlusOne).'</td>';
+						$table.='<td>'.$this->getGroupedTestCounts($bioCsf, [UnhlsPatient::MALE, UnhlsPatient::FEMALE], $ageRange, $from, $toPlusOne).'</td>';
 					}	
 				$table.='</tr>';
 				$measures = TestTypeMeasure::where('test_type_id', $csf)->orderBy('measure_id', 'DESC')->get();
@@ -1763,7 +1763,7 @@ class ReportController extends \BaseController {
 					}
 					$table.='<td>'.$this->getGroupedTestCounts($tft, null, null, $from, $toPlusOne).'</td>';
 					foreach ($ageRanges as $ageRange) {
-						$table.='<td>'.$this->getGroupedTestCounts($tft, [Patient::MALE, Patient::FEMALE], $ageRange, $from, $toPlusOne).'</td>';
+						$table.='<td>'.$this->getGroupedTestCounts($tft, [UnhlsPatient::MALE, UnhlsPatient::FEMALE], $ageRange, $from, $toPlusOne).'</td>';
 					}	
 				$table.='</tr>';
 				$measures = TestTypeMeasure::where('test_type_id', $tfts)->orderBy('measure_id', 'ASC')->get();
