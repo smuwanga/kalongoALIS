@@ -11,7 +11,7 @@ class ReportController extends \BaseController {
 	{
 		$search = Input::get('search');
 
-		$patients = Patient::search($search)->orderBy('id','DESC')->paginate(Config::get('kblis.page-items'));
+		$patients = UnhlsPatient::search($search)->orderBy('id','DESC')->paginate(Config::get('kblis.page-items'));
 
 		if (count($patients) == 0) {
 		 	Session::flash('message', trans('messages.no-match'));
@@ -39,21 +39,21 @@ class ReportController extends \BaseController {
 		}
 		//	Query to get tests of a particular patient
 		if (($visit || $visitId) && $id && $testId){
-			$tests = Test::where('id', '=', $testId);
+			$tests = UnhlsTest::where('id', '=', $testId);
 		}
 		else if(($visit || $visitId) && $id){
-			$tests = Test::where('visit_id', '=', $visit?$visit:$visitId);
+			$tests = UnhlsTest::where('visit_id', '=', $visit?$visit:$visitId);
 		}
 		else{
-			$tests = Test::join('visits', 'visits.id', '=', 'tests.visit_id')
+			$tests = UnhlsTest::join('unhls_visits', 'unhls_visits.id', '=', 'tests_cphl.visit_id')
 							->where('patient_id', '=', $id);
 		}
 		//	Begin filters - include/exclude pending tests
 		if($pending){
-			$tests=$tests->where('tests.test_status_id', '!=', Test::NOT_RECEIVED);
+			$tests=$tests->where('tests_cphl.test_status_id', '!=', UnhlsTest::NOT_RECEIVED);
 		}
 		else{
-			$tests = $tests->whereIn('tests.test_status_id', [Test::COMPLETED, Test::VERIFIED]);
+			$tests = $tests->whereIn('tests_cphl.test_status_id', [UnhlsTest::COMPLETED, UnhlsTest::VERIFIED]);
 		}
 		//	Date filters
 		if($from||$to){
@@ -70,9 +70,9 @@ class ReportController extends \BaseController {
 			}
 		}
 		//	Get tests collection
-		$tests = $tests->get(array('tests.*'));
+		$tests = $tests->get(array('tests_cphl.*'));
 		//	Get patient details
-		$patient = Patient::find($id);
+		$patient = UnhlsPatient::find($id);
 		//	Check if tests are accredited
 		$accredited = $this->accredited($tests);
 		$verified = array();

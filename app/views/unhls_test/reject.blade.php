@@ -3,7 +3,7 @@
 	<div>
 		<ol class="breadcrumb">
 		  <li><a href="{{{URL::route('user.home')}}}">{{trans('messages.home')}}</a></li>
-		  <li><a href="{{ URL::route('test.index') }}">{{ Lang::choice('messages.test',2) }}</a></li>
+		  <li><a href="{{ URL::route('unhls_test.index') }}">{{ Lang::choice('messages.test',2) }}</a></li>
 		  <li class="active">{{trans('messages.reject-title')}}</li>
 		</ol>
 	</div>
@@ -29,7 +29,7 @@
 				{{ HTML::ul($errors->all()) }}
 			</div>
 		@endif
-		{{ Form::open(array('route' => 'test.rejectAction')) }}
+		{{ Form::open(array('route' => 'unhls_test.rejectAction')) }}
 			{{ Form::hidden('specimen_id', $specimen->id) }}
 			<div class="panel-body">
 				<div class="display-details">
