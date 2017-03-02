@@ -23,7 +23,7 @@
 		</div>
 	</a>
 	
-	<a href="{{ URL::route('bbincidence.index')}}">
+	<a href="#">
 		<div class="panel panel-default col-sm-3">
 		<span class="ion-icon ion-ios-folder"></span> <br><span class="nav_title">OTHER RESOURCES</span>
 		</div>

@@ -31,6 +31,7 @@
 		case 'infection':
 		case 'userstatistics':
 		case 'moh706':
+		case 'hmis105':
 		case 'cd4':
 		case 'qualitycontrol':
 		case 'inventory':
@@ -138,7 +139,13 @@
 										<span class="glyphicon glyphicon-tag"></span>
 										{{trans('messages.moh-706')}}</a>
 									</div>
-								</li>					
+								</li>
+								<li>
+									<div><a href="#">
+										<span class="glyphicon glyphicon-tag"></span>
+										HMIS 105</a>
+									</div>
+								</li>
 								<li>
 									<div><a href="{{ URL::route('reports.aggregate.cd4')}}">
 										<span class="glyphicon glyphicon-tag"></span>
