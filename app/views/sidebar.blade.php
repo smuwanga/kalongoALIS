@@ -229,7 +229,7 @@
 									<div>
 										<a href="{{ URL::route('unhls_test.index')}}">
 											<!--<span class="glyphicon glyphicon-tag"></span> {{Lang::choice('messages.test-unhls', 2)}}</a>-->
-											<span class="glyphicon glyphicon-tag"></span> List of Test Requests</a>
+											<span class="glyphicon glyphicon-tag"></span> List of All Tests</a>
 									</div>
 								</li> 
 								<li>
