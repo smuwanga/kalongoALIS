@@ -318,11 +318,11 @@ return array(
     'interpretation' => 'Interpretation',
     'lab-receipt-date' => 'Receipt Date',
     'list-tests' => 'Ordered Tests List',
-    'new-test' => 'New Test',
+    'new-test' => 'Request For a Test',
     'not-received' => 'Test Not Received',
     'out-patient' => 'Out Patient',
     'patient-name' => 'Patient name',
-    'pending' => 'Test Pending',
+    'pending' => 'Pending',
     'physician' => 'Requesting Physician',
     'receive-test' => 'Receive',
     'receive-test-title' => 'Receive Test',
@@ -334,7 +334,7 @@ return array(
     'started' => 'Test Started',
     'success-creating-test' => 'Successfully created test!',
     'test' => 'Test|Tests|Test-Request',
-    'test-unhls' => 'Test|Test Requests', //Unhls  terminology
+    'test-unhls' => 'Test|List of All Test Requests', //Unhls  terminology
     'test-catalog' => 'Test Catalog',
     'test-details' => 'Test Details',
     'test-phase' => 'Test Phase',

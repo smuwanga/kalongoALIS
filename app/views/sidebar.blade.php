@@ -99,7 +99,7 @@
 				<li class="nav_trigger">
 					<a href="#">
 						<span class="ion-erlenmeyer-flask"></span>
-						<span class="nav_title">RRT</span>
+						<span class="nav_title">TESTS</span>
 					</a>
 					<div class="sub_panel" style="left: -220px;">
 						<div class="side_inner ps-ready ps-container" style="height: 620px;">
@@ -118,6 +118,41 @@
 										</a>
 									</div>
 								</li> 
+								<li>
+									<div>
+										<a href="{{URL::route('unhls_test.completed')}}">
+											<span class="glyphicon glyphicon-tag" ></span>{{trans('Completed Tests')}}
+										</a>
+									</div>
+								</li>
+																<li>
+									<div>
+										<a href="{{URL::route('unhls_test.notrecieved')}}">
+											<span class="glyphicon glyphicon-tag" ></span>{{trans('Samples Not Recieved')}}
+										</a>
+									</div>
+								</li>
+																<li>
+									<div>
+										<a href="{{URL::route('unhls_test.pending')}}">
+											<span class="glyphicon glyphicon-tag" ></span>{{trans('Pending Tests')}}
+										</a>
+									</div>
+								</li>
+																<li>
+									<div>
+										<a href="{{URL::route('unhls_test.started')}}">
+											<span class="glyphicon glyphicon-tag" ></span>{{trans('Tests Started')}}
+										</a>
+									</div>
+								</li>
+																<li>
+									<div>
+										<a href="{{URL::route('unhls_test.verified')}}">
+											<span class="glyphicon glyphicon-tag" ></span>{{trans('Verified Tests')}}
+										</a>
+									</div>
+								</li>
 
 							</ul>
 
