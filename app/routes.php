@@ -36,6 +36,11 @@ Route::group(array("before" => "auth"), function()
         "as" => "user.home",
         "uses" => "UserController@homeAction"
         ));
+
+    Route::any('/dashboard', array(
+        "as" => "user.dashboard",
+        "uses" => "UserController@dashboard"
+        ));
     Route::group(array("before" => "checkPerms:manage_users"), function() {
         Route::resource('user', 'UserController');
         Route::get("/user/{id}/delete", array(
@@ -404,7 +409,9 @@ Route::group(array("before" => "auth"), function()
     //  Check if able to manage reports
     Route::group(array("before" => "checkPerms:view_reports"), function()
     {
-        Route::any("/patientreport", array(
+        Route::resource('reports', 'ReportController');
+		
+		Route::any("/patientreport", array(
             "as"   => "reports.patient.index",
             "uses" => "ReportController@loadPatients"
         ));
@@ -805,5 +812,7 @@ Route::group(array("before" => "auth"), function()
         "as"   => "event.eventfilter",
         "uses" => "EventController@eventfilter"
     ));
+	
+	 Route::resource('unhls_els', 'UnhlsElsController');
 
 });

@@ -7,6 +7,13 @@ class ReportController extends \BaseController {
 	 * Called loadPatients because the same controller shall be used for all other reports
 	 * @return Response
 	 */
+	 
+	public function index()
+	{
+		return View::make('reports.index');
+	}
+	
+	
 	public function loadPatients()
 	{
 		$search = Input::get('search');

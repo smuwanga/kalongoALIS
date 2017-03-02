@@ -637,6 +637,9 @@ class BbincidenceController extends \BaseController {
 		$causes = BbincidenceCause::orderBy('causename')->get();
 		$actions = BbincidenceAction::orderBy('actionname')->get();
 
+		$datefrom = Input::get('datefrom');
+		$dateto = Input::get('dateto');
+
         $bbincidentnatureclasses = DB::table('unhls_bbnatures')->distinct()->get(['class']);
 
         //$bbincidentstatus = Bbincidence::
