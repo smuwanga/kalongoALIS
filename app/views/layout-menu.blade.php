@@ -54,9 +54,7 @@
         </div>
 
         <!-- side navigation -->
-        @include("sidebar")
-
-
-        @include("footer")
+       <!-- @include("sidebar")-->
+   @include("footer")
     </body>
 </html>

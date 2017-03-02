@@ -49,7 +49,7 @@
 			{{ Form::text('serial_no', '', array('class' => 'form-control col-sm-4','readonly' => 'readonly', 
 			'placeholder' => 'To be generated automatically')) }}
 			
-			{{ Form::label('lab_section', 'Laboratory Section', array('class' => 'col-sm-2')) }}
+			{{ Form::label('lab_section', 'Location', array('class' => 'col-sm-2')) }}
 			{{ Form::text('lab_section', Input::old('lab_section'), array('class' => 'form-control col-sm-4')) }}
 		</div>
 				

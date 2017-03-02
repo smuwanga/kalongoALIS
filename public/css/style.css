@@ -1,3 +1,9 @@
+/* custom size for ion icons */
+.ion-icon{
+	font-size:80px;
+}
+
+
 /* Tisa Admin Main Styles */
 .animated {
   -webkit-animation-duration: 500ms;
