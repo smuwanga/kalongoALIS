@@ -117,63 +117,6 @@
                         <td>{{ $test->getSpecimenId() }}</td> <!--Specimen ID -->
                         <td>{{ $test->testType->name }}</td> <!--Test-->
                         <td>{{ $test->visit->visit_type }}</td> <!--Visit Type -->
-                        <td id="test-status-{{$test->id}}" class='test-status'>
-                            <!-- Test Statuses -->
-                            <div class="container-fluid">
-                            
-                                <div class="row">
-
-                                    <div class="col-md-12">
-                                        @if($test->isNotReceived())
-                                            @if(!$test->isPaid())
-                                                <span class='label label-default'>
-                                                    {{trans('messages.not-paid')}}</span>
-                                            @else
-                                            <span class='label label-default'>
-                                                {{trans('messages.not-received')}}</span>
-                                            @endif
-                                        @elseif($test->isPending())
-                                            <span class='label label-info'>
-                                                {{trans('messages.pending')}}</span>
-                                        @elseif($test->isStarted())
-                                            <span class='label label-warning'>
-                                                {{trans('messages.started')}}</span>
-                                        @elseif($test->isCompleted())
-                                            <span class='label label-primary'>
-                                                {{trans('messages.completed')}}</span>
-                                        @elseif($test->isVerified())
-                                            <span class='label label-success'>
-                                                {{trans('messages.verified')}}</span>
-                                        @endif
-                                    </div>
-    
-                                    </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <!-- Specimen statuses -->
-                                        @if($test->specimen->isNotCollected())
-                                         @if(($test->isPaid()))
-                                            <span class='label label-default'>
-                                                {{trans('messages.specimen-not-collected-label')}}</span>
-                                            @endif
-                                        @elseif($test->specimen->isReferred())
-                                            <span class='label label-primary'>
-                                                {{trans('messages.specimen-referred-label') }}
-                                                @if($test->specimen->referral->status == Referral::REFERRED_IN)
-                                                    {{ trans("messages.in") }}
-                                                @elseif($test->specimen->referral->status == Referral::REFERRED_OUT)
-                                                    {{ trans("messages.out") }}
-                                                @endif
-                                            </span>
-                                        @elseif($test->specimen->isAccepted())
-                                            <span class='label label-success'>
-                                                {{trans('messages.specimen-accepted-label')}}</span>
-                                        @elseif($test->specimen->isRejected())
-                                            <span class='label label-danger'>
-                                                {{trans('messages.specimen-rejected-label')}}</span>
-                                        @endif
-                                        </div></div></div>
-                        </td>
                         <!-- ACTION BUTTONS -->
                         <td>
                             <a class="btn btn-sm btn-success"
@@ -290,6 +233,64 @@
                                 @endif
                             @endif
                         @endif
+                        </td>
+
+                        <td id="test-status-{{$test->id}}" class='test-status'>
+                            <!-- Test Statuses -->
+                            <div class="container-fluid">
+                            
+                                <div class="row">
+
+                                    <div class="col-md-12">
+                                        @if($test->isNotReceived())
+                                            @if(!$test->isPaid())
+                                                <span class='label label-default'>
+                                                    {{trans('messages.not-paid')}}</span>
+                                            @else
+                                            <span class='label label-default'>
+                                                {{trans('messages.not-received')}}</span>
+                                            @endif
+                                        @elseif($test->isPending())
+                                            <span class='label label-info'>
+                                                {{trans('messages.pending')}}</span>
+                                        @elseif($test->isStarted())
+                                            <span class='label label-warning'>
+                                                {{trans('messages.started')}}</span>
+                                        @elseif($test->isCompleted())
+                                            <span class='label label-primary'>
+                                                {{trans('messages.completed')}}</span>
+                                        @elseif($test->isVerified())
+                                            <span class='label label-success'>
+                                                {{trans('messages.verified')}}</span>
+                                        @endif
+                                    </div>
+    
+                                    </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <!-- Specimen statuses -->
+                                        @if($test->specimen->isNotCollected())
+                                         @if(($test->isPaid()))
+                                            <span class='label label-default'>
+                                                {{trans('messages.specimen-not-collected-label')}}</span>
+                                            @endif
+                                        @elseif($test->specimen->isReferred())
+                                            <span class='label label-primary'>
+                                                {{trans('messages.specimen-referred-label') }}
+                                                @if($test->specimen->referral->status == Referral::REFERRED_IN)
+                                                    {{ trans("messages.in") }}
+                                                @elseif($test->specimen->referral->status == Referral::REFERRED_OUT)
+                                                    {{ trans("messages.out") }}
+                                                @endif
+                                            </span>
+                                        @elseif($test->specimen->isAccepted())
+                                            <span class='label label-success'>
+                                                {{trans('messages.specimen-accepted-label')}}</span>
+                                        @elseif($test->specimen->isRejected())
+                                            <span class='label label-danger'>
+                                                {{trans('messages.specimen-rejected-label')}}</span>
+                                        @endif
+                                        </div></div></div>
                         </td>
                     </tr>
                 @endforeach
