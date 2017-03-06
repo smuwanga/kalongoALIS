@@ -491,7 +491,7 @@ class UnhlsTestController extends \BaseController {
 				foreach ($testTypes as $value) {
 					$testTypeID = (int)$value;
 					// Create Specimen - specimen_type_id, accepted_by, referred_from, referred_to
-					$specimen = new Specimen;
+					$specimen = new UnhlsSpecimen;
 					$specimen->specimen_type_id = TestType::find($testTypeID)->specimenTypes->lists('id')[0];
 					$specimen->accepted_by = Auth::user()->id;
 					$specimen->save();
@@ -500,7 +500,7 @@ class UnhlsTestController extends \BaseController {
 					$test->visit_id = $visit->id;
 					$test->test_type_id = $testTypeID;
 					$test->specimen_id = $specimen->id;
-					$test->test_status_id = Test::PENDING;
+					$test->test_status_id = UnhlsTest::PENDING;
 					$test->created_by = Auth::user()->id;
 					$test->requested_by = Input::get('physician');
 					$test->save();

@@ -35,7 +35,7 @@ class UnhlsPatientController extends \BaseController {
 	public function create()
 	{
 		//Create Patient
-		$lastInsertId = DB::table('patients')->max('id')+1;
+		$lastInsertId = DB::table('unhls_patients')->max('id')+1;
 		$ulin = $this->generateUniqueLabID();
 		return View::make('unhls_patient.create')->with('lastInsertId', $lastInsertId)->with('ulin',$ulin);
 	}

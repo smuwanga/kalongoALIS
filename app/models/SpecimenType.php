@@ -31,7 +31,7 @@ class SpecimenType extends Eloquent
 	 */
 	public function specimen()
 	{
-	  return $this->hasMany('Specimen');
+	  return $this->hasMany('UnhlsSpecimen');
 	}
 	/**
 	* Return the counts for a specimen type given the specimen_status_id, and date range for ungrouped specimen 
