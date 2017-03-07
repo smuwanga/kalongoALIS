@@ -7,7 +7,7 @@ class UnhlsTest extends Eloquent
 	 *
 	 * @var string
 	 */
-	protected $table = 'tests_cphl';
+	protected $table = 'unhls_tests';
 
 	public $timestamps = false;
 
@@ -30,8 +30,8 @@ class UnhlsTest extends Eloquent
 	 */
 	public function visit()
 	{
-		return $this->belongsTo('UnhlsVisit');
-	}
+		return $this->belongsTo('UnhlsVisit', 'visit_id');
+	}	
 
 	/**
 	 * Test Type relationship

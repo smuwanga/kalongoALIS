@@ -12,9 +12,9 @@ class RemoveUniqueConstraintOnPatientNumber extends Migration {
 	 */
 	public function up()
 	{
-		Schema::table('patients', function(Blueprint $table)
+		Schema::table('unhls_patients', function(Blueprint $table)
 		{
-			$table->dropUnique('patients_patient_number_unique');
+			$table->dropUnique('unhls_patients_patient_number_unique');
 		});
 	}
 
@@ -25,7 +25,7 @@ class RemoveUniqueConstraintOnPatientNumber extends Migration {
 	 */
 	public function down()
 	{
-		Schema::table('patients', function(Blueprint $table)
+		Schema::table('unhls_patients', function(Blueprint $table)
 		{
 			//
 		});

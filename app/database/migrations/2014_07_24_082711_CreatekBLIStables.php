@@ -35,7 +35,7 @@ class CreatekBLIStables extends Migration {
             $table->timestamps();
         });
 
-        Schema::create('patients', function(Blueprint $table)
+        Schema::create('unhls_patients', function(Blueprint $table)
         {
             $table->increments('id')->unsigned();
             $table->string('patient_number')->unique();
@@ -188,7 +188,7 @@ class CreatekBLIStables extends Migration {
 			$table->primary('id');
 		});
 
-		Schema::create('visits', function(Blueprint $table)
+		Schema::create('unhls_visits', function(Blueprint $table)
 		{
 			$table->bigIncrements('id');
 			$table->integer('patient_id')->unsigned();
@@ -196,7 +196,7 @@ class CreatekBLIStables extends Migration {
             $table->integer('visit_number')->unsigned()->nullable(); //External
 
             $table->index('visit_number');
-			$table->foreign('patient_id')->references('id')->on('patients');
+			$table->foreign('patient_id')->references('id')->on('unhls_patients');
 
             $table->timestamps();
         });
@@ -251,7 +251,7 @@ class CreatekBLIStables extends Migration {
             $table->foreign('referral_id')->references('id')->on('referrals');
 		});
 
-		Schema::create('tests', function(Blueprint $table)
+		Schema::create('unhls_tests', function(Blueprint $table)
 		{
 			$table->increments('id')->unsigned();
 			$table->bigInteger('visit_id')->unsigned();
@@ -273,7 +273,7 @@ class CreatekBLIStables extends Migration {
             $table->index('created_by');
             $table->index('tested_by');
             $table->index('verified_by');
-			$table->foreign('visit_id')->references('id')->on('visits');
+			$table->foreign('visit_id')->references('id')->on('unhls_visits');
 			$table->foreign('test_type_id')->references('id')->on('test_types');
 			$table->foreign('specimen_id')->references('id')->on('specimens');
 			$table->foreign('test_status_id')->references('id')->on('test_statuses');
@@ -287,7 +287,7 @@ class CreatekBLIStables extends Migration {
 			$table->string('result',1000)->nullable();
 			$table->timestamp('time_entered')->default(DB::raw('CURRENT_TIMESTAMP'));
 			
-            $table->foreign('test_id')->references('id')->on('tests');
+            $table->foreign('test_id')->references('id')->on('unhls_tests');
             $table->foreign('measure_id')->references('id')->on('measures');
 			$table->unique(array('test_id','measure_id'));
 		});
@@ -325,12 +325,12 @@ class CreatekBLIStables extends Migration {
         Schema::dropIfExists('instrument_testtypes');
         Schema::dropIfExists('instruments');
 		Schema::dropIfExists('test_results');
-		Schema::dropIfExists('tests');
+		Schema::dropIfExists('unhls_tests');
 		Schema::dropIfExists('specimens');
         Schema::dropIfExists('referrals');
         Schema::dropIfExists('facilities');
 		Schema::dropIfExists('rejection_reasons');
-		Schema::dropIfExists('visits');
+		Schema::dropIfExists('unhls_visits');
 		Schema::dropIfExists('test_statuses');
 		Schema::dropIfExists('specimen_statuses');
 		Schema::dropIfExists('test_phases');
@@ -342,7 +342,7 @@ class CreatekBLIStables extends Migration {
         Schema::dropIfExists('measure_types');
         Schema::dropIfExists('test_categories');
         Schema::dropIfExists('specimen_types');
-        Schema::dropIfExists('patients');
+        Schema::dropIfExists('unhls_patients');
         Schema::dropIfExists('tokens');
         Schema::dropIfExists('users');
 	}

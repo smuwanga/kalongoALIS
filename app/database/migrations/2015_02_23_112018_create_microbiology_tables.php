@@ -44,7 +44,7 @@ class CreateMicrobiologyTables extends Migration {
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('test_id')->references('id')->on('tests');
+            $table->foreign('test_id')->references('id')->on('unhls_tests');
         });
 
 
