@@ -268,12 +268,7 @@ Route::group(array("before" => "auth"), function()
         "uses" => "UnhlsTestController@updateSpecimenType"
     ));
      //Unhls test updatespecimentype ends
-    Route::post("/test/start", array(
-        "before" => "checkPerms:start_test",
-        "as"   => "test.start",
-        "uses" => "TestController@start"
-    ));
-    //Repeat of above route for UNHLS test 
+
     Route::post("/unhls_test/start", array(
         "before" => "checkPerms:start_test",
         "as"   => "unhls_test.start",
