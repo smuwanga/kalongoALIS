@@ -291,12 +291,6 @@ Route::group(array("before" => "auth"), function()
         "as"   => "unhls_test.edit",
         "uses" => "UnhlsTestController@edit"
     ));
-     Route::post("/test/{test}/saveresults", array(
-        "before" => "checkPerms:edit_test_results",
-        "as"   => "test.saveResults",
-        "uses" => "TestController@saveResults"
-    ));
-     //Repeat of above route for UNHLS
     Route::post("/unhls_test/{test}/saveresults", array(
         "before" => "checkPerms:edit_test_results",
         "as"   => "unhls_test.saveResults",
