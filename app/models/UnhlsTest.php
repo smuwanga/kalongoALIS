@@ -94,14 +94,14 @@ class UnhlsTest extends Eloquent
 	 */
 	public function culture()
 	{
-		return $this->hasMany('Culture');
+		return $this->hasOne('Culture');
 	}
 	/**
 	 * Drug susceptibility relationship
 	 */
 	public function susceptibility()
 	{
-		return $this->hasMany('Susceptibility');
+		return $this->hasMany('DrugSusceptibility');
 	}
 	/***
 	 * Requesting staff relationship

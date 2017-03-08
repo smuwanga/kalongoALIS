@@ -600,7 +600,7 @@ class UnhlsTestController extends \BaseController {
 	{
 		$specimen = Specimen::find($specimenID);
 		$referralReason = ReferralReason::all();
-		$test = Test::find($specimenID);
+		$test = UnhlsTest::find($specimenID);
 		return View::make('unhls_test.refer')->with('specimen', $specimen)->with('test', $test)
 						->with('referralReason', $referralReason);
 	}
@@ -665,7 +665,7 @@ class UnhlsTestController extends \BaseController {
 	 */
 	public function changeSpecimenType()
 	{
-		$test = Test::find(Input::get('id'));
+		$test = UnhlsTest::find(Input::get('id'));
 		return View::make('unhls_test.changeSpecimenType')->with('test', $test);
 	}
 
@@ -692,8 +692,8 @@ class UnhlsTestController extends \BaseController {
 	 */
 	public function start()
 	{
-		$test = Test::find(Input::get('id'));
-		$test->test_status_id = Test::STARTED;
+		$test = UnhlsTest::find(Input::get('id'));
+		$test->test_status_id = UnhlsTest::STARTED;
 		$test->time_started = date('Y-m-d H:i:s');
 		$test->save();
 		// if the test being carried out requires a culture worksheet
@@ -754,7 +754,7 @@ class UnhlsTestController extends \BaseController {
 	public function saveResults($testID)
 	{
 		$test = UnhlsTest::find($testID);
-		$test->test_status_id = Test::COMPLETED;
+		$test->test_status_id = UnhlsTest::COMPLETED;
 		$test->interpretation = Input::get('interpretation');
 		$test->tested_by = Auth::user()->id;
 		$test->time_completed = date('Y-m-d H:i:s');
@@ -805,7 +805,7 @@ class UnhlsTestController extends \BaseController {
 	 */
 	public function edit($testID)
 	{
-		$test = Test::find($testID);
+		$test = UnhlsTest::find($testID);
 		// if the test being carried out requires a culture worksheet
 		try {
 			$test->testType->microbiologyTestType->worksheet_required;
@@ -824,7 +824,7 @@ class UnhlsTestController extends \BaseController {
 	 */
 	public function viewDetails($testID)
 	{
-		//$result = Test::find($testID)->toSql(); to be deleted for debuging
+		//$result = UnhlsTest::find($testID)->toSql(); to be deleted for debuging
 		//dd($result);
 		return View::make('unhls_test.viewDetails')->with('test', UnhlsTest::find($testID));
 		//var_dump($test);
@@ -838,8 +838,8 @@ class UnhlsTestController extends \BaseController {
 	 */
 	public function verify($testID)
 	{
-		$test = Test::find($testID);
-		$test->test_status_id = Test::VERIFIED;
+		$test = UnhlsTest::find($testID);
+		$test->test_status_id = UnhlsTest::VERIFIED;
 		$test->time_verified = date('Y-m-d H:i:s');
 		$test->verified_by = Auth::user()->id;
 		$test->save();
@@ -928,8 +928,8 @@ class UnhlsTestController extends \BaseController {
 	 */
 	public function culture()
 	{
-		$test = Test::find(Input::get('testID'));
-		$test->test_status_id = Test::VERIFIED;
+		$test = UnhlsTest::find(Input::get('testID'));
+		$test->test_status_id = UnhlsTest::VERIFIED;
 		$test->time_verified = date('Y-m-d H:i:s');
 		$test->verified_by = Auth::user()->id;
 		$test->save();
