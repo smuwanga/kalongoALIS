@@ -7,7 +7,7 @@ class UnhlsSpecimen extends Eloquent
 	 *
 	 * @var string
 	 */
-	protected $table = 'specimen_unhls';
+	protected $table = 'specimens';
 
 	public $timestamps = false;
 
