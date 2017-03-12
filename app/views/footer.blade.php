@@ -43,7 +43,7 @@
         	</div>
 
             <div class="col-md-2">
-                <a href="http://www.cdc.gov/" target="_blank">
+                <a href="http://www.aslm.org/" target="_blank">
         			<img src="{{ Config::get('kblis.aslm-logo') }}" alt="African Society for Laboratory Medicine">
         		</a>
         	</div>

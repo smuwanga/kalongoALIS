@@ -6,7 +6,7 @@
         <link rel="stylesheet" href="{{ URL::asset('css/ionicons.min.css') }}">  
         <link rel="stylesheet" href="{{ URL::asset('css/style.css') }}">
        <!-- <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400&subset=latin-ext,latin" rel="stylesheet" type="text/css">-->
-        <link rel="shortcut icon" href="{{ URL::asset('i/favicon.png') }}" >
+        <link rel="shortcut icon" href="{{ URL::asset('i/ug_favicon.ico') }}" >
         <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/ui-lightness/jquery-ui-min.css') }}" />
         <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/bootstrap.min.css') }}" />
         <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/bootstrap-theme.min.css') }}" />
@@ -21,7 +21,9 @@
         <script type="text/javascript" src="{{ URL::asset('js/jquery.dataTables.js') }}"></script>
         <script type="text/javascript" src="{{ URL::asset('js/dataTables.bootstrap.js') }}"></script>
         <script type="text/javascript" src="{{ URL::asset('js/script.js') }} "></script>
-		<!-- print special by justus --><script type="text/javascript" src="{{ URL::asset('js/print_special.js') }} "></script>
+		<!-- print special used in bb module -->
+        <script type="text/javascript" src="{{ URL::asset('js/print_special.js') }} "></script>
+        <!--   -->
 
         <script type="text/javascript" src="{{ URL::asset('js/validator.min.js') }} "></script>
         <script type="text/javascript" src="{{ URL::asset('js/stockcard.js') }} "></script>   
