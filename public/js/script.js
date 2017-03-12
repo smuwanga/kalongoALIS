@@ -740,7 +740,7 @@ $(function(){
 		var testID = $(this).data('test-id');
 		var specID = $(this).data('specimen-id');
 
-		var url = location.protocol+ "//"+location.host+ "/test/" + testID+ "/receive";
+		var url = location.protocol+ "//"+location.host+ "/unhls_test/" + testID+ "/receive";
 		$.post(url, { id: testID}).done(function(){});
 
 		var parent = $(e.currentTarget).parent();

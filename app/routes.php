@@ -163,12 +163,12 @@ Route::group(array("before" => "auth"), function()
      Route::any("/test/{id}/receive", array(
         "before" => "checkPerms:receive_external_test",
         "as"   => "test.receive",
-        "uses" => "TestController@receive"
+        "uses" => "UnhlsTestController@receive"
     ));
     Route::any("/test/create/{patient?}", array(
         "before" => "checkPerms:request_test",
         "as"   => "test.create",
-        "uses" => "TestController@create"
+        "uses" => "UnhlsTestController@create"
     ));
     //Unhls test  create route starts
     Route::any("/unhls_test/create/{patient?}", array(

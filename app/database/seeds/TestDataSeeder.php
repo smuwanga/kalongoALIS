@@ -837,7 +837,7 @@ class TestDataSeeder extends DatabaseSeeder
 
         foreach ($testResults as $testResult)
         {
-            TestResult::create($testResult);
+            UnhlsTestResult::create($testResult);
         }
         $this->command->info('test results seeded');
 
@@ -908,114 +908,6 @@ class TestDataSeeder extends DatabaseSeeder
         $instrument->testTypes()->attach(array($testTypeWBC->id));
 
         $this->command->info('Instruments table seeded');
-
-
-        $labRequestUrinalysis[] = 
-            json_decode('{"cost":null,"receiptNumber":null,"receiptType":null,"labNo":596699,"parentLabNo":0,"requestingClinician":"frankenstein Dr",
-        "investigation":"Urinalysis","requestDate":"2014-10-14 10:20:35","orderStage":"ip","patientVisitNumber":643660,"patient":{"id":326983,
-        "fullName":"Macau Macau","dateOfBirth":"1996-10-09 00:00:00","gender":"Female"},"address":{"address":null,"postalCode":null,"phoneNumber":"","city":null}}');
-        $labRequestUrinalysis[] = 
-            json_decode('{"cost":null,"receiptNumber":null,"receiptType":null,"labNo":596700,"parentLabNo":596699,"requestingClinician":"frankenstein Dr",
-        "investigation":"Urine microscopy","requestDate":"2014-10-14 10:20:35","orderStage":"ip","patientVisitNumber":643660,"patient":{"id":326983,
-        "fullName":"Macau Macau","dateOfBirth":"1996-10-09 00:00:00","gender":"Female"},"address":{"address":null,"postalCode":null,"phoneNumber":"","city":null}}');
-        $labRequestUrinalysis[] = 
-            json_decode('{"cost":null,"receiptNumber":null,"receiptType":null,"labNo":596701,"parentLabNo":596700,"requestingClinician":"frankenstein Dr",
-        "investigation":"Pus cells","requestDate":"2014-10-14 10:20:35","orderStage":"ip","patientVisitNumber":643660,"patient":{"id":326983,
-        "fullName":"Macau Macau","dateOfBirth":"1996-10-09 00:00:00","gender":"Female"},"address":{"address":null,"postalCode":null,"phoneNumber":"","city":null}}');
-        $labRequestUrinalysis[] = 
-            json_decode('{"cost":null,"receiptNumber":null,"receiptType":null,"labNo":596702,"parentLabNo":596700,"requestingClinician":"frankenstein Dr",
-        "investigation":"S. haematobium","requestDate":"2014-10-14 10:20:35","orderStage":"ip","patientVisitNumber":643660,"patient":{"id":326983,
-        "fullName":"Macau Macau","dateOfBirth":"1996-10-09 00:00:00","gender":"Female"},"address":{"address":null,"postalCode":null,"phoneNumber":"","city":null}}');
-        $labRequestUrinalysis[] = 
-            json_decode('{"cost":null,"receiptNumber":null,"receiptType":null,"labNo":596703,"parentLabNo":596700,"requestingClinician":"frankenstein Dr",
-        "investigation":"T. vaginalis","requestDate":"2014-10-14 10:20:35","orderStage":"ip","patientVisitNumber":643660,"patient":{"id":326983,
-        "fullName":"Macau Macau","dateOfBirth":"1996-10-09 00:00:00","gender":"Female"},"address":{"address":null,"postalCode":null,"phoneNumber":"","city":null}}');
-        $labRequestUrinalysis[] = 
-            json_decode('{"cost":null,"receiptNumber":null,"receiptType":null,"labNo":596704,"parentLabNo":596700,"requestingClinician":"frankenstein Dr",
-        "investigation":"Yeast cells","requestDate":"2014-10-14 10:20:35","orderStage":"ip","patientVisitNumber":643660,"patient":{"id":326983,
-        "fullName":"Macau Macau","dateOfBirth":"1996-10-09 00:00:00","gender":"Female"},"address":{"address":null,"postalCode":null,"phoneNumber":"","city":null}}');
-        $labRequestUrinalysis[] = 
-            json_decode('{"cost":null,"receiptNumber":null,"receiptType":null,"labNo":596705,"parentLabNo":596700,"requestingClinician":"frankenstein Dr",
-        "investigation":"Red blood cells","requestDate":"2014-10-14 10:20:35","orderStage":"ip","patientVisitNumber":643660,"patient":{"id":326983,
-        "fullName":"Macau Macau","dateOfBirth":"1996-10-09 00:00:00","gender":"Female"},"address":{"address":null,"postalCode":null,"phoneNumber":"","city":null}}');
-        $labRequestUrinalysis[] = 
-            json_decode('{"cost":null,"receiptNumber":null,"receiptType":null,"labNo":596706,"parentLabNo":596700,"requestingClinician":"frankenstein Dr",
-        "investigation":"Bacteria","requestDate":"2014-10-14 10:20:36","orderStage":"ip","patientVisitNumber":643660,"patient":{"id":326983,
-        "fullName":"Macau Macau","dateOfBirth":"1996-10-09 00:00:00","gender":"Female"},"address":{"address":null,"postalCode":null,"phoneNumber":"","city":null}}');
-        $labRequestUrinalysis[] = 
-            json_decode('{"cost":null,"receiptNumber":null,"receiptType":null,"labNo":596707,"parentLabNo":596700,"requestingClinician":"frankenstein Dr",
-        "investigation":"Spermatozoa","requestDate":"2014-10-14 10:20:36","orderStage":"ip","patientVisitNumber":643660,"patient":{"id":326983,
-        "fullName":"Macau Macau","dateOfBirth":"1996-10-09 00:00:00","gender":"Female"},"address":{"address":null,"postalCode":null,"phoneNumber":"","city":null}}');
-        $labRequestUrinalysis[] = 
-            json_decode('{"cost":null,"receiptNumber":null,"receiptType":null,"labNo":596708,"parentLabNo":596700,"requestingClinician":"frankenstein Dr",
-        "investigation":"Epithelial cells","requestDate":"2014-10-14 10:20:36","orderStage":"ip","patientVisitNumber":643660,"patient":{"id":326983,
-        "fullName":"Macau Macau","dateOfBirth":"1996-10-09 00:00:00","gender":"Female"},"address":{"address":null,"postalCode":null,"phoneNumber":"","city":null}}');
-        $labRequestUrinalysis[] = 
-            json_decode('{"cost":null,"receiptNumber":null,"receiptType":null,"labNo":596709,"parentLabNo":596700,"requestingClinician":"frankenstein Dr",
-        "investigation":"ph","requestDate":"2014-10-14 10:20:36","orderStage":"ip","patientVisitNumber":643660,"patient":{"id":326983,
-        "fullName":"Macau Macau","dateOfBirth":"1996-10-09 00:00:00","gender":"Female"},"address":{"address":null,"postalCode":null,"phoneNumber":"","city":null}}');
-        $labRequestUrinalysis[] = 
-            json_decode('{"cost":null,"receiptNumber":null,"receiptType":null,"labNo":596710,"parentLabNo":596699,"requestingClinician":"frankenstein Dr",
-        "investigation":"Urine chemistry","requestDate":"2014-10-14 10:20:36","orderStage":"ip","patientVisitNumber":643660,"patient":{"id":326983,
-        "fullName":"Macau Macau","dateOfBirth":"1996-10-09 00:00:00","gender":"Female"},"address":{"address":null,"postalCode":null,"phoneNumber":"","city":null}}');
-        $labRequestUrinalysis[] = 
-            json_decode('{"cost":null,"receiptNumber":null,"receiptType":null,"labNo":596711,"parentLabNo":596710,"requestingClinician":"frankenstein Dr",
-        "investigation":"Glucose","requestDate":"2014-10-14 10:20:36","orderStage":"ip","patientVisitNumber":643660,"patient":{"id":326983,
-        "fullName":"Macau Macau","dateOfBirth":"1996-10-09 00:00:00","gender":"Female"},"address":{"address":null,"postalCode":null,"phoneNumber":"","city":null}}');
-        $labRequestUrinalysis[] = 
-            json_decode('{"cost":null,"receiptNumber":null,"receiptType":null,"labNo":596712,"parentLabNo":596710,"requestingClinician":"frankenstein Dr",
-        "investigation":"Ketones","requestDate":"2014-10-14 10:20:36","orderStage":"ip","patientVisitNumber":643660,"patient":{"id":326983,
-        "fullName":"Macau Macau","dateOfBirth":"1996-10-09 00:00:00","gender":"Female"},"address":{"address":null,"postalCode":null,"phoneNumber":"","city":null}}');
-        $labRequestUrinalysis[] = 
-            json_decode('{"cost":null,"receiptNumber":null,"receiptType":null,"labNo":596713,"parentLabNo":596710,"requestingClinician":"frankenstein Dr",
-        "investigation":"Proteins","requestDate":"2014-10-14 10:20:36","orderStage":"ip","patientVisitNumber":643660,"patient":{"id":326983,
-        "fullName":"Macau Macau","dateOfBirth":"1996-10-09 00:00:00","gender":"Female"},"address":{"address":null,"postalCode":null,"phoneNumber":"","city":null}}');
-        $labRequestUrinalysis[] = 
-            json_decode('{"cost":null,"receiptNumber":null,"receiptType":null,"labNo":596714,"parentLabNo":596710,"requestingClinician":"frankenstein Dr",
-        "investigation":"Blood","requestDate":"2014-10-14 10:20:36","orderStage":"ip","patientVisitNumber":643660,"patient":{"id":326983,
-        "fullName":"Macau Macau","dateOfBirth":"1996-10-09 00:00:00","gender":"Female"},"address":{"address":null,"postalCode":null,"phoneNumber":"","city":null}}');
-        $labRequestUrinalysis[] = 
-            json_decode('{"cost":null,"receiptNumber":null,"receiptType":null,"labNo":596715,"parentLabNo":596710,"requestingClinician":"frankenstein Dr",
-        "investigation":"Bilirubin","requestDate":"2014-10-14 10:20:36","orderStage":"ip","patientVisitNumber":643660,"patient":{"id":326983,
-        "fullName":"Macau Macau","dateOfBirth":"1996-10-09 00:00:00","gender":"Female"},"address":{"address":null,"postalCode":null,"phoneNumber":"","city":null}}');
-        $labRequestUrinalysis[] = 
-            json_decode('{"cost":null,"receiptNumber":null,"receiptType":null,"labNo":596716,"parentLabNo":596710,"requestingClinician":"frankenstein Dr",
-        "investigation":"Urobilinogen Phenlpyruvic acid","requestDate":"2014-10-14 10:20:37","orderStage":"ip","patientVisitNumber":643660,"patient":{"id":326983,
-        "fullName":"Macau Macau","dateOfBirth":"1996-10-09 00:00:00","gender":"Female"},"address":{"address":null,"postalCode":null,"phoneNumber":"","city":null}}');
-        $labRequestUrinalysis[] = 
-            json_decode('{"cost":null,"receiptNumber":null,"receiptType":null,"labNo":596717,"parentLabNo":596710,"requestingClinician":"frankenstein Dr",
-        "investigation":"pH","requestDate":"2014-10-14 10:20:37","orderStage":"ip","patientVisitNumber":643660,"patient":{"id":326983,
-        "fullName":"Macau Macau","dateOfBirth":"1996-10-09 00:00:00","gender":"Female"},"address":{"address":null,"postalCode":null,"phoneNumber":"","city":null}}');
-
-         for ($i=0; $i < count($labRequestUrinalysis); $i++) { 
-
-            $dumper = new ExternalDump();
-            $dumper->lab_no = $labRequestUrinalysis{$i}->labNo;
-            $dumper->parent_lab_no = $labRequestUrinalysis{$i}->parentLabNo;
-            $dumper->test_id = ($i == 0) ? $test_urinalysis_accepted_completed->id : null;
-            $dumper->requesting_clinician = $labRequestUrinalysis{$i}->requestingClinician;
-            $dumper->investigation = $labRequestUrinalysis{$i}->investigation;
-            $dumper->provisional_diagnosis = '';
-            $dumper->request_date = $labRequestUrinalysis{$i}->requestDate;
-            $dumper->order_stage = $labRequestUrinalysis{$i}->orderStage;
-            $dumper->patient_visit_number = $labRequestUrinalysis{$i}->patientVisitNumber;
-            $dumper->patient_id = $labRequestUrinalysis{$i}->patient->id;
-            $dumper->full_name = $labRequestUrinalysis{$i}->patient->fullName;
-            $dumper->dob = $labRequestUrinalysis{$i}->patient->dateOfBirth;
-            $dumper->gender = $labRequestUrinalysis{$i}->patient->gender;
-            $dumper->address = $labRequestUrinalysis{$i}->address->address;
-            $dumper->postal_code = '';
-            $dumper->phone_number = $labRequestUrinalysis{$i}->address->phoneNumber;
-            $dumper->city = $labRequestUrinalysis{$i}->address->city;
-            $dumper->cost = $labRequestUrinalysis{$i}->cost;
-            $dumper->receipt_number = $labRequestUrinalysis{$i}->receiptNumber;
-            $dumper->receipt_type = $labRequestUrinalysis{$i}->receiptType;
-            $dumper->waiver_no = '';
-            $dumper->system_id = "sanitas";
-            $dumper->save();
-        }
-        $this->command->info('ExternalDump table seeded');
-
 
         //  Begin seed for prevalence rates report
         /* Test Categories table - These map on to the lab sections */
@@ -1520,7 +1412,7 @@ class TestDataSeeder extends DatabaseSeeder
         );        
         foreach ($results as $result)
         {
-            TestResult::create($result);
+            UnhlsTestResult::create($result);
         }
         $this->command->info('Test results seeded again');
         //  End prevalence rates seed
@@ -1847,212 +1739,6 @@ class TestDataSeeder extends DatabaseSeeder
         $oralPharyngealFlora = Organism::create(['name' => 'Oral-pharyngeal flora']);
 
         $this->command->info('Organisms table seeded');
-        //  Seed for organism_drugs
-        //  Staphylococci species
-/*        DB::table('organism_drugs')->insert(
-            array("organism_id" => $staphylococci->id, "drug_id" => $penicillin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $staphylococci->id, "drug_id" => $oxacillin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $staphylococci->id, "drug_id" => $cefoxitin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $staphylococci->id, "drug_id" => $erythromycin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $staphylococci->id, "drug_id" => $clindamycin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $staphylococci->id, "drug_id" => $trimeth->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $staphylococci->id, "drug_id" => $cefazolin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $staphylococci->id, "drug_id" => $cephalothin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $staphylococci->id, "drug_id" => $chloramphenicol->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $staphylococci->id, "drug_id" => $nitrofurantoin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $staphylococci->id, "drug_id" => $tetracycline->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $staphylococci->id, "drug_id" => $vancomycin->id));
-        $this->command->info('Staphylococci species seeded');
-
-        //  Gram negative cocci
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $gramnegative->id, "drug_id" => $ampicillin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $gramnegative->id, "drug_id" => $cefazolin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $gramnegative->id, "drug_id" => $gentamicin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $gramnegative->id, "drug_id" => $amoxicillin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $gramnegative->id, "drug_id" => $cephalothin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $gramnegative->id, "drug_id" => $cefuroxime->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $gramnegative->id, "drug_id" => $cefotaxime->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $gramnegative->id, "drug_id" => $ciprofloxacin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $gramnegative->id, "drug_id" => $trimeth->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $gramnegative->id, "drug_id" => $nitrofurantoin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $gramnegative->id, "drug_id" => $chloramphenicol->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $gramnegative->id, "drug_id" => $tetracycline->id));
-        $this->command->info('Gram negative cocci seeded');
-
-        //  Pseudomonas aeruginosa
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $pseudomonas->id, "drug_id" => $ceftazidime->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $pseudomonas->id, "drug_id" => $gentamicin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $pseudomonas->id, "drug_id" => $tobramycin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $pseudomonas->id, "drug_id" => $piperacillin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $pseudomonas->id, "drug_id" => $ciprofloxacin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $pseudomonas->id, "drug_id" => $merodenem->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $pseudomonas->id, "drug_id" => $tazo->id));
-        $this->command->info('Pseudomonas aeruginosa seeded');
-
-        //  Enterococcus species
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $enterococcus->id, "drug_id" => $ampicillin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $enterococcus->id, "drug_id" => $gentamicin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $enterococcus->id, "drug_id" => $nitrofurantoin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $enterococcus->id, "drug_id" => $ciprofloxacin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $enterococcus->id, "drug_id" => $tetracycline->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $enterococcus->id, "drug_id" => $chloramphenicol->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $enterococcus->id, "drug_id" => $vancomycin->id));
-        $this->command->info('Enterococcus species seeded');
-
-        //  Streptococcus pneumoniae
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $pneumoniae->id, "drug_id" => $penicillin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $pneumoniae->id, "drug_id" => $cefriaxone->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $pneumoniae->id, "drug_id" => $cefuroxime->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $pneumoniae->id, "drug_id" => $erythromycin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $pneumoniae->id, "drug_id" => $trimeth->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $pneumoniae->id, "drug_id" => $chloramphenicol->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $pneumoniae->id, "drug_id" => $tetracycline->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $pneumoniae->id, "drug_id" => $levofloxacin->id));
-        $this->command->info('Streptococcus pneumoniae seeded');
-
-        //  Streptococcus species viridans group
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $streptococcus->id, "drug_id" => $penicillin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $streptococcus->id, "drug_id" => $cefriaxone->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $streptococcus->id, "drug_id" => $vancomycin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $streptococcus->id, "drug_id" => $chloramphenicol->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $streptococcus->id, "drug_id" => $clindamycin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $streptococcus->id, "drug_id" => $erythromycin->id));
-        $this->command->info('Streptococcus species viridans group seeded');
-
-        //  Beta-haemolytic streptococci
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $beta->id, "drug_id" => $penicillin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $beta->id, "drug_id" => $erythromycin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $beta->id, "drug_id" => $clindamycin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $beta->id, "drug_id" => $cefriaxone->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $beta->id, "drug_id" => $chloramphenicol->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $beta->id, "drug_id" => $vancomycin->id));
-        $this->command->info('Beta-haemolytic streptococci seeded');
-
-        //  Haemophilus influenzae
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $haemophilus->id, "drug_id" => $ampicillin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $haemophilus->id, "drug_id" => $trimeth->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $haemophilus->id, "drug_id" => $sulbactam->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $haemophilus->id, "drug_id" => $cefriaxone->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $haemophilus->id, "drug_id" => $chloramphenicol->id));
-        $this->command->info('Haemophilus influenzae seeded');
-
-        //  Naisseria menengitidis
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $naisseria->id, "drug_id" => $penicillin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $naisseria->id, "drug_id" => $cefriaxone->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $naisseria->id, "drug_id" => $chloramphenicol->id));
-        $this->command->info('Neisseria menengitidis seeded');
-
-        //  Salmonella species
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $salmonella->id, "drug_id" => $ampicillin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $salmonella->id, "drug_id" => $ciprofloxacin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $salmonella->id, "drug_id" => $trimeth->id));
-        $this->command->info('Salmonella species seeded');
-
-        //  Shigella
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $shigella->id, "drug_id" => $ampicillin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $shigella->id, "drug_id" => $ciprofloxacin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $shigella->id, "drug_id" => $trimeth->id));
-        $this->command->info('Shigella seeded');
-
-        //  Vibrio cholerae
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $vibrio->id, "drug_id" => $ampicillin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $vibrio->id, "drug_id" => $ciprofloxacin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $vibrio->id, "drug_id" => $trimeth->id));
-        $this->command->info('Vibrio cholerae seeded');
-
-        //  Gram positive cocci
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $grampositive->id, "drug_id" => $cefoxitin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $grampositive->id, "drug_id" => $clindamycin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $grampositive->id, "drug_id" => $erythromycin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $grampositive->id, "drug_id" => $oxacillin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $grampositive->id, "drug_id" => $penicillin->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $grampositive->id, "drug_id" => $tetracycline->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $grampositive->id, "drug_id" => $trimeth->id));
-        DB::table('organism_drugs')->insert(
-            array("organism_id" => $grampositive->id, "drug_id" => $vancomycin->id));
-        $this->command->info('Gram positive cocci seeded');
-*/
         $microbiologyVisit = UnhlsVisit::create(["patient_id" => 1]);
 
         $specimenTypeSputum = SpecimenType::create(["name" => "Sputum"]);
@@ -2716,47 +2402,47 @@ class TestDataSeeder extends DatabaseSeeder
             'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureI->id,
         ]);
 
-        TestResult::create([
+        UnhlsTestResult::create([
             'test_id' => $testAppearanceMucoSalivary->id,
             'measure_id' => $measureAppearance->id,
             'result' => 'Muco-Salivary',
         ]);
-        TestResult::create([
+        UnhlsTestResult::create([
             'test_id' => $testGramStain->id,
             'measure_id' => $measureGramStain->id,
             'result' => '3+ Gram positive diplococci,1+ Gram negative cocci,<5 pmns and 5-10 epithelial cells seen.',
         ]);
-        TestResult::create([
+        UnhlsTestResult::create([
             'test_id' => $testZnStain->id,
             'measure_id' => $measureZnStain->id,
             'result' => 'No AFB seen',
         ]);
-        TestResult::create([
+        UnhlsTestResult::create([
             'test_id' => $testASToralPharyngealFlora->id,
             'measure_id' => $measureAST->id,
             'result' => '-',
         ]);
-        TestResult::create([
+        UnhlsTestResult::create([
             'test_id' => $testAppearanceFormed->id,
             'measure_id' => $measureAppearance->id,
             'result' => 'Formed',
         ]);
-        TestResult::create([
+        UnhlsTestResult::create([
             'test_id' => $testModifiedZn->id,
             'measure_id' => $measureModifiedZn->id,
             'result' => 'No Oocysts seen.',
         ]);
-        TestResult::create([
+        UnhlsTestResult::create([
             'test_id' => $testWetSalineIodinePrep->id,
             'measure_id' => $measureWetSalineIodinePrep->id,
             'result' => 'No Ova/cysts seen.',
         ]);
-        TestResult::create([
+        UnhlsTestResult::create([
             'test_id' => $testASTecoli->id,
             'measure_id' => $measureAST->id,
             'result' => 'ESBL Positive',
         ]);
-        TestResult::create([
+        UnhlsTestResult::create([
             'test_id' => $testAST->id,
             'measure_id' => $measureAST->id,
             'result' => 'General Comment',

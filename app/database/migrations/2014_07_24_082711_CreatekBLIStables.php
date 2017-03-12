@@ -279,7 +279,7 @@ class CreatekBLIStables extends Migration {
 			$table->foreign('test_status_id')->references('id')->on('test_statuses');
 		});
 
-		Schema::create('test_results', function(Blueprint $table)
+		Schema::create('unhls_test_results', function(Blueprint $table)
 		{
 			$table->bigIncrements('id');
 			$table->integer('test_id')->unsigned();
@@ -324,7 +324,7 @@ class CreatekBLIStables extends Migration {
 	{
         Schema::dropIfExists('instrument_testtypes');
         Schema::dropIfExists('instruments');
-		Schema::dropIfExists('test_results');
+		Schema::dropIfExists('unhls_test_results');
 		Schema::dropIfExists('unhls_tests');
 		Schema::dropIfExists('specimens');
         Schema::dropIfExists('referrals');
