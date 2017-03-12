@@ -48,8 +48,8 @@
 						Input::old('rejectionReason'), array('class' => 'form-control')) }}
 				</div>
 				<div class="form-group">
-					{{ Form::label('reject_explained_to', trans("messages.reject-explained-to")) }}
-					{{Form::text('reject_explained_to', Input::old('reject_explained_to'),
+					{{ Form::label('rejecting_officer', trans("messages.rejecting-officer")) }}
+					{{Form::text('rejecting_officer', Input::old('rejecting_officer'),
 						array('class' => 'form-control'))}}
 				</div>
 				<div class="form-group actions-row">

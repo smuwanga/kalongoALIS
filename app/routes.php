@@ -425,11 +425,11 @@ Route::group(array("before" => "auth"), function()
         ));
         Route::any("/visitreport/{id}", array(
             "as" => "reports.visit.report", 
-            "uses" => "ReportController@viewVisitReport"
+            "uses" => "UnhlsReportController@viewVisitReport"
         ));
         Route::any("/visitreport/{id}/print", array(
             "as" => "reports.visit.report.print", 
-            "uses" => "ReportController@printVisitReport"
+            "uses" => "UnhlsReportController@printVisitReport"
         ));
         Route::any("/dailylog", array(
             "as"   => "reports.daily.log",

@@ -126,24 +126,7 @@
                                 <span class="glyphicon glyphicon-eye-open"></span>
                                 {{trans('messages.view-details')}}
                             </a>
-
-                                <a class="btn btn-sm btn-info" id="collect-{{$test->id}}-link"
-                                    href="{{URL::route('unhls_test.collectSpecimen', array($test->specimen_id))}}"
-                                    title="{{trans('messages.collect-specimen-title')}}">
-                                    <span class="glyphicon glyphicon-ambulance"></span>
-                                    {{trans('messages.collect-specimen')}}
-                                </a> 
-                                     
-                         <!--       <a class="btn btn-sm btn-info" href="javascript:void(0)"
-                                    data-test-id ="{{$test->id}}" data-specimen-id ="{{$test->specimen->id}}"
-                                    title="{{trans('messages.collect-specimen-title')}}"
-                                    data-url="{{URL::ROUTE('unhls_test.collectSpecimen')}}">
-                                    <span class="glyphicon glyphicon-ambulance"></span>
-                                    {{trans('messages.collect-specimen')}}
-                                </a> -->
-                            
-                            
-                            
+                        
                         @if ($test->isNotReceived()) 
                             @if(Auth::user()->can('receive_external_test') && $test->isPaid())
                                 <a class="btn btn-sm btn-default receive-test" href="javascript:void(0)"
@@ -154,6 +137,14 @@
                                 </a>
                             @endif
                         @elseif ($test->specimen->isNotCollected())
+                            @if(Auth::user()->can('start_test'))
+                                <a class="btn btn-sm btn-info" id="collect-{{$test->id}}-link" 
+                                    href="{{URL::route('unhls_test.collectSpecimen', array($test->specimen_id))}}"
+                                    title="{{trans('messages.collect-specimen-title')}}">
+                                    <span class="glyphicon glyphicon-ambulance"></span>
+                                    {{trans('messages.collect-specimen')}}
+                                </a> 
+                            @endif
                             @if(Auth::user()->can('accept_test_specimen'))
                                 <a class="btn btn-sm btn-info accept-specimen" href="javascript:void(0)"
                                     data-test-id="{{$test->id}}" data-specimen-id="{{$test->specimen->id}}"

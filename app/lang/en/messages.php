@@ -170,6 +170,7 @@ return array(
     'referrals' => 'Referrals',
     'referral-type' => 'Type of Referral',
     'referring-health-worker' => 'Referring Health Worker',//UNHLS terminology
+    'rejecting-officer' => 'Recieving/Rejecting Officer',
     'specimen-successful-refer' => 'The specimen was referred',
     'specimen-referred-label' => 'Specimen Referred',
     'person-involved' => 'Person involved',
@@ -317,7 +318,7 @@ return array(
     'in-patient' => 'In Patient',
     'interpretation' => 'Interpretation',
     'lab-receipt-date' => 'Receipt Date',
-    'list-tests' => 'Ordered Tests List',
+    'list-tests' => 'Test Requests',
     'new-test' => 'Request For a Test',
     'not-received' => 'Test Not Received',
     'out-patient' => 'Out Patient',
@@ -329,7 +330,7 @@ return array(
     'registered-by' => 'Registered By',
     'save-test' => 'Save Test Request',
     'select-tests' => 'Select Test(s)',
-    'start-test' => 'Start',
+    'start-test' => 'Analysis',
     'start-test-title' => 'Start Test',
     'started' => 'Test Started',
     'success-creating-test' => 'Successfully created test!',
@@ -340,7 +341,7 @@ return array(
     'test-phase' => 'Test Phase',
     'test-remarks' => 'Remarks',
     'test-status' => 'Test Status',
-    'test-request-status' => 'Request Status', //unhls terminology
+    'test-request-status' => 'Actions', //unhls terminology
     'tested-by' => 'Performed By',
     'turnaround-time' => 'Turnaround Time',
     'unknown' => 'Unknown',
