@@ -788,7 +788,6 @@ class TestDataSeeder extends DatabaseSeeder
                 "requested_by" => "Dr. Abou Meyang",
                 "time_started" => $now->format('Y-m-d H:i:s'),
                 "time_completed" => $now->add(new DateInterval('PT12M8S'))->format('Y-m-d H:i:s'),
-                "external_id" => 596699,
             )
         );
 
