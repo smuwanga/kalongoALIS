@@ -188,12 +188,6 @@ Route::group(array("before" => "auth"), function()
         "as"   => "unhls_test.saveNewTest",
         "uses" => "UnhlsTestController@saveNewTest"
     ));
-     //unhls test savenewtest ends here
-     Route::post("/test/acceptspecimen", array(
-        "before" => "checkPerms:accept_test_specimen",
-        "as"   => "test.acceptSpecimen",
-        "uses" => "TestController@accept"
-    ));
      //unhls test refer starts here
     Route::post("/unhls_test/acceptspecimen", array(
         "before" => "checkPerms:accept_test_specimen",
