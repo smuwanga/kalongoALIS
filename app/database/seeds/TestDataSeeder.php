@@ -537,7 +537,7 @@ class TestDataSeeder extends DatabaseSeeder
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeBS->id,//BS for MPS
                 "specimen_id" => $this->createSpecimen(
-                        UnhlsTest::NOT_RECEIVED, Specimen::NOT_COLLECTED,
+                        UnhlsTest::NOT_RECEIVED, UnhlsSpecimen::NOT_COLLECTED,
                         SpecimenType::all()->last()->id,
                         $users[rand(0, count($users)-1)]->id),
                 "test_status_id" => UnhlsTest::NOT_RECEIVED,
@@ -551,7 +551,7 @@ class TestDataSeeder extends DatabaseSeeder
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeHB->id,
                 "specimen_id" => $this->createSpecimen(
-                        UnhlsTest::PENDING, Specimen::NOT_COLLECTED,
+                        UnhlsTest::PENDING, UnhlsSpecimen::NOT_COLLECTED,
                         SpecimenType::all()->last()->id,
                         $users[rand(0, count($users)-1)]->id),
                 "test_status_id" => UnhlsTest::PENDING,
@@ -565,7 +565,7 @@ class TestDataSeeder extends DatabaseSeeder
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeGXM->id,
                 "specimen_id" => $this->createSpecimen(
-                        UnhlsTest::PENDING, Specimen::NOT_COLLECTED,
+                        UnhlsTest::PENDING, UnhlsSpecimen::NOT_COLLECTED,
                         SpecimenType::all()->last()->id,
                         $users[rand(0, count($users)-1)]->id),
                 "test_status_id" => UnhlsTest::PENDING,
@@ -579,7 +579,7 @@ class TestDataSeeder extends DatabaseSeeder
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeBS->id,//BS for MPS
                 "specimen_id" => $this->createSpecimen(
-                        UnhlsTest::PENDING, Specimen::ACCEPTED,
+                        UnhlsTest::PENDING, UnhlsSpecimen::ACCEPTED,
                         SpecimenType::all()->last()->id,
                         $users[rand(0, count($users)-1)]->id),
                 "test_status_id" => UnhlsTest::PENDING,
@@ -593,7 +593,7 @@ class TestDataSeeder extends DatabaseSeeder
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeGXM->id,
                 "specimen_id" => $this->createSpecimen(
-                        UnhlsTest::COMPLETED, Specimen::ACCEPTED, 
+                        UnhlsTest::COMPLETED, UnhlsSpecimen::ACCEPTED, 
                         SpecimenType::all()->last()->id, 
                         $users[rand(0, count($users)-1)]->id),
                 "interpretation" => "Perfect match.",
@@ -611,7 +611,7 @@ class TestDataSeeder extends DatabaseSeeder
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeHB->id,
                 "specimen_id" => $this->createSpecimen(
-                        UnhlsTest::COMPLETED, Specimen::ACCEPTED, 
+                        UnhlsTest::COMPLETED, UnhlsSpecimen::ACCEPTED, 
                         SpecimenType::all()->last()->id, 
                         $users[rand(0, count($users)-1)]->id),
                 "interpretation" => "Do nothing!",
@@ -629,7 +629,7 @@ class TestDataSeeder extends DatabaseSeeder
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeGXM->id,
                 "specimen_id" => $this->createSpecimen(
-                    UnhlsTest::STARTED, Specimen::ACCEPTED, SpecimenType::all()->last()->id, 
+                    UnhlsTest::STARTED, UnhlsSpecimen::ACCEPTED, SpecimenType::all()->last()->id, 
                     $users[rand(0, count($users)-1)]->id),
                 "test_status_id" => UnhlsTest::STARTED,
                 "requested_by" => "Dr. Abou Meyang",
@@ -643,7 +643,7 @@ class TestDataSeeder extends DatabaseSeeder
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeBS->id,//BS for MPS
                 "specimen_id" => $this->createSpecimen(
-                        UnhlsTest::COMPLETED, Specimen::ACCEPTED, 
+                        UnhlsTest::COMPLETED, UnhlsSpecimen::ACCEPTED, 
                         SpecimenType::all()->last()->id, 
                         $users[rand(0, count($users)-1)]->id),
                 "interpretation" => "Positive",
@@ -661,7 +661,7 @@ class TestDataSeeder extends DatabaseSeeder
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeBS->id,//BS for MPS
                 "specimen_id" => $this->createSpecimen(
-                        UnhlsTest::VERIFIED, Specimen::ACCEPTED, 
+                        UnhlsTest::VERIFIED, UnhlsSpecimen::ACCEPTED, 
                         SpecimenType::all()->last()->id, 
                         $users[rand(0, count($users)-1)]->id),
                 "interpretation" => "Very high concentration of parasites.",
@@ -681,7 +681,7 @@ class TestDataSeeder extends DatabaseSeeder
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeBS->id,//BS for MPS
                 "specimen_id" => $this->createSpecimen(
-                        UnhlsTest::PENDING, Specimen::REJECTED, 
+                        UnhlsTest::PENDING, UnhlsSpecimen::REJECTED, 
                         SpecimenType::all()->last()->id, 
                         $users[rand(0, count($users)-1)]->id,
                         $users[rand(0, count($users)-1)]->id,
@@ -699,7 +699,7 @@ class TestDataSeeder extends DatabaseSeeder
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeWBC->id,
                 "specimen_id" => $this->createSpecimen(
-                        UnhlsTest::STARTED, Specimen::ACCEPTED,
+                        UnhlsTest::STARTED, UnhlsSpecimen::ACCEPTED,
                         SpecimenType::all()->last()->id,
                         $users[rand(0, count($users)-1)]->id),
                 "test_status_id" => UnhlsTest::PENDING,
@@ -713,7 +713,7 @@ class TestDataSeeder extends DatabaseSeeder
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeBS->id,//BS for MPS
                 "specimen_id" => $this->createSpecimen(
-                        UnhlsTest::STARTED, Specimen::REJECTED, 
+                        UnhlsTest::STARTED, UnhlsSpecimen::REJECTED, 
                         SpecimenType::all()->last()->id, 
                         $users[rand(0, count($users)-1)]->id,
                         $users[rand(0, count($users)-1)]->id,
@@ -730,7 +730,7 @@ class TestDataSeeder extends DatabaseSeeder
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeBS->id,//BS for MPS
                 "specimen_id" => $this->createSpecimen(
-                        UnhlsTest::COMPLETED, Specimen::REJECTED, 
+                        UnhlsTest::COMPLETED, UnhlsSpecimen::REJECTED, 
                         SpecimenType::all()->last()->id, 
                         $users[rand(0, count($users)-1)]->id,
                         $users[rand(0, count($users)-1)]->id,
@@ -750,7 +750,7 @@ class TestDataSeeder extends DatabaseSeeder
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeUrinalysis->id,
                 "specimen_id" => $this->createSpecimen(
-                        UnhlsTest::PENDING, Specimen::NOT_COLLECTED,
+                        UnhlsTest::PENDING, UnhlsSpecimen::NOT_COLLECTED,
                         SpecimenType::all()->last()->id,
                         $users[rand(0, count($users)-1)]->id),
                 "test_status_id" => UnhlsTest::PENDING,
@@ -764,7 +764,7 @@ class TestDataSeeder extends DatabaseSeeder
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeWBC->id,
                 "specimen_id" => $this->createSpecimen(
-                        UnhlsTest::PENDING, Specimen::NOT_COLLECTED,
+                        UnhlsTest::PENDING, UnhlsSpecimen::NOT_COLLECTED,
                         SpecimenType::all()->last()->id,
                         $users[rand(0, count($users)-1)]->id),
                 "test_status_id" => UnhlsTest::PENDING,
@@ -778,7 +778,7 @@ class TestDataSeeder extends DatabaseSeeder
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeUrinalysis->id,
                 "specimen_id" => $this->createSpecimen(
-                        UnhlsTest::COMPLETED, Specimen::ACCEPTED, 
+                        UnhlsTest::COMPLETED, UnhlsSpecimen::ACCEPTED, 
                         SpecimenType::all()->last()->id, 
                         $users[rand(0, count($users)-1)]->id),
                 "interpretation" => "Whats this !!!! ###%%% ^ *() /",
@@ -1742,9 +1742,9 @@ class TestDataSeeder extends DatabaseSeeder
 
         $specimenTypeSputum = SpecimenType::create(["name" => "Sputum"]);
 
-        $specimenSputum = Specimen::create([
+        $specimenSputum = UnhlsSpecimen::create([
             "specimen_type_id" => $specimenTypeSputum->id,
-            "specimen_status_id" => Specimen::ACCEPTED,
+            "specimen_status_id" => UnhlsSpecimen::ACCEPTED,
             "accepted_by" => 1,
             "time_accepted" => date('Y-m-d H:i:s')]);
 
@@ -2457,17 +2457,17 @@ class TestDataSeeder extends DatabaseSeeder
         $values["specimen_type_id"] = $specimenTypeID;
         $values["specimen_status_id"] = $specimenStatus;
 
-        if($specimenStatus == Specimen::ACCEPTED){
+        if($specimenStatus == UnhlsSpecimen::ACCEPTED){
             $values["accepted_by"] = $acceptor;
             $values["time_accepted"] = date('Y-m-d H:i:s');
         }
-        if($specimenStatus == Specimen::REJECTED){
+        if($specimenStatus == UnhlsSpecimen::REJECTED){
             $values["rejected_by"] = $rejector;
             $values["rejection_reason_id"] = $rejectReason;
             $values["time_rejected"] = date('Y-m-d H:i:s');
         }
         
-        $specimen = Specimen::create($values);
+        $specimen = UnhlsSpecimen::create($values);
 
         return $specimen->id;
     }

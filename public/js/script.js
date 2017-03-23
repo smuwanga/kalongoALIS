@@ -715,20 +715,19 @@ $(function(){
 	}); */
 
 
-	/** - Get a Test->id from the button clicked,
-	 *  - Fetch corresponding test and default specimen data
-	 *  - Display all in the modal.
-	 */
-	$('#change-specimen-modal').on('show.bs.modal', function(e) {
-	    //get data-id attribute of the clicked element
-	    var id = $(e.relatedTarget).data('test-id');
-		var url = $(e.relatedTarget).data('url');
-
-	    $.post(url, { id: id}).done(function(data){
-		    //Show it in the modal
-		    $(e.currentTarget).find('.modal-body').html(data);
-	    });
-	});
+    /** - Get a specimen->id from the button clicked,
+     *  - Fetch corresponding specimen data
+     *  - Display all in the modal.
+     */
+    $('#accept-specimen-modal').on('show.bs.modal', function(e) {
+        //get data-id attribute of the clicked element
+        var id = $(e.relatedTarget).data('specimen-id');
+        var url = $(e.relatedTarget).data('url');
+        $.post(url, { id: id}).done(function(data){
+            //Show it in the modal
+            $(e.currentTarget).find('.modal-body').html(data);
+        });
+    });
   
 
 	/** Receive Test Request button.
@@ -761,42 +760,42 @@ $(function(){
 		$(this).remove();
 	});
 
-	/** Accept Specimen button.
-	 *  - Updates the Specimen status via an AJAX call
-	 *  - Changes the UI to show the right status and buttons
-	 */
-	$('.tests-log').on( "click", ".accept-specimen", function(e) {
+    /** Accept Specimen button.
+     *  - Updates the Specimen status via an AJAX call
+     *  - Changes the UI to show the right status and buttons
+     */
+    $('.tests-log').on( "click", ".accept-specimen", function(e) {
 
-		var testID = $(this).data('test-id');
-		var specID = $(this).data('specimen-id');
-		var url = $(this).data('url');
-		$.post(url, { id: specID}).done(function(){});
+        var testID = $(this).data('test-id');
+        var specID = $(this).data('specimen-id');
+        var url = $(this).data('url');
+        $.post(url, { id: specID}).done(function(){});
 
-		var parent = $(e.currentTarget).parent();
-		// First replace the status
-		var newStatus = $('.pending-test-accepted-specimen').html();
-		parent.siblings('.test-status').html(newStatus);
+        var parent = $(e.currentTarget).parent();
+        // First replace the status
+        var newStatus = $('.pending-test-accepted-specimen').html();
+        parent.siblings('.test-status').html(newStatus);
 
-		// Add the new buttons
-		var newButtons = $('.reject-start-buttons').html();
-		parent.append(newButtons);
-		var referButton = $('.start-refer-button').html();
-		parent.append(referButton);
+        // Add the new buttons
+        var newButtons = $('.reject-start-buttons').html();
+        parent.append(newButtons);
+        var referButton = $('.start-refer-button').html();
+        parent.append(referButton);
 
-		// Set properties for the new buttons
-		var rejectURL = location.protocol+ "//"+location.host+ "/test/" + specID+ "/reject";
-		parent.children('.reject-specimen').attr('id',"reject-" + testID + "-link");
-		parent.children('.reject-specimen').attr('href', rejectURL);
+        // Set properties for the new buttons
+        var rejectURL = location.protocol+ "//"+location.host+ "/test/" + specID+ "/reject";
+        parent.children('.reject-specimen').attr('id',"reject-" + testID + "-link");
+        parent.children('.reject-specimen').attr('href', rejectURL);
 
-		var referURL = location.protocol+ "//"+location.host+ "/test/" + specID+ "/refer";
-		parent.children('.refer-button').attr('href', referURL);
+        var referURL = location.protocol+ "//"+location.host+ "/test/" + specID+ "/refer";
+        parent.children('.refer-button').attr('href', referURL);
 
-		parent.children('.start-test').attr('data-test-id', testID);
+        parent.children('.start-test').attr('data-test-id', testID);
 
-		// Now remove the unnecessary buttons
-		$(this).siblings('.change-specimen').remove();
-		$(this).remove();
-	});
+        // Now remove the unnecessary buttons
+        $(this).siblings('.change-specimen').remove();
+        $(this).remove();
+    });
 
 	/**
 	 * Automatic Results Interpretation

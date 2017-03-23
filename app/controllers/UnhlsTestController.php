@@ -516,19 +516,20 @@ class UnhlsTestController extends \BaseController {
 		}
 	}
 
-	/**
-	 * Display Collect page 
-	 *
-	 * @param
-	 * @return
-	 */
-	public function collectSpecimen($specimenID)
-	{
-		$specimen = Specimen::find($specimenID);
-		
-
-		return View::make('unhls_test.collect')->with('specimen', $specimen);
-	}
+    /**
+     * Display accept specimen page
+     *
+     * @param
+     * @return
+     */
+    public function acceptSpecimen()
+    {
+		$specimen = UnhlsSpecimen::find(Input::get('id'));
+		$specimenTypes = SpecimenType::all();
+		return View::make('unhls_test.acceptSpecimen')
+			->with('specimen', $specimen)
+			->with('specimenTypes', $specimenTypes);
+    }
 
 	/**
 	 * Refer action
@@ -639,23 +640,26 @@ class UnhlsTestController extends \BaseController {
 						->with('activeTest', array($specimen->test->id));
 		}
 	}
-
+// copy to documentation
 	/**
 	 * Accept a Test's Specimen
 	 *
 	 * @param
 	 * @return
 	 */
-	public function accept()
+	public function acceptSpecimenAction()
 	{
-		$specimen = Specimen::find(Input::get('id'));
-		$specimen->specimen_status_id = Specimen::ACCEPTED;
+		$specimen = UnhlsSpecimen::find(Input::get('specimen_id'));
+		$specimen->specimen_status_id = UnhlsSpecimen::ACCEPTED;
+		$specimen->specimen_type_id = Input::get('specimen_type_id');
 		$specimen->accepted_by = Auth::user()->id;
 		$specimen->time_accepted = date('Y-m-d H:i:s');
 		$specimen->save();
 
-		return $specimen->specimen_status_id;
+		return Redirect::route('unhls_test.index')
+			->with('message', 'You have successfully captured specimen collection details');
 	}
+
 
 	/**
 	 * Display Change specimenType form fragment to be loaded in a modal via AJAX
