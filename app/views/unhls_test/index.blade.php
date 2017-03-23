@@ -137,7 +137,7 @@
                             @endif
                         @elseif ($test->specimen->isNotCollected())
                             @if(Auth::user()->can('accept_test_specimen'))
-                                <a class="btn btn-sm btn-info accept-specimen" href="#accept-specimen-modal"
+                                <a class="btn btn-sm btn-info" href="#accept-specimen-modal"
                                     data-toggle="modal" data-url="{{ URL::route('unhls_test.collectSpecimen') }}" data-specimen-id="{{$test->specimen->id}}" data-target="#accept-specimen-modal"
                                     title="{{trans('messages.accept-specimen-title')}}">
                                     <span class="glyphicon glyphicon-thumbs-up"></span>
