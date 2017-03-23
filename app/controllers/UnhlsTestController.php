@@ -640,7 +640,7 @@ class UnhlsTestController extends \BaseController {
 						->with('activeTest', array($specimen->test->id));
 		}
 	}
-// copy to documentation
+
 	/**
 	 * Accept a Test's Specimen
 	 *
