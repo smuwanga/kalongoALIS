@@ -149,7 +149,7 @@ $(function(){
     /** 
      *  MICROBIOLOGY
      */
-    var cultureID;
+    var cultureTestID;
     var isolatedOrganismID;
     var isolatedOrganismUrl;
     var isolatedOrganismUrlVerb;
@@ -163,7 +163,7 @@ $(function(){
     $('.add-culture-observation').click(function(){
         $('.duration').val('');
         $('.observation').val('');
-        cultureID = $(this).data('culture-id');
+        cultureTestID = $(this).data('test-id');
         cultureObservationUrl = $(this).data('url');
         cultureObservationUrlVerb = 'POST';
         $('.culture-observation').removeClass('hidden');
@@ -183,7 +183,7 @@ $(function(){
             type: cultureObservationUrlVerb,
             url:  cultureObservationUrl,
             data: {
-                culture_id: cultureID,
+                test_id: cultureTestID,
                 culture_duration_id: duration,
                 observation: observation
             },
@@ -253,7 +253,7 @@ $(function(){
         isolatedOrganismUrl = $(this).data('url');
         drugSusceptibilityUrl = $(this).data('drug-susceptibility-store-url');
         isolatedOrganismUrlVerb = 'POST';
-        cultureID = $(this).data('culture-id');
+        cultureTestID = $(this).data('test-id');
         $('.isolated-organism-addition').removeClass('hidden');
     });
     // save isolated organism addition
@@ -265,7 +265,7 @@ $(function(){
             url:  isolatedOrganismUrl,
             data: {
                 organism_id: organismID,
-                culture_id: cultureID
+                test_id: cultureTestID
             },
             success: function(isolatedOrganism){
                 // update rows with edition already made in the database

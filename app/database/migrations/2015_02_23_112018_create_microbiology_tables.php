@@ -34,21 +34,6 @@ class CreateMicrobiologyTables extends Migration {
         });
 
 
-        /* culture table */
-        Schema::create('cultures', function(Blueprint $table)
-        {
-            $table->increments('id')->unsigned();
-            $table->integer('user_id')->unsigned();
-            $table->integer('test_id')->unsigned();
-            $table->softDeletes();
-            $table->timestamps();
-
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('test_id')->references('id')->on('unhls_tests');
-        });
-
-
-
         /* culture durations table */
         Schema::create('culture_durations', function(Blueprint $table)
         {
@@ -62,14 +47,14 @@ class CreateMicrobiologyTables extends Migration {
         {
             $table->increments('id')->unsigned();
             $table->integer('user_id')->unsigned();
-            $table->integer('culture_id')->unsigned();
+            $table->integer('test_id')->unsigned();
             $table->integer('culture_duration_id')->unsigned();
             $table->string('observation',300);
             $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('culture_id')->references('id')->on('cultures');
+            $table->foreign('test_id')->references('id')->on('unhls_tests');
             $table->foreign('culture_duration_id')->references('id')->on('culture_durations');
         });
         /* isolated organisms table */
@@ -77,12 +62,12 @@ class CreateMicrobiologyTables extends Migration {
         {
             $table->increments('id')->unsigned();
             $table->integer('user_id')->unsigned();
-            $table->integer('culture_id')->unsigned();
+            $table->integer('test_id')->unsigned();
             $table->integer('organism_id')->unsigned();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('culture_id')->references('id')->on('cultures');
+            $table->foreign('test_id')->references('id')->on('unhls_tests');
             $table->foreign('organism_id')->references('id')->on('organisms');
         });
         /* drug susceptibility measures table */
@@ -131,7 +116,6 @@ class CreateMicrobiologyTables extends Migration {
         Schema::dropIfExists('isolated_organisms');
         Schema::dropIfExists('culture_observations');
         Schema::dropIfExists('culture_durations');
-		Schema::dropIfExists('cultures');
 		Schema::dropIfExists('organisms');
 		Schema::dropIfExists('drugs');
 	}

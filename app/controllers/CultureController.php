@@ -43,15 +43,15 @@ class CultureController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		$culture = Culture::find($id);
-		$culture->load(
+		$test = UnhlsTest::find($id);
+		$test->load(
 			'cultureObservations.cultureDuration',
 			'isolatedOrganisms.organism',
 			'isolatedOrganisms.drugSusceptibilities.drug',
 			'isolatedOrganisms.drugSusceptibilities.drugSusceptibilityMeasure');
 
 		$content = View::make('test.culture.microbiologyreport')
-			->with('culture', $culture);
+			->with('test', $test);
 		$pdf = App::make('dompdf');
 		$pdf->loadHTML($content);
 		return $pdf->stream('microbiology.pdf');
@@ -66,10 +66,9 @@ class CultureController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		$culture = Culture::find($id);
+		$test = UnhlsTest::find($id);
 
-		$culture->load(
-			'test',
+		$test->load(
 			'isolatedOrganisms.organism',
 			'cultureObservations.cultureDuration',
 			'isolatedOrganisms.drugSusceptibilities.drug',
@@ -84,7 +83,7 @@ class CultureController extends \BaseController {
 			->with('drugSusceptibilityMeasures', $drugSusceptibilityMeasures)
 			->with('cultureDurations', $cultureDurations)
 			->with('organisms', $organisms)
-			->with('culture', $culture)
+			->with('test', $test)
 			->with('drugs', $drugs);
 	}
 

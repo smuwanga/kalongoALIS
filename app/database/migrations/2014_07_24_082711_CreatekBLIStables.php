@@ -96,7 +96,7 @@ class CreatekBLIStables extends Migration {
             $table->increments('id')->unsigned();
             $table->integer('measure_type_id')->unsigned();
             $table->string('name', 100);
-            $table->string('unit', 30);
+            $table->string('unit', 30)->nullable();
             $table->string('description', 150)->nullable();
 
             $table->foreign('measure_type_id')->references('id')->on('measure_types');

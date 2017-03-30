@@ -9,9 +9,9 @@ class CultureObservation extends Eloquent
 	 */
 	protected $table = 'culture_observations';
 
-	public function culture()
+	public function test()
 	{
-		return $this->belongsTo('Culture');
+		return $this->belongsTo('UnhlsTest','test_id');
 	}
 
 	public function cultureDuration()

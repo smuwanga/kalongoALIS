@@ -700,13 +700,6 @@ class UnhlsTestController extends \BaseController {
 		$test->test_status_id = UnhlsTest::STARTED;
 		$test->time_started = date('Y-m-d H:i:s');
 		$test->save();
-		// if the test being carried out requires a culture worksheet
-		if ($test->testType->microbiologyTestType->worksheet_required) {
-			$culture = new Culture;
-			$culture->user_id = Auth::user()->id;
-			$culture->test_id = $test->id;
-			$culture->save();
-		}
 		return $test->test_status_id;
 	}
 
@@ -722,7 +715,7 @@ class UnhlsTestController extends \BaseController {
 		// if the test being carried out requires a culture worksheet
 		try {
 			$test->testType->microbiologyTestType->worksheet_required;
-			return Redirect::route('culture.edit', [$test->culture->id]);
+			return Redirect::route('culture.edit', [$test->id]);
 		} catch (Exception $e){
 			return View::make('unhls_test.enterResults')->with('test', $test);
 		}
@@ -813,7 +806,7 @@ class UnhlsTestController extends \BaseController {
 		// if the test being carried out requires a culture worksheet
 		try {
 			$test->testType->microbiologyTestType->worksheet_required;
-			return Redirect::route('culture.edit', [$test->culture->id]);
+			return Redirect::route('culture.edit', [$test->id]);
 		} catch (Exception $e){
 			return View::make('unhls_test.edit')->with('test', $test);
 		}
@@ -923,25 +916,6 @@ class UnhlsTestController extends \BaseController {
 		
 		return Redirect::to($url)->with('message', trans('messages.specimen-successful-refer'))
 					->with('activeTest', array($specimen->test->id));
-	}
-	/**
-	 * Culture worksheet for Test
-	 *
-	 * @param
-	 * @return
-	 */
-	public function culture()
-	{
-		$test = UnhlsTest::find(Input::get('testID'));
-		$test->test_status_id = UnhlsTest::VERIFIED;
-		$test->time_verified = date('Y-m-d H:i:s');
-		$test->verified_by = Auth::user()->id;
-		$test->save();
-
-		//Fire of entry verified event
-		Event::fire('test.verified', array($testID));
-
-		return View::make('test.viewDetails')->with('test', $test);
 	}
 
 }

@@ -9,7 +9,7 @@ class IsolatedOrganismController extends \BaseController {
 	 */
 	public function index()
 	{
-		$isolatedOrganisms = IsolatedOrganism::with('culture','organism')->get();
+		$isolatedOrganisms = IsolatedOrganism::with('test','organism')->get();
 
 		return $isolatedOrganisms;
 	}
@@ -33,13 +33,12 @@ class IsolatedOrganismController extends \BaseController {
 	 */
 	public function store()
 	{
-Log::info('storing isolated organism');
 		$isolatedOrganism = new IsolatedOrganism;
 		$isolatedOrganism->user_id = Auth::user()->id;
-		$isolatedOrganism->culture_id = Input::get('culture_id');
+		$isolatedOrganism->test_id = Input::get('test_id');
 		$isolatedOrganism->organism_id = Input::get('organism_id');
 		$isolatedOrganism->save();
-		return $isolatedOrganism->load('culture','organism');
+		return $isolatedOrganism->load('test','organism');
 	}
 
 
@@ -77,10 +76,10 @@ Log::info('storing isolated organism');
 	{
 		$isolatedOrganism = IsolatedOrganism::find($id);
 		$isolatedOrganism->user_id = Auth::user()->id;
-		$isolatedOrganism->culture_id = Input::get('culture_id');
+		$isolatedOrganism->test_id = Input::get('test_id');
 		$isolatedOrganism->organism_id = Input::get('organism_id');
 		$isolatedOrganism->save();
-		return $isolatedOrganism->load('culture','organism');
+		return $isolatedOrganism->load('test','organism');
 	}
 
 

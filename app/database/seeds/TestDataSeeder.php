@@ -2222,19 +2222,6 @@ class TestDataSeeder extends DatabaseSeeder
             'time_verified' => '2014-10-17 19:53:48',
         ]);
 
-        $cultureAST = Culture::create([
-            'user_id' => $user1->id,
-            'test_id' => $testAST->id,
-        ]);
-        $cultureEcoli = Culture::create([
-            'user_id' => $user1->id,
-            'test_id' => $testASToralPharyngealFlora->id,
-        ]);
-        $cultureOralPharyngealFlora = Culture::create([
-            'user_id' => $user1->id,
-            'test_id' => $testASTecoli->id,
-        ]);
-
         $cultureDurationAST12h = CultureDuration::create(['duration' => '12 hours',]);
         $cultureDurationAST24h = CultureDuration::create(['duration' => '24 hours',]);
         $cultureDurationAST36h = CultureDuration::create(['duration' => '36 hours',]);
@@ -2247,36 +2234,36 @@ class TestDataSeeder extends DatabaseSeeder
         $cultureDurationAST7d = CultureDuration::create(['duration' => '7 days',]);
         $cultureObservationAST = CultureObservation::create([
             'user_id' => $user1->id,
-            'culture_id' => $cultureAST->id,
+            'test_id' => $testAST->id,
             'culture_duration_id' => $cultureDurationAST48h->id,
             'observation' => 'NBG',
         ]);
         $cultureObservationAST = CultureObservation::create([
             'user_id' => $user1->id,
-            'culture_id' => $cultureAST->id,
+            'test_id' => $testAST->id,
             'culture_duration_id' => $cultureDurationAST5d->id,
             'observation' => 'NSG',
         ]);
         $cultureObservationAST = CultureObservation::create([
             'user_id' => $user1->id,
-            'culture_id' => $cultureAST->id,
+            'test_id' => $testAST->id,
             'culture_duration_id' => $cultureDurationAST7d->id,
             'observation' => 'SG',
         ]);
 
         $isolatedOrganism = IsolatedOrganism::create([
             'user_id' => $user1->id,
-            'culture_id' => $cultureAST->id,
+            'test_id' => $testAST->id,
             'organism_id' => $pneumoniae->id,
         ]);
         $isolatedOrganismOralPharyngealFlora = IsolatedOrganism::create([
             'user_id' => $user1->id,
-            'culture_id' => $cultureOralPharyngealFlora->id,
+            'test_id' => $testASTecoli->id,
             'organism_id' => $oralPharyngealFlora->id,
         ]);
         $isolatedOrganismEcoli = IsolatedOrganism::create([
             'user_id' => $user1->id,
-            'culture_id' => $cultureEcoli->id,
+            'test_id' => $testASToralPharyngealFlora->id,
             'organism_id' => $ecoli->id,
         ]);
 

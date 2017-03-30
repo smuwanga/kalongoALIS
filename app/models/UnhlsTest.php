@@ -90,13 +90,6 @@ class UnhlsTest extends Eloquent
 	}
 
 	/**
-	 * Culture relationship
-	 */
-	public function culture()
-	{
-		return $this->hasOne('Culture');
-	}
-	/**
 	 * Drug susceptibility relationship
 	 */
 	public function susceptibility()
@@ -1012,4 +1005,20 @@ class UnhlsTest extends Eloquent
 	public function external(){
 		return ExternalDump::where('lab_no', '=', $this->external_id)->get()->first();
 	}
+
+	/**
+	 * Isolated Organism relationship
+	 */
+	public function cultureObservations()
+    {
+        return $this->hasMany('CultureObservation', 'test_id');
+    }
+
+	/**
+	 * Isolated Organism relationship
+	 */
+	public function isolatedOrganisms()
+    {
+        return $this->hasMany('IsolatedOrganism', 'test_id');
+    }
 }
