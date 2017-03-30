@@ -60,7 +60,7 @@
 			<div class="container-fluid">
                 <div class="row">
                     <div class="col-md-6">
-					{{ Form::open(array('route' => array('test.saveResults', $test->id), 'method' => 'POST')) }}
+					{{ Form::open(array('route' => array('unhls_test.saveResults', $test->id), 'method' => 'POST')) }}
 						@foreach($test->testType->measures as $measure)
 							<div class="form-group">
 								<?php

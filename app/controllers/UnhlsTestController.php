@@ -516,6 +516,7 @@ class UnhlsTestController extends \BaseController {
 		}
 	}
 
+
 	/**
 	 * Display Collect page 
 	 *
@@ -529,6 +530,21 @@ class UnhlsTestController extends \BaseController {
 
 		return View::make('unhls_test.collect')->with('specimen', $specimen);
 	}
+
+    /**
+     * Display accept specimen page
+     *
+     * @param
+     * @return
+     */
+    public function acceptSpecimen()
+    {
+		$specimen = UnhlsSpecimen::find(Input::get('id'));
+		$specimenTypes = SpecimenType::all();
+		return View::make('unhls_test.acceptSpecimen')
+			->with('specimen', $specimen)
+			->with('specimenTypes', $specimenTypes);
+    }
 
 	/**
 	 * Refer action
@@ -646,16 +662,19 @@ class UnhlsTestController extends \BaseController {
 	 * @param
 	 * @return
 	 */
-	public function accept()
+	public function acceptSpecimenAction()
 	{
-		$specimen = UnhlsSpecimen::find(Input::get('id'));
+		$specimen = UnhlsSpecimen::find(Input::get('specimen_id'));
 		$specimen->specimen_status_id = UnhlsSpecimen::ACCEPTED;
+		$specimen->specimen_type_id = Input::get('specimen_type_id');
 		$specimen->accepted_by = Auth::user()->id;
 		$specimen->time_accepted = date('Y-m-d H:i:s');
 		$specimen->save();
 
-		return $specimen->specimen_status_id;
+		return Redirect::route('unhls_test.index')
+			->with('message', 'You have successfully captured specimen collection details');
 	}
+
 
 	/**
 	 * Display Change specimenType form fragment to be loaded in a modal via AJAX
@@ -696,13 +715,6 @@ class UnhlsTestController extends \BaseController {
 		$test->test_status_id = UnhlsTest::STARTED;
 		$test->time_started = date('Y-m-d H:i:s');
 		$test->save();
-		// if the test being carried out requires a culture worksheet
-		if ($test->testType->microbiologyTestType->worksheet_required) {
-			$culture = new Culture;
-			$culture->user_id = Auth::user()->id;
-			$culture->test_id = $test->id;
-			$culture->save();
-		}
 		return $test->test_status_id;
 	}
 
@@ -718,7 +730,7 @@ class UnhlsTestController extends \BaseController {
 		// if the test being carried out requires a culture worksheet
 		try {
 			$test->testType->microbiologyTestType->worksheet_required;
-			return Redirect::route('culture.edit', [$test->culture->id]);
+			return Redirect::route('culture.edit', [$test->id]);
 		} catch (Exception $e){
 			return View::make('unhls_test.enterResults')->with('test', $test);
 		}
@@ -809,7 +821,7 @@ class UnhlsTestController extends \BaseController {
 		// if the test being carried out requires a culture worksheet
 		try {
 			$test->testType->microbiologyTestType->worksheet_required;
-			return Redirect::route('culture.edit', [$test->culture->id]);
+			return Redirect::route('culture.edit', [$test->id]);
 		} catch (Exception $e){
 			return View::make('unhls_test.edit')->with('test', $test);
 		}
@@ -824,7 +836,7 @@ class UnhlsTestController extends \BaseController {
 	 */
 	public function viewDetails($testID)
 	{
-		//$result = Test::find($testID)->toSql(); to be deleted for debuging
+		//$result = UnhlsTest::find($testID)->toSql(); to be deleted for debuging
 		//dd($result);
 		return View::make('unhls_test.viewDetails')->with('test', UnhlsTest::find($testID));
 		//var_dump($test);
@@ -920,6 +932,7 @@ class UnhlsTestController extends \BaseController {
 		return Redirect::to($url)->with('message', trans('messages.specimen-successful-refer'))
 					->with('activeTest', array($specimen->test->id));
 	}
+
 	/**
 	 * Culture worksheet for Test
 	 *

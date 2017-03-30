@@ -7,7 +7,7 @@ class UnhlsTest extends Eloquent
 	 *
 	 * @var string
 	 */
-	protected $table = 'tests_cphl';
+	protected $table = 'unhls_tests';
 
 	public $timestamps = false;
 
@@ -30,8 +30,8 @@ class UnhlsTest extends Eloquent
 	 */
 	public function visit()
 	{
-		return $this->belongsTo('UnhlsVisit');
-	}
+		return $this->belongsTo('UnhlsVisit', 'visit_id');
+	}	
 
 	/**
 	 * Test Type relationship
@@ -90,18 +90,11 @@ class UnhlsTest extends Eloquent
 	}
 
 	/**
-	 * Culture relationship
-	 */
-	public function culture()
-	{
-		return $this->hasMany('Culture');
-	}
-	/**
 	 * Drug susceptibility relationship
 	 */
 	public function susceptibility()
 	{
-		return $this->hasMany('Susceptibility');
+		return $this->hasMany('DrugSusceptibility');
 	}
 	/***
 	 * Requesting staff relationship
@@ -1012,4 +1005,20 @@ class UnhlsTest extends Eloquent
 	public function external(){
 		return ExternalDump::where('lab_no', '=', $this->external_id)->get()->first();
 	}
+
+	/**
+	 * Isolated Organism relationship
+	 */
+	public function cultureObservations()
+    {
+        return $this->hasMany('CultureObservation', 'test_id');
+    }
+
+	/**
+	 * Isolated Organism relationship
+	 */
+	public function isolatedOrganisms()
+    {
+        return $this->hasMany('IsolatedOrganism', 'test_id');
+    }
 }

@@ -102,7 +102,7 @@
             </tr>
           </thead>
 
-          @foreach($culture->isolated_organisms as $isolated_organism)
+          @foreach($test->isolated_organisms as $isolated_organism)
           <tbody class="ast-body">
             <tr>
               <td rowspan="{{$isolated_organism->drug_susceptibilities->count()}}"

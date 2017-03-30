@@ -163,12 +163,12 @@ Route::group(array("before" => "auth"), function()
      Route::any("/test/{id}/receive", array(
         "before" => "checkPerms:receive_external_test",
         "as"   => "test.receive",
-        "uses" => "TestController@receive"
+        "uses" => "UnhlsTestController@receive"
     ));
     Route::any("/test/create/{patient?}", array(
         "before" => "checkPerms:request_test",
         "as"   => "test.create",
-        "uses" => "TestController@create"
+        "uses" => "UnhlsTestController@create"
     ));
     //Unhls test  create route starts
     Route::any("/unhls_test/create/{patient?}", array(
@@ -188,17 +188,11 @@ Route::group(array("before" => "auth"), function()
         "as"   => "unhls_test.saveNewTest",
         "uses" => "UnhlsTestController@saveNewTest"
     ));
-     //unhls test savenewtest ends here
-     Route::post("/test/acceptspecimen", array(
-        "before" => "checkPerms:accept_test_specimen",
-        "as"   => "test.acceptSpecimen",
-        "uses" => "TestController@accept"
-    ));
      //unhls test refer starts here
     Route::post("/unhls_test/acceptspecimen", array(
         "before" => "checkPerms:accept_test_specimen",
         "as"   => "unhls_test.acceptSpecimen",
-        "uses" => "UnhlsTestController@accept"
+        "uses" => "UnhlsTestController@acceptSpecimenAction"
     ));
      //unhls test refer ends here
      Route::get("/test/{id}/refer", array(
@@ -268,12 +262,7 @@ Route::group(array("before" => "auth"), function()
         "uses" => "UnhlsTestController@updateSpecimenType"
     ));
      //Unhls test updatespecimentype ends
-    Route::post("/test/start", array(
-        "before" => "checkPerms:start_test",
-        "as"   => "test.start",
-        "uses" => "TestController@start"
-    ));
-    //Repeat of above route for UNHLS test 
+
     Route::post("/unhls_test/start", array(
         "before" => "checkPerms:start_test",
         "as"   => "unhls_test.start",
@@ -296,12 +285,6 @@ Route::group(array("before" => "auth"), function()
         "as"   => "unhls_test.edit",
         "uses" => "UnhlsTestController@edit"
     ));
-     Route::post("/test/{test}/saveresults", array(
-        "before" => "checkPerms:edit_test_results",
-        "as"   => "test.saveResults",
-        "uses" => "TestController@saveResults"
-    ));
-     //Repeat of above route for UNHLS
     Route::post("/unhls_test/{test}/saveresults", array(
         "before" => "checkPerms:edit_test_results",
         "as"   => "unhls_test.saveResults",
@@ -311,9 +294,9 @@ Route::group(array("before" => "auth"), function()
         "as"   => "test.viewDetails",
         "uses" => "TestController@viewDetails"
     ));
-    Route::get("unhls_test/{test}/collectspecimen", array(
+    Route::post("unhls_test/collectspecimen", array(
         "as" => "unhls_test.collectSpecimen",
-        "uses" => "UnhlsTestController@collectSpecimen"));
+        "uses" => "UnhlsTestController@acceptSpecimen"));
     Route::post("/unhls_test/collectspecimenaction", array(
         "before" => "checkPerms:refer_specimens", //TODO create permissions for collecting sample and update acordingly
         "as"   => "unhls_test.collectSpecimenAction",

@@ -44,7 +44,7 @@
         
         <div class="row">
           <div class="col-sm-2"><strong>Occurrence Time</strong></div>
-          <div class="col-sm-4">{{ $bbincidence->occurrence_date }} {{ $bbincidence->occurrence_time }}</div>
+          <div class="col-sm-4">{{ date('d M Y', strtotime($bbincidence->occurrence_date)) }} {{ $bbincidence->occurrence_time }}</div>
           
           <div class="col-sm-2"><strong>Description</strong></div>
           <div class="col-sm-4">{{ $bbincidence->description }}</div>

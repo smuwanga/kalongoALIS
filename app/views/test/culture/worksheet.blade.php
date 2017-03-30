@@ -25,7 +25,7 @@
                     <a class="btn btn-sm btn-success add-culture-observation"
                         href="javascript:void(0)"
                         data-url="{{ URL::route('cultureobservation.store') }}"
-                        data-culture-id="{{ $culture->id }}"
+                        data-test-id="{{ $test->id }}"
                         title="Add Observation">
                         <span class="glyphicon glyphicon-plus"></span>
                     </a>
@@ -40,7 +40,7 @@
                         </tr>
                       </thead>
                       <tbody class="culture-observation-tbody">
-                        @foreach($culture->culture_observations as $culture_observation)
+                        @foreach($test->culture_observations as $culture_observation)
                             <tr class="culture-observation-tr-{{$culture_observation->id}}">
                               <td class="duration-entry">
                                 {{$culture_observation->culture_duration->duration}}</td>
@@ -114,7 +114,7 @@
                 <h5 class="col-md-12">Organisms Isolated
                     <a class="btn btn-sm btn-success add-isolated-organism"
                         href="javascript:void(0)"
-                        data-culture-id="{{ $culture->id }}"
+                        data-test-id="{{ $test->id }}"
                         data-url="{{ URL::route('isolatedorganism.store') }}"
                         data-drug-susceptibility-store-url="{{ URL::route('drugsusceptibility.store') }}"
                         title="Add Organism">
@@ -130,7 +130,7 @@
                         </tr>
                       </thead>
                       <tbody class="isolated-organism-tbody">
-                        @foreach($culture->isolated_organisms as $isolated_organism)
+                        @foreach($test->isolated_organisms as $isolated_organism)
                             <tr class="isolated-organism-tr-{{$isolated_organism->id}}">
                               <td class="isolated-organism-entry">{{$isolated_organism->organism->name}}</td>
                               <td>
@@ -195,7 +195,7 @@
                         </tr>
                       </thead>
                       <tbody class="drug-susceptibility-tbody">
-                        @foreach($culture->isolated_organisms as $isolated_organism)
+                        @foreach($test->isolated_organisms as $isolated_organism)
                             @foreach($isolated_organism->drug_susceptibilities as $drug_susceptibility)
                             <tr class="drug-susceptibility-tr-{{$drug_susceptibility->id}}">
                               <td class="isolated-organism-entry">
@@ -279,7 +279,7 @@
                     </div>
                 </div>
             </div>
-            @if(!$culture->test->isCompleted())
+            @if(!$test->isCompleted())
             <div class="col-md-12">
                 <div class="form-group actions-row">
                     {{ Form::button(
@@ -301,8 +301,8 @@
                     {{ Form::button(
                         '<span class="glyphicon glyphicon-save"></span> '.trans('messages.submit'), [
                             'class' => 'btn btn-primary submit-completed-culture-sensitivity-analysis', 
-                            'data-redirect-url' => URL::route('unhls_test.viewDetails',[$culture->test_id]),
-                            'data-url' => URL::route('unhls_test.saveResults',[$culture->test_id])]
+                            'data-redirect-url' => URL::route('unhls_test.viewDetails',[$test->id]),
+                            'data-url' => URL::route('unhls_test.saveResults',[$test->id])]
                     ) }}
                     {{ Form::button(trans('messages.cancel'),
                         ['class' => 'btn btn-default cancel-completion-of-culture-sensitivity-analysis']) }}

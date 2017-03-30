@@ -10,6 +10,14 @@ class BbincidenceNatureIntermediate extends Eloquent
 	 * @var string
 	 */
 	protected $table = 'unhls_bbincidences_nature';
-	
 
+	public function bbnature()
+	{
+		return $this->belongsTo('BbincidenceNature', 'nature_id', 'id');
+	}
+
+	public function bbincidence()
+	{
+		return $this->belongsTo('Bbincidence', 'bbincidence_id', 'id');
+	}
 }

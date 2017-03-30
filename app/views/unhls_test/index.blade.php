@@ -79,7 +79,7 @@
             </div>
         </div>
         <div class="panel-body">
-            <table class="table table-striped table-hover table-condensed">
+            <table class="table table-striped table-hover table-condensed search-table">
                 <thead>
                     <tr>
                         <th>{{trans('messages.date-ordered')}}</th>
@@ -126,7 +126,6 @@
                                 <span class="glyphicon glyphicon-eye-open"></span>
                                 {{trans('messages.view-details')}}
                             </a>
-                        
                         @if ($test->isNotReceived()) 
                             @if(Auth::user()->can('receive_external_test') && $test->isPaid())
                                 <a class="btn btn-sm btn-default receive-test" href="javascript:void(0)"
@@ -146,26 +145,13 @@
                                 </a> 
                             @endif
                             @if(Auth::user()->can('accept_test_specimen'))
-                                <a class="btn btn-sm btn-info accept-specimen" href="javascript:void(0)"
-                                    data-test-id="{{$test->id}}" data-specimen-id="{{$test->specimen->id}}"
-                                    title="{{trans('messages.accept-specimen-title')}}"
-                                    data-url="{{ URL::route('unhls_test.acceptSpecimen') }}">
+                                <a class="btn btn-sm btn-info" href="#accept-specimen-modal"
+                                    data-toggle="modal" data-url="{{ URL::route('unhls_test.collectSpecimen') }}" data-specimen-id="{{$test->specimen->id}}" data-target="#accept-specimen-modal"
+                                    title="{{trans('messages.accept-specimen-title')}}">
                                     <span class="glyphicon glyphicon-thumbs-up"></span>
                                     {{trans('messages.accept-specimen')}}
                                 </a>
-                            @endif
-                            @if(count($test->testType->specimenTypes) > 1 && Auth::user()->can('change_test_specimen'))
-                                <!-- 
-                                    If this test can be done using more than 1 specimen type,
-                                    allow the user to change to any of the other eligible ones.
-                                -->
-                                <a class="btn btn-sm btn-danger change-specimen" href="#change-specimen-modal"
-                                    data-toggle="modal" data-url="{{ URL::route('unhls_test.changeSpecimenType') }}"
-                                    data-test-id="{{$test->id}}" data-target="#change-specimen-modal"
-                                    title="{{trans('messages.change-specimen-title')}}">
-                                    <span class="glyphicon glyphicon-transfer"></span>
-                                    {{trans('messages.change-specimen')}}
-                                </a>
+
                             @endif
                         @endif
                         @if ($test->specimen->isAccepted() && !($test->isVerified()))
@@ -344,31 +330,31 @@
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
-    <div class="modal fade" id="change-specimen-modal">
+    <div class="modal fade" id="accept-specimen-modal">
       <div class="modal-dialog">
         <div class="modal-content">
-        {{ Form::open(array('route' => 'unhls_test.updateSpecimenType')) }}
+        {{ Form::open(array('route' => 'unhls_test.acceptSpecimen')) }}
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">
                 <span aria-hidden="true">&times;</span>
                 <span class="sr-only">{{trans('messages.close')}}</span>
             </button>
             <h4 class="modal-title">
-                <span class="glyphicon glyphicon-transfer"></span>
-                {{trans('messages.change-specimen-title')}}</h4>
+                <span class="glyphicon glyphicon-ok-circle"></span>
+                {{trans('messages.accept-specimen-title')}}</h4>
           </div>
           <div class="modal-body">
           </div>
           <div class="modal-footer">
-            {{ Form::button("<span class='glyphicon glyphicon-save'></span> ".trans('messages.save'),
+            {{ Form::button("<span class='glyphicon glyphicon-save'></span> ".trans('messages.submit'),
                 array('class' => 'btn btn-primary', 'data-dismiss' => 'modal', 'onclick' => 'submit()')) }}
             <button type="button" class="btn btn-default" data-dismiss="modal">
-                {{trans('messages.close')}}</button>
+                {{trans('messages.cancel')}}</button>
           </div>
         {{ Form::close() }}
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
-    </div><!-- /.modal /#change-specimen-modal-->
+    </div><!-- /.modal /#accept-specimen-modal-->
 
     <!-- OTHER UI COMPONENTS -->
     <div class="hidden pending-test-not-collected-specimen">

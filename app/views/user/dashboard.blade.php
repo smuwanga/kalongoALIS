@@ -2,10 +2,12 @@
 @section("content")
 
 <div class="row">
+	<span style="font-weight: bold; color:blue;">DATA BELOW IS FOR CURRENT MONTH - <?php echo date('01-m-Y'); ?> to 
+		<?php echo date('d-m-Y'); ?></span>
 						<div class="col-md-12">
 							<div class="row">
 								<div class="col-lg-4 col-md-6">
-									<div class="panel panel-default">
+									<div class="panel panel-default"><b>Patients and Tests</b>
 										<div class="stat_box stat_down">
 											<div class="stat_ico color_a"><i class="ion-ios-people"></i></div>
 											<div class="stat_content">
@@ -34,7 +36,7 @@
 								</div>
 
 								<div class="col-lg-4 col-md-6">
-									<div class="panel panel-default">
+									<div class="panel panel-default"><b>Prevalences</b>
 										<div class="stat_box stat_up">
 											<div class="stat_ico color_b"><i class="ion-ios-personadd"></i></div>
 											<div class="stat_content">
@@ -60,7 +62,7 @@
 								</div>
 
 								<div class="col-lg-4 col-md-6">
-									<div class="panel panel-default">
+									<div class="panel panel-default"><b>Samples</b>
 										<div class="stat_box stat_down">
 											<div class="stat_ico color_c"><i class="ion-ios-people"></i></div>
 											<div class="stat_content">
@@ -89,7 +91,7 @@
 								
 							<div class="row">
 								<div class="col-lg-4 col-md-6">
-									<div class="panel panel-default">
+									<div class="panel panel-default"><b>Commodities</b>
 										<div class="stat_box stat_down">
 											<div class="stat_ico color_d"><i class="ion-ios-list"></i></div>
 											<div class="stat_content">
@@ -118,25 +120,35 @@
 								</div>
 
 								<div class="col-lg-4 col-md-6">
-									<div class="panel panel-default">
-										<div class="stat_box stat_up">
+									<div class="panel panel-default"><b>Biosafety & Biosecurity Incidents</b>
+										<div class="stat_box">
 											<div class="stat_ico color_g"><i class="ion-nuclear"></i></div>
 											<div class="stat_content">
-												<span class="stat_count">56 </span>
+												<span class="stat_count">{{count(Bbincidence::countbbincidents_all())}}</span>
 												<span class="stat_name">Number of BB incidents</span>
 											</div>
 										</div>
-										<div class="stat_box stat_down">
+										<div class="stat_box">
 											<div class="stat_ico color_g"><i class="ion-nuclear"></i></div>
 											<div class="stat_content">
-												<span class="stat_count">16 % </span>
+												<span class="stat_count">
+													{{count(Bbincidence::countbbincidents_major())}}
+													<?php if((count(Bbincidence::countbbincidents_all()))>0){ ?> 
+													({{round ((count(Bbincidence::countbbincidents_major())/count(Bbincidence::countbbincidents_all())*100),2) }} %)
+													<?php } ?>
+												</span>
 												<span class="stat_name">Major incidents</span>
 											</div>
 										</div>
-										<div class="stat_box stat_up">
+										<div class="stat_box">
 											<div class="stat_ico color_g"><i class="ion-nuclear"></i></div>
 											<div class="stat_content">
-												<span class="stat_count">84 % </span>
+												<span class="stat_count">
+													{{count(Bbincidence::countbbincidents_minor())}}
+													<?php if((count(Bbincidence::countbbincidents_all()))>0){ ?> 
+													({{round ((count(Bbincidence::countbbincidents_minor())/count(Bbincidence::countbbincidents_all())*100),2) }} %)
+													<?php } ?>
+													</span>
 												<span class="stat_name">Minor incidents</span>
 											</div>
 										</div>																				
@@ -164,43 +176,6 @@
 								</div>
 
 							</div>								
-						</div>
-					</div>
-
-
-				<div class="row">
-						<div class="col-lg-4">
-							<div class="panel panel-default">
-								<div class="panel-body">
-									<div class="easy_chart easy_chart_pages pull-left" data-percent="81"><i class="ion-document-text"></i></div>
-									<div class="easy_chart_desc">
-										<h4>132 New Pages</h4>
-										<p>Lorem ipsum dolor sit…</p>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-4">
-							<div class="panel panel-default">
-								<div class="panel-body">
-									<div class="easy_chart easy_chart_user pull-left" data-percent="56"><i class="ion-ios-contact-outline"></i></div>
-									<div class="easy_chart_desc">
-										<h4>4 662 Unique Users</h4>
-										<p>Lorem ipsum dolor sit…</p>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-4">
-							<div class="panel panel-default">
-								<div class="panel-body">
-									<div class="easy_chart easy_chart_images pull-left" data-percent="36"><i class="ion-images"></i></div>
-									<div class="easy_chart_desc">
-										<h4>731 Images Uploaded</h4>
-										<p>Lorem ipsum dolor sit…</p>
-									</div>
-								</div>
-							</div>
 						</div>
 					</div>
 
@@ -243,7 +218,7 @@
 						<div class="col-md-6">
 							<div class="panel panel-default">
 								<div class="panel-body">
-									<div class="heading_b">BB Incidences</div>
+									<div class="heading_b">BB Incidents</div>
 									<div class="row">
 										<div class="col-md-12">
 											<table class="table table-striped">
@@ -254,18 +229,12 @@
 													</tr>
 												</thead>
 												<tbody>
-													<tr>
-														<td>Fire</td>
-														<td class="text-right">1428</td>
-													</tr>
-													<tr>
-														<td>Spill</td>
-														<td class="text-right">858</td>
-													</tr>
-													<tr>
-														<td>Fall</td>
-														<td class="text-right">647</td>
-													</tr>
+													@foreach ((Bbincidence::bbincidents_monthly_natures()) as $nature)
+              										<tr>
+              											<td>{{$nature->name}}</td>
+              											<td class="text-right">{{$nature->total}}</td>
+              										</tr>
+              										@endforeach
 												</tbody>
 											</table>
 										</div>

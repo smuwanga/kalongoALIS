@@ -7,7 +7,7 @@ class UnhlsSpecimen extends Eloquent
 	 *
 	 * @var string
 	 */
-	protected $table = 'specimen_unhls';
+	protected $table = 'specimens';
 
 	public $timestamps = false;
 
@@ -17,7 +17,7 @@ class UnhlsSpecimen extends Eloquent
 	const NOT_COLLECTED = 1;
 	const ACCEPTED = 2;
 	const REJECTED = 3;
-	const REFERRED =4;
+	const REFERRED = 4;
 	/**
 	 * Enabling soft deletes for specimen details.
 	 *

@@ -87,10 +87,10 @@
 				>
 					<td>{{ $bbincidence->id }}</td>
 					<td>{{ $bbincidence->serial_no }}</td>
-					<td>{{ $bbincidence->occurrence_date }}<br>{{ $bbincidence->occurrence_time }}</td>
+					<td>{{ date('d M Y', strtotime($bbincidence->occurrence_date)) }}<br>{{ $bbincidence->occurrence_time }}</td>
 					<td>
 						@foreach ($bbincidence->bbnature as $nature)
-							{{$nature->priority}}/{{$nature->class}};
+							<span title="{{$nature->name}}">{{$nature->priority}}/{{$nature->class}};</span>
 						@endforeach
 					</td>
 					<td>
