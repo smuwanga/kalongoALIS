@@ -112,30 +112,37 @@
 									</div>
 									</div>
 							</div> <!--div that closes the panel div for clinical and sample information -->
-							<div class="form-group">
-								{{ Form::label('collection_date', 'Date of Sample Collection') }}
-								{{Form::text('collection_date', Input::old('collection_date'), array('class' => 'form-control standard-datepicker'))}}
-								{{ Form::label('sample_time', 'Time of Sample Collection') }}
-								{{Form::text('sample_time', Input::old('sample_time'), array('class' => 'form-control', 'placeholder' => 'HH:MM'))}}
+							<!--
+							<div class='panel panel-info'>
+								{{Form::label('self_request', 'Nurse')}}
+								{{ Form::radio('single') }}
 							</div>
-							<div class="form-group">
-								{{ Form::label('sample_obtainer', 'Sample Collected by') }}
-								{{Form::text('sample_obtainer', Input::old('sample_obtainer'), array('class' => 'form-control'))}}
-								{{ Form::label('cadre_obtainer', 'Cadre') }}
-								{{Form::text('cadre_obtainer', Input::old('cadre_obtainer'), array('class' => 'form-control'))}}
-							</div>
-							<div class="form-group">
-								{{ Form::label('recieved_date', 'Date sample recieved in Lab') }}
-								{{Form::text('recieved_date', Input::old('recieved_date'), array('class' => 'form-control standard-datepicker'))}}
-								{{ Form::label('sample_time', 'Time Sample Recieved in Lab') }}
-								{{Form::text('sample_time', Input::old('sample_time'), array('class' => 'form-control', 'placeholder' => 'HH:MM'))}}
-							</div>
-							<div class="form-group">
-								{{ Form::label('sample_reciever', 'Sample Recieved by') }}
-								{{Form::text('sample_reciever', Input::old('sample_reciever'), array('class' => 'form-control'))}}
-								{{ Form::label('cadre_reciever', 'Cadre') }}
-								{{Form::text('cadre_reciever', Input::old('cadre_reciever'), array('class' => 'form-control'))}}
-							</div>
+							<div class="hidden">
+								<div class="form-group">
+									{{ Form::label('collection_date', 'Date of Sample Collection') }}
+									{{Form::text('collection_date', Input::old('collection_date'), array('class' => 'form-control standard-datepicker'))}}
+									{{ Form::label('sample_time', 'Time of Sample Collection') }}
+									{{Form::text('sample_time', Input::old('sample_time'), array('class' => 'form-control', 'placeholder' => 'HH:MM'))}}
+								</div>
+								<div class="form-group">
+									{{ Form::label('sample_obtainer', 'Sample Collected by') }}
+									{{Form::text('sample_obtainer', Input::old('sample_obtainer'), array('class' => 'form-control'))}}
+									{{ Form::label('cadre_obtainer', 'Cadre') }}
+									{{Form::text('cadre_obtainer', Input::old('cadre_obtainer'), array('class' => 'form-control'))}}
+								</div>
+								<div class="form-group">
+									{{ Form::label('recieved_date', 'Date sample recieved in Lab') }}
+									{{Form::text('recieved_date', Input::old('recieved_date'), array('class' => 'form-control standard-datepicker'))}}
+									{{ Form::label('sample_time', 'Time Sample Recieved in Lab') }}
+									{{Form::text('sample_time', Input::old('sample_time'), array('class' => 'form-control', 'placeholder' => 'HH:MM'))}}
+								</div>
+								<div class="form-group">
+									{{ Form::label('sample_reciever', 'Sample Recieved by') }}
+									{{Form::text('sample_reciever', Input::old('sample_reciever'), array('class' => 'form-control'))}}
+									{{ Form::label('cadre_reciever', 'Cadre') }}
+									{{Form::text('cadre_reciever', Input::old('cadre_reciever'), array('class' => 'form-control'))}}
+								</div>
+							</div>-->
 
 								<div class="form-group actions-row">
 								{{ Form::button("<span class='glyphicon glyphicon-save'></span> ".trans('messages.save-test'), 

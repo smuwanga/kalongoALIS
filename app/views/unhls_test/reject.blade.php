@@ -52,6 +52,11 @@
 					{{Form::text('rejecting_officer', Input::old('rejecting_officer'),
 						array('class' => 'form-control'))}}
 				</div>
+				<div class="form-group">
+					{{ Form::label('reject_explained_to', trans("messages.reject-explained-to")) }}
+					{{Form::text('reject_explained_to', Input::old('reject_explained_to'),
+						array('class' => 'form-control'))}}
+				</div>
 				<div class="form-group actions-row">
 					{{ Form::button("<span class='glyphicon glyphicon-thumbs-down'></span> ".trans('messages.reject'),
 						['class' => 'btn btn-danger', 'onclick' => 'submit()']) }}

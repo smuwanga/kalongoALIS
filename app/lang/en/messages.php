@@ -112,7 +112,7 @@ return array(
     'patient-id' => 'Patient ID',
     //'patient-search-button' => 'Go!', UNHLS Terminology
     'patient-search-button' => 'View!',
-    'patient-number' => 'Patient No.',
+    'patient-number' => 'Patient OPD/IPD Number.',
     'phone-number' => 'Phone Number',
     'physical-address' => 'Physical Address',
     'register-new-patient' => 'Register New Patient', //Unhls entry
@@ -311,6 +311,7 @@ return array(
     'create-new-test' => 'Create New Test',
     'comments' => 'Comments',
     'completed' => 'Test Completed',
+    'completed-tests' => 'Completed Tests',
     'date-ordered' => 'Date Ordered',
     'fetch-test-data' => 'Fetch',
     'fetch-test-data-title' => 'Fetch Test data from associated equipment.',
@@ -324,6 +325,7 @@ return array(
     'out-patient' => 'Out Patient',
     'patient-name' => 'Patient name',
     'pending' => 'Pending',
+    'pending-tests' => 'Pending Tests',
     'physician' => 'Requesting Physician',
     'receive-test' => 'Receive',
     'receive-test-title' => 'Receive Test',

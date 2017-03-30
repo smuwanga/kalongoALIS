@@ -181,7 +181,7 @@ class UnhlsTestController extends \BaseController {
 		//	Barcode
 		$barcode = Barcode::first();
 
-		return View::make('unhls_test.completed')
+		return View::make('unhls_test.pending')
 					->with('testSet', $tests)
 					->with('testStatus', $statuses)
 					->with('barcode', $barcode)
@@ -538,7 +538,7 @@ class UnhlsTestController extends \BaseController {
 	public function collectSpecimenAction()
 	{
 		//Validate
-		/*$rules = array(
+		$rules = array(
 			'referral-status' => 'required',
 			'facility_id' => 'required|non_zero_key',
 			'person',
@@ -550,7 +550,7 @@ class UnhlsTestController extends \BaseController {
 		if ($validator->fails())
 		{
 			return Redirect::route('unhls_test.refer', array($specimenId))-> withInput()->withErrors($validator);
-		} */
+		} 
 
 		//Insert into referral table
 		

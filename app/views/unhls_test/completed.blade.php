@@ -50,7 +50,7 @@
             <div class="container-fluid">
                 <div class="row less-gutter">
                     <div class="col-md-11">
-                        <span class="glyphicon glyphicon-filter"></span>{{trans('messages.list-tests')}}
+                        <span class="glyphicon glyphicon-filter"></span>{{trans('messages.completed-tests')}}
                         @if(Auth::user()->can('request_test'))
                         <div class="panel-btn">
                             <a class="btn btn-sm btn-info" href="javascript:void(0)"
