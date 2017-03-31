@@ -408,11 +408,11 @@ Route::group(array("before" => "auth"), function()
         ));
         Route::any("/visitreport/{id}", array(
             "as" => "reports.visit.report", 
-            "uses" => "UnhlsReportController@viewVisitReport"
+            "uses" => "ReportController@viewVisitReport"
         ));
         Route::any("/visitreport/{id}/print", array(
             "as" => "reports.visit.report.print", 
-            "uses" => "UnhlsReportController@printVisitReport"
+            "uses" => "ReportController@printVisitReport"
         ));
         Route::any("/dailylog", array(
             "as"   => "reports.daily.log",

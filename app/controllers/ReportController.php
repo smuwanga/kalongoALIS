@@ -52,15 +52,15 @@ class ReportController extends \BaseController {
 			$tests = UnhlsTest::where('visit_id', '=', $visit?$visit:$visitId);
 		}
 		else{
-			$tests = UnhlsTest::join('unhls_visits', 'unhls_visits.id', '=', 'tests_cphl.visit_id')
+			$tests = UnhlsTest::join('unhls_visits', 'unhls_visits.id', '=', 'unhls_tests.visit_id')
 							->where('patient_id', '=', $id);
 		}
 		//	Begin filters - include/exclude pending tests
 		if($pending){
-			$tests=$tests->where('tests_cphl.test_status_id', '!=', UnhlsTest::NOT_RECEIVED);
+			$tests=$tests->where('unhls_tests.test_status_id', '!=', UnhlsTest::NOT_RECEIVED);
 		}
 		else{
-			$tests = $tests->whereIn('tests_cphl.test_status_id', [UnhlsTest::COMPLETED, UnhlsTest::VERIFIED]);
+			$tests = $tests->whereIn('unhls_tests.test_status_id', [UnhlsTest::COMPLETED, UnhlsTest::VERIFIED]);
 		}
 		//	Date filters
 		if($from||$to){
@@ -77,7 +77,7 @@ class ReportController extends \BaseController {
 			}
 		}
 		//	Get tests collection
-		$tests = $tests->get(array('tests_cphl.*'));
+		$tests = $tests->get(array('unhls_tests.*'));
 		//	Get patient details
 		$patient = UnhlsPatient::find($id);
 		//	Check if tests are accredited
@@ -131,11 +131,11 @@ class ReportController extends \BaseController {
 		$visit = UnhlsVisit::find($id);
 		$visit->load(
 			'patient',
-			'tests_cphl.testType',
-			'tests_cphl.testResults',
-			'tests_cphl.culture.isolatedOrganisms.organism',
-			'tests_cphl.culture.isolatedOrganisms.drugSusceptibilities.drug',
-			'tests_cphl.culture.isolatedOrganisms.drugSusceptibilities.drugSusceptibilityMeasure');
+			'unhls_tests.testType',
+			'unhls_tests.testResults',
+			'unhls_tests.isolatedOrganisms.organism',
+			'unhls_tests.isolatedOrganisms.drugSusceptibilities.drug',
+			'unhls_tests.isolatedOrganisms.drugSusceptibilities.drugSusceptibilityMeasure');
 		return View::make('reports.visit.report')
 					->with('error', $error)
 					->with('visit', $visit)
@@ -153,9 +153,9 @@ class ReportController extends \BaseController {
 			'patient',
 			'tests.testType',
 			'tests.testResults',
-			'tests.culture.isolatedOrganisms.organism',
-			'tests.culture.isolatedOrganisms.drugSusceptibilities.drug',
-			'tests.culture.isolatedOrganisms.drugSusceptibilities.drugSusceptibilityMeasure');
+			'tests.isolatedOrganisms.organism',
+			'tests.isolatedOrganisms.drugSusceptibilities.drug',
+			'tests.isolatedOrganisms.drugSusceptibilities.drugSusceptibilityMeasure');
 
 		$content = View::make('reports.visit.printreport')
 			->with('visit', $visit);
@@ -246,7 +246,7 @@ class ReportController extends \BaseController {
 		//Begin specimen rejections
 		else if($records=='rejections')
 		{
-			$specimens = Specimen::where('specimen_status_id', '=', Specimen::REJECTED);
+			$specimens = UnhlsSpecimen::where('specimen_status_id', '=', UnhlsSpecimen::REJECTED);
 			/*Filter by test category*/
 			if($testCategory&&!$testType){
 				$specimens = $specimens->join('tests', 'specimens.id', '=', 'tests.specimen_id')
@@ -608,8 +608,8 @@ class ReportController extends \BaseController {
 
 			$ungroupedSpecimen = array();
 			foreach (SpecimenType::all() as $specimenType) {
-				$rejected = $specimenType->countPerStatus([Specimen::REJECTED], $from, $toPlusOne->format('Y-m-d H:i:s'));
-				$accepted = $specimenType->countPerStatus([Specimen::ACCEPTED], $from, $toPlusOne->format('Y-m-d H:i:s'));
+				$rejected = $specimenType->countPerStatus([UnhlsSpecimen::REJECTED], $from, $toPlusOne->format('Y-m-d H:i:s'));
+				$accepted = $specimenType->countPerStatus([UnhlsSpecimen::ACCEPTED], $from, $toPlusOne->format('Y-m-d H:i:s'));
 				$total = $rejected+$accepted;
 				$ungroupedSpecimen[$specimenType->id] = ["total"=>$total, "rejected"=>$rejected, "accepted"=>$accepted];
 			}
