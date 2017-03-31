@@ -273,6 +273,73 @@
 						<div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 3px; width: 215px; display: none;"><div class="ps-scrollbar-x" style="left: 0px; width: 0px;"></div></div><div class="ps-scrollbar-y-rail" style="top: 0px; right: 3px; height: 620px; display: none;"><div class="ps-scrollbar-y" style="top: 0px; height: 0px;"></div></div></div>
 					</div>
 				</li>
+				<li class="nav_trigger">
+					<a href="#">
+					<span class="ion-wrench"></span>
+						<span class="nav_title">Lab Configuration</>
+					</a>
+					<div class="sub_panel" style="left: -220px;">
+						<div class="side_inner ps-ready ps-container" style="height:620px;">
+							<h4 class="panel_heading panel_heading_first">Lab Configuration</h4>
+							<ul>
+								<li>
+									<a href="{{URL::route("instrument.index")}}">
+									<span class="glyphicon glyphicon-tag"></span> {{trans('messages.instrument')}}</a>
+								</li>
+								<li>
+									<a href="{{URL::route("reportconfig.surveillance")}}">
+									<span class="glyphicon glyphicon-tag"></span> {{trans('messages.surveillance')}}</a>
+								</li>
+								<li>
+									<a href="{{URL::route("barcode.index")}}">
+									<span class="glyphicon glyphicon-tag"></span> {{trans('messages.barcode-settings')}}</a>
+								</li>
+								<li>
+									<a href="{{ URL::route("blisclient.index") }}">
+									<span class="glyphicon glyphicon-tag"></span>{{ trans('messages.interfaced-equipment')}}</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</li>
+
+				<li class="nav_trigger">
+					<a href="#">
+					<span class="ion-gear-a"></span>
+						<span class="nav_title">Test Catalog</>
+					</a>
+					<div class="sub_panel" style="left: -220px;">
+						<div class="side_inner ps-ready ps-container" style="height:620px;">
+							<h4 class="panel_heading panel_heading_first">Test Catalog</h4>
+							<ul>
+								<li>
+									<a href="{{URL::route("testcategory.index")}}">
+									<span class="glyphicon glyphicon-tag"></span> {{trans('messages.test-category')}}</a>
+								</li>
+								<li>
+									<a href="{{URL::route("specimentype.index")}}">
+									<span class="glyphicon glyphicon-tag"></span> {{trans('messages.specimen-type')}}</a>
+								</li>
+								<li>
+									<a href="{{URL::route("specimenrejection.index")}}">
+									<span class="glyphicon glyphicon-tag"></span> {{trans('messages.specimen-rejection')}}</a>
+								</li>
+								<li>
+									<a href="{{URL::route("testtype.index")}}">
+									<span class="glyphicon glyphicon-tag"></span> {{trans('messages.test-type')}}</a>
+								</li>
+								<li>
+									<a href="{{URL::route("drug.index")}}">
+									<span class="glyphicon glyphicon-tag"></span> {{trans('messages.drug')}}</a>
+								</li>
+								<li>
+									<a href="{{URL::route("organism.index")}}">
+									<span class="glyphicon glyphicon-tag"></span> {{trans('messages.organism')}}</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</li>
 
 
 				<li class="nav_trigger">
