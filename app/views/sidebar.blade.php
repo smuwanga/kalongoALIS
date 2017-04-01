@@ -210,7 +210,7 @@
 				<li class="nav_trigger">
 					<a href="#">
 						<span class="ion-erlenmeyer-flask"></span>
-						<span class="nav_title">TESTS</span>
+						<span class="nav_title">Tests</span>
 					</a>
 					<div class="sub_panel" style="left: -220px;">
 						<div class="side_inner ps-ready ps-container" style="height: 620px;">
