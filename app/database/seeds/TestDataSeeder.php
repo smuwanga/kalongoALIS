@@ -75,8 +75,8 @@ class TestDataSeeder extends DatabaseSeeder
         /* Users table */
         $usersData = array(
             array(
-                "username" => "ublis_admin", "password" => Hash::make("password"), 
-                "email" => "", "name" => "UBLIS Administrator", "designation" => "Programmer", 
+                "username" => "administrator", "password" => Hash::make("password"),
+                "email" => "", "name" => "ASLM-LIS Admin", "designation" => "Programmer",
                 "facility_id" => \Config::get('constants.FACILITY_ID')
             ),
         );
