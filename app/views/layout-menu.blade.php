@@ -46,7 +46,14 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-12">
-                            @yield("content")                
+                            @yield("content")
+                            <div class="col-md-12">
+                                <a class="col-md-4 col-md-offset-4" href="http://www.aslm.org/"
+                                    target="_blank">
+                                    <img width="300" src="{{ Config::get('kblis.aslm-logo') }}"
+                                        alt="African Society for Laboratory Medicine">
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>            
