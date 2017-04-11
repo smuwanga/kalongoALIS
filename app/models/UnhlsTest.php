@@ -976,7 +976,7 @@ class UnhlsTest extends Eloquent
 
 			foreach ($measureRanges as $measureRange) {
 
-				if ($measureRange->interpretation == Test::POSITIVE) {
+				if ($measureRange->interpretation == UnhlsTest::POSITIVE) {
 					$positiveRanges[] = $measureRange->alphanumeric;
 				}
 			}
