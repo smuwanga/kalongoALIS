@@ -10,7 +10,6 @@ class CultureObservationController extends \BaseController {
 	public function index()
 	{
 		$cultureObservations = CultureObservation::with('test','cultureDuration')->get();
-dd($cultureObservations);
 		return $cultureObservations;
 	}
 

@@ -341,14 +341,6 @@ Route::group(array("before" => "auth"), function()
     Route::resource('cultureobservation', 'CultureObservationController');
     Route::resource('drugsusceptibility', 'DrugSusceptibilityController');
     Route::resource('isolatedorganism', 'IsolatedOrganismController');
-    Route::any("/culture/storeObservation", array(
-        "as"   => "culture.worksheet",
-        "uses" => "CultureController@store"
-    ));
-    Route::any("/susceptibility/saveSusceptibility", array(
-        "as"   => "drug.susceptibility",
-        "uses" => "DrugSusceptibilityController@store"
-    ));
     Route::group(array("before" => "admin"), function()
     {
         Route::resource("permission", "PermissionController");
