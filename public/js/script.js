@@ -71,7 +71,7 @@ $(function(){
 		delete newDiseaseNo;
 	});
 
-	/** 
+	/**
 	 *	MEASURES 
 	 */
 
@@ -463,49 +463,25 @@ $(function(){
 	/**
 	 *Fetch tests for selected Lab category when requesting 
 	 */
-
-	 //Jquery for UNHLS kind of test menu goes in here!!!!!
-	$('#test_cat').on('change', function() {
-		var testCatId = this.value;
-        var labSec = $(this).find("option:selected").text();
-		var cnt =0;
-		var zebra ="";
-	 	$.ajax(
-		{
-		    url: "/unhls_test/testlist",
-		    type: 'POST',
-		    dataType: 'json',
-		    data: {id: testCatId}, 
-		}).done( 
-		    function(data) 
-		    {
-      	        var myHTML = '';
-      	        var count = 0;
-				var item_per_row = 4;
-                myHTML += '<br><h4 align="left">' + labSec + ' Tests' +'</h4>';
-				$.each(data, function(i, item) {
-				    /*optional stuff to do after success */
-					if (count === 0) { // Start of a row
-						myHTML += '<br><tr>';
-					}
-					myHTML += '<div class = "col-md-3">';
-					myHTML += "<td><label class ='editor-active'><input type ='checkbox' name='testtypes[]' value = "+ item.id + "></label>" + item.name + "</td>";
-					myHTML += '</div>';
-					++count;
-					if (count === item_per_row) {  // End of row
-						myHTML += '<tr></br>';
-					}
-				});
-
-				if (count > 0) {  // Close the last row if it exist.
-					myHTML += '</br></tr>';
-				}
-
-				$('#test_list').append(myHTML);		    	
-		    }
-		);
-
-	});
+    $('.specimen-type').on('change', function() {
+        // todo: add verificaation to check testcategory has been assined
+        var testCategoryId = $('.test_category').value;
+        var specimenTypeId = this.value;
+        if (testCategoryId != 0 && specimenTypeId != 0) {
+            $.ajax({
+                type: 'POST',
+                url: "/unhls_test/testlist",
+                data: {
+                    test_category_id: testCategoryId,
+                    specimen_type_id: specimenTypeId
+                },
+                success: function(testTypes){
+                    $('.testTypeList').empty();
+                    $('.testTypeList').append(testTypes);
+                }
+            });
+        }
+    });
 
     /**
 	 * formatting date and time text/input fields as dropdown selection

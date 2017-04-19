@@ -584,58 +584,8 @@ class MicrobiologyProductionSeeder extends DatabaseSeeder
             "time_accepted" => date('Y-m-d H:i:s')]);
         $this->command->info("Specimen Seeded");
 
-        $testTypeAsciticTapCulture = TestType::create([
-                "name" => "Ascitic tap for culture",
-                "test_category_id" => $lab_section_microbiology->id,
-                "orderable_test" => 1
-        ]);
-        $testTypeAspirateCulture = TestType::create([
-                "name" => "Aspirate for culture",
-                "test_category_id" => $lab_section_microbiology->id,
-                "orderable_test" => 1
-        ]);
-        $testTypeBloodCulture = TestType::create([
-                "name" => "Blood for Culture",
-                "test_category_id" => $lab_section_microbiology->id,
-                "orderable_test" => 1
-        ]);
-        $testTypeHighSaginalSwabCulture = TestType::create([
-                "name" => "High Saginal Swab for Culture",
-                "test_category_id" => $lab_section_microbiology->id,
-                "orderable_test" => 1
-        ]);
-        $testTypePusSwabCulture = TestType::create([
-                "name" => "Pus Swab for Culture",
-                "test_category_id" => $lab_section_microbiology->id,
-                "orderable_test" => 1
-        ]);
-        $testTypeSynovialFluidCulture = TestType::create([
-                "name" => "Synovial Fluid for Culture",
-                "test_category_id" => $lab_section_microbiology->id,
-                "orderable_test" => 1
-        ]);
-        $testTypeThroatSwabCulture = TestType::create([
-                "name" => "Throat Swab for Culture",
-                "test_category_id" => $lab_section_microbiology->id,
-                "orderable_test" => 1
-        ]);
-        $testTypePleuralTapCulture = TestType::create([
-                "name" => "Pleural Tap for Culture",
-                "test_category_id" => $lab_section_microbiology->id,
-                "orderable_test" => 1
-        ]);
-        $testTypePusSwabCulture = TestType::create([
-                "name" => "Pus Swab for Culture",
-                "test_category_id" => $lab_section_microbiology->id,
-                "orderable_test" => 1
-        ]);
-        $testTypeUrineCulture = TestType::create([
-                "name" => "Urine for Culture",
-                "test_category_id" => $lab_section_microbiology->id,
-                "orderable_test" => 1
-        ]);
-        $testTypeSputumCulture = TestType::create([
-                "name" => "Sputum for Culture",
+        $testTypeCultureSensitivity = TestType::create([
+                "name" => "Culture and Sensitivity",
                 "test_category_id" => $lab_section_microbiology->id,
                 "orderable_test" => 1
         ]);
@@ -671,7 +621,7 @@ class MicrobiologyProductionSeeder extends DatabaseSeeder
             ['test_type_id'=> $testTypeZnStain->id, 'worksheet_required' => '0'],
             ['test_type_id'=> $testTypeModifiedZn->id, 'worksheet_required' => '0'],
             ['test_type_id'=> $testTypeWetSalineIodinePrep->id, 'worksheet_required' => '0'],
-            ['test_type_id'=> $testTypeSputumCulture->id, 'worksheet_required' => '1'],
+            ['test_type_id'=> $testTypeCultureSensitivity->id, 'worksheet_required' => '1'],
         ];
         foreach ($microbiologyTests as $microbiologyTest) {
             MicrobiologyTestType::create($microbiologyTest);
@@ -689,51 +639,51 @@ class MicrobiologyProductionSeeder extends DatabaseSeeder
 
         // todo: create a loop for this... save some space!
         DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeSputumCulture->id, "specimen_type_id" => $specTypes[0]->id]);// Ascitic Tap
+            ["test_type_id" => $testTypeCultureSensitivity->id, "specimen_type_id" => $specTypes[0]->id]);// Ascitic Tap
         DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeSputumCulture->id, "specimen_type_id" => $specTypes[1]->id]);// Aspirate
+            ["test_type_id" => $testTypeCultureSensitivity->id, "specimen_type_id" => $specTypes[1]->id]);// Aspirate
         DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeSputumCulture->id, "specimen_type_id" => $specTypes[2]->id]);// CSF
+            ["test_type_id" => $testTypeCultureSensitivity->id, "specimen_type_id" => $specTypes[2]->id]);// CSF
         DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeSputumCulture->id, "specimen_type_id" => $specTypes[3]->id]);// Dried Blood Spot
+            ["test_type_id" => $testTypeCultureSensitivity->id, "specimen_type_id" => $specTypes[3]->id]);// Dried Blood Spot
         DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeSputumCulture->id, "specimen_type_id" => $specTypes[4]->id]);// High Vaginal Swab
+            ["test_type_id" => $testTypeCultureSensitivity->id, "specimen_type_id" => $specTypes[4]->id]);// High Vaginal Swab
         DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeSputumCulture->id, "specimen_type_id" => $specTypes[5]->id]);// Nasal Swab
+            ["test_type_id" => $testTypeCultureSensitivity->id, "specimen_type_id" => $specTypes[5]->id]);// Nasal Swab
         DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeSputumCulture->id, "specimen_type_id" => $specTypes[6]->id]);// Plasma
+            ["test_type_id" => $testTypeCultureSensitivity->id, "specimen_type_id" => $specTypes[6]->id]);// Plasma
         DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeSputumCulture->id, "specimen_type_id" => $specTypes[7]->id]);// Plasma EDTA
+            ["test_type_id" => $testTypeCultureSensitivity->id, "specimen_type_id" => $specTypes[7]->id]);// Plasma EDTA
         DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeSputumCulture->id, "specimen_type_id" => $specTypes[8]->id]);// Pleural Tap
+            ["test_type_id" => $testTypeCultureSensitivity->id, "specimen_type_id" => $specTypes[8]->id]);// Pleural Tap
         DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeSputumCulture->id, "specimen_type_id" => $specTypes[9]->id]);// Pus Swab
+            ["test_type_id" => $testTypeCultureSensitivity->id, "specimen_type_id" => $specTypes[9]->id]);// Pus Swab
         DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeSputumCulture->id, "specimen_type_id" => $specTypes[10]->id]);// Rectal Swab
+            ["test_type_id" => $testTypeCultureSensitivity->id, "specimen_type_id" => $specTypes[10]->id]);// Rectal Swab
         DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeSputumCulture->id, "specimen_type_id" => $specTypes[11]->id]);// Semen
+            ["test_type_id" => $testTypeCultureSensitivity->id, "specimen_type_id" => $specTypes[11]->id]);// Semen
         DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeSputumCulture->id, "specimen_type_id" => $specTypes[12]->id]);// Serum
+            ["test_type_id" => $testTypeCultureSensitivity->id, "specimen_type_id" => $specTypes[12]->id]);// Serum
         DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeSputumCulture->id, "specimen_type_id" => $specTypes[13]->id]);// Skin
+            ["test_type_id" => $testTypeCultureSensitivity->id, "specimen_type_id" => $specTypes[13]->id]);// Skin
         DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeSputumCulture->id, "specimen_type_id" => $specTypes[14]->id]);// Vomitus
+            ["test_type_id" => $testTypeCultureSensitivity->id, "specimen_type_id" => $specTypes[14]->id]);// Vomitus
         DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeSputumCulture->id, "specimen_type_id" => $specTypes[15]->id]);// Stool
+            ["test_type_id" => $testTypeCultureSensitivity->id, "specimen_type_id" => $specTypes[15]->id]);// Stool
         DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeSputumCulture->id, "specimen_type_id" => $specTypes[16]->id]);// Synovial Fluid
+            ["test_type_id" => $testTypeCultureSensitivity->id, "specimen_type_id" => $specTypes[16]->id]);// Synovial Fluid
         DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeSputumCulture->id, "specimen_type_id" => $specTypes[17]->id]);// Throat Swab
+            ["test_type_id" => $testTypeCultureSensitivity->id, "specimen_type_id" => $specTypes[17]->id]);// Throat Swab
         DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeSputumCulture->id, "specimen_type_id" => $specTypes[18]->id]);// Urethral Smear
+            ["test_type_id" => $testTypeCultureSensitivity->id, "specimen_type_id" => $specTypes[18]->id]);// Urethral Smear
         DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeSputumCulture->id, "specimen_type_id" => $specTypes[19]->id]);// Urine
+            ["test_type_id" => $testTypeCultureSensitivity->id, "specimen_type_id" => $specTypes[19]->id]);// Urine
         DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeSputumCulture->id, "specimen_type_id" => $specTypes[20]->id]);// Vaginal Smear
+            ["test_type_id" => $testTypeCultureSensitivity->id, "specimen_type_id" => $specTypes[20]->id]);// Vaginal Smear
         DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeSputumCulture->id, "specimen_type_id" => $specTypes[21]->id]);// Water
+            ["test_type_id" => $testTypeCultureSensitivity->id, "specimen_type_id" => $specTypes[21]->id]);// Water
         DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeSputumCulture->id, "specimen_type_id" => $specTypes[22]->id]);// Whole Blood
+            ["test_type_id" => $testTypeCultureSensitivity->id, "specimen_type_id" => $specTypes[22]->id]);// Whole Blood
 
 
         DB::table('testtype_specimentypes')->insert(
@@ -977,7 +927,7 @@ class MicrobiologyProductionSeeder extends DatabaseSeeder
 
         $testAST = UnhlsTest::create([
                 "visit_id" => $microbiologyVisit->id,
-                "test_type_id" => $testTypeSputumCulture->id,
+                "test_type_id" => $testTypeCultureSensitivity->id,
                 'specimen_id' => $specimenSputum->id,
                 "interpretation" => "Format being deliberated",
                 "test_status_id" => UnhlsTest::VERIFIED,

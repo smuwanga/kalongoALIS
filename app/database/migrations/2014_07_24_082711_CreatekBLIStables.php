@@ -346,8 +346,4 @@ class CreatekBLIStables extends Migration {
         Schema::dropIfExists('tokens');
         Schema::dropIfExists('users');
 	}
-
-
-
-
 }

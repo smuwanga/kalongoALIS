@@ -396,10 +396,22 @@ class UnhlsTestController extends \BaseController {
 	 */
 	public function testList()
 	{
-		$id =Input::get('id');
-		$tests = DB::table('test_types')->select('id', 'name')->where('test_category_id', $id)->get(); 
+		$testCategoryId =Input::get('test_category_id');
+		// todo: to use when specifying test for specimens as well
+		// $specimenTypeId =Input::get('specimen_type_id');
 
-		return $tests;
+		$testCategoryId = isset($input['test_category'])?$input['test_category']:'';
+		if($testCategoryId){
+			$testTypes = TestType::where('test_category_id', $testCategoryId);
+			if(count($testTypes) == 0){
+				Session::flash('message', trans('messages.empty-search'));
+			}
+		}else {
+
+			$testTypes = TestType::where('orderable_test', 1)-> orderBy('name', 'asc')->get();
+		}
+		return View::make('unhls_test.testTypeList')
+			->with('testTypes', $testTypes);
 	}
 
 	/**
@@ -414,12 +426,8 @@ class UnhlsTestController extends \BaseController {
 		}
 
 		//Create a Lab categories Array
-		//$categories = array('all')+TestCategory::all('name', 'id'); //unhls test menu varriable
-		$categories = array('Click to select Test Menu')+TestCategory::lists('name', 'id');//->get()->lists('name', 'id'); //UNHLS
+		$categories = ['Select Lab Section']+TestCategory::lists('name', 'id');
 
-		/* ($categories as $key => $value) {
-			$categories[$key] = $value;
-		}*/
 		$fromRedirect = Session::pull('TEST_CATEGORY');
 
 		if($fromRedirect){
@@ -428,8 +436,9 @@ class UnhlsTestController extends \BaseController {
 			$input = Input::except('_token');
 		}
 
-		$testCategoryId = isset($input['test_cat'])?$input['test_cat']:'';
+		$specimenTypes = ['select Specimen Type']+SpecimenType::lists('name', 'id');
 
+		$testCategoryId = isset($input['test_category'])?$input['test_category']:'';
 		if($testCategoryId){
 			$testTypes = TestType::where('test_category_id', $testCategoryId);
 			if(count($testTypes) == 0){
@@ -444,6 +453,7 @@ class UnhlsTestController extends \BaseController {
 		//Load Test Create View
 		return View::make('unhls_test.create')
 					->with('testtypes', $testTypes)
+					->with('specimenType', $specimenTypes)
 					->with('patient', $patient)
 					->with('testCategory', $categories)
 					->with('testId', $testCategoryId);
@@ -474,27 +484,27 @@ class UnhlsTestController extends \BaseController {
 			$activeTest = array();
 
 			/*
-			* - Create a visit
-			* - Fields required: visit_type, patient_id
-			*/
+			 * - Create a visit
+			 * - Fields required: visit_type, patient_id
+			 */
 			$visit = new UnhlsVisit;
 			$visit->patient_id = Input::get('patient_id');
 			$visit->visit_type = $visitType[Input::get('visit_type')];
 			$visit->save();
 
 			/*
-			* - Create tests requested
-			* - Fields required: visit_id, test_type_id, specimen_id, test_status_id, created_by, requested_by
-			*/
+			 * - Create tests requested
+			 * - Fields required: visit_id, test_type_id, specimen_id, test_status_id, created_by, requested_by
+			 */
 			$testTypes = Input::get('testtypes');
 			if(is_array($testTypes)){
+				// Create Specimen - specimen_type_id, accepted_by, referred_from, referred_to
+				$specimen = new UnhlsSpecimen;
+				$specimen->specimen_type_id = Input::get('specimen_type');
+				$specimen->accepted_by = Auth::user()->id;
+				$specimen->save();
 				foreach ($testTypes as $value) {
 					$testTypeID = (int)$value;
-					// Create Specimen - specimen_type_id, accepted_by, referred_from, referred_to
-					$specimen = new UnhlsSpecimen;
-					$specimen->specimen_type_id = TestType::find($testTypeID)->specimenTypes->lists('id')[0];
-					$specimen->accepted_by = Auth::user()->id;
-					$specimen->save();
 
 					$test = new UnhlsTest;
 					$test->visit_id = $visit->id;
