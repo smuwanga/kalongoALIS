@@ -445,9 +445,8 @@ class UnhlsTestController extends \BaseController {
 				Session::flash('message', trans('messages.empty-search'));
 			}
 		}else {
-
-		$testTypes = TestType::where('orderable_test', 1)-> orderBy('name', 'asc')->get();
-		$patient = UnhlsPatient::find($patientID);
+			$testTypes = TestType::where('orderable_test', 1)-> orderBy('name', 'asc')->get();
+			$patient = UnhlsPatient::find($patientID);
 		}
 
 		//Load Test Create View
@@ -536,8 +535,6 @@ class UnhlsTestController extends \BaseController {
 	public function collectSpecimen($specimenID)
 	{
 		$specimen = UnhlsSpecimen::find($specimenID);
-		
-
 		return View::make('unhls_test.collect')->with('specimen', $specimen);
 	}
 
