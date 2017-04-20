@@ -1778,19 +1778,6 @@ class TestDataSeeder extends DatabaseSeeder
             'test_category_id' => $lab_section_microbiology->id,
             'orderable_test' => 1
         ]);
-        // Microbiology Tests Config list determines appearance on report and need for work sheet
-        $microbiologyTests = [
-            ['test_type_id'=> $testTypeAppearance->id, 'worksheet_required' => '0'],
-            ['test_type_id'=> $testTypeGramStain->id, 'worksheet_required' => '0'],
-            ['test_type_id'=> $testTypeZnStain->id, 'worksheet_required' => '0'],
-            ['test_type_id'=> $testTypeModifiedZn->id, 'worksheet_required' => '0'],
-            ['test_type_id'=> $testTypeWetSalineIodinePrep->id, 'worksheet_required' => '0'],
-            ['test_type_id'=> $testTypeAST->id, 'worksheet_required' => '1'],
-        ];
-        foreach ($microbiologyTests as $microbiologyTest) {
-            MicrobiologyTestType::create($microbiologyTest);
-        }
-        $this->command->info("Microbiology tests list table seeded");
 
         $measureAppearance = Measure::create(['measure_type_id' => '4', 'name' => 'Appearance', 'unit' => '']);
         $measureGramStain = Measure::create(['measure_type_id' => '4', 'name' => 'Gram stain', 'unit' => '']);

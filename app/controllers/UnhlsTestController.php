@@ -828,13 +828,11 @@ class UnhlsTestController extends \BaseController {
 	{
 		$test = UnhlsTest::find($testID);
 		// if the test being carried out requires a culture worksheet
-		try {
-			$test->testType->microbiologyTestType->worksheet_required;
+		if ($test->testType->name == 'Culture and Sensitivity') {
 			return Redirect::route('culture.edit', [$test->id]);
-		} catch (Exception $e){
+		}else{
 			return View::make('unhls_test.edit')->with('test', $test);
 		}
-
 	}
 
 	/**
