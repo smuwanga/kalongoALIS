@@ -49,7 +49,7 @@ class TestType extends Eloquent
 	 */
     public function tests()
     {
-        return $this->hasMany('UnhlsTest', 'id');
+        return $this->hasMany('UnhlsTest', 'test_type_id');
     }
 
 	/**
@@ -225,20 +225,20 @@ class TestType extends Eloquent
 			}
 		}
 		// TODO: Should be changed to a more flexible format i.e. that supports localization
-		$data =  Test::select(DB::raw(
-			"ROUND(COUNT(DISTINCT IF((test_results.result='Positive' OR ".
-				"(measure_ranges.alphanumeric=test_results.result AND measure_ranges.interpretation = 'Positive')),".
-				" tests.id,NULL))*100/COUNT(DISTINCT tests.id), 2 ) AS rate"))
-				->join('test_types', 'tests.test_type_id', '=', 'test_types.id')
+		$data =  UnhlsTest::select(DB::raw(
+			"ROUND(COUNT(DISTINCT IF((unhls_test_results.result='Positive' OR ".
+				"(measure_ranges.alphanumeric=unhls_test_results.result AND measure_ranges.interpretation = 'Positive')),".
+				" unhls_tests.id,NULL))*100/COUNT(DISTINCT unhls_tests.id), 2 ) AS rate"))
+				->join('test_types', 'unhls_tests.test_type_id', '=', 'test_types.id')
 				->join('testtype_measures', 'test_types.id', '=', 'testtype_measures.test_type_id')
 				->join('measure_ranges', 'testtype_measures.measure_id', '=', 'measure_ranges.measure_id')
-				->join('test_results', function($join){
-					$join->on('unhlstests.id', '=', 'testresults.test_id')
-						 ->on('testtype_measures.measure_id', '=', 'test_results.measure_id');
+				->join('unhls_test_results', function($join){
+					$join->on('unhls_tests.id', '=', 'unhls_test_results.test_id')
+						 ->on('testtype_measures.measure_id', '=', 'unhls_test_results.measure_id');
 					})
 				->join('measures', 'testtype_measures.measure_id', '=', 'measures.id')
 				->where('test_types.id', '=', $this->id)
-				->whereIn('test_status_id', array(Test::COMPLETED, Test::VERIFIED))
+				->whereIn('test_status_id', array(UnhlsTest::COMPLETED, UnhlsTest::VERIFIED))
 				->where('measures.measure_type_id', '=', Measure::ALPHANUMERIC)
 				->where(function($query){
 					$query->where('measure_ranges.alphanumeric', '=', 'Positive')
@@ -264,31 +264,31 @@ class TestType extends Eloquent
 		$toPlusOne = date_add(new DateTime($to), date_interval_create_from_date_string('1 day'));
 
 		// TODO: Should be changed to a more flexible format i.e. that supports localization
-		$data =  Test::select(DB::raw("test_types.id as id, test_types.name as test, ".
-					"COUNT(DISTINCT tests.specimen_id) as total, ".
-					"COUNT(DISTINCT IF((test_results.result='Positive' OR ".
-						"(measure_ranges.alphanumeric = test_results.result AND measure_ranges.interpretation = 'Positive')),".
-						"tests.specimen_id,NULL)) positive, ".
-					"COUNT(DISTINCT IF((test_results.result='Negative' OR ".
-						"(measure_ranges.alphanumeric = test_results.result AND measure_ranges.interpretation = 'Negative')),".
-						"tests.specimen_id,NULL)) negative, ".
-					"ROUND(COUNT(DISTINCT IF((test_results.result = 'Positive' OR ".
-						"(measure_ranges.alphanumeric = test_results.result AND measure_ranges.interpretation = 'Positive'))".
-						", tests.specimen_id, NULL))*100/COUNT(DISTINCT tests.specimen_id ) , 2 ) AS rate"
+		$data =  UnhlsTest::select(DB::raw("test_types.id as id, test_types.name as test, ".
+					"COUNT(DISTINCT unhls_tests.specimen_id) as total, ".
+					"COUNT(DISTINCT IF((unhls_test_results.result='Positive' OR ".
+						"(measure_ranges.alphanumeric = unhls_test_results.result AND measure_ranges.interpretation = 'Positive')),".
+						"unhls_tests.specimen_id,NULL)) positive, ".
+					"COUNT(DISTINCT IF((unhls_test_results.result='Negative' OR ".
+						"(measure_ranges.alphanumeric = unhls_test_results.result AND measure_ranges.interpretation = 'Negative')),".
+						"unhls_tests.specimen_id,NULL)) negative, ".
+					"ROUND(COUNT(DISTINCT IF((unhls_test_results.result = 'Positive' OR ".
+						"(measure_ranges.alphanumeric = unhls_test_results.result AND measure_ranges.interpretation = 'Positive'))".
+						", unhls_tests.specimen_id, NULL))*100/COUNT(DISTINCT unhls_tests.specimen_id ) , 2 ) AS rate"
 					))
-				->join('test_types', 'tests.test_type_id', '=', 'test_types.id')
+				->join('test_types', 'unhls_tests.test_type_id', '=', 'test_types.id')
 				->join('testtype_measures', 'test_types.id', '=', 'testtype_measures.test_type_id')
 				->join('measure_ranges', 'testtype_measures.measure_id', '=', 'measure_ranges.measure_id')
 				->join('measures', 'testtype_measures.measure_id', '=', 'measures.id')
-				->join('test_results', function($join){
-					$join->on('tests.id', '=', 'test_results.test_id')
-						->on('testtype_measures.measure_id', '=', 'test_results.measure_id');
+				->join('unhls_test_results', function($join){
+					$join->on('unhls_tests.id', '=', 'unhls_test_results.test_id')
+						->on('testtype_measures.measure_id', '=', 'unhls_test_results.measure_id');
 					})
 				->join('measure_types', 'measure_types.id', '=', 'measures.measure_type_id')
-				->whereIn('test_status_id', array(Test::COMPLETED, Test::VERIFIED))
+				->whereIn('test_status_id', array(UnhlsTest::COMPLETED, UnhlsTest::VERIFIED))
 				->where(function($query) use ($testTypeID){
 					if ($testTypeID != 0) {
-						$query->where('tests.test_type_id', $testTypeID);
+						$query->where('unhls_tests.test_type_id', $testTypeID);
 					}
 				})
 				->where(function($query){
@@ -298,8 +298,8 @@ class TestType extends Eloquent
 							->orWhere('measure_ranges.interpretation', '=', 'Negative');
 				});
 			if($ageRange){
-				$data = $data->join('visits', 'tests.visit_id', '=', 'visits.id')
-							   ->join('patients', 'visits.patient_id', '=', 'patients.id');
+				$data = $data->join('unhls_visits', 'unhls_tests.visit_id', '=', 'unhls_visits.id')
+							   ->join('unhls_patients', 'unhls_visits.patient_id', '=', 'unhls_patients.id');
 							  
 							   		$age = explode('-', $ageRange);
 									$ageStart = $age[0];
@@ -325,7 +325,7 @@ class TestType extends Eloquent
 	public function countPerStatus($testStatusID, $from = null, $to = null)
 	{
 
-		$tests = Test::where('test_type_id', $this->id)->whereIn('test_status_id', $testStatusID);
+		$tests = UnhlsTest::where('test_type_id', $this->id)->whereIn('test_status_id', $testStatusID);
 
 		if($to && $from){
 			$tests = $tests->whereBetween('time_created', [$from, $to]);
@@ -340,14 +340,14 @@ class TestType extends Eloquent
 	* @param $testStatusID, $from, $to
 	*/
 	public function groupedTestCount($gender=null, $ageRange=null, $from=null, $to=null){
-			$tests = Test::where('test_type_id', $this->id)
-						 ->whereIn('test_status_id', [Test::COMPLETED, Test::VERIFIED]);
+			$tests = UnhlsTest::where('test_type_id', $this->id)
+						 ->whereIn('test_status_id', [UnhlsTest::COMPLETED, UnhlsTest::VERIFIED]);
 			if($to && $from){
 				$tests = $tests->whereBetween('time_created', [$from, $to]);
 			}
 			if($ageRange || $gender){
-				$tests = $tests->join('visits', 'tests.visit_id', '=', 'visits.id')
-							   ->join('patients', 'visits.patient_id', '=', 'patients.id');
+				$tests = $tests->join('unhls_visits', 'unhls_tests.visit_id', '=', 'unhls_visits.id')
+							   ->join('unhls_patients', 'unhls_visits.patient_id', '=', 'unhls_patients.id');
 							   if($gender){
 							   		$tests = $tests->whereIn('gender', $gender);
 							   	}

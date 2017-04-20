@@ -249,14 +249,14 @@ class ReportController extends \BaseController {
 			$specimens = UnhlsSpecimen::where('specimen_status_id', '=', UnhlsSpecimen::REJECTED);
 			/*Filter by test category*/
 			if($testCategory&&!$testType){
-				$specimens = $specimens->join('tests', 'specimens.id', '=', 'tests.specimen_id')
-									   ->join('test_types', 'tests.test_type_id', '=', 'test_types.id')
+				$specimens = $specimens->join('unhls_tests', 'specimens.id', '=', 'unhls_tests.specimen_id')
+									   ->join('test_types', 'unhls_tests.test_type_id', '=', 'test_types.id')
 									   ->where('test_types.test_category_id', '=', $testCategory);
 			}
 			/*Filter by test type*/
 			if($testCategory&&$testType){
-				$specimens = $specimens->join('tests', 'specimens.id', '=', 'tests.specimen_id')
-				   					   ->where('tests.test_type_id', '=', $testType);
+				$specimens = $specimens->join('unhls_tests', 'specimens.id', '=', 'unhls_tests.specimen_id')
+				   					   ->where('unhls_tests.test_type_id', '=', $testType);
 			}
 
 			/*Filter by date*/
@@ -306,11 +306,11 @@ class ReportController extends \BaseController {
 		//Begin test records
 		else
 		{
-			$tests = Test::whereNotIn('test_status_id', [Test::NOT_RECEIVED]);
+			$tests = UnhlsTest::whereNotIn('test_status_id', [UnhlsTest::NOT_RECEIVED]);
 			
 			/*Filter by test category*/
 			if($testCategory&&!$testType){
-				$tests = $tests->join('test_types', 'tests.test_type_id', '=', 'test_types.id')
+				$tests = $tests->join('test_types', 'unhls_tests.test_type_id', '=', 'test_types.id')
 							   ->where('test_types.test_category_id', '=', $testCategory);
 			}
 			/*Filter by test type*/
@@ -319,15 +319,15 @@ class ReportController extends \BaseController {
 			}
 			/*Filter by all tests*/
 			if($pendingOrAll=='pending'){
-				$tests = $tests->whereIn('test_status_id', [Test::PENDING, Test::STARTED]);
+				$tests = $tests->whereIn('test_status_id', [UnhlsTest::PENDING, UnhlsTest::STARTED]);
 			}
 			else if($pendingOrAll=='all'){
 				$tests = $tests->whereIn('test_status_id', 
-					[Test::PENDING, Test::STARTED, Test::COMPLETED, Test::VERIFIED]);
+					[UnhlsTest::PENDING, UnhlsTest::STARTED, UnhlsTest::COMPLETED, UnhlsTest::VERIFIED]);
 			}
 			//For Complete tests and the default.
 			else{
-				$tests = $tests->whereIn('test_status_id', [Test::COMPLETED, Test::VERIFIED]);
+				$tests = $tests->whereIn('test_status_id', [UnhlsTest::COMPLETED, UnhlsTest::VERIFIED]);
 			}
 			/*Get collection of tests*/
 			/*Filter by date*/
@@ -337,12 +337,12 @@ class ReportController extends \BaseController {
 				}
 				else
 				{
-					$tests = $tests->whereBetween('time_created', array($from, $toPlusOne))->get(array('tests.*'));
+					$tests = $tests->whereBetween('time_created', array($from, $toPlusOne))->get(array('unhls_tests.*'));
 				}
 			}
 			else
 			{
-				$tests = $tests->where('time_created', 'LIKE', $date.'%')->get(array('tests.*'));
+				$tests = $tests->where('time_created', 'LIKE', $date.'%')->get(array('unhls_tests.*'));
 			}
 			if(Input::has('word')){
 				$date = date("Ymdhi");
@@ -410,7 +410,7 @@ class ReportController extends \BaseController {
 		else
 		{
 			// Get all tests for the current year
-			$test = Test::where('time_created', 'LIKE', date('Y').'%');
+			$test = UnhlsTest::where('time_created', 'LIKE', date('Y').'%');
 			$periodStart = $test->min('time_created'); //Get the minimum date
 			$periodEnd = $test->max('time_created'); //Get the maximum date
 			$data = TestType::getPrevalenceCounts($periodStart, $periodEnd);
@@ -429,7 +429,7 @@ class ReportController extends \BaseController {
 	public static function getMonths($from, $to){
 		$today = "'".date("Y-m-d")."'";
 		$year = date('Y');
-		$tests = Test::select('time_created')->distinct();
+		$tests = UnhlsTest::select('time_created')->distinct();
 
 		if(strtotime($from)===strtotime($today)){
 			$tests = $tests->where('time_created', 'LIKE', $year.'%');
@@ -574,7 +574,7 @@ class ReportController extends \BaseController {
 			$testCategories = TestCategory::all();
 			$testTypes = TestType::all();
 			$ageRanges = array('0-5', '5-15', '15-120');	//	Age ranges - will definitely change in configurations
-			$gender = array(Patient::MALE, Patient::FEMALE); 	//	Array for gender - male/female
+			$gender = array(UnhlsPatient::MALE, UnhlsPatient::FEMALE); 	//	Array for gender - male/female
 
 			$perAgeRange = array();	// array for counts data for each test type and age range
 			$perTestType = array();	//	array for counts data per testype
@@ -583,12 +583,12 @@ class ReportController extends \BaseController {
 			}
 			foreach ($testTypes as $testType) {
 				$countAll = $this->getGroupedTestCounts($testType, null, null, $from, $toPlusOne->format('Y-m-d H:i:s'));
-				$countMale = $this->getGroupedTestCounts($testType, [Patient::MALE], null, $from, $toPlusOne->format('Y-m-d H:i:s'));
-				$countFemale = $this->getGroupedTestCounts($testType, [Patient::FEMALE], null, $from, $toPlusOne->format('Y-m-d H:i:s'));
+				$countMale = $this->getGroupedTestCounts($testType, [UnhlsPatient::MALE], null, $from, $toPlusOne->format('Y-m-d H:i:s'));
+				$countFemale = $this->getGroupedTestCounts($testType, [UnhlsPatient::FEMALE], null, $from, $toPlusOne->format('Y-m-d H:i:s'));
 				$perTestType[$testType->id] = ['countAll'=>$countAll, 'countMale'=>$countMale, 'countFemale'=>$countFemale];
 				foreach ($ageRanges as $ageRange) {
-					$maleCount = $this->getGroupedTestCounts($testType, [Patient::MALE], $ageRange, $from, $toPlusOne->format('Y-m-d H:i:s'));
-					$femaleCount = $this->getGroupedTestCounts($testType, [Patient::FEMALE], $ageRange, $from, $toPlusOne->format('Y-m-d H:i:s'));
+					$maleCount = $this->getGroupedTestCounts($testType, [UnhlsPatient::MALE], $ageRange, $from, $toPlusOne->format('Y-m-d H:i:s'));
+					$femaleCount = $this->getGroupedTestCounts($testType, [UnhlsPatient::FEMALE], $ageRange, $from, $toPlusOne->format('Y-m-d H:i:s'));
 					$perAgeRange[$testType->id][$ageRange] = ['male'=>$maleCount, 'female'=>$femaleCount];
 				}
 			}
@@ -623,7 +623,7 @@ class ReportController extends \BaseController {
 		}
 		else if($counts==trans('messages.grouped-specimen-counts')){
 			$ageRanges = array('0-5', '5-15', '15-120');	//	Age ranges - will definitely change in configurations
-			$gender = array(Patient::MALE, Patient::FEMALE); 	//	Array for gender - male/female
+			$gender = array(UnhlsPatient::MALE, UnhlsPatient::FEMALE); 	//	Array for gender - male/female
 
 			$perAgeRange = array();	// array for counts data for each test type and age range
 			$perSpecimenType = array();	//	array for counts data per testype
@@ -632,13 +632,13 @@ class ReportController extends \BaseController {
 			}
 			$specimenTypes = SpecimenType::all();
 			foreach ($specimenTypes as $specimenType) {
-				$countAll = $specimenType->groupedSpecimenCount([Patient::MALE, Patient::FEMALE], null, $from, $toPlusOne->format('Y-m-d H:i:s'));
-				$countMale = $specimenType->groupedSpecimenCount([Patient::MALE], null, $from, $toPlusOne->format('Y-m-d H:i:s'));
-				$countFemale = $specimenType->groupedSpecimenCount([Patient::FEMALE], null, $from, $toPlusOne->format('Y-m-d H:i:s'));
+				$countAll = $specimenType->groupedSpecimenCount([UnhlsPatient::MALE, UnhlsPatient::FEMALE], null, $from, $toPlusOne->format('Y-m-d H:i:s'));
+				$countMale = $specimenType->groupedSpecimenCount([UnhlsPatient::MALE], null, $from, $toPlusOne->format('Y-m-d H:i:s'));
+				$countFemale = $specimenType->groupedSpecimenCount([UnhlsPatient::FEMALE], null, $from, $toPlusOne->format('Y-m-d H:i:s'));
 				$perSpecimenType[$specimenType->id] = ['countAll'=>$countAll, 'countMale'=>$countMale, 'countFemale'=>$countFemale];
 				foreach ($ageRanges as $ageRange) {
-					$maleCount = $specimenType->groupedSpecimenCount([Patient::MALE], $ageRange, $from, $toPlusOne->format('Y-m-d H:i:s'));
-					$femaleCount = $specimenType->groupedSpecimenCount([Patient::FEMALE], $ageRange, $from, $toPlusOne->format('Y-m-d H:i:s'));
+					$maleCount = $specimenType->groupedSpecimenCount([UnhlsPatient::MALE], $ageRange, $from, $toPlusOne->format('Y-m-d H:i:s'));
+					$femaleCount = $specimenType->groupedSpecimenCount([UnhlsPatient::FEMALE], $ageRange, $from, $toPlusOne->format('Y-m-d H:i:s'));
 					$perAgeRange[$specimenType->id][$ageRange] = ['male'=>$maleCount, 'female'=>$femaleCount];
 				}
 			}
@@ -658,8 +658,8 @@ class ReportController extends \BaseController {
 
 			$ungroupedTests = array();
 			foreach (TestType::all() as $testType) {
-				$pending = $testType->countPerStatus([Test::PENDING, Test::STARTED], $from, $toPlusOne->format('Y-m-d H:i:s'));
-				$complete = $testType->countPerStatus([Test::COMPLETED, Test::VERIFIED], $from, $toPlusOne->format('Y-m-d H:i:s'));
+				$pending = $testType->countPerStatus([UnhlsTest::PENDING, UnhlsTest::STARTED], $from, $toPlusOne->format('Y-m-d H:i:s'));
+				$complete = $testType->countPerStatus([UnhlsTest::COMPLETED, UnhlsTest::VERIFIED], $from, $toPlusOne->format('Y-m-d H:i:s'));
 				$ungroupedTests[$testType->id] = ["complete"=>$complete, "pending"=>$pending];
 			}
 
@@ -709,9 +709,9 @@ class ReportController extends \BaseController {
 	*	optional @var $from, $to, $labSection, $testType
 	*/
 	public static function rawTaT($from, $to, $labSection, $testType){
-		$rawTat = DB::table('tests')->select(DB::raw('UNIX_TIMESTAMP(time_created) as timeCreated, UNIX_TIMESTAMP(time_started) as timeStarted, UNIX_TIMESTAMP(time_completed) as timeCompleted, targetTAT'))
-						->join('test_types', 'test_types.id', '=', 'tests.test_type_id')
-						->whereIn('test_status_id', [Test::COMPLETED, Test::VERIFIED]);
+		$rawTat = DB::table('unhls_tests')->select(DB::raw('UNIX_TIMESTAMP(time_created) as timeCreated, UNIX_TIMESTAMP(time_started) as timeStarted, UNIX_TIMESTAMP(time_completed) as timeCompleted, targetTAT'))
+						->join('test_types', 'test_types.id', '=', 'unhls_tests.test_type_id')
+						->whereIn('test_status_id', [UnhlsTest::COMPLETED, UnhlsTest::VERIFIED]);
 						if($from && $to){
 							$rawTat = $rawTat->whereBetween('time_created', [$from, $to]);
 						}
@@ -971,7 +971,7 @@ class ReportController extends \BaseController {
 	 	$ageRanges = array('0-5'=>'Under 5 years', 
 	 					'5-14'=>'5 years and over but under 14 years', 
 	 					'14-120'=>'14 years and above');	//	Age ranges - will definitely change in configurations
-		$gender = array(Patient::MALE, Patient::FEMALE); 	//	Array for gender - male/female
+		$gender = array(UnhlsPatient::MALE, UnhlsPatient::FEMALE); 	//	Array for gender - male/female
 		$ranges = array('Low', 'Normal', 'High');
 		$accredited = array();
 
@@ -987,7 +987,7 @@ class ReportController extends \BaseController {
 
 		$testCategory = Input::get('test_category');
 
-		$infectionData = Test::getInfectionData($from, $toPlusOne, $testCategory);	// array for counts data for each test type and age range
+		$infectionData = UnhlsTest::getInfectionData($from, $toPlusOne, $testCategory);	// array for counts data for each test type and age range
 		
 		return View::make('reports.infection.index')
 					->with('gender', $gender)
@@ -1988,14 +1988,14 @@ class ReportController extends \BaseController {
 							if(in_array(SpecimenType::find($key->spec_id)->name, ['Aspirate', 'Pleural Tap', 'Synovial Fluid', 'Sputum', 'Ascitic Tap', 'Semen', 'Skin'])){
 								continue;
 							}
-							$totalCount = DB::select(DB::raw("select count(specimen_id) as per_spec_count from tests".
-															 " join specimens on tests.specimen_id=specimens.id".
-															 " join test_types on tests.test_type_id=test_types.id".
+							$totalCount = DB::select(DB::raw("select count(specimen_id) as per_spec_count from unhls_tests".
+															 " join specimens on unhls_tests.specimen_id=specimens.id".
+															 " join test_types on unhls_tests.test_type_id=test_types.id".
 															 " where specimens.specimen_type_id=?".
 															 " and test_types.test_category_id=?".
 															 " and test_status_id in(?,?)".
-															 " and tests.time_created BETWEEN ? and ?;"), 
-															[$key->spec_id, $labSecId, Test::COMPLETED, Test::VERIFIED, $from, $toPlusOne]);
+															 " and unhls_tests.time_created BETWEEN ? and ?;"), 
+															[$key->spec_id, $labSecId, UnhlsTest::COMPLETED, UnhlsTest::VERIFIED, $from, $toPlusOne]);
 							$table.='<tr>
 									<td>'.SpecimenType::find($key->spec_id)->name.'</td>
 									<td>'.$totalCount[0]->per_spec_count.'</td>
@@ -2119,7 +2119,7 @@ class ReportController extends \BaseController {
 						$table.='<tr>
 							<td>'.$isolate.'</td>';
 							foreach ($specimen_types as $spec) {
-								$table.='<td>'.TestResult::microCounts($isolate,$spec, $from, $toPlusOne)[0]->total.'</td>';
+								$table.='<td>'.UnhlsTestResult::microCounts($isolate,$spec, $from, $toPlusOne)[0]->total.'</td>';
 							}
 						$table.='</tr>';
 					}
