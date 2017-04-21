@@ -16,8 +16,9 @@ class CreateBbcausesTable extends Migration {
 		{
 			$table->increments('id');
 			$table->string('causename');
+
 			$table->timestamps();
-			$table->timestamp('deleted_at');
+			$table->softDeletes();
 		});
 	}
 

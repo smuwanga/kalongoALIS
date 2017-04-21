@@ -433,7 +433,7 @@ class TestDataSeeder extends DatabaseSeeder
             array("name" => "Hu Jintao", "email" => "hu@.un.org", "patient_number" => "1005", "dob" => "1956-10-28", "gender" => "0", "created_by" => "2"),
             array("name" => "Lance Opiyo", "email" => "lance@x.com", "patient_number" => "2150", "dob" => "2012-01-01", "gender" => "0", "created_by" => "1"));
         foreach ($patients_array as $pat) {
-            $patients[] = Patient::create($pat);
+            $patients[] = UnhlsPatient::create($pat);
         }
 
         $this->command->info('patients seeded');
@@ -479,7 +479,7 @@ class TestDataSeeder extends DatabaseSeeder
         /* Visits table */
         
         for ($i=0; $i < 7; $i++) { 
-            $visits[] = Visit::create(array("patient_id" => $patients[rand(0,count($patients)-1)]->id));
+            $visits[] = UnhlsVisit::create(array("patient_id" => $patients[rand(0,count($patients)-1)]->id));
         }
         $this->command->info('visits seeded');
 
@@ -532,72 +532,72 @@ class TestDataSeeder extends DatabaseSeeder
         $now = new DateTime();
 
         /* Test table */
-        Test::create(
+        UnhlsTest::create(
             array(
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeBS->id,//BS for MPS
                 "specimen_id" => $this->createSpecimen(
-                        Test::NOT_RECEIVED, Specimen::NOT_COLLECTED,
+                        UnhlsTest::NOT_RECEIVED, UnhlsSpecimen::NOT_COLLECTED,
                         SpecimenType::all()->last()->id,
                         $users[rand(0, count($users)-1)]->id),
-                "test_status_id" => Test::NOT_RECEIVED,
+                "test_status_id" => UnhlsTest::NOT_RECEIVED,
                 "requested_by" => "Dr. Abou Meyang",
                 "created_by" => $users[rand(0, count($users)-1)]->id,
             )
         );        
         
-        Test::create(
+        UnhlsTest::create(
             array(
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeHB->id,
                 "specimen_id" => $this->createSpecimen(
-                        Test::PENDING, Specimen::NOT_COLLECTED,
+                        UnhlsTest::PENDING, UnhlsSpecimen::NOT_COLLECTED,
                         SpecimenType::all()->last()->id,
                         $users[rand(0, count($users)-1)]->id),
-                "test_status_id" => Test::PENDING,
+                "test_status_id" => UnhlsTest::PENDING,
                 "requested_by" => "Dr. Abou Meyang",
                 "created_by" => $users[rand(0, count($users)-1)]->id,
             )
         );        
         
-        Test::create(
+        UnhlsTest::create(
             array(
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeGXM->id,
                 "specimen_id" => $this->createSpecimen(
-                        Test::PENDING, Specimen::NOT_COLLECTED,
+                        UnhlsTest::PENDING, UnhlsSpecimen::NOT_COLLECTED,
                         SpecimenType::all()->last()->id,
                         $users[rand(0, count($users)-1)]->id),
-                "test_status_id" => Test::PENDING,
+                "test_status_id" => UnhlsTest::PENDING,
                 "requested_by" => "Dr. Abou Meyang",
                 "created_by" => $users[rand(0, count($users)-1)]->id,
             )
         );        
         
-        Test::create(
+        UnhlsTest::create(
             array(
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeBS->id,//BS for MPS
                 "specimen_id" => $this->createSpecimen(
-                        Test::PENDING, Specimen::ACCEPTED,
+                        UnhlsTest::PENDING, UnhlsSpecimen::ACCEPTED,
                         SpecimenType::all()->last()->id,
                         $users[rand(0, count($users)-1)]->id),
-                "test_status_id" => Test::PENDING,
+                "test_status_id" => UnhlsTest::PENDING,
                 "created_by" => $users[rand(0, count($users)-1)]->id,
                 "requested_by" => "Dr. Abou Meyang",
             )
         );        
         
-        $test_gxm_accepted_completed = Test::create(
+        $test_gxm_accepted_completed = UnhlsTest::create(
             array(
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeGXM->id,
                 "specimen_id" => $this->createSpecimen(
-                        Test::COMPLETED, Specimen::ACCEPTED, 
+                        UnhlsTest::COMPLETED, UnhlsSpecimen::ACCEPTED, 
                         SpecimenType::all()->last()->id, 
                         $users[rand(0, count($users)-1)]->id),
                 "interpretation" => "Perfect match.",
-                "test_status_id" => Test::COMPLETED,
+                "test_status_id" => UnhlsTest::COMPLETED,
                 "created_by" => $users[rand(0, count($users)-1)]->id,
                 "tested_by" => $users[rand(0, count($users)-1)]->id,
                 "requested_by" => "Dr. Abou Meyang",
@@ -606,16 +606,16 @@ class TestDataSeeder extends DatabaseSeeder
             )
         );
 
-        $test_hb_accepted_completed = Test::create(
+        $test_hb_accepted_completed = UnhlsTest::create(
             array(
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeHB->id,
                 "specimen_id" => $this->createSpecimen(
-                        Test::COMPLETED, Specimen::ACCEPTED, 
+                        UnhlsTest::COMPLETED, UnhlsSpecimen::ACCEPTED, 
                         SpecimenType::all()->last()->id, 
                         $users[rand(0, count($users)-1)]->id),
                 "interpretation" => "Do nothing!",
-                "test_status_id" => Test::COMPLETED,
+                "test_status_id" => UnhlsTest::COMPLETED,
                 "created_by" => $users[rand(0, count($users)-1)]->id,
                 "tested_by" => $users[rand(0, count($users)-1)]->id,
                 "requested_by" => "Genghiz Khan",
@@ -624,30 +624,30 @@ class TestDataSeeder extends DatabaseSeeder
             )
         );
 
-        $tests_accepted_started = Test::create(
+        $tests_accepted_started = UnhlsTest::create(
             array(
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeGXM->id,
                 "specimen_id" => $this->createSpecimen(
-                    Test::STARTED, Specimen::ACCEPTED, SpecimenType::all()->last()->id, 
+                    UnhlsTest::STARTED, UnhlsSpecimen::ACCEPTED, SpecimenType::all()->last()->id, 
                     $users[rand(0, count($users)-1)]->id),
-                "test_status_id" => Test::STARTED,
+                "test_status_id" => UnhlsTest::STARTED,
                 "requested_by" => "Dr. Abou Meyang",
                 "created_by" => $users[rand(0, count($users)-1)]->id,
                 "time_started" => $now->format('Y-m-d H:i:s'),
             )
         );
 
-        $tests_accepted_completed = Test::create(
+        $tests_accepted_completed = UnhlsTest::create(
             array(
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeBS->id,//BS for MPS
                 "specimen_id" => $this->createSpecimen(
-                        Test::COMPLETED, Specimen::ACCEPTED, 
+                        UnhlsTest::COMPLETED, UnhlsSpecimen::ACCEPTED, 
                         SpecimenType::all()->last()->id, 
                         $users[rand(0, count($users)-1)]->id),
                 "interpretation" => "Positive",
-                "test_status_id" => Test::COMPLETED,
+                "test_status_id" => UnhlsTest::COMPLETED,
                 "created_by" => $users[rand(0, count($users)-1)]->id,
                 "tested_by" => $users[rand(0, count($users)-1)]->id,
                 "requested_by" => "Ariel Smith",
@@ -656,16 +656,16 @@ class TestDataSeeder extends DatabaseSeeder
             )
         );        
         
-        $tests_accepted_verified = Test::create(
+        $tests_accepted_verified = UnhlsTest::create(
             array(
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeBS->id,//BS for MPS
                 "specimen_id" => $this->createSpecimen(
-                        Test::VERIFIED, Specimen::ACCEPTED, 
+                        UnhlsTest::VERIFIED, UnhlsSpecimen::ACCEPTED, 
                         SpecimenType::all()->last()->id, 
                         $users[rand(0, count($users)-1)]->id),
                 "interpretation" => "Very high concentration of parasites.",
-                "test_status_id" => Test::VERIFIED,
+                "test_status_id" => UnhlsTest::VERIFIED,
                 "created_by" => $users[rand(0, count($users)-1)]->id,
                 "tested_by" => $users[rand(0, count($users)-1)]->id,
                 "verified_by" => $users[rand(0, count($users)-1)]->id,
@@ -676,17 +676,17 @@ class TestDataSeeder extends DatabaseSeeder
             )
         );        
         
-        $tests_rejected_pending = Test::create(
+        $tests_rejected_pending = UnhlsTest::create(
             array(
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeBS->id,//BS for MPS
                 "specimen_id" => $this->createSpecimen(
-                        Test::PENDING, Specimen::REJECTED, 
+                        UnhlsTest::PENDING, UnhlsSpecimen::REJECTED, 
                         SpecimenType::all()->last()->id, 
                         $users[rand(0, count($users)-1)]->id,
                         $users[rand(0, count($users)-1)]->id,
                         $rejection_reasons[rand(0,count($rejection_reasons)-1)]->id),
-                "test_status_id" => Test::PENDING,
+                "test_status_id" => UnhlsTest::PENDING,
                 "requested_by" => "Dr. Abou Meyang",
                 "created_by" => $users[rand(0, count($users)-1)]->id,
                 "time_started" => $now->format('Y-m-d H:i:s'),
@@ -694,49 +694,49 @@ class TestDataSeeder extends DatabaseSeeder
         );        
 
         //  WBC Started
-        Test::create(
+        UnhlsTest::create(
             array(
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeWBC->id,
                 "specimen_id" => $this->createSpecimen(
-                        Test::STARTED, Specimen::ACCEPTED,
+                        UnhlsTest::STARTED, UnhlsSpecimen::ACCEPTED,
                         SpecimenType::all()->last()->id,
                         $users[rand(0, count($users)-1)]->id),
-                "test_status_id" => Test::PENDING,
+                "test_status_id" => UnhlsTest::PENDING,
                 "requested_by" => "Fred Astaire",
                 "created_by" => $users[rand(0, count($users)-1)]->id,
             )
         );        
         
-        $tests_rejected_started = Test::create(
+        $tests_rejected_started = UnhlsTest::create(
             array(
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeBS->id,//BS for MPS
                 "specimen_id" => $this->createSpecimen(
-                        Test::STARTED, Specimen::REJECTED, 
+                        UnhlsTest::STARTED, UnhlsSpecimen::REJECTED, 
                         SpecimenType::all()->last()->id, 
                         $users[rand(0, count($users)-1)]->id,
                         $users[rand(0, count($users)-1)]->id,
                         $rejection_reasons[rand(0,count($rejection_reasons)-1)]->id),
-                "test_status_id" => Test::STARTED,
+                "test_status_id" => UnhlsTest::STARTED,
                 "created_by" => $users[rand(0, count($users)-1)]->id,
                 "requested_by" => "Bony Em",
                 "time_started" => $now->format('Y-m-d H:i:s'),
             )
         );
         
-        $tests_rejected_completed = Test::create(
+        $tests_rejected_completed = UnhlsTest::create(
             array(
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeBS->id,//BS for MPS
                 "specimen_id" => $this->createSpecimen(
-                        Test::COMPLETED, Specimen::REJECTED, 
+                        UnhlsTest::COMPLETED, UnhlsSpecimen::REJECTED, 
                         SpecimenType::all()->last()->id, 
                         $users[rand(0, count($users)-1)]->id,
                         $users[rand(0, count($users)-1)]->id,
                         $rejection_reasons[rand(0,count($rejection_reasons)-1)]->id),
                 "interpretation" => "Budda Boss",
-                "test_status_id" => Test::COMPLETED,
+                "test_status_id" => UnhlsTest::COMPLETED,
                 "created_by" => $users[rand(0, count($users)-1)]->id,
                 "tested_by" => $users[rand(0, count($users)-1)]->id,
                 "requested_by" => "Ed Buttler",
@@ -745,44 +745,44 @@ class TestDataSeeder extends DatabaseSeeder
             )
         );
 
-        Test::create(
+        UnhlsTest::create(
             array(
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeUrinalysis->id,
                 "specimen_id" => $this->createSpecimen(
-                        Test::PENDING, Specimen::NOT_COLLECTED,
+                        UnhlsTest::PENDING, UnhlsSpecimen::NOT_COLLECTED,
                         SpecimenType::all()->last()->id,
                         $users[rand(0, count($users)-1)]->id),
-                "test_status_id" => Test::PENDING,
+                "test_status_id" => UnhlsTest::PENDING,
                 "requested_by" => "Dr. Abou Meyang",
                 "created_by" => $users[rand(0, count($users)-1)]->id,
             )
         );        
         
-        Test::create(
+        UnhlsTest::create(
             array(
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeWBC->id,
                 "specimen_id" => $this->createSpecimen(
-                        Test::PENDING, Specimen::NOT_COLLECTED,
+                        UnhlsTest::PENDING, UnhlsSpecimen::NOT_COLLECTED,
                         SpecimenType::all()->last()->id,
                         $users[rand(0, count($users)-1)]->id),
-                "test_status_id" => Test::PENDING,
+                "test_status_id" => UnhlsTest::PENDING,
                 "requested_by" => "Dr. Abou Meyang",
                 "created_by" => $users[rand(0, count($users)-1)]->id,
             )
         );        
         
-        $test_urinalysis_accepted_completed = Test::create(
+        $test_urinalysis_accepted_completed = UnhlsTest::create(
             array(
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeUrinalysis->id,
                 "specimen_id" => $this->createSpecimen(
-                        Test::COMPLETED, Specimen::ACCEPTED, 
+                        UnhlsTest::COMPLETED, UnhlsSpecimen::ACCEPTED, 
                         SpecimenType::all()->last()->id, 
                         $users[rand(0, count($users)-1)]->id),
                 "interpretation" => "Whats this !!!! ###%%% ^ *() /",
-                "test_status_id" => Test::COMPLETED,
+                "test_status_id" => UnhlsTest::COMPLETED,
                 "created_by" => $users[rand(0, count($users)-1)]->id,
                 "tested_by" => $users[rand(0, count($users)-1)]->id,
                 "requested_by" => "Dr. Abou Meyang",
@@ -1103,12 +1103,12 @@ class TestDataSeeder extends DatabaseSeeder
         $this->command->info('Test Type Measures seeded again');
 
         /*  Tests for prevalence rates  */
-        $tests_completed_one = Test::create(array(
+        $tests_completed_one = UnhlsTest::create(array(
                 "visit_id" => "1",
                 "test_type_id" => $test_types_salmonella->id,
                 "specimen_id" => "4",
                 "interpretation" => "Budda Boss",
-                "test_status_id" => Test::COMPLETED,
+                "test_status_id" => UnhlsTest::COMPLETED,
                 "created_by" => "2",
                 "tested_by" => "3",
                 "requested_by" => "Ariel Smith",
@@ -1117,12 +1117,12 @@ class TestDataSeeder extends DatabaseSeeder
                 "time_completed" => "2014-07-23 16:17:19",
             )
         );
-        $tests_completed_two = Test::create(array(
+        $tests_completed_two = UnhlsTest::create(array(
                 "visit_id" => "2",
                 "test_type_id" => $test_types_direct->id,
                 "specimen_id" => "3",
                 "interpretation" => "Budda Boss",
-                "test_status_id" => Test::COMPLETED,
+                "test_status_id" => UnhlsTest::COMPLETED,
                 "created_by" => "2",
                 "tested_by" => "3",
                 "requested_by" => "Ariel Smith",
@@ -1131,12 +1131,12 @@ class TestDataSeeder extends DatabaseSeeder
                 "time_completed" => "2014-07-26 13:57:01",
             )
         );
-        $tests_completed_three = Test::create(array(
+        $tests_completed_three = UnhlsTest::create(array(
                 "visit_id" => "3",
                 "test_type_id" => $test_types_du->id,
                 "specimen_id" => "2",
                 "interpretation" => "Budda Boss",
-                "test_status_id" => Test::COMPLETED,
+                "test_status_id" => UnhlsTest::COMPLETED,
                 "created_by" => "2",
                 "tested_by" => "3",
                 "requested_by" => "Ariel Smith",
@@ -1145,12 +1145,12 @@ class TestDataSeeder extends DatabaseSeeder
                 "time_completed" => "2014-08-13 10:18:11",
             )
         );
-        $tests_completed_four = Test::create(array(
+        $tests_completed_four = UnhlsTest::create(array(
                 "visit_id" => "4",
                 "test_type_id" => $test_types_sickling->id,
                 "specimen_id" => "1",
                 "interpretation" => "Budda Boss",
-                "test_status_id" => Test::COMPLETED,
+                "test_status_id" => UnhlsTest::COMPLETED,
                 "created_by" => "2",
                 "tested_by" => "3",
                 "requested_by" => "Ariel Smith",
@@ -1159,12 +1159,12 @@ class TestDataSeeder extends DatabaseSeeder
                 "time_completed" => "2014-08-16 09:23:37",
             )
         );
-        $tests_completed_five = Test::create(array(
+        $tests_completed_five = UnhlsTest::create(array(
                 "visit_id" => "5",
                 "test_type_id" => $test_types_borrelia->id,
                 "specimen_id" => "1",
                 "interpretation" => "Budda Boss",
-                "test_status_id" => Test::COMPLETED,
+                "test_status_id" => UnhlsTest::COMPLETED,
                 "created_by" => "2",
                 "tested_by" => "3",
                 "requested_by" => "Ariel Smith",
@@ -1173,12 +1173,12 @@ class TestDataSeeder extends DatabaseSeeder
                 "time_completed" => "2014-08-23 12:07:18",
             )
         );
-        $tests_completed_six = Test::create(array(
+        $tests_completed_six = UnhlsTest::create(array(
                 "visit_id" => "6",
                 "test_type_id" => $test_types_vdrl->id,
                 "specimen_id" => "2",
                 "interpretation" => "Budda Boss",
-                "test_status_id" => Test::COMPLETED,
+                "test_status_id" => UnhlsTest::COMPLETED,
                 "created_by" => "2",
                 "tested_by" => "3",
                 "requested_by" => "Ariel Smith",
@@ -1187,12 +1187,12 @@ class TestDataSeeder extends DatabaseSeeder
                 "time_completed" => "2014-09-07 08:41:13",
             )
         );
-        $tests_completed_seven = Test::create(array(
+        $tests_completed_seven = UnhlsTest::create(array(
                 "visit_id" => "7",
                 "test_type_id" => $test_types_pregnancy->id,
                 "specimen_id" => "3",
                 "interpretation" => "Budda Boss",
-                "test_status_id" => Test::COMPLETED,
+                "test_status_id" => UnhlsTest::COMPLETED,
                 "created_by" => "2",
                 "tested_by" => "3",
                 "requested_by" => "Ariel Smith",
@@ -1201,12 +1201,12 @@ class TestDataSeeder extends DatabaseSeeder
                 "time_completed" => "2014-10-03 12:45:18",
             )
         );
-        $tests_completed_eight = Test::create(array(
+        $tests_completed_eight = UnhlsTest::create(array(
                 "visit_id" => "1",
                 "test_type_id" => $test_types_brucella->id,
                 "specimen_id" => "4",
                 "interpretation" => "Budda Boss",
-                "test_status_id" => Test::COMPLETED,
+                "test_status_id" => UnhlsTest::COMPLETED,
                 "created_by" => "2",
                 "tested_by" => "3",
                 "requested_by" => "Ariel Smith",
@@ -1215,12 +1215,12 @@ class TestDataSeeder extends DatabaseSeeder
                 "time_completed" => "2014-10-15 18:07:15",
             )
         );
-        $tests_completed_nine = Test::create(array(
+        $tests_completed_nine = UnhlsTest::create(array(
                 "visit_id" => "2",
                 "test_type_id" => $test_types_pylori->id,
                 "specimen_id" => "4",
                 "interpretation" => "Budda Boss",
-                "test_status_id" => Test::COMPLETED,
+                "test_status_id" => UnhlsTest::COMPLETED,
                 "created_by" => "2",
                 "tested_by" => "3",
                 "requested_by" => "Ariel Smith",
@@ -1229,12 +1229,12 @@ class TestDataSeeder extends DatabaseSeeder
                 "time_completed" => "2014-10-23 16:39:02",
             )
         );
-        $tests_completed_ten = Test::create(array(
+        $tests_completed_ten = UnhlsTest::create(array(
                 "visit_id" => "4",
                 "test_type_id" => $test_types_salmonella->id,
                 "specimen_id" => "3",
                 "interpretation" => "Budda Boss",
-                "test_status_id" => Test::COMPLETED,
+                "test_status_id" => UnhlsTest::COMPLETED,
                 "created_by" => "2",
                 "tested_by" => "3",
                 "requested_by" => "Ariel Smith",
@@ -1244,13 +1244,13 @@ class TestDataSeeder extends DatabaseSeeder
             )
         );     
         
-        $tests_verified_one = Test::create(
+        $tests_verified_one = UnhlsTest::create(
             array(
                 "visit_id" => "3",
                 "test_type_id" => $test_types_direct->id,
                 "specimen_id" => "2",
                 "interpretation" => "Budda Boss",
-                "test_status_id" => Test::VERIFIED,
+                "test_status_id" => UnhlsTest::VERIFIED,
                 "created_by" => "3",
                 "tested_by" => "2",
                 "verified_by" => "3",
@@ -1261,13 +1261,13 @@ class TestDataSeeder extends DatabaseSeeder
                 "time_verified" => "2014-07-21 19:53:48",
             )
         );
-        $tests_verified_two = Test::create(
+        $tests_verified_two = UnhlsTest::create(
             array(
                 "visit_id" => "2",
                 "test_type_id" => $test_types_du->id,
                 "specimen_id" => "1",
                 "interpretation" => "Budda Boss",
-                "test_status_id" => Test::VERIFIED,
+                "test_status_id" => UnhlsTest::VERIFIED,
                 "created_by" => "3",
                 "tested_by" => "2",
                 "verified_by" => "3",
@@ -1278,13 +1278,13 @@ class TestDataSeeder extends DatabaseSeeder
                 "time_verified" => "2014-08-21 19:53:48",
             )
         );
-        $tests_verified_three = Test::create(
+        $tests_verified_three = UnhlsTest::create(
             array(
                 "visit_id" => "3",
                 "test_type_id" => $test_types_sickling->id,
                 "specimen_id" => "4",
                 "interpretation" => "Budda Boss",
-                "test_status_id" => Test::VERIFIED,
+                "test_status_id" => UnhlsTest::VERIFIED,
                 "created_by" => "3",
                 "tested_by" => "2",
                 "verified_by" => "3",
@@ -1295,13 +1295,13 @@ class TestDataSeeder extends DatabaseSeeder
                 "time_verified" => "2014-08-26 19:53:48",
             )
         );
-        $tests_verified_four = Test::create(
+        $tests_verified_four = UnhlsTest::create(
             array(
                 "visit_id" => "4",
                 "test_type_id" => $test_types_borrelia->id,
                 "specimen_id" => "2",
                 "interpretation" => "Budda Boss",
-                "test_status_id" => Test::VERIFIED,
+                "test_status_id" => UnhlsTest::VERIFIED,
                 "created_by" => "3",
                 "tested_by" => "2",
                 "verified_by" => "3",
@@ -1312,13 +1312,13 @@ class TestDataSeeder extends DatabaseSeeder
                 "time_verified" => "2014-09-21 19:53:48",
             )
         );
-        $tests_verified_five = Test::create(
+        $tests_verified_five = UnhlsTest::create(
             array(
                 "visit_id" => "1",
                 "test_type_id" => $test_types_vdrl->id,
                 "specimen_id" => "3",
                 "interpretation" => "Budda Boss",
-                "test_status_id" => Test::VERIFIED,
+                "test_status_id" => UnhlsTest::VERIFIED,
                 "created_by" => "3",
                 "tested_by" => "2",
                 "verified_by" => "3",
@@ -1329,13 +1329,13 @@ class TestDataSeeder extends DatabaseSeeder
                 "time_verified" => "2014-09-22 19:53:48",
             )
         );
-        $tests_verified_six = Test::create(
+        $tests_verified_six = UnhlsTest::create(
             array(
                 "visit_id" => "1",
                 "test_type_id" => $test_types_pregnancy->id,
                 "specimen_id" => "4",
                 "interpretation" => "Budda Boss",
-                "test_status_id" => Test::VERIFIED,
+                "test_status_id" => UnhlsTest::VERIFIED,
                 "created_by" => "3",
                 "tested_by" => "2",
                 "verified_by" => "3",
@@ -1346,13 +1346,13 @@ class TestDataSeeder extends DatabaseSeeder
                 "time_verified" => "2014-09-23 19:53:48",
             )
         );
-        $tests_verified_seven = Test::create(
+        $tests_verified_seven = UnhlsTest::create(
             array(
                 "visit_id" => "1",
                 "test_type_id" => $test_types_brucella->id,
                 "specimen_id" => "2",
                 "interpretation" => "Budda Boss",
-                "test_status_id" => Test::VERIFIED,
+                "test_status_id" => UnhlsTest::VERIFIED,
                 "created_by" => "3",
                 "tested_by" => "2",
                 "verified_by" => "3",
@@ -1363,13 +1363,13 @@ class TestDataSeeder extends DatabaseSeeder
                 "time_verified" => "2014-09-27 19:53:48",
             )
         );
-        $tests_verified_eight = Test::create(
+        $tests_verified_eight = UnhlsTest::create(
             array(
                 "visit_id" => "3",
                 "test_type_id" => $test_types_pylori->id,
                 "specimen_id" => "4",
                 "interpretation" => "Budda Boss",
-                "test_status_id" => Test::VERIFIED,
+                "test_status_id" => UnhlsTest::VERIFIED,
                 "created_by" => "3",
                 "tested_by" => "2",
                 "verified_by" => "3",
@@ -1380,13 +1380,13 @@ class TestDataSeeder extends DatabaseSeeder
                 "time_verified" => "2014-10-22 19:53:48",
             )
         );
-        $tests_verified_nine = Test::create(
+        $tests_verified_nine = UnhlsTest::create(
             array(
                 "visit_id" => "4",
                 "test_type_id" => $test_types_pregnancy->id,
                 "specimen_id" => "3",
                 "interpretation" => "Budda Boss",
-                "test_status_id" => Test::VERIFIED,
+                "test_status_id" => UnhlsTest::VERIFIED,
                 "created_by" => "3",
                 "tested_by" => "2",
                 "verified_by" => "3",
@@ -1397,13 +1397,13 @@ class TestDataSeeder extends DatabaseSeeder
                 "time_verified" => "2014-10-17 19:53:48",
             )
         );
-        $tests_verified_ten = Test::create(
+        $tests_verified_ten = UnhlsTest::create(
             array(
                 "visit_id" => "2",
                 "test_type_id" => $test_types_pregnancy->id,
                 "specimen_id" => "1",
                 "interpretation" => "Budda Boss",
-                "test_status_id" => Test::VERIFIED,
+                "test_status_id" => UnhlsTest::VERIFIED,
                 "created_by" => "3",
                 "tested_by" => "2",
                 "verified_by" => "3",
@@ -1710,7 +1710,7 @@ class TestDataSeeder extends DatabaseSeeder
                 array('entered_by'=> 1, 'control_id'=> 2, 'created_at'=>date('Y-m-d', strtotime('-2 days'))),
             );
         foreach ($controlTests as $controltest) {
-            ControlTest::create($controltest);
+            UnhlsControlTest::create($controltest);
         }
         $this->command->info("Control test table seeded");
 
@@ -2057,9 +2057,9 @@ class TestDataSeeder extends DatabaseSeeder
 
         $specimenTypeSputum = SpecimenType::create(["name" => "Sputum"]);
 
-        $specimenSputum = Specimen::create([
+        $specimenSputum = UnhlsSpecimen::create([
             "specimen_type_id" => $specimenTypeSputum->id,
-            "specimen_status_id" => Specimen::ACCEPTED,
+            "specimen_status_id" => UnhlsSpecimen::ACCEPTED,
             "accepted_by" => 1,
             "time_accepted" => date('Y-m-d H:i:s')]);
 
@@ -2401,12 +2401,12 @@ class TestDataSeeder extends DatabaseSeeder
         DB::table('testtype_specimentypes')->insert(
             ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[22]->id]);// Whole Blood
 
-        $testAST = Test::create([
+        $testAST = UnhlsTest::create([
                 "visit_id" => $microbiologyVisit->id,
                 "test_type_id" => $testTypeAST->id,
                 'specimen_id' => $specimenSputum->id,
                 "interpretation" => "Format being deliberated",
-                "test_status_id" => Test::VERIFIED,
+                "test_status_id" => UnhlsTest::VERIFIED,
                 "created_by" => "3",
                 "tested_by" => "2",
                 "verified_by" => "3",
@@ -2416,12 +2416,12 @@ class TestDataSeeder extends DatabaseSeeder
                 "time_completed" => "2014-10-17 19:52:40",
                 "time_verified" => "2014-10-17 19:53:48",
         ]);
-        $testAppearanceMucoSalivary = Test::create([
+        $testAppearanceMucoSalivary = UnhlsTest::create([
             'visit_id' => $microbiologyVisit->id,
             'test_type_id' => $testTypeAppearance->id,
             'specimen_id' => $specimenSputum->id,
             'interpretation' => '',
-            'test_status_id' => Test::VERIFIED,
+            'test_status_id' => UnhlsTest::VERIFIED,
             'created_by' => '3',
             'tested_by' => '2',
             'verified_by' => '3',
@@ -2431,12 +2431,12 @@ class TestDataSeeder extends DatabaseSeeder
             'time_completed' => '2014-10-17 19:52:40',
             'time_verified' => '2014-10-17 19:53:48',
         ]);
-        $testGramStain = Test::create([
+        $testGramStain = UnhlsTest::create([
             'visit_id' => $microbiologyVisit->id,
             'test_type_id' => $testTypeGramStain->id,
             'specimen_id' => $specimenSputum->id,
             'interpretation' => '',
-            'test_status_id' => Test::VERIFIED,
+            'test_status_id' => UnhlsTest::VERIFIED,
             'created_by' => '3',
             'tested_by' => '2',
             'verified_by' => '3',
@@ -2446,12 +2446,12 @@ class TestDataSeeder extends DatabaseSeeder
             'time_completed' => '2014-10-17 19:52:40',
             'time_verified' => '2014-10-17 19:53:48',
         ]);
-        $testZnStain = Test::create([
+        $testZnStain = UnhlsTest::create([
             'visit_id' => $microbiologyVisit->id,
             'test_type_id' => $testTypeZnStain->id,
             'specimen_id' => $specimenSputum->id,
             'interpretation' => '',
-            'test_status_id' => Test::VERIFIED,
+            'test_status_id' => UnhlsTest::VERIFIED,
             'created_by' => '3',
             'tested_by' => '2',
             'verified_by' => '3',
@@ -2461,12 +2461,12 @@ class TestDataSeeder extends DatabaseSeeder
             'time_completed' => '2014-10-17 19:52:40',
             'time_verified' => '2014-10-17 19:53:48',
         ]);
-        $testASToralPharyngealFlora = Test::create([
+        $testASToralPharyngealFlora = UnhlsTest::create([
             'visit_id' => $microbiologyVisit->id,
             'test_type_id' => $testTypeAST->id,
             'specimen_id' => '1',
             'interpretation' => '',
-            'test_status_id' => Test::PENDING,
+            'test_status_id' => UnhlsTest::PENDING,
             'created_by' => '3',
             'tested_by' => '2',
             'verified_by' => '3',
@@ -2476,12 +2476,12 @@ class TestDataSeeder extends DatabaseSeeder
             'time_completed' => '2014-10-17 19:52:40',
             'time_verified' => '2014-10-17 19:53:48',
         ]);
-        $testAppearanceFormed = Test::create([
+        $testAppearanceFormed = UnhlsTest::create([
             'visit_id' => $microbiologyVisit->id,
             'test_type_id' => $testTypeAppearance->id,
             'specimen_id' => $specimenSputum->id,
             'interpretation' => '',
-            'test_status_id' => Test::VERIFIED,
+            'test_status_id' => UnhlsTest::VERIFIED,
             'created_by' => '3',
             'tested_by' => '2',
             'verified_by' => '3',
@@ -2491,12 +2491,12 @@ class TestDataSeeder extends DatabaseSeeder
             'time_completed' => '2014-10-17 19:52:40',
             'time_verified' => '2014-10-17 19:53:48',
         ]);
-        $testModifiedZn = Test::create([
+        $testModifiedZn = UnhlsTest::create([
             'visit_id' => $microbiologyVisit->id,
             'test_type_id' => $testTypeModifiedZn->id,
             'specimen_id' => $specimenSputum->id,
             'interpretation' => '',
-            'test_status_id' => Test::VERIFIED,
+            'test_status_id' => UnhlsTest::VERIFIED,
             'created_by' => '3',
             'tested_by' => '2',
             'verified_by' => '3',
@@ -2506,12 +2506,12 @@ class TestDataSeeder extends DatabaseSeeder
             'time_completed' => '2014-10-17 19:52:40',
             'time_verified' => '2014-10-17 19:53:48',
         ]);
-        $testWetSalineIodinePrep = Test::create([
+        $testWetSalineIodinePrep = UnhlsTest::create([
             'visit_id' => $microbiologyVisit->id,
             'test_type_id' => $testTypeWetSalineIodinePrep->id,
             'specimen_id' => $specimenSputum->id,
             'interpretation' => '',
-            'test_status_id' => Test::VERIFIED,
+            'test_status_id' => UnhlsTest::VERIFIED,
             'created_by' => '3',
             'tested_by' => '2',
             'verified_by' => '3',
@@ -2521,12 +2521,12 @@ class TestDataSeeder extends DatabaseSeeder
             'time_completed' => '2014-10-17 19:52:40',
             'time_verified' => '2014-10-17 19:53:48',
         ]);
-        $testASTecoli = Test::create([
+        $testASTecoli = UnhlsTest::create([
             'visit_id' => $microbiologyVisit->id,
             'test_type_id' => $testTypeAST->id,
             'specimen_id' => '2',
             'interpretation' => '',
-            'test_status_id' => Test::PENDING,
+            'test_status_id' => UnhlsTest::PENDING,
             'created_by' => '3',
             'tested_by' => '2',
             'verified_by' => '3',
@@ -2772,17 +2772,17 @@ class TestDataSeeder extends DatabaseSeeder
         $values["specimen_type_id"] = $specimenTypeID;
         $values["specimen_status_id"] = $specimenStatus;
 
-        if($specimenStatus == Specimen::ACCEPTED){
+        if($specimenStatus == UnhlsSpecimen::ACCEPTED){
             $values["accepted_by"] = $acceptor;
             $values["time_accepted"] = date('Y-m-d H:i:s');
         }
-        if($specimenStatus == Specimen::REJECTED){
+        if($specimenStatus == UnhlsSpecimen::REJECTED){
             $values["rejected_by"] = $rejector;
             $values["rejection_reason_id"] = $rejectReason;
             $values["time_rejected"] = date('Y-m-d H:i:s');
         }
         
-        $specimen = Specimen::create($values);
+        $specimen = UnhlsSpecimen::create($values);
 
         return $specimen->id;
     }

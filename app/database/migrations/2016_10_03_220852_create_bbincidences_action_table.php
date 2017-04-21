@@ -19,8 +19,9 @@ class CreateBbincidencesActionTable extends Migration {
 			$table->integer('action_id')->unsigned();
 			$table->foreign('bbincidence_id')->references('id')->on('unhls_bbincidences');
 			$table->foreign('action_id')->references('id')->on('unhls_bbactions');
+
+            $table->softDeletes();
 			$table->timestamps();
-			$table->timestamp('deleted_at');
 		});
 	}
 

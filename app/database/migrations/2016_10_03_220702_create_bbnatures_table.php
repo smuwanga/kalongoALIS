@@ -18,8 +18,8 @@ class CreateBbnaturesTable extends Migration {
 			$table->string('name');
 			$table->string('class');
 			$table->string('priority');
-			$table->timestamps();
-			$table->timestamp('deleted_at');
+            $table->softDeletes();
+            $table->timestamps();
 		});
 	}
 
