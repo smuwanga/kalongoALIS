@@ -1602,7 +1602,7 @@ class TestDataSeeder extends DatabaseSeeder
                 array('entered_by'=> 1, 'control_id'=> 2, 'created_at'=>date('Y-m-d', strtotime('-2 days'))),
             );
         foreach ($controlTests as $controltest) {
-            UnhlsControlTest::create($controltest);
+            ControlTest::create($controltest);
         }
         $this->command->info("Control test table seeded");
 
