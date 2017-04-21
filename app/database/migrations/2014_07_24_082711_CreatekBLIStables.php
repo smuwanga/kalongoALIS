@@ -131,7 +131,7 @@ class CreatekBLIStables extends Migration {
             $table->integer('test_category_id')->unsigned();
             $table->string('targetTAT', 50)->nullable();
             $table->string('prevalence_threshold', 50)->nullable();
-            
+
             $table->foreign('test_category_id')->references('id')->on('test_categories');
 
             $table->softDeletes();
@@ -175,7 +175,7 @@ class CreatekBLIStables extends Migration {
             $table->integer('id')->unsigned();
             $table->string('name',45);
             $table->integer('test_phase_id')->unsigned();
-            
+
             $table->primary('id');
 			$table->foreign('test_phase_id')->references('id')->on('test_phases');
 		});
@@ -230,54 +230,78 @@ class CreatekBLIStables extends Migration {
             $table->timestamps();
         });
 
-		Schema::create('specimens', function(Blueprint $table)
-		{
-			$table->increments('id')->unsigned();
-			$table->integer('specimen_type_id')->unsigned();
-			$table->integer('specimen_status_id')->unsigned()->default(UnhlsSpecimen::ACCEPTED);
+        Schema::create('specimens', function(Blueprint $table)
+        {
+            $table->increments('id')->unsigned();
+            $table->integer('specimen_type_id')->unsigned();
+            $table->integer('specimen_status_id')->unsigned()->default(UnhlsSpecimen::ACCEPTED);
             $table->integer('accepted_by')->unsigned()->default(0);
-            $table->integer('rejected_by')->unsigned()->default(0);
-			$table->integer('rejection_reason_id')->unsigned()->nullable();
-            $table->string('reject_explained_to',100)->nullable();
-			$table->integer('referral_id')->unsigned()->nullable();
-			$table->timestamp('time_accepted')->nullable();
-			$table->timestamp('time_rejected')->nullable();
-			
-            $table->index('accepted_by');
-            $table->index('rejected_by');
-			$table->foreign('specimen_type_id')->references('id')->on('specimen_types');
-			$table->foreign('specimen_status_id')->references('id')->on('specimen_statuses');
-			$table->foreign('rejection_reason_id')->references('id')->on('rejection_reasons');
-            $table->foreign('referral_id')->references('id')->on('referrals');
-		});
+            $table->integer('referral_id')->unsigned()->nullable();
+            $table->timestamp('time_accepted')->nullable();
 
-		Schema::create('unhls_tests', function(Blueprint $table)
-		{
-			$table->increments('id')->unsigned();
-			$table->bigInteger('visit_id')->unsigned();
-			$table->integer('test_type_id')->unsigned();
-			$table->integer('specimen_id')->unsigned()->default(0);
-			$table->string('interpretation',200)->default('');
-			$table->integer('test_status_id')->unsigned()->default(0);
-			$table->integer('created_by')->unsigned();
-			$table->integer('tested_by')->unsigned()->default(0);
-			$table->integer('verified_by')->unsigned()->default(0);
-			$table->string('requested_by',60);
-			$table->timestamp('time_created')->default(DB::raw('CURRENT_TIMESTAMP'));
-			$table->timestamp('time_started')->nullable();
-			$table->timestamp('time_completed')->nullable();
-			$table->timestamp('time_verified')->nullable();
-			$table->timestamp('time_sent')->nullable();
+            $table->index('accepted_by');
+            $table->foreign('specimen_type_id')->references('id')->on('specimen_types');
+            $table->foreign('specimen_status_id')->references('id')->on('specimen_statuses');
+            $table->foreign('referral_id')->references('id')->on('referrals');
+        });
+
+        Schema::create('unhls_tests', function(Blueprint $table)
+        {
+            $table->increments('id')->unsigned();
+            $table->bigInteger('visit_id')->unsigned();
+            $table->integer('test_type_id')->unsigned();
+            $table->integer('specimen_id')->unsigned()->default(0);
+            $table->string('interpretation',200)->default('');
+            $table->integer('test_status_id')->unsigned()->default(0);
+            $table->integer('created_by')->unsigned();
+            $table->integer('tested_by')->unsigned()->default(0);
+            $table->integer('verified_by')->unsigned()->default(0);
+            $table->string('requested_by',60);
+            $table->timestamp('time_created')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('time_started')->nullable();
+            $table->timestamp('time_completed')->nullable();
+            $table->timestamp('time_verified')->nullable();
+            $table->timestamp('time_sent')->nullable();
             $table->integer('external_id')->nullable();//Unique ID for external records
-			
+
             $table->index('created_by');
             $table->index('tested_by');
             $table->index('verified_by');
-			$table->foreign('visit_id')->references('id')->on('unhls_visits');
-			$table->foreign('test_type_id')->references('id')->on('test_types');
-			$table->foreign('specimen_id')->references('id')->on('specimens');
-			$table->foreign('test_status_id')->references('id')->on('test_statuses');
-		});
+            $table->foreign('visit_id')->references('id')->on('unhls_visits');
+            $table->foreign('test_type_id')->references('id')->on('test_types');
+            $table->foreign('specimen_id')->references('id')->on('specimens');
+            $table->foreign('test_status_id')->references('id')->on('test_statuses');
+        });
+
+        Schema::create('pre_analytic_specimen_rejections', function(Blueprint $table)
+        {
+            $table->increments('id')->unsigned();
+            $table->integer('specimen_id')->unsigned();
+            $table->integer('rejected_by')->unsigned();
+            $table->integer('rejection_reason_id')->unsigned()->nullable();
+            $table->string('reject_explained_to',100)->nullable();
+            $table->timestamp('time_rejected')->nullable();
+
+            $table->index('rejected_by');
+            $table->foreign('specimen_id')->references('id')->on('specimens');
+            $table->foreign('rejection_reason_id')->references('id')->on('rejection_reasons');
+        });
+
+        Schema::create('analytic_specimen_rejections', function(Blueprint $table)
+        {
+            $table->increments('id')->unsigned();
+            $table->integer('test_id')->unsigned();
+            $table->integer('specimen_id')->unsigned();
+            $table->integer('rejected_by')->unsigned();
+            $table->integer('rejection_reason_id')->unsigned()->nullable();
+            $table->string('reject_explained_to',100)->nullable();
+            $table->timestamp('time_rejected')->nullable();
+
+            $table->index('rejected_by');
+            $table->foreign('test_id')->references('id')->on('unhls_tests');
+            $table->foreign('specimen_id')->references('id')->on('specimens');
+            $table->foreign('rejection_reason_id')->references('id')->on('rejection_reasons');
+        });
 
 		Schema::create('unhls_test_results', function(Blueprint $table)
 		{

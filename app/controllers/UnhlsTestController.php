@@ -605,11 +605,11 @@ class UnhlsTestController extends \BaseController {
 	 * @param
 	 * @return
 	 */
-	public function reject($specimenID)
+	public function reject($testID)
 	{
-		$specimen = UnhlsSpecimen::find($specimenID);
+		$test = UnhlsTest::find($testID);
 		$rejectionReason = RejectionReason::all();
-		return View::make('unhls_test.reject')->with('specimen', $specimen)
+		return View::make('unhls_test.reject')->with('test', $test)
 						->with('rejectionReason', $rejectionReason);
 	}
 
@@ -634,6 +634,7 @@ class UnhlsTestController extends \BaseController {
 	 * @param
 	 * @return
 	 */
+	// todo: create a functions for pre-analytic rejection
 	public function rejectAction()
 	{
 		//Reject justifying why.
@@ -644,22 +645,28 @@ class UnhlsTestController extends \BaseController {
 		$validator = Validator::make(Input::all(), $rules);
 
 		if ($validator->fails()) {
-			return Redirect::route('unhls_test.reject', array(Input::get('specimen_id')))
+			return Redirect::route('unhls_test.reject', array(Input::get('test_id')))
 				->withInput()
 				->withErrors($validator);
 		} else {
-			$specimen = UnhlsSpecimen::find(Input::get('specimen_id'));
-			$specimen->rejection_reason_id = Input::get('rejectionReason');
-			$specimen->specimen_status_id = UnhlsSpecimen::REJECTED;
-			$specimen->rejected_by = Auth::user()->id;
-			$specimen->time_rejected = date('Y-m-d H:i:s');
-			$specimen->reject_explained_to = Input::get('reject_explained_to');
-			$specimen->save();
+			$test = UnhlsTest::find(Input::get('test_id'));
+			// this refers to analytic rejection of specimen
+			$test->test_status_id = UnhlsTest::REJECTED;
+			$test->save();
+			// todo: create cascade deletion for it, incase rejection is reversed
+			$rejection = new AnalyticSpecimenRejection;
+			$rejection->rejection_reason_id = Input::get('rejectionReason');
+			$rejection->test_id = Input::get('test_id');
+			$rejection->specimen_id = Input::get('specimen_id');
+			$rejection->rejected_by = Auth::user()->id;
+			$rejection->time_rejected = date('Y-m-d H:i:s');
+			$rejection->reject_explained_to = Input::get('reject_explained_to');
+			$rejection->save();
 			
 			$url = Session::get('SOURCE_URL');
 			
 			return Redirect::to($url)->with('message', 'messages.success-rejecting-specimen')
-						->with('activeTest', array($specimen->test->id));
+						->with('activeTest', array($test->id));
 		}
 	}
 

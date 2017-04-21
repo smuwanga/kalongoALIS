@@ -48,13 +48,13 @@ class UnhlsSpecimen extends Eloquent
 	{
 		return $this->belongsTo('SpecimenType');
 	}
-	
+
 	/**
-	 * Rejection Reason relationship
+	 * Rejected specimen relationship
 	 */
-	public function rejectionReason()
+	public function rejectedSpecimen()
 	{
-		return $this->belongsTo('UnhlsRejectionReason');
+		return $this->belongsTo('PreAnalyticSpecimenRejection', 'specimen_id');
 	}
 
 	/**
@@ -79,14 +79,6 @@ class UnhlsSpecimen extends Eloquent
 	public function acceptedBy()
 	{
 		return $this->belongsTo('User', 'accepted_by', 'id');
-	}
-
-	/**
-	 * User (rejected) relationship
-	 */
-	public function rejectedBy()
-	{
-		return $this->belongsTo('User', 'rejected_by', 'id');
 	}
 
     /**

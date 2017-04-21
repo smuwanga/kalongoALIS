@@ -456,7 +456,8 @@ class TestDataSeeder extends DatabaseSeeder
           array("id" => "2","name" => "pending","test_phase_id" => "1"),//Pre-Analytical
           array("id" => "3","name" => "started","test_phase_id" => "2"),//Analytical
           array("id" => "4","name" => "completed","test_phase_id" => "3"),//Post-Analytical
-          array("id" => "5","name" => "verified","test_phase_id" => "3")//Post-Analytical
+          array("id" => "5","name" => "verified","test_phase_id" => "3"),//Post-Analytical
+          array("id" => "6","name" => "specimen-rejected-at-analysis","test_phase_id" => "3")//Analytical
         );
         foreach ($test_statuses as $test_status)
         {
@@ -466,9 +467,9 @@ class TestDataSeeder extends DatabaseSeeder
 
         /* Specimen Status table */
         $specimen_statuses = array(
-          array("id" => "1", "name" => "specimen-not-collected"),
-          array("id" => "2", "name" => "specimen-accepted"),
-          array("id" => "3", "name" => "specimen-rejected")
+          array("id" => "1", "name" => "specimen-not-collected"),//Pre-Analytical
+          array("id" => "2", "name" => "specimen-accepted"),//Pre-Analytical
+          array("id" => "3", "name" => "specimen-rejected")//Pre-Analytical
         );
         foreach ($specimen_statuses as $specimen_status)
         {
@@ -2435,14 +2436,16 @@ class TestDataSeeder extends DatabaseSeeder
             $values["accepted_by"] = $acceptor;
             $values["time_accepted"] = date('Y-m-d H:i:s');
         }
-        if($specimenStatus == UnhlsSpecimen::REJECTED){
-            $values["rejected_by"] = $rejector;
-            $values["rejection_reason_id"] = $rejectReason;
-            $values["time_rejected"] = date('Y-m-d H:i:s');
-        }
-        
+
         $specimen = UnhlsSpecimen::create($values);
 
+        if($specimenStatus == UnhlsSpecimen::REJECTED){
+            $rejection["specimen_id"] = $specimen->id;
+            $rejection["rejected_by"] = $rejector;
+            $rejection["rejection_reason_id"] = $rejectReason;
+            $rejection["time_rejected"] = date('Y-m-d H:i:s');
+            $preanalyticRejection = PreAnalyticSpecimenRejection::create($rejection);
+        }
         return $specimen->id;
     }
 

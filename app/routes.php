@@ -116,10 +116,10 @@ Route::group(array("before" => "auth"), function()
             "as"   => "testtype.delete",
             "uses" => "TestTypeController@delete"
         ));
-        Route::resource('specimenrejection', 'SpecimenRejectionController');
+        Route::resource('specimenrejection', 'RejectionReasonController');
         Route::any("/specimenrejection/{id}/delete", array(
             "as"   => "specimenrejection.delete",
-            "uses" => "SpecimenRejectionController@delete"
+            "uses" => "RejectionReasonController@delete"
         ));
         Route::resource('drug', 'DrugController');
         

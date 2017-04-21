@@ -148,12 +148,14 @@
                         @endif
                         @if ($test->specimen->isAccepted() && !($test->isVerified()))
                             @if(Auth::user()->can('reject_test_specimen') && !($test->specimen->isReferred()))
+                                @if(!($test->specimenIsRejected()))
                                 <a class="btn btn-sm btn-danger" id="reject-{{$test->id}}-link"
                                     href="{{URL::route('unhls_test.reject', array($test->specimen_id))}}"
                                     title="{{trans('messages.reject-title')}}">
                                     <span class="glyphicon glyphicon-thumbs-down"></span>
                                     {{trans('messages.reject')}}
                                 </a>
+                                @endif
                                 <a class="btn btn-sm btn-midnight-blue barcode-button" onclick="print_barcode({{ "'".$test->specimen->id."'".', '."'".$barcode->encoding_format."'".', '."'".$barcode->barcode_width."'".', '."'".$barcode->barcode_height."'".', '."'".$barcode->text_size."'" }})" title="{{trans('messages.barcode')}}">
                                     <span class="glyphicon glyphicon-barcode"></span>
                                     {{trans('messages.barcode')}}
@@ -252,12 +254,12 @@
                                                     {{ trans("messages.out") }}
                                                 @endif
                                             </span>
+                                        @elseif($test->specimenIsRejected())
+                                            <span class='label label-danger'>
+                                                {{trans('messages.specimen-rejected-label')}}</span>
                                         @elseif($test->specimen->isAccepted())
                                             <span class='label label-success'>
                                                 {{trans('messages.specimen-accepted-label')}}</span>
-                                        @elseif($test->specimen->isRejected())
-                                            <span class='label label-danger'>
-                                                {{trans('messages.specimen-rejected-label')}}</span>
                                         @endif
                                         </div></div></div>
                         </td>

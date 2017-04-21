@@ -6,7 +6,7 @@ use Illuminate\Database\QueryException;
  * Contains functions for managing specimen rejection  
  *
  */
-class SpecimenRejectionController extends \BaseController {
+class RejectionReasonController extends \BaseController {
     /**
      * Display a listing of the resource.
      *

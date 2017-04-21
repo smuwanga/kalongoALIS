@@ -127,7 +127,7 @@
 								<td>{{trans('messages.specimen-accepted')}}</td>
 								<td>{{$test->specimen->acceptedBy->name}}</td>
 								<td>{{$test->specimen->time_accepted}}</td>
-							@elseif($test->specimen->specimen_status_id == UnhlsSpecimen::REJECTED)
+							@elseif($test->test_status_id == UnhlsTest::REJECTED)
 								<td>{{trans('messages.specimen-rejected')}}</td>
 								<td>{{$test->specimen->rejectedBy->name}}</td>
 								<td>{{$test->specimen->time_rejected}}</td>
