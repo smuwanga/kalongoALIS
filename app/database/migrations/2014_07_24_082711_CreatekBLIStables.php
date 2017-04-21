@@ -12,6 +12,44 @@ class CreatekBLIStables extends Migration {
 	 */
 	public function up()
 	{
+
+        Schema::create('unhls_districts', function($table)
+        {
+            $table->increments('id');
+            $table->string('name');
+            $table->timestamps();
+        });
+
+        Schema::create('unhls_facility_ownership', function($table){
+            $table->increments('id');
+            $table->string('owner');
+            $table->timestamps();
+        });
+
+        Schema::create('unhls_facility_level', function($table)
+        {
+            $table->increments('id');
+            $table->string('level');
+            $table->timestamps();
+
+        });
+
+        Schema::create('unhls_facilities', function($table)
+        {
+            $table->increments('id');
+            $table->string('code');
+            $table->string('name');
+            $table->integer('district_id')->unsigned();
+            $table->integer('level_id')->unsigned();
+            $table->integer('ownership_id')->unsigned();
+
+            $table->foreign('level_id')->references('id')->on('unhls_facility_level');
+            $table->foreign('district_id')->references('id')->on('unhls_districts');
+            $table->foreign('ownership_id')->references('id')->on('unhls_facility_ownership');
+
+            $table->timestamps();
+        });
+
 		Schema::create('users', function(Blueprint $table)
         {
             $table->increments("id")->unsigned();
@@ -23,6 +61,9 @@ class CreatekBLIStables extends Migration {
             $table->string("designation", 100)->nullable();
             $table->string("image", 100)->nullable();
             $table->string("remember_token", 100)->nullable();
+            $table->integer('facility_id')->unsigned()->nullable();
+
+            $table->foreign('facility_id')->references('id')->on('unhls_facilities');
 
             $table->softDeletes();
             $table->timestamps();
@@ -345,6 +386,10 @@ class CreatekBLIStables extends Migration {
         Schema::dropIfExists('patients');
         Schema::dropIfExists('tokens');
         Schema::dropIfExists('users');
+        Schema::dropIfExists('unhls_facilities');
+        Schema::dropIfExists('unhls_districts');
+        Schema::dropIfExists('unhls_facility_ownership');
+        Schema::dropIfExists('unhls_facility_level');
 	}
 
 
