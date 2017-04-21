@@ -8,7 +8,7 @@ return array(
 	|
 	*/
 
-	'name' => 'UBLIS',
+	'name' => 'ASLM-LIS',
 	
 	/*
 	|--------------------------------------------------------------------------
@@ -47,7 +47,7 @@ return array(
 	|--------------------------------------------------------------------------
 	|
 	*/
-	'address-info' => 'REGIONAL REFERRAL HOSPITAL, BLIS<br>
+	'address-info' => 'REGIONAL REFERRAL HOSPITAL, ASLM-LIS<br>
                     REFERRAL HOSPITAL LOCATION<br>
                     P.O. BOX PRIVATE BAG,<br>
                     UGANDA.<br>

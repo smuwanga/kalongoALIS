@@ -2,7 +2,6 @@
 <html>
   <head>
     <style type="text/css">
-       
     table {
       border-spacing: 0;
       width: 100%;
@@ -133,8 +132,8 @@
           </thead>
         </table>
         @foreach($visit->tests as $test)
-        @if($test->testType->microbiologyTestType->worksheet_required)   
-        @foreach($test->culture->isolated_organisms as $isolated_organism)
+        @if($test->testType->isCulture)
+        @foreach($test->isolated_organisms as $isolated_organism)
         <table class="ast-table">
             <tbody class="ast-body">
               <tr>

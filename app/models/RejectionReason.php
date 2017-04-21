@@ -12,10 +12,19 @@ class RejectionReason extends Eloquent
 	public $timestamps = false;
 
 	/**
+	 * Test relationship
+	 */
+	public function tests()
+	{
+		return $this->hasMany('AnalyticSpecimenRejection', 'test_id');
+	}
+
+	/**
 	 * Specimen relationship
 	 */
-	public function specimen()
+	public function specimens()
 	{
-		return $this->hasMany('Specimen');
+		return $this->hasMany('PreAnalyticSpecimenRejection', 'specimen_id');
 	}
+
 }

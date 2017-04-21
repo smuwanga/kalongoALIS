@@ -28,8 +28,10 @@
 <div class="panel panel-primary">
     <div class="panel-heading">
         <span class="glyphicon glyphicon-stats"></span>
-        Facility BB Incident Report
-
+        Facility BB Incident Report 
+        @if(isset($_GET['datefrom']) and isset($_GET['datefrom'])) 
+        (Filtered) - {{$_GET['datefrom']}} to {{$_GET['dateto']}} 
+        @else (Not Filtered) @endif
         <a class="btn btn-sm btn-info" href="javascript:printSpecial('Facility BB Incident Report')">
                             <span class="glyphicon glyphicon-print"></span> PRINT
         </a>

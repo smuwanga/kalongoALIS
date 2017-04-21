@@ -1,3 +1,4 @@
+
 	@extends("layout")
 @section("content")
 	<div>
@@ -41,7 +42,7 @@
 		<div class="form-group">
 			{{ Form::hidden('facility_id', $bbincidence->facility->id) }}
 			{{ Form::label('facility_id', 'Facility', array('class' => 'col-sm-2')) }}
-			{{ Form::textarea('', '<<code>> - '.$bbincidence->facility->name.' - <<district>>', array('size' => '10x2','class' => 'form-control col-sm-4','readonly' => 'readonly')) }}
+			{{ Form::textarea('', $bbincidence->facility->code.' - '.$bbincidence->facility->name.' - '.$bbincidence->facility->district->name, array('size' => '10x2','class' => 'form-control col-sm-4','readonly' => 'readonly')) }}
 			
 			{{ Form::label('occurrence_date', 'Occurence Date', array('class' => 'col-sm-2')) }}
 			{{ Form::text('occurrence_date', Input::old('occurrence_date'), array('class' => 'form-control standard-datepicker col-sm-4')) }}
@@ -56,7 +57,7 @@
 			{{ Form::text('serial_no', $bbincidence->serial_no, array('class' => 'form-control col-sm-4','readonly' => 'readonly', 
 			'placeholder' => 'To be generated automatically', 'style' => 'color:red')) }}
 			
-			{{ Form::label('lab_section', 'Laboratory Section', array('class' => 'col-sm-2')) }}
+			{{ Form::label('lab_section', 'Location', array('class' => 'col-sm-2')) }}
 			{{ Form::text('lab_section', Input::old('lab_section'), array('class' => 'form-control col-sm-4')) }}
 		</div>
 				

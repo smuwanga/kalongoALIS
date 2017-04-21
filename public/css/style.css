@@ -1,3 +1,9 @@
+/* custom size for ion icons */
+.ion-icon{
+	font-size:80px;
+}
+
+
 /* Tisa Admin Main Styles */
 .animated {
   -webkit-animation-duration: 500ms;
@@ -1002,6 +1008,12 @@ fieldset[disabled] .form-control {
   top: auto;
   bottom: 0;
 }
+.required:after {
+  content: '*';
+  color: red;
+  padding-left: 5px;
+}
+
 /* labels, badges */
 label.label-primary,
 .badge.badge-primary,

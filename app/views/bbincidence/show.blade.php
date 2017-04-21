@@ -44,14 +44,14 @@
         
         <div class="row">
           <div class="col-sm-2"><strong>Occurrence Time</strong></div>
-          <div class="col-sm-4">{{ $bbincidence->occurrence_date }} {{ $bbincidence->occurrence_time }}</div>
+          <div class="col-sm-4">{{ date('d M Y', strtotime($bbincidence->occurrence_date)) }} {{ $bbincidence->occurrence_time }}</div>
           
           <div class="col-sm-2"><strong>Description</strong></div>
           <div class="col-sm-4">{{ $bbincidence->description }}</div>
         </div>
         
         <div class="row view-striped">
-          <div class="col-sm-2"><strong>Laboratory Section</strong></div>
+          <div class="col-sm-2"><strong>Location</strong></div>
           <div class="col-sm-4">{{ $bbincidence->lab_section }}</div>
           
           <div class="col-sm-2"><strong>First Aid / Immediate Actions</strong></div>
@@ -71,7 +71,7 @@
         </div>
 
         <div class="row">
-          <div class="col-sm-12" style="text-align:right;"><b>**Record created by {{ $bbincidence->user->name }} at {{ $bbincidence->created_at }}</b></div>
+          <div class="col-sm-12" style="text-align:left;"><b>**Record created by {{ $bbincidence->user->name }} at {{ $bbincidence->created_at }}</b></div>
         </div>
 
       </div>

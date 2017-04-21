@@ -23,6 +23,15 @@ Route::group(array("before" => "guest"), function()
         "as" => "api.receiver",
         "uses" => "InterfacerController@receiveLabRequest"
     ));
+    Route::post('/api/testinfo', array(
+        "uses" => "InterfacerController@getTestInfo"
+    ));
+    Route::post('/api/searchtests', array(
+        "uses" => "InterfacerController@getTests"
+    ));
+    Route::post('/api/saveresults', array(
+        "uses" => "InterfacerController@saveTestResults"
+    ));
     Route::any('/', array(
         "as" => "user.login",
         "uses" => "UserController@loginAction"
@@ -35,6 +44,11 @@ Route::group(array("before" => "auth"), function()
     Route::any('/home', array(
         "as" => "user.home",
         "uses" => "UserController@homeAction"
+        ));
+
+    Route::any('/dashboard', array(
+        "as" => "user.dashboard",
+        "uses" => "UserController@dashboard"
         ));
     Route::group(array("before" => "checkPerms:manage_users"), function() {
         Route::resource('user', 'UserController');
@@ -102,10 +116,10 @@ Route::group(array("before" => "auth"), function()
             "as"   => "testtype.delete",
             "uses" => "TestTypeController@delete"
         ));
-        Route::resource('specimenrejection', 'SpecimenRejectionController');
+        Route::resource('specimenrejection', 'RejectionReasonController');
         Route::any("/specimenrejection/{id}/delete", array(
             "as"   => "specimenrejection.delete",
-            "uses" => "SpecimenRejectionController@delete"
+            "uses" => "RejectionReasonController@delete"
         ));
         Route::resource('drug', 'DrugController');
         
@@ -158,12 +172,12 @@ Route::group(array("before" => "auth"), function()
      Route::any("/test/{id}/receive", array(
         "before" => "checkPerms:receive_external_test",
         "as"   => "test.receive",
-        "uses" => "TestController@receive"
+        "uses" => "UnhlsTestController@receive"
     ));
     Route::any("/test/create/{patient?}", array(
         "before" => "checkPerms:request_test",
         "as"   => "test.create",
-        "uses" => "TestController@create"
+        "uses" => "UnhlsTestController@create"
     ));
     //Unhls test  create route starts
     Route::any("/unhls_test/create/{patient?}", array(
@@ -183,17 +197,11 @@ Route::group(array("before" => "auth"), function()
         "as"   => "unhls_test.saveNewTest",
         "uses" => "UnhlsTestController@saveNewTest"
     ));
-     //unhls test savenewtest ends here
-     Route::post("/test/acceptspecimen", array(
-        "before" => "checkPerms:accept_test_specimen",
-        "as"   => "test.acceptSpecimen",
-        "uses" => "TestController@accept"
-    ));
      //unhls test refer starts here
     Route::post("/unhls_test/acceptspecimen", array(
         "before" => "checkPerms:accept_test_specimen",
         "as"   => "unhls_test.acceptSpecimen",
-        "uses" => "UnhlsTestController@accept"
+        "uses" => "UnhlsTestController@acceptSpecimenAction"
     ));
      //unhls test refer ends here
      Route::get("/test/{id}/refer", array(
@@ -221,7 +229,7 @@ Route::group(array("before" => "auth"), function()
     Route::get("/test/{id}/reject", array(
         "before" => "checkPerms:reject_test_specimen",
         "as"   => "test.reject",
-        "uses" => "TestController@reject"
+        "uses" => "UnhlsTestController@reject"
     ));
     //Repeat of above code for UNHLS
     Route::get("/unhls_test/{id}/reject", array(
@@ -232,7 +240,7 @@ Route::group(array("before" => "auth"), function()
     Route::post("/test/rejectaction", array(
         "before" => "checkPerms:reject_test_specimen",
         "as"   => "test.rejectAction",
-        "uses" => "TestController@rejectAction"
+        "uses" => "UnhlsTestController@rejectAction"
     ));
     //Repeat of above code for UNHLS
     Route::post("/unhls_test/rejectaction", array(
@@ -263,12 +271,7 @@ Route::group(array("before" => "auth"), function()
         "uses" => "UnhlsTestController@updateSpecimenType"
     ));
      //Unhls test updatespecimentype ends
-    Route::post("/test/start", array(
-        "before" => "checkPerms:start_test",
-        "as"   => "test.start",
-        "uses" => "TestController@start"
-    ));
-    //Repeat of above route for UNHLS test 
+
     Route::post("/unhls_test/start", array(
         "before" => "checkPerms:start_test",
         "as"   => "unhls_test.start",
@@ -291,12 +294,6 @@ Route::group(array("before" => "auth"), function()
         "as"   => "unhls_test.edit",
         "uses" => "UnhlsTestController@edit"
     ));
-     Route::post("/test/{test}/saveresults", array(
-        "before" => "checkPerms:edit_test_results",
-        "as"   => "test.saveResults",
-        "uses" => "TestController@saveResults"
-    ));
-     //Repeat of above route for UNHLS
     Route::post("/unhls_test/{test}/saveresults", array(
         "before" => "checkPerms:edit_test_results",
         "as"   => "unhls_test.saveResults",
@@ -306,6 +303,29 @@ Route::group(array("before" => "auth"), function()
         "as"   => "test.viewDetails",
         "uses" => "TestController@viewDetails"
     ));
+    Route::post("unhls_test/collectspecimen", array(
+        "as" => "unhls_test.collectSpecimen",
+        "uses" => "UnhlsTestController@acceptSpecimen"));
+    Route::post("/unhls_test/collectspecimenaction", array(
+        "before" => "checkPerms:refer_specimens", //TODO create permissions for collecting sample and update acordingly
+        "as"   => "unhls_test.collectSpecimenAction",
+        "uses" => "UnhlsTestController@collectSpecimenAction"
+    ));
+    Route::get("unhls_test/completed", array(
+        "as" => "unhls_test.completed",
+        "uses" => "UnhlsTestController@completed"));
+    Route::get("unhls_test/pending", array(
+        "as" => "unhls_test.pending",
+        "uses" => "UnhlsTestController@pending"));
+    Route::get("unhls_test/started", array(
+        "as" => "unhls_test.started",
+        "uses" => "UnhlsTestController@started"));
+    Route::get("unhls_test/notrecieved", array(
+        "as" => "unhls_test.notrecieved",
+        "uses" => "UnhlsTestController@notRecieved"));
+    Route::get("unhls_test/verified", array(
+        "as" => "unhls_test.verified",
+        "uses" => "UnhlsTestController@verified"));
     //Test viewDetails start
     Route::get("/unhls_test/{test}/viewdetails", array(
         "as"   => "unhls_test.viewDetails",
@@ -315,20 +335,12 @@ Route::group(array("before" => "auth"), function()
     Route::any("/test/{test}/verify", array(
         "before" => "checkPerms:verify_test_results",
         "as"   => "test.verify",
-        "uses" => "TestController@verify"
+        "uses" => "UnhlsTestController@verify"
     ));
     Route::resource('culture', 'CultureController');
     Route::resource('cultureobservation', 'CultureObservationController');
     Route::resource('drugsusceptibility', 'DrugSusceptibilityController');
     Route::resource('isolatedorganism', 'IsolatedOrganismController');
-    Route::any("/culture/storeObservation", array(
-        "as"   => "culture.worksheet",
-        "uses" => "CultureController@store"
-    ));
-    Route::any("/susceptibility/saveSusceptibility", array(
-        "as"   => "drug.susceptibility",
-        "uses" => "DrugSusceptibilityController@store"
-    ));
     Route::group(array("before" => "admin"), function()
     {
         Route::resource("permission", "PermissionController");
@@ -381,7 +393,9 @@ Route::group(array("before" => "auth"), function()
     //  Check if able to manage reports
     Route::group(array("before" => "checkPerms:view_reports"), function()
     {
-        Route::any("/patientreport", array(
+        Route::resource('reports', 'ReportController');
+		
+		Route::any("/patientreport", array(
             "as"   => "reports.patient.index",
             "uses" => "ReportController@loadPatients"
         ));
@@ -782,5 +796,7 @@ Route::group(array("before" => "auth"), function()
         "as"   => "event.eventfilter",
         "uses" => "EventController@eventfilter"
     ));
+	
+	 Route::resource('unhls_els', 'UnhlsElsController');
 
 });

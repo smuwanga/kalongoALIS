@@ -20,7 +20,7 @@ class UnhlsPatient extends Eloquent
 	 *
 	 * @var string
 	 */
-	protected $table = 'patients';
+	protected $table = 'unhls_patients';
 
 	/**
 	 * Visits relationship
@@ -89,5 +89,14 @@ class UnhlsPatient extends Eloquent
 		return UnhlsPatient::where('patient_number', '=', $searchText)
 						->orWhere('name', 'LIKE', '%'.$searchText.'%')
 						->orWhere('external_patient_number', '=', $searchText);
+	}
+	/**
+	* Get patients facility Id Number
+	*
+	*/
+	public function getFacilityCode()
+	{
+		$facilityCode ==\Config::get('constants.FACILITY_CODE');
+	
 	}
 }

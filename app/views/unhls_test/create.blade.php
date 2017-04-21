@@ -56,6 +56,7 @@
 									<h3 class="panel-title">{{"Clinical Information and Sample Information"}}</h3>
 								</div>
 									<div class="panel-body inline-display-details">
+									<div class="col-md-12">
 										<div class="form-group">
 											{{ Form::hidden('patient_id', $patient->id) }}
 											{{ Form::label('visit_type', trans("messages.visit-type")) }}
@@ -65,80 +66,100 @@
 										<div class="form-group">
 											{{ Form::label('sample_origin','Ward/Clinic/Health Unit') }}
 											{{ Form::text('sample_origin', Input::old('sample_origin'), array('class' => 'form-control')) }}
-											<div class="col-sm-4">
+										</div>
+										<div class="form-group">
 												{{ Form::label('bed_no','Bed No:', array('text-align' => 'right')) }}
 												{{ Form::text('bed_no', Input::old('sample_origin'), array('class' => 'form-control')) }}
-											</div>
 										</div>
-
 										<div class="form-group">
 											{{ Form::label('clinical_notes','Clinical Notes') }}
 											{{ Form::textarea('clinical_notes', Input::old('clinical_notes'), array('class' => 'form-control')) }}
-										</div>	
+										</div>
+									</div>
+									<div class="col-md-6">
 										<div class="form-group">
-											{{ Form::label('p_therapy','Previous Therapy') }}
-											{{ Form::text('p_therapy', Input::old('p_therapy'), array('class' => 'form-control')) }}
-											<div class="col-sm-6">
-												{{ Form::label('c_therapy','Current Therapy', array('text-align' => 'right')) }}
-												{{ Form::text('c_therapy', Input::old('c_therapy'), array('class' => 'form-control')) }}
-											</div>
-										</div>							
+											{{ Form::label('previous_therapy','Previous Therapy') }}
+											{{ Form::text('previous_therapy', Input::old('previous_therapy'), array('class' => 'form-control')) }}
+										</div>
+										<div class="form-group">
+											{{ Form::label('current_therapy','Current Therapy', array('text-align' => 'right')) }}
+											{{ Form::text('current_therapy', Input::old('current_therapy'), array('class' => 'form-control')) }}
+										</div>
 										<div class="form-group">
 											{{ Form::label('physician', 'Test Requested By') }}
 											{{Form::text('physician', Auth::user()->name, array('class' => 'form-control', 'placeholder' =>Auth::user()->name))}}
-											<div class="col-sm-6">
-												{{ Form::label('cadre', 'Cadre') }}
-												{{Form::text('cadre', Auth::user()->designation, array('class' => 'form-control', 'placeholder' =>Auth::user()->designation))}}
-											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											{{ Form::label('cadre', 'Cadre') }}
+											{{Form::text('cadre', Auth::user()->designation, array('class' => 'form-control', 'placeholder' =>Auth::user()->designation))}}
 										</div>
 										<div class="form-group">
-											{{ Form::label('p_contact', 'Phone Contact') }}
-											{{Form::text('p_contact', Input::old('p_contact'), array('class' => 'form-control'))}}
-											<div class="col-sm-4">
-												{{ Form::label('email', 'E-mail') }}
-												{{Form::email('email', Auth::user()->email, array('class' => 'form-control', 'placeholder' =>Auth::user()->email))}}
+											{{ Form::label('phone_contact', 'Phone Contact') }}
+											{{Form::text('phone_contact', Input::old('phone_contact'), array('class' => 'form-control'))}}
+										</div>
+										<div class="form-group">
+											{{ Form::label('email', 'E-mail') }}
+											{{Form::email('email', Auth::user()->email, array('class' => 'form-control', 'placeholder' =>Auth::user()->email))}}
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+							                {{Form::label('test_category', 'Lab Section')}}
+				                        	{{ Form::select('test_category', $testCategory,
+				                            Input::get('testCategory'),
+				                            array('class' => 'form-control')) }}
+				                    	</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											{{Form::label('specimen_type', 'Specimen')}}
+											{{ Form::select('specimen_type', $specimenType,
+											Input::get('specimenType'),
+											array('class' => 'form-control specimen-type')) }}
+										</div>
+									</div>
+										<div class="form-pane panel panel-default">
+											<div class="testTypeList">
 											</div>
 										</div>
-									<div class="form-group">
-						                {{Form::label('test_cat', 'Test Requested')}}
-			                        	{{ Form::select('test_cat', $testCategory,
-			                            Input::get('testCat'), array('class' => 'form-control')) }}
-			                    	</div>
-
-									<div class="form-pane panel panel-default">
-										{{Form::label('test-list', trans("messages.select-tests"))}}
-										<div id="test_list" class="container-fluid">
-										</div>
-									</div>
-									</div>
+								</div>
 							</div> <!--div that closes the panel div for clinical and sample information -->
-							<div class="form-group">
-								{{ Form::label('collection_date', 'Date of Sample Collection') }}
-								{{Form::text('collection_date', Input::old('collection_date'), array('class' => 'form-control standard-datepicker'))}}
-								{{ Form::label('sample_time', 'Time of Sample Collection') }}
-								{{Form::text('sample_time', Input::old('sample_time'), array('class' => 'form-control', 'placeholder' => 'HH:MM'))}}
+							<!--
+							<div class='panel panel-info'>
+								{{Form::label('self_request', 'Nurse')}}
+								{{ Form::radio('single') }}
 							</div>
-							<div class="form-group">
-								{{ Form::label('sample_obtainer', 'Sample Collected by') }}
-								{{Form::text('sample_obtainer', Input::old('sample_obtainer'), array('class' => 'form-control'))}}
-								{{ Form::label('cadre_obtainer', 'Cadre') }}
-								{{Form::text('cadre_obtainer', Input::old('cadre_obtainer'), array('class' => 'form-control'))}}
-							</div>
-							<div class="form-group">
-								{{ Form::label('recieved_date', 'Date sample recieved in Lab') }}
-								{{Form::text('recieved_date', Input::old('recieved_date'), array('class' => 'form-control standard-datepicker'))}}
-								{{ Form::label('sample_time', 'Time Sample Recieved in Lab') }}
-								{{Form::text('sample_time', Input::old('sample_time'), array('class' => 'form-control', 'placeholder' => 'HH:MM'))}}
-							</div>
-							<div class="form-group">
-								{{ Form::label('sample_reciever', 'Sample Recieved by') }}
-								{{Form::text('sample_reciever', Input::old('sample_reciever'), array('class' => 'form-control'))}}
-								{{ Form::label('cadre_obtainer', 'Cadre') }}
-								{{Form::text('cadre_obtainer', Input::old('cadre_obtainer'), array('class' => 'form-control'))}}
-							</div>
+							<div class="hidden">
+								<div class="form-group">
+									{{ Form::label('collection_date', 'Date of Sample Collection') }}
+									{{Form::text('collection_date', Input::old('collection_date'), array('class' => 'form-control standard-datepicker'))}}
+									{{ Form::label('sample_time', 'Time of Sample Collection') }}
+									{{Form::text('sample_time', Input::old('sample_time'), array('class' => 'form-control', 'placeholder' => 'HH:MM'))}}
+								</div>
+								<div class="form-group">
+									{{ Form::label('sample_obtainer', 'Sample Collected by') }}
+									{{Form::text('sample_obtainer', Input::old('sample_obtainer'), array('class' => 'form-control'))}}
+									{{ Form::label('cadre_obtainer', 'Cadre') }}
+									{{Form::text('cadre_obtainer', Input::old('cadre_obtainer'), array('class' => 'form-control'))}}
+								</div>
+								<div class="form-group">
+									{{ Form::label('recieved_date', 'Date sample recieved in Lab') }}
+									{{Form::text('recieved_date', Input::old('recieved_date'), array('class' => 'form-control standard-datepicker'))}}
+									{{ Form::label('sample_time', 'Time Sample Recieved in Lab') }}
+									{{Form::text('sample_time', Input::old('sample_time'), array('class' => 'form-control', 'placeholder' => 'HH:MM'))}}
+								</div>
+								<div class="form-group">
+									{{ Form::label('sample_reciever', 'Sample Recieved by') }}
+									{{Form::text('sample_reciever', Input::old('sample_reciever'), array('class' => 'form-control'))}}
+									{{ Form::label('cadre_reciever', 'Cadre') }}
+									{{Form::text('cadre_reciever', Input::old('cadre_reciever'), array('class' => 'form-control'))}}
+								</div>
+							</div>-->
 
 								<div class="form-group actions-row">
-								{{ Form::button("<span class='glyphicon glyphicon-save'></span> ".trans('messages.save-test'), 
+								{{ Form::button("<span class='glyphicon glyphicon-save'></span> ".trans('messages.save-test'),
 									array('class' => 'btn btn-primary', 'onclick' => 'submit()', 'alt' => 'save_new_test')) }}
 								</div>
 						</div>
@@ -147,4 +168,4 @@
 			{{ Form::close() }}
 		</div>
 	</div>
-@stop	
+@stop

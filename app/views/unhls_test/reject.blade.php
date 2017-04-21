@@ -3,7 +3,7 @@
 	<div>
 		<ol class="breadcrumb">
 		  <li><a href="{{{URL::route('user.home')}}}">{{trans('messages.home')}}</a></li>
-		  <li><a href="{{ URL::route('test.index') }}">{{ Lang::choice('messages.test',2) }}</a></li>
+		  <li><a href="{{ URL::route('unhls_test.index') }}">{{ Lang::choice('messages.test',2) }}</a></li>
 		  <li class="active">{{trans('messages.reject-title')}}</li>
 		</ol>
 	</div>
@@ -29,23 +29,29 @@
 				{{ HTML::ul($errors->all()) }}
 			</div>
 		@endif
-		{{ Form::open(array('route' => 'test.rejectAction')) }}
-			{{ Form::hidden('specimen_id', $specimen->id) }}
+		{{ Form::open(array('route' => 'unhls_test.rejectAction')) }}
+			{{ Form::hidden('specimen_id', $test->specimen->id) }}
+			{{ Form::hidden('test_id', $test->id) }}
 			<div class="panel-body">
 				<div class="display-details">
 				    <p><strong>{{ Lang::choice('messages.test-type',1) }}</strong>
-				        {{$specimen->test->testType->name}}</p>
+				        {{$test->testType->name}}</p>
 				    <p><strong>{{trans('messages.specimen-type-title')}}</strong>
-				        {{$specimen->specimenType->name}}</p>
+				        {{$test->specimen->specimenType->name}}</p>
 				    <p>
 				        <strong>{{trans('messages.specimen-number-title')}}</strong>
-				        {{$specimen->id}}
+				        {{$test->specimen->id}}
 				    </p>
 				</div>
 				<div class="form-group">
 					{{ Form::label('rejectionReason', trans('messages.rejection-reason')) }}
 					{{ Form::select('rejectionReason', array(0 => '')+$rejectionReason->lists('reason', 'id'),
 						Input::old('rejectionReason'), array('class' => 'form-control')) }}
+				</div>
+				<div class="form-group">
+					{{ Form::label('rejecting_officer', trans("messages.rejecting-officer")) }}
+					{{Form::text('rejecting_officer', Input::old('rejecting_officer'),
+						array('class' => 'form-control'))}}
 				</div>
 				<div class="form-group">
 					{{ Form::label('reject_explained_to', trans("messages.reject-explained-to")) }}

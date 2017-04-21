@@ -1,13 +1,13 @@
 <?php
 
-class TestResult extends Eloquent
+class UnhlsTestResult extends Eloquent
 {
 	/**
 	 * The database table used by the model.
 	 *
 	 * @var string
 	 */
-	protected $table = 'test_results';
+	protected $table = 'unhls_test_results';
 
 	public $timestamps = false;
 
@@ -21,7 +21,7 @@ class TestResult extends Eloquent
 	 */
 	public function test()
 	{
-		return $this->belongsTo('Test');
+		return $this->belongsTo('UnhlsTest', 'id');
 	}
 	/*
 	*	Counts for microbiology - count organisms per specimen type
@@ -29,7 +29,7 @@ class TestResult extends Eloquent
 	*/
 	public static function microCounts($result, $specimen, $from, $to){
 		$count = DB::select('SELECT count(tr.id) as total '.
-							'FROM test_results tr, tests t, testtype_measures tpm, testtype_specimentypes tst, specimen_types st '.
+							'FROM unhls_test_results tr, unhls_tests t, testtype_measures tpm, testtype_specimentypes tst, specimen_types st '.
 							'WHERE tr.test_id = t.id '.
 							'AND t.test_type_id=tpm.test_type_id '.
 							'AND tr.measure_id=tpm.measure_id '.

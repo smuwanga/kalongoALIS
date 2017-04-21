@@ -31,7 +31,7 @@ class SpecimenType extends Eloquent
 	 */
 	public function specimen()
 	{
-	  return $this->hasMany('Specimen');
+	  return $this->hasMany('UnhlsSpecimen');
 	}
 	/**
 	* Return the counts for a specimen type given the specimen_status_id, and date range for ungrouped specimen 
@@ -41,9 +41,9 @@ class SpecimenType extends Eloquent
 	public function countPerStatus($specimenStatusID, $from = null, $to = null)
 	{
 
-		$specimens = Specimen::where('specimen_type_id', $this->id)->whereIn('specimen_status_id', $specimenStatusID);
+		$specimens = UnhlsSpecimen::where('specimen_type_id', $this->id)->whereIn('specimen_status_id', $specimenStatusID);
 		if($to && $from){
-			if(in_array($specimenStatusID, [Specimen::REJECTED]))
+			if(in_array($specimenStatusID, [UnhlsSpecimen::REJECTED]))
 				$specimens = $specimens->whereBetween('time_rejected', [$from, $to]);
 			else
 				$specimens = $specimens->whereBetween('time_accepted', [$from, $to]);
@@ -58,7 +58,7 @@ class SpecimenType extends Eloquent
 	* @param $gender, $ageRange, $from, $to
 	*/
 	public function groupedSpecimenCount($gender=null, $ageRange=null, $from=null, $to=null){
-			$specimens = Specimen::where('specimen_type_id', $this->id)->whereIn('specimen_status_id', [Specimen::ACCEPTED]);
+			$specimens = UnhlsSpecimen::where('specimen_type_id', $this->id)->whereIn('specimen_status_id', [UnhlsSpecimen::ACCEPTED]);
 			if($to && $from){
 				$specimens = $specimens->whereBetween('time_accepted', [$from, $to]);
 			}

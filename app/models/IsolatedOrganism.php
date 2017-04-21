@@ -9,9 +9,9 @@ class IsolatedOrganism extends Eloquent
 	 */
 	protected $table = 'isolated_organisms';
 
-	public function culture()
+	public function test()
 	{
-		return $this->belongsTo('Culture');
+		return $this->belongsTo('UnhlsTest', 'test_id');
 	}
 
 	public function organism()

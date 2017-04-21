@@ -79,7 +79,7 @@
             </div>
         </div>
         <div class="panel-body">
-            <table class="table table-striped table-hover table-condensed">
+            <table class="table table-striped table-hover table-condensed search-table">
                 <thead>
                     <tr>
                         <th>{{trans('messages.date-ordered')}}</th>
@@ -117,63 +117,6 @@
                         <td>{{ $test->getSpecimenId() }}</td> <!--Specimen ID -->
                         <td>{{ $test->testType->name }}</td> <!--Test-->
                         <td>{{ $test->visit->visit_type }}</td> <!--Visit Type -->
-                        <td id="test-status-{{$test->id}}" class='test-status'>
-                            <!-- Test Statuses -->
-                            <div class="container-fluid">
-                            
-                                <div class="row">
-
-                                    <div class="col-md-12">
-                                        @if($test->isNotReceived())
-                                            @if(!$test->isPaid())
-                                                <span class='label label-default'>
-                                                    {{trans('messages.not-paid')}}</span>
-                                            @else
-                                            <span class='label label-default'>
-                                                {{trans('messages.not-received')}}</span>
-                                            @endif
-                                        @elseif($test->isPending())
-                                            <span class='label label-info'>
-                                                {{trans('messages.pending')}}</span>
-                                        @elseif($test->isStarted())
-                                            <span class='label label-warning'>
-                                                {{trans('messages.started')}}</span>
-                                        @elseif($test->isCompleted())
-                                            <span class='label label-primary'>
-                                                {{trans('messages.completed')}}</span>
-                                        @elseif($test->isVerified())
-                                            <span class='label label-success'>
-                                                {{trans('messages.verified')}}</span>
-                                        @endif
-                                    </div>
-    
-                                    </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <!-- Specimen statuses -->
-                                        @if($test->specimen->isNotCollected())
-                                         @if(($test->isPaid()))
-                                            <span class='label label-default'>
-                                                {{trans('messages.specimen-not-collected-label')}}</span>
-                                            @endif
-                                        @elseif($test->specimen->isReferred())
-                                            <span class='label label-primary'>
-                                                {{trans('messages.specimen-referred-label') }}
-                                                @if($test->specimen->referral->status == Referral::REFERRED_IN)
-                                                    {{ trans("messages.in") }}
-                                                @elseif($test->specimen->referral->status == Referral::REFERRED_OUT)
-                                                    {{ trans("messages.out") }}
-                                                @endif
-                                            </span>
-                                        @elseif($test->specimen->isAccepted())
-                                            <span class='label label-success'>
-                                                {{trans('messages.specimen-accepted-label')}}</span>
-                                        @elseif($test->specimen->isRejected())
-                                            <span class='label label-danger'>
-                                                {{trans('messages.specimen-rejected-label')}}</span>
-                                        @endif
-                                        </div></div></div>
-                        </td>
                         <!-- ACTION BUTTONS -->
                         <td>
                             <a class="btn btn-sm btn-success"
@@ -183,7 +126,6 @@
                                 <span class="glyphicon glyphicon-eye-open"></span>
                                 {{trans('messages.view-details')}}
                             </a>
-                            
                         @if ($test->isNotReceived()) 
                             @if(Auth::user()->can('receive_external_test') && $test->isPaid())
                                 <a class="btn btn-sm btn-default receive-test" href="javascript:void(0)"
@@ -195,36 +137,25 @@
                             @endif
                         @elseif ($test->specimen->isNotCollected())
                             @if(Auth::user()->can('accept_test_specimen'))
-                                <a class="btn btn-sm btn-info accept-specimen" href="javascript:void(0)"
-                                    data-test-id="{{$test->id}}" data-specimen-id="{{$test->specimen->id}}"
-                                    title="{{trans('messages.accept-specimen-title')}}"
-                                    data-url="{{ URL::route('unhls_test.acceptSpecimen') }}">
+                                <a class="btn btn-sm btn-info" href="#accept-specimen-modal"
+                                    data-toggle="modal" data-url="{{ URL::route('unhls_test.collectSpecimen') }}" data-specimen-id="{{$test->specimen->id}}" data-target="#accept-specimen-modal"
+                                    title="{{trans('messages.accept-specimen-title')}}">
                                     <span class="glyphicon glyphicon-thumbs-up"></span>
                                     {{trans('messages.accept-specimen')}}
                                 </a>
-                            @endif
-                            @if(count($test->testType->specimenTypes) > 1 && Auth::user()->can('change_test_specimen'))
-                                <!-- 
-                                    If this test can be done using more than 1 specimen type,
-                                    allow the user to change to any of the other eligible ones.
-                                -->
-                                <a class="btn btn-sm btn-danger change-specimen" href="#change-specimen-modal"
-                                    data-toggle="modal" data-url="{{ URL::route('unhls_test.changeSpecimenType') }}"
-                                    data-test-id="{{$test->id}}" data-target="#change-specimen-modal"
-                                    title="{{trans('messages.change-specimen-title')}}">
-                                    <span class="glyphicon glyphicon-transfer"></span>
-                                    {{trans('messages.change-specimen')}}
-                                </a>
+
                             @endif
                         @endif
                         @if ($test->specimen->isAccepted() && !($test->isVerified()))
                             @if(Auth::user()->can('reject_test_specimen') && !($test->specimen->isReferred()))
+                                @if(!($test->specimenIsRejected()))
                                 <a class="btn btn-sm btn-danger" id="reject-{{$test->id}}-link"
                                     href="{{URL::route('unhls_test.reject', array($test->specimen_id))}}"
                                     title="{{trans('messages.reject-title')}}">
                                     <span class="glyphicon glyphicon-thumbs-down"></span>
                                     {{trans('messages.reject')}}
                                 </a>
+                                @endif
                                 <a class="btn btn-sm btn-midnight-blue barcode-button" onclick="print_barcode({{ "'".$test->specimen->id."'".', '."'".$barcode->encoding_format."'".', '."'".$barcode->barcode_width."'".', '."'".$barcode->barcode_height."'".', '."'".$barcode->text_size."'" }})" title="{{trans('messages.barcode')}}">
                                     <span class="glyphicon glyphicon-barcode"></span>
                                     {{trans('messages.barcode')}}
@@ -273,6 +204,64 @@
                                 @endif
                             @endif
                         @endif
+                        </td>
+
+                        <td id="test-status-{{$test->id}}" class='test-status'>
+                            <!-- Test Statuses -->
+                            <div class="container-fluid">
+                            
+                                <div class="row">
+
+                                    <div class="col-md-12">
+                                        @if($test->isNotReceived())
+                                            @if(!$test->isPaid())
+                                                <span class='label label-default'>
+                                                    {{trans('messages.not-paid')}}</span>
+                                            @else
+                                            <span class='label label-default'>
+                                                {{trans('messages.not-received')}}</span>
+                                            @endif
+                                        @elseif($test->isPending())
+                                            <span class='label label-info'>
+                                                {{trans('messages.pending')}}</span>
+                                        @elseif($test->isStarted())
+                                            <span class='label label-warning'>
+                                                {{trans('messages.started')}}</span>
+                                        @elseif($test->isCompleted())
+                                            <span class='label label-primary'>
+                                                {{trans('messages.completed')}}</span>
+                                        @elseif($test->isVerified())
+                                            <span class='label label-success'>
+                                                {{trans('messages.verified')}}</span>
+                                        @endif
+                                    </div>
+    
+                                    </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <!-- Specimen statuses -->
+                                        @if($test->specimen->isNotCollected())
+                                         @if(($test->isPaid()))
+                                            <span class='label label-default'>
+                                                {{trans('messages.specimen-not-collected-label')}}</span>
+                                            @endif
+                                        @elseif($test->specimen->isReferred())
+                                            <span class='label label-primary'>
+                                                {{trans('messages.specimen-referred-label') }}
+                                                @if($test->specimen->referral->status == Referral::REFERRED_IN)
+                                                    {{ trans("messages.in") }}
+                                                @elseif($test->specimen->referral->status == Referral::REFERRED_OUT)
+                                                    {{ trans("messages.out") }}
+                                                @endif
+                                            </span>
+                                        @elseif($test->specimenIsRejected())
+                                            <span class='label label-danger'>
+                                                {{trans('messages.specimen-rejected-label')}}</span>
+                                        @elseif($test->specimen->isAccepted())
+                                            <span class='label label-success'>
+                                                {{trans('messages.specimen-accepted-label')}}</span>
+                                        @endif
+                                        </div></div></div>
                         </td>
                     </tr>
                 @endforeach
@@ -335,31 +324,31 @@
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
-    <div class="modal fade" id="change-specimen-modal">
+    <div class="modal fade" id="accept-specimen-modal">
       <div class="modal-dialog">
         <div class="modal-content">
-        {{ Form::open(array('route' => 'unhls_test.updateSpecimenType')) }}
+        {{ Form::open(array('route' => 'unhls_test.acceptSpecimen')) }}
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">
                 <span aria-hidden="true">&times;</span>
                 <span class="sr-only">{{trans('messages.close')}}</span>
             </button>
             <h4 class="modal-title">
-                <span class="glyphicon glyphicon-transfer"></span>
-                {{trans('messages.change-specimen-title')}}</h4>
+                <span class="glyphicon glyphicon-ok-circle"></span>
+                {{trans('messages.accept-specimen-title')}}</h4>
           </div>
           <div class="modal-body">
           </div>
           <div class="modal-footer">
-            {{ Form::button("<span class='glyphicon glyphicon-save'></span> ".trans('messages.save'),
+            {{ Form::button("<span class='glyphicon glyphicon-save'></span> ".trans('messages.submit'),
                 array('class' => 'btn btn-primary', 'data-dismiss' => 'modal', 'onclick' => 'submit()')) }}
             <button type="button" class="btn btn-default" data-dismiss="modal">
-                {{trans('messages.close')}}</button>
+                {{trans('messages.cancel')}}</button>
           </div>
         {{ Form::close() }}
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
-    </div><!-- /.modal /#change-specimen-modal-->
+    </div><!-- /.modal /#accept-specimen-modal-->
 
     <!-- OTHER UI COMPONENTS -->
     <div class="hidden pending-test-not-collected-specimen">
@@ -412,6 +401,15 @@
             </div>
         </div>
     </div> <!-- /. started-test-accepted-specimen -->
+
+    <div class=" hidden collect-specimen-button">
+        <a class="btn btn-sm btn-info collect-specimen" href="javascript:void(0)"
+            title="{{trans('messages.collect-specimen-title')}}"
+            data-url="{{ URL::route('unhls_test.collectSpecimen')}}">
+            <span class="glyphicon glyphicon-ambulance"></span>
+            {{trans('messages.collect-specimen')}}
+        </a>
+    </div><!-- /. colllect-specimen button -->
 
     <div class="hidden accept-button">
         <a class="btn btn-sm btn-info accept-specimen" href="javascript:void(0)"

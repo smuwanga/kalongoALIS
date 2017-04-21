@@ -28,7 +28,7 @@
 						array('class' => 'form-control')) }}
 				</div>
 				<div class="form-group">
-					{{ Form::label('ulin', trans('messages.ulin')) }}
+					{{ Form::label('ulin', trans('messages.ulin'), array('class' => 'required')) }}
 					{{ Form::text('ulin', $ulin,
 						array('class' => 'form-control', 'readonly' =>'true')) }}
 				</div> 
@@ -37,24 +37,23 @@
 					{{ Form::text('nin', Input::old('nin'), array('class' => 'form-control')) }}
 				</div>
 				<div class="form-group">
-					{{ Form::label('name', trans('messages.names')) }}
+					{{ Form::label('name', trans('messages.names'), array('class' => 'required')) }}
 					{{ Form::text('name', Input::old('name'), array('class' => 'form-control')) }}
 				</div>
 				<div class="form-group">
-					<label for="age">Age</label>
+					<label class= 'required' for="dob">Date Of Birth</label>
+					<input type="text" name="dob" id="dob" class="form-control input-sm" size="11"> 
+				</div>
+				<div class="form-group">
+					<label class='required' for="age">Age</label>
 					<input type="text" name="age" id="age" class="form-control input-sm" size="11">
 					<select name="age_units" id="id_age_units" class="form-control input-sm">
 						<option value="Y">Years</option>
 						<option value="M">Months</option>
 					</select>												
 				</div>
-
 				<div class="form-group">
-					<label for="dob">Date Of Birth</label>
-					<input type="text" name="dob" id="dob" class="form-control input-sm" size="11"> 
-				</div>
-				<div class="form-group">
-					{{ Form::label('gender', trans('messages.sex')) }}
+					{{ Form::label('gender', trans('messages.sex'), array('class' => 'required')) }}
 					<div>{{ Form::radio('gender', '0', true) }}
 					<span class="input-tag">{{trans('messages.male')}}</span></div>
 					<div>{{ Form::radio("gender", '1', false) }}

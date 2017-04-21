@@ -1,13 +1,13 @@
 <?php
 
-class Test extends Eloquent
+class UnhlsTest extends Eloquent
 {
 	/**
 	 * The database table used by the model.
 	 *
 	 * @var string
 	 */
-	protected $table = 'tests';
+	protected $table = 'unhls_tests';
 
 	public $timestamps = false;
 
@@ -19,6 +19,9 @@ class Test extends Eloquent
 	const STARTED = 3;
 	const COMPLETED = 4;
 	const VERIFIED = 5;
+	// when a specimen is at the analytic stage, it's rejected only for that particular test
+	const REJECTED = 6;
+
 
 	/**
 	 * Other constants
@@ -31,7 +34,7 @@ class Test extends Eloquent
 	public function visit()
 	{
 		return $this->belongsTo('UnhlsVisit', 'visit_id');
-	}
+	}	
 
 	/**
 	 * Test Type relationship
@@ -46,7 +49,15 @@ class Test extends Eloquent
 	 */
 	public function specimen()
 	{
-		return $this->belongsTo('Specimen');
+		return $this->belongsTo('UnhlsSpecimen');
+	}
+
+	/**
+	 * Rejected specimen relationship
+	 */
+	public function rejectedSpecimen()
+	{
+		return $this->belongsTo('AnalyticSpecimenRejection', 'test_id');
 	}
 
 	/**
@@ -86,16 +97,9 @@ class Test extends Eloquent
 	 */
 	public function testResults()
 	{
-		return $this->hasMany('TestResult');
+		return $this->hasMany('UnhlsTestResult', 'test_id');
 	}
 
-	/**
-	 * Culture relationship
-	 */
-	public function culture()
-	{
-		return $this->hasOne('Culture');
-	}
 	/**
 	 * Drug susceptibility relationship
 	 */
@@ -132,7 +136,7 @@ class Test extends Eloquent
 	 */
 	public function isNotReceived()
 	{
-		if($this->test_status_id == Test::NOT_RECEIVED)
+		if($this->test_status_id == UnhlsTest::NOT_RECEIVED)
 			return true;
 		else 
 			return false;
@@ -145,7 +149,7 @@ class Test extends Eloquent
 	 */
 	public function isPending()
 	{
-		if($this->test_status_id == Test::PENDING)
+		if($this->test_status_id == UnhlsTest::PENDING)
 			return true;
 		else 
 			return false;
@@ -158,7 +162,7 @@ class Test extends Eloquent
 	 */
 	public function isStarted()
 	{
-		if($this->test_status_id == Test::STARTED)
+		if($this->test_status_id == UnhlsTest::STARTED)
 			return true;
 		else 
 			return false;
@@ -171,7 +175,7 @@ class Test extends Eloquent
 	 */
 	public function isCompleted()
 	{
-		if($this->test_status_id == Test::COMPLETED)
+		if($this->test_status_id == UnhlsTest::COMPLETED)
 			return true;
 		else 
 			return false;
@@ -184,12 +188,28 @@ class Test extends Eloquent
 	 */
 	public function isVerified()
 	{
-		if($this->test_status_id == Test::VERIFIED)
+		if($this->test_status_id == UnhlsTest::VERIFIED)
 			return true;
 		else 
 			return false;
 	}
-    
+
+    /**
+    * Check if specimen is rejected
+    *
+    * @return boolean
+    */
+    public function specimenIsRejected()
+    {
+        if($this->test_status_id == UnhlsTest::REJECTED)
+        {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
     /**
     * Function to get formatted specimenID's e.g PAR-3333
     *
@@ -330,10 +350,10 @@ class Test extends Eloquent
 				    INNER JOIN measures m ON tm.measure_id = m.id
 					CROSS JOIN (SELECT 0 AS id, 'Male' AS gender UNION SELECT 1, 'Female') AS s
 				    INNER JOIN measure_ranges mr ON tm.measure_id = mr.measure_id
-					LEFT JOIN tests AS t ON t.test_type_id = tt.id
-				    INNER JOIN visits v ON t.visit_id = v.id
-				    INNER JOIN patients p ON v.patient_id = p.id
-				    INNER JOIN test_results tr ON t.id = tr.test_id AND m.id = tr.measure_id
+					LEFT JOIN unhls_tests AS t ON t.test_type_id = tt.id
+				    INNER JOIN unhls_visits v ON t.visit_id = v.id
+				    INNER JOIN unhls_patients p ON v.patient_id = p.id
+				    INNER JOIN unhls_test_results tr ON t.id = tr.test_id AND m.id = tr.measure_id
 				WHERE (t.test_status_id=4 OR t.test_status_id=5) AND m.measure_type_id = 2
 					AND t.time_created BETWEEN ? AND ? $testCategoryWhereClause
 				GROUP BY tt.id, m.id, mr.alphanumeric, s.id) AS alpha
@@ -408,10 +428,10 @@ class Test extends Eloquent
 						FROM measures m INNER JOIN measure_ranges mr ON m.id = mr.measure_id 
 						CROSS JOIN (SELECT 'High' AS result_alias UNION SELECT 'Normal' UNION SELECT 'Low') AS i 
 						WHERE m.measure_type_id = 1) mmr ON tm.measure_id = mmr.measure_id
-					LEFT JOIN tests AS t ON t.test_type_id = tt.id
-					INNER JOIN visits v ON t.visit_id = v.id
-					INNER JOIN patients p ON v.patient_id = p.id
-					INNER JOIN test_results tr ON t.id = tr.test_id AND tm.measure_id = tr.measure_id
+					LEFT JOIN unhls_tests AS t ON t.test_type_id = tt.id
+					INNER JOIN unhls_visits v ON t.visit_id = v.id
+					INNER JOIN unhls_patients p ON v.patient_id = p.id
+					INNER JOIN unhls_test_results tr ON t.id = tr.test_id AND tm.measure_id = tr.measure_id
 				WHERE (t.test_status_id=4 OR t.test_status_id=5) AND mmr.measure_type_id = 1 
 					AND t.time_created BETWEEN ? AND ? $testCategoryWhereClause
 				GROUP BY tt.id, tm.measure_id, mmr.result_alias, s.id) 
@@ -422,7 +442,7 @@ class Test extends Eloquent
 		return $data;
 	}
 
-	/**
+		/**
 	* Search for tests meeting the given criteria
 	*
 	* @param String $searchString
@@ -434,7 +454,83 @@ class Test extends Eloquent
 	public static function search($searchString = '', $testStatusId = 0, $dateFrom = NULL, $dateTo = NULL)
 	{
 
-		$tests = Test::with('visit', 'visit.patient', 'testType', 'specimen', 'testStatus', 'testStatus.testPhase')
+		$tests = UnhlsTest::with('visit', 'visit.patient', 'testType', 'specimen', 'testStatus', 'testStatus.testPhase')
+			->where(function($q) use ($searchString){
+
+			$q->whereHas('visit', function($q) use ($searchString)
+			{
+				$q->whereHas('patient', function($q)  use ($searchString)
+				{
+					if(is_numeric($searchString))
+					{
+						$q->where(function($q) use ($searchString){
+							$q->where('external_patient_number', '=', $searchString )
+							  ->orWhere('patient_number', '=', $searchString );
+						});
+					}
+					else
+					{
+						$q->where('name', 'like', '%' . $searchString . '%');
+					}
+				});
+			})
+			->orWhereHas('testType', function($q) use ($searchString)
+			{
+			    $q->where('name', 'like', '%' . $searchString . '%');//Search by test type
+			})
+			->orWhereHas('specimen', function($q) use ($searchString)
+			{
+			    $q->where('id', '=', $searchString );//Search by specimen number
+			})
+			->orWhereHas('visit',  function($q) use ($searchString)
+			{
+				$q->where(function($q) use ($searchString){
+					$q->where('visit_number', '=', $searchString )//Search by visit number
+					->orWhere('id', '=', $searchString);
+				});
+			});
+		});
+
+		if ($testStatusId > 0) {
+			$tests = $tests->where(function($q) use ($testStatusId)
+			{
+				$q->whereHas('testStatus', function($q) use ($testStatusId){
+				    $q->where('id','=', $testStatusId);//Filter by test status
+				});
+			});
+		}
+
+		if ($dateFrom||$dateTo) {
+			$tests = $tests->where(function($q) use ($dateFrom, $dateTo)
+			{
+				if($dateFrom)$q->where('time_created', '>=', $dateFrom);
+
+				if($dateTo){
+					$dateTo = $dateTo . ' 23:59:59';
+					$q->where('time_created', '<=', $dateTo);
+				}
+			});
+		}
+
+		$tests = $tests->orderBy('time_created', 'DESC');
+
+		return $tests;
+	}
+
+
+	/**
+	* Search for completed tests meeting the given criteria
+	*
+	* @param String $searchString
+	* @param String $testStatusId
+	* @param String $dateFrom
+	* @param String $dateTo
+	* @return Collection 
+	*/
+	public static function completedTests($searchString = '', $testStatusId = 4, $dateFrom = NULL, $dateTo = NULL)
+	{
+
+		$tests = UnhlsTest::with('visit', 'visit.patient', 'testType', 'specimen', 'testStatus', 'testStatus.testPhase')
 			->where(function($q) use ($searchString){
 
 			$q->whereHas('visit', function($q) use ($searchString)
@@ -498,6 +594,307 @@ class Test extends Eloquent
 	}
 
 	/**
+	* Search for pending tests meeting the given criteria
+	*
+	* @param String $searchString
+	* @param String $testStatusId
+	* @param String $dateFrom
+	* @param String $dateTo
+	* @return Collection 
+	*/
+	public static function pendingTests($searchString = '', $testStatusId = 2, $dateFrom = NULL, $dateTo = NULL)
+	{
+
+		$tests = UnhlsTest::with('visit', 'visit.patient', 'testType', 'specimen', 'testStatus', 'testStatus.testPhase')
+			->where(function($q) use ($searchString){
+
+			$q->whereHas('visit', function($q) use ($searchString)
+			{
+				$q->whereHas('patient', function($q)  use ($searchString)
+				{
+					if(is_numeric($searchString))
+					{
+						$q->where(function($q) use ($searchString){
+							$q->where('external_patient_number', '=', $searchString )
+							  ->orWhere('patient_number', '=', $searchString );
+						});
+					}
+					else
+					{
+						$q->where('name', 'like', '%' . $searchString . '%');
+					}
+				});
+			})
+			->orWhereHas('testType', function($q) use ($searchString)
+			{
+			    $q->where('name', 'like', '%' . $searchString . '%');//Search by test type
+			})
+			->orWhereHas('specimen', function($q) use ($searchString)
+			{
+			    $q->where('id', '=', $searchString );//Search by specimen number
+			})
+			->orWhereHas('visit',  function($q) use ($searchString)
+			{
+				$q->where(function($q) use ($searchString){
+					$q->where('visit_number', '=', $searchString )//Search by visit number
+					->orWhere('id', '=', $searchString);
+				});
+			});
+		});
+
+		if ($testStatusId > 0) {
+			$tests = $tests->where(function($q) use ($testStatusId)
+			{
+				$q->whereHas('testStatus', function($q) use ($testStatusId){
+				    $q->where('id','=', $testStatusId);//Filter by test status
+				});
+			});
+		}
+
+		if ($dateFrom||$dateTo) {
+			$tests = $tests->where(function($q) use ($dateFrom, $dateTo)
+			{
+				if($dateFrom)$q->where('time_created', '>=', $dateFrom);
+
+				if($dateTo){
+					$dateTo = $dateTo . ' 23:59:59';
+					$q->where('time_created', '<=', $dateTo);
+				}
+			});
+		}
+
+		$tests = $tests->orderBy('time_created', 'DESC');
+
+		return $tests;
+	}
+
+	/**
+	* Search for pending tests meeting the given criteria
+	*
+	* @param String $searchString
+	* @param String $testStatusId
+	* @param String $dateFrom
+	* @param String $dateTo
+	* @return Collection 
+	*/
+	public static function startedTests($searchString = '', $testStatusId = 3, $dateFrom = NULL, $dateTo = NULL)
+	{
+
+		$tests = UnhlsTest::with('visit', 'visit.patient', 'testType', 'specimen', 'testStatus', 'testStatus.testPhase')
+			->where(function($q) use ($searchString){
+
+			$q->whereHas('visit', function($q) use ($searchString)
+			{
+				$q->whereHas('patient', function($q)  use ($searchString)
+				{
+					if(is_numeric($searchString))
+					{
+						$q->where(function($q) use ($searchString){
+							$q->where('external_patient_number', '=', $searchString )
+							  ->orWhere('patient_number', '=', $searchString );
+						});
+					}
+					else
+					{
+						$q->where('name', 'like', '%' . $searchString . '%');
+					}
+				});
+			})
+			->orWhereHas('testType', function($q) use ($searchString)
+			{
+			    $q->where('name', 'like', '%' . $searchString . '%');//Search by test type
+			})
+			->orWhereHas('specimen', function($q) use ($searchString)
+			{
+			    $q->where('id', '=', $searchString );//Search by specimen number
+			})
+			->orWhereHas('visit',  function($q) use ($searchString)
+			{
+				$q->where(function($q) use ($searchString){
+					$q->where('visit_number', '=', $searchString )//Search by visit number
+					->orWhere('id', '=', $searchString);
+				});
+			});
+		});
+
+		if ($testStatusId > 0) {
+			$tests = $tests->where(function($q) use ($testStatusId)
+			{
+				$q->whereHas('testStatus', function($q) use ($testStatusId){
+				    $q->where('id','=', $testStatusId);//Filter by test status
+				});
+			});
+		}
+
+		if ($dateFrom||$dateTo) {
+			$tests = $tests->where(function($q) use ($dateFrom, $dateTo)
+			{
+				if($dateFrom)$q->where('time_created', '>=', $dateFrom);
+
+				if($dateTo){
+					$dateTo = $dateTo . ' 23:59:59';
+					$q->where('time_created', '<=', $dateTo);
+				}
+			});
+		}
+
+		$tests = $tests->orderBy('time_created', 'DESC');
+
+		return $tests;
+	}
+
+	/**
+	* Search for samples not recieved meeting the given criteria
+	*
+	* @param String $searchString
+	* @param String $testStatusId
+	* @param String $dateFrom
+	* @param String $dateTo
+	* @return Collection 
+	*/
+	public static function notRecieved($searchString = '', $testStatusId = 1, $dateFrom = NULL, $dateTo = NULL)
+	{
+
+		$tests = UnhlsTest::with('visit', 'visit.patient', 'testType', 'specimen', 'testStatus', 'testStatus.testPhase')
+			->where(function($q) use ($searchString){
+
+			$q->whereHas('visit', function($q) use ($searchString)
+			{
+				$q->whereHas('patient', function($q)  use ($searchString)
+				{
+					if(is_numeric($searchString))
+					{
+						$q->where(function($q) use ($searchString){
+							$q->where('external_patient_number', '=', $searchString )
+							  ->orWhere('patient_number', '=', $searchString );
+						});
+					}
+					else
+					{
+						$q->where('name', 'like', '%' . $searchString . '%');
+					}
+				});
+			})
+			->orWhereHas('testType', function($q) use ($searchString)
+			{
+			    $q->where('name', 'like', '%' . $searchString . '%');//Search by test type
+			})
+			->orWhereHas('specimen', function($q) use ($searchString)
+			{
+			    $q->where('id', '=', $searchString );//Search by specimen number
+			})
+			->orWhereHas('visit',  function($q) use ($searchString)
+			{
+				$q->where(function($q) use ($searchString){
+					$q->where('visit_number', '=', $searchString )//Search by visit number
+					->orWhere('id', '=', $searchString);
+				});
+			});
+		});
+
+		if ($testStatusId > 0) {
+			$tests = $tests->where(function($q) use ($testStatusId)
+			{
+				$q->whereHas('testStatus', function($q) use ($testStatusId){
+				    $q->where('id','=', $testStatusId);//Filter by test status
+				});
+			});
+		}
+
+		if ($dateFrom||$dateTo) {
+			$tests = $tests->where(function($q) use ($dateFrom, $dateTo)
+			{
+				if($dateFrom)$q->where('time_created', '>=', $dateFrom);
+
+				if($dateTo){
+					$dateTo = $dateTo . ' 23:59:59';
+					$q->where('time_created', '<=', $dateTo);
+				}
+			});
+		}
+
+		$tests = $tests->orderBy('time_created', 'DESC');
+
+		return $tests;
+	}
+
+/**
+	* Search for verified test meeting the given criteria
+	*
+	* @param String $searchString
+	* @param String $testStatusId
+	* @param String $dateFrom
+	* @param String $dateTo
+	* @return Collection 
+	*/
+	public static function verified($searchString = '', $testStatusId = 5, $dateFrom = NULL, $dateTo = NULL)
+	{
+
+		$tests = UnhlsTest::with('visit', 'visit.patient', 'testType', 'specimen', 'testStatus', 'testStatus.testPhase')
+			->where(function($q) use ($searchString){
+
+			$q->whereHas('visit', function($q) use ($searchString)
+			{
+				$q->whereHas('patient', function($q)  use ($searchString)
+				{
+					if(is_numeric($searchString))
+					{
+						$q->where(function($q) use ($searchString){
+							$q->where('external_patient_number', '=', $searchString )
+							  ->orWhere('patient_number', '=', $searchString );
+						});
+					}
+					else
+					{
+						$q->where('name', 'like', '%' . $searchString . '%');
+					}
+				});
+			})
+			->orWhereHas('testType', function($q) use ($searchString)
+			{
+			    $q->where('name', 'like', '%' . $searchString . '%');//Search by test type
+			})
+			->orWhereHas('specimen', function($q) use ($searchString)
+			{
+			    $q->where('id', '=', $searchString );//Search by specimen number
+			})
+			->orWhereHas('visit',  function($q) use ($searchString)
+			{
+				$q->where(function($q) use ($searchString){
+					$q->where('visit_number', '=', $searchString )//Search by visit number
+					->orWhere('id', '=', $searchString);
+				});
+			});
+		});
+
+		if ($testStatusId > 0) {
+			$tests = $tests->where(function($q) use ($testStatusId)
+			{
+				$q->whereHas('testStatus', function($q) use ($testStatusId){
+				    $q->where('id','=', $testStatusId);//Filter by test status
+				});
+			});
+		}
+
+		if ($dateFrom||$dateTo) {
+			$tests = $tests->where(function($q) use ($dateFrom, $dateTo)
+			{
+				if($dateFrom)$q->where('time_created', '>=', $dateFrom);
+
+				if($dateTo){
+					$dateTo = $dateTo . ' 23:59:59';
+					$q->where('time_created', '<=', $dateTo);
+				}
+			});
+		}
+
+		$tests = $tests->orderBy('time_created', 'DESC');
+
+		return $tests;
+	}
+
+
+	/**
 	 * Get the Surveillance Data
 	 *
 	 * @return db resultset
@@ -533,10 +930,10 @@ class Test extends Eloquent
 		}
 
 		//Getting an array of measure ids from an array of test types
-		$measureIds = Test::getMeasureIdsByTestTypeIds($testTypeIds);
+		$measureIds = UnhlsTest::getMeasureIdsByTestTypeIds($testTypeIds);
 
 		//Getting an array of positive interpretations from an array of measure ids
-		$positiveRanges = Test::getPositiveRangesByMeasureIds($measureIds);
+		$positiveRanges = UnhlsTest::getPositiveRangesByMeasureIds($measureIds);
 
 		$idCount = 0;
 		$positiveRangesQuery = '';
@@ -574,10 +971,10 @@ class Test extends Eloquent
 			    }
 			}
 
-			$query = $query." FROM tests t ".
-				"INNER JOIN test_results tr ON t.id=tr.test_id ".
-				"JOIN visits v ON v.id=t.visit_id ".
-				"JOIN patients p ON v.patient_id=p.id ";
+			$query = $query." FROM unhls_tests t ".
+				"INNER JOIN unhls_test_results tr ON t.id=tr.test_id ".
+				"JOIN unhls_visits v ON v.id=t.visit_id ".
+				"JOIN unhls_patients p ON v.patient_id=p.id ";
 				if ($from) {
 					$query = $query."WHERE (time_created BETWEEN '".$from."' AND '".$to."')";
 				}
@@ -606,7 +1003,7 @@ class Test extends Eloquent
 
 			foreach ($measureRanges as $measureRange) {
 
-				if ($measureRange->interpretation == Test::POSITIVE) {
+				if ($measureRange->interpretation == UnhlsTest::POSITIVE) {
 					$positiveRanges[] = $measureRange->alphanumeric;
 				}
 			}
@@ -635,7 +1032,20 @@ class Test extends Eloquent
 	public function external(){
 		return ExternalDump::where('lab_no', '=', $this->external_id)->get()->first();
 	}
+
 	/**
-	 * Check if the test requires a culture and sensitivity analysis worksheet
+	 * Isolated Organism relationship
 	 */
+	public function cultureObservations()
+    {
+        return $this->hasMany('CultureObservation', 'test_id');
+    }
+
+	/**
+	 * Isolated Organism relationship
+	 */
+	public function isolatedOrganisms()
+    {
+        return $this->hasMany('IsolatedOrganism', 'test_id');
+    }
 }

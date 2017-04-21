@@ -158,4 +158,59 @@ class Bbincidence extends Eloquent
 					->groupBy('actionname')
              		->get();
 	}
+
+	public static function countbbincidents_all()
+	{
+		//return BbincidenceNatureIntermediate::get();
+		
+		$startdate = date('Y-m-01');
+		$today = date('Y-m-d');
+
+		return BbincidenceNatureIntermediate::join('unhls_bbincidences', 'unhls_bbincidences.id', '=', 
+			'unhls_bbincidences_nature.bbincidence_id')->whereBetween('unhls_bbincidences.occurrence_date', array($startdate,$today))->get();
+	}
+
+	public static function bbincidents_monthly_natures()
+	{
+		
+		$startdate = date('Y-m-01');
+		$today = date('Y-m-d');
+		
+
+		return BbincidenceNatureIntermediate::
+		join('unhls_bbincidences', 'unhls_bbincidences.id', '=', 'unhls_bbincidences_nature.bbincidence_id')
+		->join('unhls_bbnatures', 'unhls_bbnatures.id', '=', 'unhls_bbincidences_nature.nature_id')
+		->whereBetween('unhls_bbincidences.occurrence_date', array($startdate,$today))
+		->select('name', DB::raw('count(*) as total'))
+		->groupBy('name')->get();
+	}
+
+	public static function countbbincidents_major()
+	{
+		
+		$startdate = date('Y-m-01');
+		$today = date('Y-m-d');
+		
+
+		return BbincidenceNatureIntermediate::join('unhls_bbincidences', 'unhls_bbincidences.id', '=', 
+			'unhls_bbincidences_nature.bbincidence_id')->join('unhls_bbnatures', 'unhls_bbnatures.id', '=', 
+			'unhls_bbincidences_nature.nature_id')->where('unhls_bbnatures.priority', '=', 'Major')->whereBetween('unhls_bbincidences.occurrence_date', array($startdate,$today))->get();
+	}
+
+	/*public static function countbbincidents_major()
+	{
+		return BbincidenceNatureIntermediate::join(BbincidenceNature, 
+			function($join){$join->on('BbincidenceNatureIntermediate.nature_id', '=', 
+				'BbincidenceNature.id');})->where('BbincidenceNature.priority', '=', 'Major')->get();
+	}*/
+
+	public static function countbbincidents_minor()
+	{
+		$startdate = date('Y-m-01');
+		$today = date('Y-m-d');
+
+		return BbincidenceNatureIntermediate::join('unhls_bbincidences', 'unhls_bbincidences.id', '=', 
+			'unhls_bbincidences_nature.bbincidence_id')->join('unhls_bbnatures', 'unhls_bbnatures.id', '=', 
+			'unhls_bbincidences_nature.nature_id')->where('unhls_bbnatures.priority', '=', 'Minor')->whereBetween('unhls_bbincidences.occurrence_date', array($startdate,$today))->get();
+	}
 }

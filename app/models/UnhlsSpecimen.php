@@ -1,6 +1,6 @@
 <?php
 
-class Specimen extends Eloquent
+class UnhlsSpecimen extends Eloquent
 {
 	/**
 	 * The database table used by the model.
@@ -17,6 +17,7 @@ class Specimen extends Eloquent
 	const NOT_COLLECTED = 1;
 	const ACCEPTED = 2;
 	const REJECTED = 3;
+	const REFERRED = 4;
 	/**
 	 * Enabling soft deletes for specimen details.
 	 *
@@ -47,13 +48,13 @@ class Specimen extends Eloquent
 	{
 		return $this->belongsTo('SpecimenType');
 	}
-	
+
 	/**
-	 * Rejection Reason relationship
+	 * Rejected specimen relationship
 	 */
-	public function rejectionReason()
+	public function rejectedSpecimen()
 	{
-		return $this->belongsTo('RejectionReason');
+		return $this->belongsTo('PreAnalyticSpecimenRejection', 'specimen_id');
 	}
 
 	/**
@@ -61,7 +62,7 @@ class Specimen extends Eloquent
 	 */
 	public function test()
     {
-        return $this->hasOne('Test');
+        return $this->hasOne('UnhlsTest', 'specimen_id');
     }
 
     /**
@@ -78,14 +79,6 @@ class Specimen extends Eloquent
 	public function acceptedBy()
 	{
 		return $this->belongsTo('User', 'accepted_by', 'id');
-	}
-
-	/**
-	 * User (rejected) relationship
-	 */
-	public function rejectedBy()
-	{
-		return $this->belongsTo('User', 'rejected_by', 'id');
 	}
 
     /**
@@ -111,7 +104,7 @@ class Specimen extends Eloquent
     */
     public function isNotCollected()
     {
-        if($this->specimen_status_id == Specimen::NOT_COLLECTED)
+        if($this->specimen_status_id == UnhlsSpecimen::NOT_COLLECTED)
         {
             return true;
         }
@@ -127,7 +120,7 @@ class Specimen extends Eloquent
     */
     public function isAccepted()
     {
-        if($this->specimen_status_id == Specimen::ACCEPTED)
+        if($this->specimen_status_id == UnhlsSpecimen::ACCEPTED)
         {
             return true;
         }
@@ -143,7 +136,7 @@ class Specimen extends Eloquent
     */
     public function isRejected()
     {
-        if($this->specimen_status_id == Specimen::REJECTED)
+        if($this->specimen_status_id == UnhlsSpecimen::REJECTED)
         {
             return true;
         }
@@ -151,4 +144,5 @@ class Specimen extends Eloquent
             return false;
         }
     }
+
 }

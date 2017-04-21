@@ -46,6 +46,10 @@ class UserController extends Controller {
     public function homeAction(){
         return View::make("user.home");
     }
+	
+	public function dashboard(){
+        return View::make("user.dashboard");
+    }
 
 
     /**
