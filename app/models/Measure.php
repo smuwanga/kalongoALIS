@@ -171,18 +171,18 @@ class Measure extends Eloquent
 	 * @return count
 	 */
 	public function totalTestResults($gender=null, $ageRange=null, $from=null, $to=null, $range=null, $positive=null){
-		$testResults = TestResult::where('test_results.measure_id', $this->id)
-						 ->join('tests', 'tests.id', '=', 'test_results.test_id')
-						 ->join('test_types', 'tests.test_type_id', '=', 'test_types.id')
+		$testResults = UnhlsTestResult::where('unhls_test_results.measure_id', $this->id)
+						 ->join('unhls_tests', 'unhls_tests.id', '=', 'unhls_test_results.test_id')
+						 ->join('test_types', 'unhls_tests.test_type_id', '=', 'test_types.id')
 						 ->join('testtype_measures', 'testtype_measures.test_type_id', '=', 'test_types.id')
 						 ->where('testtype_measures.measure_id', $this->id)
-						 ->whereIn('test_status_id', [Test::COMPLETED, Test::VERIFIED]);
+						 ->whereIn('test_status_id', [UnhlsTest::COMPLETED, UnhlsTest::VERIFIED]);
 			if($to && $from){
 				$testResults = $testResults->whereBetween('time_created', [$from, $to]);
 			}
 			if($ageRange || $gender){
-				$testResults = $testResults->join('visits', 'tests.visit_id', '=', 'visits.id')
-							   ->join('patients', 'visits.patient_id', '=', 'patients.id');
+				$testResults = $testResults->join('unhls_visits', 'unhls_tests.visit_id', '=', 'unhls_visits.id')
+							   ->join('unhls_patients', 'unhls_visits.patient_id', '=', 'unhls_patients.id');
 							   if($gender){
 							   		$testResults = $testResults->whereIn('gender', $gender);
 							   	}

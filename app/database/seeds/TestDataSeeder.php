@@ -4,23 +4,80 @@ class TestDataSeeder extends DatabaseSeeder
 {
     public function run()
     {
+        /* DISTRICT table */
+        $districtsData = array(
+            array("id" => \Config::get('constants.DISTRICT_ID'), 
+                'name' => \Config::get('constants.DISTRICT_NAME')
+                ),
+            
+        );
+
+        foreach ($districtsData as $district)
+        {
+            $districts[] = District::create($district);
+        }
+        $this->command->info('Districts seeded');
+
+
+        /* Facility Ownership table */
+        $facilityownershipsData = array(
+            array("owner" => "Public"),
+            array("owner" => "PFP"),
+            array("owner" => "PNFP"),
+            array("owner" => "Other"),
+            
+        );
+
+        foreach ($facilityownershipsData as $facilityownership)
+        {
+            $facilityownerships[] = UNHLSFacilityOwnership::create($facilityownership);
+        }
+        $this->command->info('Facility Ownerships seeded');
+
+        
+        /* Facility Levels table */
+        $facilitylevelsData = array(
+            array("level" => "Public NRH"),
+            array("level" => "Public RRH"),
+            array("level" => "Public GH"),
+            array("level" => "Public HCIV"),
+            array("level" => "Public HCIII"),
+            array("level" => "Private Level 3"),
+            array("level" => "Private Level 2"),
+            array("level" => "Private Level 1"),
+        );
+
+        foreach ($facilitylevelsData as $facilitylevel)
+        {
+            $facilitylevels[] = UNHLSFacilityLevel::create($facilitylevel);
+        }
+        $this->command->info('Facility Levels seeded');
+
+
+        /* Facility table */
+        $facilitysData = array(
+            array("id" => \Config::get('constants.FACILITY_ID'),
+                'name' => \Config::get('constants.FACILITY_NAME'),
+                'district_id' => \Config::get('constants.DISTRICT_ID'),
+                'code' => \Config::get('constants.FACILITY_CODE'),
+                'level_id' => \Config::get('constants.FACILITY_LEVEL_ID'),
+                'ownership_id' => \Config::get('constants.FACILITY_OWNERSHIP_ID')
+                ),
+        );
+
+        foreach ($facilitysData as $facility)
+        {
+            $facilitys[] = UNHLSFacility::create($facility);
+        }
+        $this->command->info('Facility seeded');
+
+
         /* Users table */
         $usersData = array(
             array(
-                "username" => "administrator", "password" => Hash::make("password"), "email" => "admin@kblis.org",
-                "name" => "kBLIS Administrator", "designation" => "Programmer"
-            ),
-            array(
-                "username" => "external", "password" => Hash::make("password"), "email" => "admin@kblis.org",
-                "name" => "External System User", "designation" => "Administrator", "image" => "/i/users/user-2.jpg"
-            ),
-            array(
-                "username" => "lmorena", "password" => Hash::make("password"), "email" => "lmorena@kblis.org",
-                "name" => "L. Morena", "designation" => "Lab Technologist", "image" => "/i/users/user-3.png"
-            ),
-            array(
-                "username" => "abumeyang", "password" => Hash::make("password"), "email" => "abumeyang@kblis.org",
-                "name" => "A. Abumeyang", "designation" => "Doctor"
+                "username" => "administrator", "password" => Hash::make("password"),
+                "email" => "", "name" => "ASLM-LIS Admin", "designation" => "Programmer",
+                "facility_id" => \Config::get('constants.FACILITY_ID')
             ),
         );
 
@@ -29,8 +86,103 @@ class TestDataSeeder extends DatabaseSeeder
             $users[] = User::create($user);
         }
         $this->command->info('users seeded');
+
+
+
+        /* BB Actions table */
+        $bbactionsData = array(
+            array("actionname" => "Reported to administration for further action"),
+			array("actionname" => "Referred to mental department"),
+			array("actionname" => "Gave first aid (e.g. arrested bleeding)"),
+			array("actionname" => "Referred to clinician for further management"),
+            array("actionname" => "Conducted risk assessment"),
+            array("actionname" => "Intervened to interrupt/arrest progress of incident (e.g. Used neutralizing agent, stopping a fight)"),
+            array("actionname" => "Disposed off broken container to designated waste bin/sharps"),
+            array("actionname" => "Patient sample taken & referred to testing lab Isolated suspected patient"),
+            array("actionname" => "Reported to or engaged national level BRM for intervention"),
+            array("actionname" => "Victim counseled"),
+            array("actionname" => "Contacted Police"),
+            array("actionname" => "Used spill kit"),
+            array("actionname" => "Administered PEP"),
+            array("actionname" => "Referred to disciplinary committee"),
+            array("actionname" => "Contained the spillage"),
+            array("actionname" => "Disinfected the place"),
+            array("actionname" => "Switched off the Electricity Mains"),
+            array("actionname" => "Washed punctured area"),
+            array("actionname" => "Others"),
+        );
+
+        foreach ($bbactionsData as $bbaction)
+        {
+            $bbactions[] = BbincidenceAction::create($bbaction);
+        }
+        $this->command->info('BB Actions seeded');
+		
+		
+		/* BB Causes table */
+        $bbcausesData = array(
+			array("causename" => "Defective Equipment"),
+			array("causename" => "Hazardous Chemicals"),
+			array("causename" => "Unsafe Procedure"),
+			array("causename" => "Psychological causes (e.g. emotional condition, depression, mental confusion)"),
+            array("causename" => "Unsafe storage of laboratory chemicals"),
+            array("causename" => "Lack of Skill or Knowledge"),
+            array("causename" => "Lack of Personal Protective Equipment"),
+            array("causename" => "Unsafe Working Environment"),
+            array("causename" => "Lack of Adequate Physical Security"),
+            array("causename" => "Unsafe location of laboratory equipment"),
+            array("causename" => "Other"),
+        );
+
+        foreach ($bbcausesData as $bbcause)
+        {
+            $bbcauses[] = BbincidenceCause::create($bbcause);
+        }
+        $this->command->info('BB Causes seeded');
+		
+		/* BB Natures table */
+        $bbnaturesData = array(
+            array("name"=>"Assault/Fight among staff","class"=>"Physical","priority"=>"Minor"),
+            array("name"=>"Fainting","class"=>"Physical","priority"=>"Minor"),
+            array("name"=>"Roof leakages","class"=>"Physical","priority"=>"Minor"),
+            array("name"=>"Machine cuts/bruises","class"=>"Mechanical","priority"=>"Minor"),
+            array("name"=>"Electric shock/burn","class"=>"Mechanical","priority"=>"Major"),
+            array("name"=>"Death within lab","class"=>"Ergonometric and Medical","priority"=>"Major"),
+            array("name"=>"Slip or fall","class"=>"Physical","priority"=>"Minor"),
+            array("name"=>"Unnecessary destruction of lab material","class"=>"Physical","priority"=>"Minor"),
+            array("name"=>"Theft of laboratory consumables","class"=>"Physical","priority"=>"Minor"),
+            array("name"=>"Breakage of sample container","class"=>"Physical","priority"=>"Minor"),
+            array("name"=>"Prick/cut by unused sharps","class"=>"Physical","priority"=>"Minor"),
+            array("name"=>"Injury caused by laboratory objects","class"=>"Physical","priority"=>"Minor"),
+            array("name"=>"Chemical burn","class"=>"Chemical","priority"=>"Minor"),
+            array("name"=>"Theft of chemical","class"=>"Chemical","priority"=>"Minor"),
+            array("name"=>"Chemical spillage","class"=>"Chemical","priority"=>"Major"),
+            array("name"=>"Theft of equipment","class"=>"Physical","priority"=>"Major"),
+            array("name"=>"Attack on the Lab","class"=>"Physical","priority"=>"Major"),
+            array("name"=>"Collapsing building","class"=>"Physical","priority"=>"Major"),
+            array("name"=>"Bike rider accident","class"=>"Physical","priority"=>"Major"),
+            array("name"=>"Fire","class"=>"Physical","priority"=>"Major"),
+            array("name"=>"Needle prick or cuts by used sharps","class"=>"Biological","priority"=>"Minor"),
+            array("name"=>"Sample spillage","class"=>"Biological","priority"=>"Minor"),
+            array("name"=>"Theft of samples","class"=>"Biological","priority"=>"Major"),
+            array("name"=>"Contact with VHF suspect","class"=>"Biological","priority"=>"Major"),
+            array("name"=>"Contact with radiological materials","class"=>"Radiological","priority"=>"Major"),
+            array("name"=>"Theft of radiological materials","class"=>"Radiological","priority"=>"Major"),
+            array("name"=>"Poor disposal of radiological materials","class"=>"Radiological","priority"=>"Major"),
+            array("name"=>"Poor vision from inadequate light","class"=>"Ergonometric and Medical","priority"=>"Minor"),
+            array("name"=>"Back pain from posture effects","class"=>"Ergonometric and Medical","priority"=>"Minor"),
+            array("name"=>"Other occupational hazard","class"=>"Ergonometric and Medical","priority"=>"Minor"),
+            array("name"=>"Other","class"=>"Other","priority"=>"Other"),
+        );
+
+        foreach ($bbnaturesData as $bbnature)
+        {
+            $bbnatures[] = BbincidenceNature::create($bbnature);
+        }
+        $this->command->info('BB Natures seeded');
         
 
+       
         /* Specimen Types table */
         $specTypesData = array(
             array("name" => "Ascitic Tap"),
@@ -47,7 +199,7 @@ class TestDataSeeder extends DatabaseSeeder
             array("name" => "Semen"),
             array("name" => "Serum"),
             array("name" => "Skin"),
-            array("name" => "Sputum"),
+            array("name" => "Vomitus"),
             array("name" => "Stool"),
             array("name" => "Synovial Fluid"),
             array("name" => "Throat Swab"),
@@ -281,7 +433,7 @@ class TestDataSeeder extends DatabaseSeeder
             array("name" => "Hu Jintao", "email" => "hu@.un.org", "patient_number" => "1005", "dob" => "1956-10-28", "gender" => "0", "created_by" => "2"),
             array("name" => "Lance Opiyo", "email" => "lance@x.com", "patient_number" => "2150", "dob" => "2012-01-01", "gender" => "0", "created_by" => "1"));
         foreach ($patients_array as $pat) {
-            $patients[] = Patient::create($pat);
+            $patients[] = UnhlsPatient::create($pat);
         }
 
         $this->command->info('patients seeded');
@@ -304,7 +456,8 @@ class TestDataSeeder extends DatabaseSeeder
           array("id" => "2","name" => "pending","test_phase_id" => "1"),//Pre-Analytical
           array("id" => "3","name" => "started","test_phase_id" => "2"),//Analytical
           array("id" => "4","name" => "completed","test_phase_id" => "3"),//Post-Analytical
-          array("id" => "5","name" => "verified","test_phase_id" => "3")//Post-Analytical
+          array("id" => "5","name" => "verified","test_phase_id" => "3"),//Post-Analytical
+          array("id" => "6","name" => "specimen-rejected-at-analysis","test_phase_id" => "3")//Analytical
         );
         foreach ($test_statuses as $test_status)
         {
@@ -314,9 +467,9 @@ class TestDataSeeder extends DatabaseSeeder
 
         /* Specimen Status table */
         $specimen_statuses = array(
-          array("id" => "1", "name" => "specimen-not-collected"),
-          array("id" => "2", "name" => "specimen-accepted"),
-          array("id" => "3", "name" => "specimen-rejected")
+          array("id" => "1", "name" => "specimen-not-collected"),//Pre-Analytical
+          array("id" => "2", "name" => "specimen-accepted"),//Pre-Analytical
+          array("id" => "3", "name" => "specimen-rejected")//Pre-Analytical
         );
         foreach ($specimen_statuses as $specimen_status)
         {
@@ -327,7 +480,7 @@ class TestDataSeeder extends DatabaseSeeder
         /* Visits table */
         
         for ($i=0; $i < 7; $i++) { 
-            $visits[] = Visit::create(array("patient_id" => $patients[rand(0,count($patients)-1)]->id));
+            $visits[] = UnhlsVisit::create(array("patient_id" => $patients[rand(0,count($patients)-1)]->id));
         }
         $this->command->info('visits seeded');
 
@@ -380,72 +533,72 @@ class TestDataSeeder extends DatabaseSeeder
         $now = new DateTime();
 
         /* Test table */
-        Test::create(
+        UnhlsTest::create(
             array(
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeBS->id,//BS for MPS
                 "specimen_id" => $this->createSpecimen(
-                        Test::NOT_RECEIVED, Specimen::NOT_COLLECTED,
+                        UnhlsTest::NOT_RECEIVED, UnhlsSpecimen::NOT_COLLECTED,
                         SpecimenType::all()->last()->id,
                         $users[rand(0, count($users)-1)]->id),
-                "test_status_id" => Test::NOT_RECEIVED,
+                "test_status_id" => UnhlsTest::NOT_RECEIVED,
                 "requested_by" => "Dr. Abou Meyang",
                 "created_by" => $users[rand(0, count($users)-1)]->id,
             )
         );        
         
-        Test::create(
+        UnhlsTest::create(
             array(
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeHB->id,
                 "specimen_id" => $this->createSpecimen(
-                        Test::PENDING, Specimen::NOT_COLLECTED,
+                        UnhlsTest::PENDING, UnhlsSpecimen::NOT_COLLECTED,
                         SpecimenType::all()->last()->id,
                         $users[rand(0, count($users)-1)]->id),
-                "test_status_id" => Test::PENDING,
+                "test_status_id" => UnhlsTest::PENDING,
                 "requested_by" => "Dr. Abou Meyang",
                 "created_by" => $users[rand(0, count($users)-1)]->id,
             )
         );        
         
-        Test::create(
+        UnhlsTest::create(
             array(
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeGXM->id,
                 "specimen_id" => $this->createSpecimen(
-                        Test::PENDING, Specimen::NOT_COLLECTED,
+                        UnhlsTest::PENDING, UnhlsSpecimen::NOT_COLLECTED,
                         SpecimenType::all()->last()->id,
                         $users[rand(0, count($users)-1)]->id),
-                "test_status_id" => Test::PENDING,
+                "test_status_id" => UnhlsTest::PENDING,
                 "requested_by" => "Dr. Abou Meyang",
                 "created_by" => $users[rand(0, count($users)-1)]->id,
             )
         );        
         
-        Test::create(
+        UnhlsTest::create(
             array(
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeBS->id,//BS for MPS
                 "specimen_id" => $this->createSpecimen(
-                        Test::PENDING, Specimen::ACCEPTED,
+                        UnhlsTest::PENDING, UnhlsSpecimen::ACCEPTED,
                         SpecimenType::all()->last()->id,
                         $users[rand(0, count($users)-1)]->id),
-                "test_status_id" => Test::PENDING,
+                "test_status_id" => UnhlsTest::PENDING,
                 "created_by" => $users[rand(0, count($users)-1)]->id,
                 "requested_by" => "Dr. Abou Meyang",
             )
         );        
         
-        $test_gxm_accepted_completed = Test::create(
+        $test_gxm_accepted_completed = UnhlsTest::create(
             array(
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeGXM->id,
                 "specimen_id" => $this->createSpecimen(
-                        Test::COMPLETED, Specimen::ACCEPTED, 
+                        UnhlsTest::COMPLETED, UnhlsSpecimen::ACCEPTED, 
                         SpecimenType::all()->last()->id, 
                         $users[rand(0, count($users)-1)]->id),
                 "interpretation" => "Perfect match.",
-                "test_status_id" => Test::COMPLETED,
+                "test_status_id" => UnhlsTest::COMPLETED,
                 "created_by" => $users[rand(0, count($users)-1)]->id,
                 "tested_by" => $users[rand(0, count($users)-1)]->id,
                 "requested_by" => "Dr. Abou Meyang",
@@ -454,16 +607,16 @@ class TestDataSeeder extends DatabaseSeeder
             )
         );
 
-        $test_hb_accepted_completed = Test::create(
+        $test_hb_accepted_completed = UnhlsTest::create(
             array(
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeHB->id,
                 "specimen_id" => $this->createSpecimen(
-                        Test::COMPLETED, Specimen::ACCEPTED, 
+                        UnhlsTest::COMPLETED, UnhlsSpecimen::ACCEPTED, 
                         SpecimenType::all()->last()->id, 
                         $users[rand(0, count($users)-1)]->id),
                 "interpretation" => "Do nothing!",
-                "test_status_id" => Test::COMPLETED,
+                "test_status_id" => UnhlsTest::COMPLETED,
                 "created_by" => $users[rand(0, count($users)-1)]->id,
                 "tested_by" => $users[rand(0, count($users)-1)]->id,
                 "requested_by" => "Genghiz Khan",
@@ -472,30 +625,30 @@ class TestDataSeeder extends DatabaseSeeder
             )
         );
 
-        $tests_accepted_started = Test::create(
+        $tests_accepted_started = UnhlsTest::create(
             array(
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeGXM->id,
                 "specimen_id" => $this->createSpecimen(
-                    Test::STARTED, Specimen::ACCEPTED, SpecimenType::all()->last()->id, 
+                    UnhlsTest::STARTED, UnhlsSpecimen::ACCEPTED, SpecimenType::all()->last()->id, 
                     $users[rand(0, count($users)-1)]->id),
-                "test_status_id" => Test::STARTED,
+                "test_status_id" => UnhlsTest::STARTED,
                 "requested_by" => "Dr. Abou Meyang",
                 "created_by" => $users[rand(0, count($users)-1)]->id,
                 "time_started" => $now->format('Y-m-d H:i:s'),
             )
         );
 
-        $tests_accepted_completed = Test::create(
+        $tests_accepted_completed = UnhlsTest::create(
             array(
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeBS->id,//BS for MPS
                 "specimen_id" => $this->createSpecimen(
-                        Test::COMPLETED, Specimen::ACCEPTED, 
+                        UnhlsTest::COMPLETED, UnhlsSpecimen::ACCEPTED, 
                         SpecimenType::all()->last()->id, 
                         $users[rand(0, count($users)-1)]->id),
                 "interpretation" => "Positive",
-                "test_status_id" => Test::COMPLETED,
+                "test_status_id" => UnhlsTest::COMPLETED,
                 "created_by" => $users[rand(0, count($users)-1)]->id,
                 "tested_by" => $users[rand(0, count($users)-1)]->id,
                 "requested_by" => "Ariel Smith",
@@ -504,16 +657,16 @@ class TestDataSeeder extends DatabaseSeeder
             )
         );        
         
-        $tests_accepted_verified = Test::create(
+        $tests_accepted_verified = UnhlsTest::create(
             array(
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeBS->id,//BS for MPS
                 "specimen_id" => $this->createSpecimen(
-                        Test::VERIFIED, Specimen::ACCEPTED, 
+                        UnhlsTest::VERIFIED, UnhlsSpecimen::ACCEPTED, 
                         SpecimenType::all()->last()->id, 
                         $users[rand(0, count($users)-1)]->id),
                 "interpretation" => "Very high concentration of parasites.",
-                "test_status_id" => Test::VERIFIED,
+                "test_status_id" => UnhlsTest::VERIFIED,
                 "created_by" => $users[rand(0, count($users)-1)]->id,
                 "tested_by" => $users[rand(0, count($users)-1)]->id,
                 "verified_by" => $users[rand(0, count($users)-1)]->id,
@@ -524,17 +677,17 @@ class TestDataSeeder extends DatabaseSeeder
             )
         );        
         
-        $tests_rejected_pending = Test::create(
+        $tests_rejected_pending = UnhlsTest::create(
             array(
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeBS->id,//BS for MPS
                 "specimen_id" => $this->createSpecimen(
-                        Test::PENDING, Specimen::REJECTED, 
+                        UnhlsTest::PENDING, UnhlsSpecimen::REJECTED, 
                         SpecimenType::all()->last()->id, 
                         $users[rand(0, count($users)-1)]->id,
                         $users[rand(0, count($users)-1)]->id,
                         $rejection_reasons[rand(0,count($rejection_reasons)-1)]->id),
-                "test_status_id" => Test::PENDING,
+                "test_status_id" => UnhlsTest::PENDING,
                 "requested_by" => "Dr. Abou Meyang",
                 "created_by" => $users[rand(0, count($users)-1)]->id,
                 "time_started" => $now->format('Y-m-d H:i:s'),
@@ -542,49 +695,49 @@ class TestDataSeeder extends DatabaseSeeder
         );        
 
         //  WBC Started
-        Test::create(
+        UnhlsTest::create(
             array(
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeWBC->id,
                 "specimen_id" => $this->createSpecimen(
-                        Test::STARTED, Specimen::ACCEPTED,
+                        UnhlsTest::STARTED, UnhlsSpecimen::ACCEPTED,
                         SpecimenType::all()->last()->id,
                         $users[rand(0, count($users)-1)]->id),
-                "test_status_id" => Test::PENDING,
+                "test_status_id" => UnhlsTest::PENDING,
                 "requested_by" => "Fred Astaire",
                 "created_by" => $users[rand(0, count($users)-1)]->id,
             )
         );        
         
-        $tests_rejected_started = Test::create(
+        $tests_rejected_started = UnhlsTest::create(
             array(
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeBS->id,//BS for MPS
                 "specimen_id" => $this->createSpecimen(
-                        Test::STARTED, Specimen::REJECTED, 
+                        UnhlsTest::STARTED, UnhlsSpecimen::REJECTED, 
                         SpecimenType::all()->last()->id, 
                         $users[rand(0, count($users)-1)]->id,
                         $users[rand(0, count($users)-1)]->id,
                         $rejection_reasons[rand(0,count($rejection_reasons)-1)]->id),
-                "test_status_id" => Test::STARTED,
+                "test_status_id" => UnhlsTest::STARTED,
                 "created_by" => $users[rand(0, count($users)-1)]->id,
                 "requested_by" => "Bony Em",
                 "time_started" => $now->format('Y-m-d H:i:s'),
             )
         );
         
-        $tests_rejected_completed = Test::create(
+        $tests_rejected_completed = UnhlsTest::create(
             array(
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeBS->id,//BS for MPS
                 "specimen_id" => $this->createSpecimen(
-                        Test::COMPLETED, Specimen::REJECTED, 
+                        UnhlsTest::COMPLETED, UnhlsSpecimen::REJECTED, 
                         SpecimenType::all()->last()->id, 
                         $users[rand(0, count($users)-1)]->id,
                         $users[rand(0, count($users)-1)]->id,
                         $rejection_reasons[rand(0,count($rejection_reasons)-1)]->id),
                 "interpretation" => "Budda Boss",
-                "test_status_id" => Test::COMPLETED,
+                "test_status_id" => UnhlsTest::COMPLETED,
                 "created_by" => $users[rand(0, count($users)-1)]->id,
                 "tested_by" => $users[rand(0, count($users)-1)]->id,
                 "requested_by" => "Ed Buttler",
@@ -593,50 +746,49 @@ class TestDataSeeder extends DatabaseSeeder
             )
         );
 
-        Test::create(
+        UnhlsTest::create(
             array(
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeUrinalysis->id,
                 "specimen_id" => $this->createSpecimen(
-                        Test::PENDING, Specimen::NOT_COLLECTED,
+                        UnhlsTest::PENDING, UnhlsSpecimen::NOT_COLLECTED,
                         SpecimenType::all()->last()->id,
                         $users[rand(0, count($users)-1)]->id),
-                "test_status_id" => Test::PENDING,
+                "test_status_id" => UnhlsTest::PENDING,
                 "requested_by" => "Dr. Abou Meyang",
                 "created_by" => $users[rand(0, count($users)-1)]->id,
             )
         );        
         
-        Test::create(
+        UnhlsTest::create(
             array(
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeWBC->id,
                 "specimen_id" => $this->createSpecimen(
-                        Test::PENDING, Specimen::NOT_COLLECTED,
+                        UnhlsTest::PENDING, UnhlsSpecimen::NOT_COLLECTED,
                         SpecimenType::all()->last()->id,
                         $users[rand(0, count($users)-1)]->id),
-                "test_status_id" => Test::PENDING,
+                "test_status_id" => UnhlsTest::PENDING,
                 "requested_by" => "Dr. Abou Meyang",
                 "created_by" => $users[rand(0, count($users)-1)]->id,
             )
         );        
         
-        $test_urinalysis_accepted_completed = Test::create(
+        $test_urinalysis_accepted_completed = UnhlsTest::create(
             array(
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeUrinalysis->id,
                 "specimen_id" => $this->createSpecimen(
-                        Test::COMPLETED, Specimen::ACCEPTED, 
+                        UnhlsTest::COMPLETED, UnhlsSpecimen::ACCEPTED, 
                         SpecimenType::all()->last()->id, 
                         $users[rand(0, count($users)-1)]->id),
                 "interpretation" => "Whats this !!!! ###%%% ^ *() /",
-                "test_status_id" => Test::COMPLETED,
+                "test_status_id" => UnhlsTest::COMPLETED,
                 "created_by" => $users[rand(0, count($users)-1)]->id,
                 "tested_by" => $users[rand(0, count($users)-1)]->id,
                 "requested_by" => "Dr. Abou Meyang",
                 "time_started" => $now->format('Y-m-d H:i:s'),
                 "time_completed" => $now->add(new DateInterval('PT12M8S'))->format('Y-m-d H:i:s'),
-                "external_id" => 596699,
             )
         );
 
@@ -685,7 +837,7 @@ class TestDataSeeder extends DatabaseSeeder
 
         foreach ($testResults as $testResult)
         {
-            TestResult::create($testResult);
+            UnhlsTestResult::create($testResult);
         }
         $this->command->info('test results seeded');
 
@@ -756,114 +908,6 @@ class TestDataSeeder extends DatabaseSeeder
         $instrument->testTypes()->attach(array($testTypeWBC->id));
 
         $this->command->info('Instruments table seeded');
-
-
-        $labRequestUrinalysis[] = 
-            json_decode('{"cost":null,"receiptNumber":null,"receiptType":null,"labNo":596699,"parentLabNo":0,"requestingClinician":"frankenstein Dr",
-        "investigation":"Urinalysis","requestDate":"2014-10-14 10:20:35","orderStage":"ip","patientVisitNumber":643660,"patient":{"id":326983,
-        "fullName":"Macau Macau","dateOfBirth":"1996-10-09 00:00:00","gender":"Female"},"address":{"address":null,"postalCode":null,"phoneNumber":"","city":null}}');
-        $labRequestUrinalysis[] = 
-            json_decode('{"cost":null,"receiptNumber":null,"receiptType":null,"labNo":596700,"parentLabNo":596699,"requestingClinician":"frankenstein Dr",
-        "investigation":"Urine microscopy","requestDate":"2014-10-14 10:20:35","orderStage":"ip","patientVisitNumber":643660,"patient":{"id":326983,
-        "fullName":"Macau Macau","dateOfBirth":"1996-10-09 00:00:00","gender":"Female"},"address":{"address":null,"postalCode":null,"phoneNumber":"","city":null}}');
-        $labRequestUrinalysis[] = 
-            json_decode('{"cost":null,"receiptNumber":null,"receiptType":null,"labNo":596701,"parentLabNo":596700,"requestingClinician":"frankenstein Dr",
-        "investigation":"Pus cells","requestDate":"2014-10-14 10:20:35","orderStage":"ip","patientVisitNumber":643660,"patient":{"id":326983,
-        "fullName":"Macau Macau","dateOfBirth":"1996-10-09 00:00:00","gender":"Female"},"address":{"address":null,"postalCode":null,"phoneNumber":"","city":null}}');
-        $labRequestUrinalysis[] = 
-            json_decode('{"cost":null,"receiptNumber":null,"receiptType":null,"labNo":596702,"parentLabNo":596700,"requestingClinician":"frankenstein Dr",
-        "investigation":"S. haematobium","requestDate":"2014-10-14 10:20:35","orderStage":"ip","patientVisitNumber":643660,"patient":{"id":326983,
-        "fullName":"Macau Macau","dateOfBirth":"1996-10-09 00:00:00","gender":"Female"},"address":{"address":null,"postalCode":null,"phoneNumber":"","city":null}}');
-        $labRequestUrinalysis[] = 
-            json_decode('{"cost":null,"receiptNumber":null,"receiptType":null,"labNo":596703,"parentLabNo":596700,"requestingClinician":"frankenstein Dr",
-        "investigation":"T. vaginalis","requestDate":"2014-10-14 10:20:35","orderStage":"ip","patientVisitNumber":643660,"patient":{"id":326983,
-        "fullName":"Macau Macau","dateOfBirth":"1996-10-09 00:00:00","gender":"Female"},"address":{"address":null,"postalCode":null,"phoneNumber":"","city":null}}');
-        $labRequestUrinalysis[] = 
-            json_decode('{"cost":null,"receiptNumber":null,"receiptType":null,"labNo":596704,"parentLabNo":596700,"requestingClinician":"frankenstein Dr",
-        "investigation":"Yeast cells","requestDate":"2014-10-14 10:20:35","orderStage":"ip","patientVisitNumber":643660,"patient":{"id":326983,
-        "fullName":"Macau Macau","dateOfBirth":"1996-10-09 00:00:00","gender":"Female"},"address":{"address":null,"postalCode":null,"phoneNumber":"","city":null}}');
-        $labRequestUrinalysis[] = 
-            json_decode('{"cost":null,"receiptNumber":null,"receiptType":null,"labNo":596705,"parentLabNo":596700,"requestingClinician":"frankenstein Dr",
-        "investigation":"Red blood cells","requestDate":"2014-10-14 10:20:35","orderStage":"ip","patientVisitNumber":643660,"patient":{"id":326983,
-        "fullName":"Macau Macau","dateOfBirth":"1996-10-09 00:00:00","gender":"Female"},"address":{"address":null,"postalCode":null,"phoneNumber":"","city":null}}');
-        $labRequestUrinalysis[] = 
-            json_decode('{"cost":null,"receiptNumber":null,"receiptType":null,"labNo":596706,"parentLabNo":596700,"requestingClinician":"frankenstein Dr",
-        "investigation":"Bacteria","requestDate":"2014-10-14 10:20:36","orderStage":"ip","patientVisitNumber":643660,"patient":{"id":326983,
-        "fullName":"Macau Macau","dateOfBirth":"1996-10-09 00:00:00","gender":"Female"},"address":{"address":null,"postalCode":null,"phoneNumber":"","city":null}}');
-        $labRequestUrinalysis[] = 
-            json_decode('{"cost":null,"receiptNumber":null,"receiptType":null,"labNo":596707,"parentLabNo":596700,"requestingClinician":"frankenstein Dr",
-        "investigation":"Spermatozoa","requestDate":"2014-10-14 10:20:36","orderStage":"ip","patientVisitNumber":643660,"patient":{"id":326983,
-        "fullName":"Macau Macau","dateOfBirth":"1996-10-09 00:00:00","gender":"Female"},"address":{"address":null,"postalCode":null,"phoneNumber":"","city":null}}');
-        $labRequestUrinalysis[] = 
-            json_decode('{"cost":null,"receiptNumber":null,"receiptType":null,"labNo":596708,"parentLabNo":596700,"requestingClinician":"frankenstein Dr",
-        "investigation":"Epithelial cells","requestDate":"2014-10-14 10:20:36","orderStage":"ip","patientVisitNumber":643660,"patient":{"id":326983,
-        "fullName":"Macau Macau","dateOfBirth":"1996-10-09 00:00:00","gender":"Female"},"address":{"address":null,"postalCode":null,"phoneNumber":"","city":null}}');
-        $labRequestUrinalysis[] = 
-            json_decode('{"cost":null,"receiptNumber":null,"receiptType":null,"labNo":596709,"parentLabNo":596700,"requestingClinician":"frankenstein Dr",
-        "investigation":"ph","requestDate":"2014-10-14 10:20:36","orderStage":"ip","patientVisitNumber":643660,"patient":{"id":326983,
-        "fullName":"Macau Macau","dateOfBirth":"1996-10-09 00:00:00","gender":"Female"},"address":{"address":null,"postalCode":null,"phoneNumber":"","city":null}}');
-        $labRequestUrinalysis[] = 
-            json_decode('{"cost":null,"receiptNumber":null,"receiptType":null,"labNo":596710,"parentLabNo":596699,"requestingClinician":"frankenstein Dr",
-        "investigation":"Urine chemistry","requestDate":"2014-10-14 10:20:36","orderStage":"ip","patientVisitNumber":643660,"patient":{"id":326983,
-        "fullName":"Macau Macau","dateOfBirth":"1996-10-09 00:00:00","gender":"Female"},"address":{"address":null,"postalCode":null,"phoneNumber":"","city":null}}');
-        $labRequestUrinalysis[] = 
-            json_decode('{"cost":null,"receiptNumber":null,"receiptType":null,"labNo":596711,"parentLabNo":596710,"requestingClinician":"frankenstein Dr",
-        "investigation":"Glucose","requestDate":"2014-10-14 10:20:36","orderStage":"ip","patientVisitNumber":643660,"patient":{"id":326983,
-        "fullName":"Macau Macau","dateOfBirth":"1996-10-09 00:00:00","gender":"Female"},"address":{"address":null,"postalCode":null,"phoneNumber":"","city":null}}');
-        $labRequestUrinalysis[] = 
-            json_decode('{"cost":null,"receiptNumber":null,"receiptType":null,"labNo":596712,"parentLabNo":596710,"requestingClinician":"frankenstein Dr",
-        "investigation":"Ketones","requestDate":"2014-10-14 10:20:36","orderStage":"ip","patientVisitNumber":643660,"patient":{"id":326983,
-        "fullName":"Macau Macau","dateOfBirth":"1996-10-09 00:00:00","gender":"Female"},"address":{"address":null,"postalCode":null,"phoneNumber":"","city":null}}');
-        $labRequestUrinalysis[] = 
-            json_decode('{"cost":null,"receiptNumber":null,"receiptType":null,"labNo":596713,"parentLabNo":596710,"requestingClinician":"frankenstein Dr",
-        "investigation":"Proteins","requestDate":"2014-10-14 10:20:36","orderStage":"ip","patientVisitNumber":643660,"patient":{"id":326983,
-        "fullName":"Macau Macau","dateOfBirth":"1996-10-09 00:00:00","gender":"Female"},"address":{"address":null,"postalCode":null,"phoneNumber":"","city":null}}');
-        $labRequestUrinalysis[] = 
-            json_decode('{"cost":null,"receiptNumber":null,"receiptType":null,"labNo":596714,"parentLabNo":596710,"requestingClinician":"frankenstein Dr",
-        "investigation":"Blood","requestDate":"2014-10-14 10:20:36","orderStage":"ip","patientVisitNumber":643660,"patient":{"id":326983,
-        "fullName":"Macau Macau","dateOfBirth":"1996-10-09 00:00:00","gender":"Female"},"address":{"address":null,"postalCode":null,"phoneNumber":"","city":null}}');
-        $labRequestUrinalysis[] = 
-            json_decode('{"cost":null,"receiptNumber":null,"receiptType":null,"labNo":596715,"parentLabNo":596710,"requestingClinician":"frankenstein Dr",
-        "investigation":"Bilirubin","requestDate":"2014-10-14 10:20:36","orderStage":"ip","patientVisitNumber":643660,"patient":{"id":326983,
-        "fullName":"Macau Macau","dateOfBirth":"1996-10-09 00:00:00","gender":"Female"},"address":{"address":null,"postalCode":null,"phoneNumber":"","city":null}}');
-        $labRequestUrinalysis[] = 
-            json_decode('{"cost":null,"receiptNumber":null,"receiptType":null,"labNo":596716,"parentLabNo":596710,"requestingClinician":"frankenstein Dr",
-        "investigation":"Urobilinogen Phenlpyruvic acid","requestDate":"2014-10-14 10:20:37","orderStage":"ip","patientVisitNumber":643660,"patient":{"id":326983,
-        "fullName":"Macau Macau","dateOfBirth":"1996-10-09 00:00:00","gender":"Female"},"address":{"address":null,"postalCode":null,"phoneNumber":"","city":null}}');
-        $labRequestUrinalysis[] = 
-            json_decode('{"cost":null,"receiptNumber":null,"receiptType":null,"labNo":596717,"parentLabNo":596710,"requestingClinician":"frankenstein Dr",
-        "investigation":"pH","requestDate":"2014-10-14 10:20:37","orderStage":"ip","patientVisitNumber":643660,"patient":{"id":326983,
-        "fullName":"Macau Macau","dateOfBirth":"1996-10-09 00:00:00","gender":"Female"},"address":{"address":null,"postalCode":null,"phoneNumber":"","city":null}}');
-
-         for ($i=0; $i < count($labRequestUrinalysis); $i++) { 
-
-            $dumper = new ExternalDump();
-            $dumper->lab_no = $labRequestUrinalysis{$i}->labNo;
-            $dumper->parent_lab_no = $labRequestUrinalysis{$i}->parentLabNo;
-            $dumper->test_id = ($i == 0) ? $test_urinalysis_accepted_completed->id : null;
-            $dumper->requesting_clinician = $labRequestUrinalysis{$i}->requestingClinician;
-            $dumper->investigation = $labRequestUrinalysis{$i}->investigation;
-            $dumper->provisional_diagnosis = '';
-            $dumper->request_date = $labRequestUrinalysis{$i}->requestDate;
-            $dumper->order_stage = $labRequestUrinalysis{$i}->orderStage;
-            $dumper->patient_visit_number = $labRequestUrinalysis{$i}->patientVisitNumber;
-            $dumper->patient_id = $labRequestUrinalysis{$i}->patient->id;
-            $dumper->full_name = $labRequestUrinalysis{$i}->patient->fullName;
-            $dumper->dob = $labRequestUrinalysis{$i}->patient->dateOfBirth;
-            $dumper->gender = $labRequestUrinalysis{$i}->patient->gender;
-            $dumper->address = $labRequestUrinalysis{$i}->address->address;
-            $dumper->postal_code = '';
-            $dumper->phone_number = $labRequestUrinalysis{$i}->address->phoneNumber;
-            $dumper->city = $labRequestUrinalysis{$i}->address->city;
-            $dumper->cost = $labRequestUrinalysis{$i}->cost;
-            $dumper->receipt_number = $labRequestUrinalysis{$i}->receiptNumber;
-            $dumper->receipt_type = $labRequestUrinalysis{$i}->receiptType;
-            $dumper->waiver_no = '';
-            $dumper->system_id = "sanitas";
-            $dumper->save();
-        }
-        $this->command->info('ExternalDump table seeded');
-
 
         //  Begin seed for prevalence rates report
         /* Test Categories table - These map on to the lab sections */
@@ -951,12 +995,12 @@ class TestDataSeeder extends DatabaseSeeder
         $this->command->info('Test Type Measures seeded again');
 
         /*  Tests for prevalence rates  */
-        $tests_completed_one = Test::create(array(
+        $tests_completed_one = UnhlsTest::create(array(
                 "visit_id" => "1",
                 "test_type_id" => $test_types_salmonella->id,
                 "specimen_id" => "4",
                 "interpretation" => "Budda Boss",
-                "test_status_id" => Test::COMPLETED,
+                "test_status_id" => UnhlsTest::COMPLETED,
                 "created_by" => "2",
                 "tested_by" => "3",
                 "requested_by" => "Ariel Smith",
@@ -965,12 +1009,12 @@ class TestDataSeeder extends DatabaseSeeder
                 "time_completed" => "2014-07-23 16:17:19",
             )
         );
-        $tests_completed_two = Test::create(array(
+        $tests_completed_two = UnhlsTest::create(array(
                 "visit_id" => "2",
                 "test_type_id" => $test_types_direct->id,
                 "specimen_id" => "3",
                 "interpretation" => "Budda Boss",
-                "test_status_id" => Test::COMPLETED,
+                "test_status_id" => UnhlsTest::COMPLETED,
                 "created_by" => "2",
                 "tested_by" => "3",
                 "requested_by" => "Ariel Smith",
@@ -979,12 +1023,12 @@ class TestDataSeeder extends DatabaseSeeder
                 "time_completed" => "2014-07-26 13:57:01",
             )
         );
-        $tests_completed_three = Test::create(array(
+        $tests_completed_three = UnhlsTest::create(array(
                 "visit_id" => "3",
                 "test_type_id" => $test_types_du->id,
                 "specimen_id" => "2",
                 "interpretation" => "Budda Boss",
-                "test_status_id" => Test::COMPLETED,
+                "test_status_id" => UnhlsTest::COMPLETED,
                 "created_by" => "2",
                 "tested_by" => "3",
                 "requested_by" => "Ariel Smith",
@@ -993,12 +1037,12 @@ class TestDataSeeder extends DatabaseSeeder
                 "time_completed" => "2014-08-13 10:18:11",
             )
         );
-        $tests_completed_four = Test::create(array(
+        $tests_completed_four = UnhlsTest::create(array(
                 "visit_id" => "4",
                 "test_type_id" => $test_types_sickling->id,
                 "specimen_id" => "1",
                 "interpretation" => "Budda Boss",
-                "test_status_id" => Test::COMPLETED,
+                "test_status_id" => UnhlsTest::COMPLETED,
                 "created_by" => "2",
                 "tested_by" => "3",
                 "requested_by" => "Ariel Smith",
@@ -1007,12 +1051,12 @@ class TestDataSeeder extends DatabaseSeeder
                 "time_completed" => "2014-08-16 09:23:37",
             )
         );
-        $tests_completed_five = Test::create(array(
+        $tests_completed_five = UnhlsTest::create(array(
                 "visit_id" => "5",
                 "test_type_id" => $test_types_borrelia->id,
                 "specimen_id" => "1",
                 "interpretation" => "Budda Boss",
-                "test_status_id" => Test::COMPLETED,
+                "test_status_id" => UnhlsTest::COMPLETED,
                 "created_by" => "2",
                 "tested_by" => "3",
                 "requested_by" => "Ariel Smith",
@@ -1021,12 +1065,12 @@ class TestDataSeeder extends DatabaseSeeder
                 "time_completed" => "2014-08-23 12:07:18",
             )
         );
-        $tests_completed_six = Test::create(array(
+        $tests_completed_six = UnhlsTest::create(array(
                 "visit_id" => "6",
                 "test_type_id" => $test_types_vdrl->id,
                 "specimen_id" => "2",
                 "interpretation" => "Budda Boss",
-                "test_status_id" => Test::COMPLETED,
+                "test_status_id" => UnhlsTest::COMPLETED,
                 "created_by" => "2",
                 "tested_by" => "3",
                 "requested_by" => "Ariel Smith",
@@ -1035,12 +1079,12 @@ class TestDataSeeder extends DatabaseSeeder
                 "time_completed" => "2014-09-07 08:41:13",
             )
         );
-        $tests_completed_seven = Test::create(array(
+        $tests_completed_seven = UnhlsTest::create(array(
                 "visit_id" => "7",
                 "test_type_id" => $test_types_pregnancy->id,
                 "specimen_id" => "3",
                 "interpretation" => "Budda Boss",
-                "test_status_id" => Test::COMPLETED,
+                "test_status_id" => UnhlsTest::COMPLETED,
                 "created_by" => "2",
                 "tested_by" => "3",
                 "requested_by" => "Ariel Smith",
@@ -1049,12 +1093,12 @@ class TestDataSeeder extends DatabaseSeeder
                 "time_completed" => "2014-10-03 12:45:18",
             )
         );
-        $tests_completed_eight = Test::create(array(
+        $tests_completed_eight = UnhlsTest::create(array(
                 "visit_id" => "1",
                 "test_type_id" => $test_types_brucella->id,
                 "specimen_id" => "4",
                 "interpretation" => "Budda Boss",
-                "test_status_id" => Test::COMPLETED,
+                "test_status_id" => UnhlsTest::COMPLETED,
                 "created_by" => "2",
                 "tested_by" => "3",
                 "requested_by" => "Ariel Smith",
@@ -1063,12 +1107,12 @@ class TestDataSeeder extends DatabaseSeeder
                 "time_completed" => "2014-10-15 18:07:15",
             )
         );
-        $tests_completed_nine = Test::create(array(
+        $tests_completed_nine = UnhlsTest::create(array(
                 "visit_id" => "2",
                 "test_type_id" => $test_types_pylori->id,
                 "specimen_id" => "4",
                 "interpretation" => "Budda Boss",
-                "test_status_id" => Test::COMPLETED,
+                "test_status_id" => UnhlsTest::COMPLETED,
                 "created_by" => "2",
                 "tested_by" => "3",
                 "requested_by" => "Ariel Smith",
@@ -1077,12 +1121,12 @@ class TestDataSeeder extends DatabaseSeeder
                 "time_completed" => "2014-10-23 16:39:02",
             )
         );
-        $tests_completed_ten = Test::create(array(
+        $tests_completed_ten = UnhlsTest::create(array(
                 "visit_id" => "4",
                 "test_type_id" => $test_types_salmonella->id,
                 "specimen_id" => "3",
                 "interpretation" => "Budda Boss",
-                "test_status_id" => Test::COMPLETED,
+                "test_status_id" => UnhlsTest::COMPLETED,
                 "created_by" => "2",
                 "tested_by" => "3",
                 "requested_by" => "Ariel Smith",
@@ -1092,13 +1136,13 @@ class TestDataSeeder extends DatabaseSeeder
             )
         );     
         
-        $tests_verified_one = Test::create(
+        $tests_verified_one = UnhlsTest::create(
             array(
                 "visit_id" => "3",
                 "test_type_id" => $test_types_direct->id,
                 "specimen_id" => "2",
                 "interpretation" => "Budda Boss",
-                "test_status_id" => Test::VERIFIED,
+                "test_status_id" => UnhlsTest::VERIFIED,
                 "created_by" => "3",
                 "tested_by" => "2",
                 "verified_by" => "3",
@@ -1109,13 +1153,13 @@ class TestDataSeeder extends DatabaseSeeder
                 "time_verified" => "2014-07-21 19:53:48",
             )
         );
-        $tests_verified_two = Test::create(
+        $tests_verified_two = UnhlsTest::create(
             array(
                 "visit_id" => "2",
                 "test_type_id" => $test_types_du->id,
                 "specimen_id" => "1",
                 "interpretation" => "Budda Boss",
-                "test_status_id" => Test::VERIFIED,
+                "test_status_id" => UnhlsTest::VERIFIED,
                 "created_by" => "3",
                 "tested_by" => "2",
                 "verified_by" => "3",
@@ -1126,13 +1170,13 @@ class TestDataSeeder extends DatabaseSeeder
                 "time_verified" => "2014-08-21 19:53:48",
             )
         );
-        $tests_verified_three = Test::create(
+        $tests_verified_three = UnhlsTest::create(
             array(
                 "visit_id" => "3",
                 "test_type_id" => $test_types_sickling->id,
                 "specimen_id" => "4",
                 "interpretation" => "Budda Boss",
-                "test_status_id" => Test::VERIFIED,
+                "test_status_id" => UnhlsTest::VERIFIED,
                 "created_by" => "3",
                 "tested_by" => "2",
                 "verified_by" => "3",
@@ -1143,13 +1187,13 @@ class TestDataSeeder extends DatabaseSeeder
                 "time_verified" => "2014-08-26 19:53:48",
             )
         );
-        $tests_verified_four = Test::create(
+        $tests_verified_four = UnhlsTest::create(
             array(
                 "visit_id" => "4",
                 "test_type_id" => $test_types_borrelia->id,
                 "specimen_id" => "2",
                 "interpretation" => "Budda Boss",
-                "test_status_id" => Test::VERIFIED,
+                "test_status_id" => UnhlsTest::VERIFIED,
                 "created_by" => "3",
                 "tested_by" => "2",
                 "verified_by" => "3",
@@ -1160,13 +1204,13 @@ class TestDataSeeder extends DatabaseSeeder
                 "time_verified" => "2014-09-21 19:53:48",
             )
         );
-        $tests_verified_five = Test::create(
+        $tests_verified_five = UnhlsTest::create(
             array(
                 "visit_id" => "1",
                 "test_type_id" => $test_types_vdrl->id,
                 "specimen_id" => "3",
                 "interpretation" => "Budda Boss",
-                "test_status_id" => Test::VERIFIED,
+                "test_status_id" => UnhlsTest::VERIFIED,
                 "created_by" => "3",
                 "tested_by" => "2",
                 "verified_by" => "3",
@@ -1177,13 +1221,13 @@ class TestDataSeeder extends DatabaseSeeder
                 "time_verified" => "2014-09-22 19:53:48",
             )
         );
-        $tests_verified_six = Test::create(
+        $tests_verified_six = UnhlsTest::create(
             array(
                 "visit_id" => "1",
                 "test_type_id" => $test_types_pregnancy->id,
                 "specimen_id" => "4",
                 "interpretation" => "Budda Boss",
-                "test_status_id" => Test::VERIFIED,
+                "test_status_id" => UnhlsTest::VERIFIED,
                 "created_by" => "3",
                 "tested_by" => "2",
                 "verified_by" => "3",
@@ -1194,13 +1238,13 @@ class TestDataSeeder extends DatabaseSeeder
                 "time_verified" => "2014-09-23 19:53:48",
             )
         );
-        $tests_verified_seven = Test::create(
+        $tests_verified_seven = UnhlsTest::create(
             array(
                 "visit_id" => "1",
                 "test_type_id" => $test_types_brucella->id,
                 "specimen_id" => "2",
                 "interpretation" => "Budda Boss",
-                "test_status_id" => Test::VERIFIED,
+                "test_status_id" => UnhlsTest::VERIFIED,
                 "created_by" => "3",
                 "tested_by" => "2",
                 "verified_by" => "3",
@@ -1211,13 +1255,13 @@ class TestDataSeeder extends DatabaseSeeder
                 "time_verified" => "2014-09-27 19:53:48",
             )
         );
-        $tests_verified_eight = Test::create(
+        $tests_verified_eight = UnhlsTest::create(
             array(
                 "visit_id" => "3",
                 "test_type_id" => $test_types_pylori->id,
                 "specimen_id" => "4",
                 "interpretation" => "Budda Boss",
-                "test_status_id" => Test::VERIFIED,
+                "test_status_id" => UnhlsTest::VERIFIED,
                 "created_by" => "3",
                 "tested_by" => "2",
                 "verified_by" => "3",
@@ -1228,13 +1272,13 @@ class TestDataSeeder extends DatabaseSeeder
                 "time_verified" => "2014-10-22 19:53:48",
             )
         );
-        $tests_verified_nine = Test::create(
+        $tests_verified_nine = UnhlsTest::create(
             array(
                 "visit_id" => "4",
                 "test_type_id" => $test_types_pregnancy->id,
                 "specimen_id" => "3",
                 "interpretation" => "Budda Boss",
-                "test_status_id" => Test::VERIFIED,
+                "test_status_id" => UnhlsTest::VERIFIED,
                 "created_by" => "3",
                 "tested_by" => "2",
                 "verified_by" => "3",
@@ -1245,13 +1289,13 @@ class TestDataSeeder extends DatabaseSeeder
                 "time_verified" => "2014-10-17 19:53:48",
             )
         );
-        $tests_verified_ten = Test::create(
+        $tests_verified_ten = UnhlsTest::create(
             array(
                 "visit_id" => "2",
                 "test_type_id" => $test_types_pregnancy->id,
                 "specimen_id" => "1",
                 "interpretation" => "Budda Boss",
-                "test_status_id" => Test::VERIFIED,
+                "test_status_id" => UnhlsTest::VERIFIED,
                 "created_by" => "3",
                 "tested_by" => "2",
                 "verified_by" => "3",
@@ -1368,25 +1412,10 @@ class TestDataSeeder extends DatabaseSeeder
         );        
         foreach ($results as $result)
         {
-            TestResult::create($result);
+            UnhlsTestResult::create($result);
         }
         $this->command->info('Test results seeded again');
         //  End prevalence rates seed
-
-        //Seed for facilities
-        $facilitiesSeed = array(
-            array('name' => "WALTER REED"),
-            array('name' => "AGA KHAN UNIVERSITY HOSPITAL"),
-            array('name' => "TEL AVIV GENERAL HOSPITAL"),
-            array('name' => "GK PRISON DISPENSARY"),
-            array('name' => "KEMRI ALUPE"),
-            array('name' => "AMPATH")
-        );
-
-        foreach ($facilitiesSeed as $facility) {
-            Facility::create($facility);
-        }
-        $this->command->info('Facilities table seeded');
 
         //Seed for suppliers
         $supplier = Supplier::create(
@@ -1503,7 +1532,7 @@ class TestDataSeeder extends DatabaseSeeder
         //Control seeding
         $controls = array(
             array('name'=>'Humatrol P', 
-                    'description' =>'HUMATROL P control serum has been designed to provide a suitable basis for the quality control (imprecision, inaccuracy) in the clinical chemical laboratory.', 
+                    'description' =>'HUMATROL P control serum has been designed to provide a suitable basis for the quality control (imprecision, inracy) in the clinical chemical laboratory.', 
                     'lot_id' => 1),
             array('name'=>'Full Blood Count', 'description' => 'Né pas touchér', 'lot_id' => 1,)
             );
@@ -1562,13 +1591,13 @@ class TestDataSeeder extends DatabaseSeeder
 
         //Control Tests
         $controlTests = array(
-                array('entered_by'=> 3, 'control_id'=> 1, 'created_at'=>date('Y-m-d', strtotime('-10 days'))),
-                array('entered_by'=> 3, 'control_id'=> 1, 'created_at'=>date('Y-m-d', strtotime('-9 days'))),
-                array('entered_by'=> 3, 'control_id'=> 1, 'created_at'=>date('Y-m-d', strtotime('-8 days'))),
-                array('entered_by'=> 3, 'control_id'=> 1, 'created_at'=>date('Y-m-d', strtotime('-7 days'))),
-                array('entered_by'=> 3, 'control_id'=> 1, 'created_at'=>date('Y-m-d', strtotime('-6 days'))),
-                array('entered_by'=> 3, 'control_id'=> 1, 'created_at'=>date('Y-m-d', strtotime('-5 days'))),
-                array('entered_by'=> 3, 'control_id'=> 1, 'created_at'=>date('Y-m-d', strtotime('-4 days'))),
+                array('entered_by'=> 1, 'control_id'=> 1, 'created_at'=>date('Y-m-d', strtotime('-10 days'))),
+                array('entered_by'=> 1, 'control_id'=> 1, 'created_at'=>date('Y-m-d', strtotime('-9 days'))),
+                array('entered_by'=> 1, 'control_id'=> 1, 'created_at'=>date('Y-m-d', strtotime('-8 days'))),
+                array('entered_by'=> 1, 'control_id'=> 1, 'created_at'=>date('Y-m-d', strtotime('-7 days'))),
+                array('entered_by'=> 1, 'control_id'=> 1, 'created_at'=>date('Y-m-d', strtotime('-6 days'))),
+                array('entered_by'=> 1, 'control_id'=> 1, 'created_at'=>date('Y-m-d', strtotime('-5 days'))),
+                array('entered_by'=> 1, 'control_id'=> 1, 'created_at'=>date('Y-m-d', strtotime('-4 days'))),
                 array('entered_by'=> 1, 'control_id'=> 2, 'created_at'=>date('Y-m-d', strtotime('-3 days'))),
                 array('entered_by'=> 1, 'control_id'=> 2, 'created_at'=>date('Y-m-d', strtotime('-2 days'))),
             );
@@ -1654,6 +1683,744 @@ class TestDataSeeder extends DatabaseSeeder
         }
         $this->command->info("Control results table seeded");
 
+        //Seed for drugs
+        $penicillin = Drug::create(array('name' => "PENICILLIN"));
+        $ampicillin = Drug::create(array('name' => "AMPICILLIN"));
+        $clindamycin = Drug::create(array('name' => "CLINDAMYCIN"));
+        $tetracycline = Drug::create(array('name' => "TETRACYCLINE"));
+        $ciprofloxacin = Drug::create(array('name' => "CIPROFLOXACIN"));
+        $trimeth = Drug::create(array('name' => "TRIMETHOPRIM/SULFA"));
+        $nitrofurantoin = Drug::create(array('name' => "NITROFURANTOIN"));
+        $chloramphenicol = Drug::create(array('name' => "CHLORAMPHENICOL"));
+        $cefazolin = Drug::create(array('name' => "CEFAZOLIN"));
+        $gentamicin = Drug::create(array('name' => "GENTAMICIN"));
+        $amoxicillin = Drug::create(array('name' => "AMOXICILLIN-CLAV"));
+        $cephalothin = Drug::create(array('name' => "CEPHALOTHIN"));
+        $cefuroxime = Drug::create(array('name' => "CEFUROXIME"));
+        $cefotaxime = Drug::create(array('name' => "CEFOTAXIME"));
+        $piperacillin = Drug::create(array('name' => "PIPERACILLIN"));
+        $cefixime = Drug::create(array('name' => "CEFIXIME"));
+        $ceftazidime = Drug::create(array('name' => "CEFTAZIDIME"));
+        $cefriaxone = Drug::create(array('name' => "CEFRIAXONE"));
+        $levofloxacin = Drug::create(array('name' => "LEVOFLOXACIN"));
+        $merodenem = Drug::create(array('name' => "MERODENEM"));
+        $imedenem = Drug::create(array('name' => "IMEDENEM"));
+        $oxacillin = Drug::create(array('name' => "OXACILLIN (CEFOXITIN)"));
+        $erythromycin = Drug::create(array('name' => "ERYTHROMYCIN"));
+        $vancomycin = Drug::create(array('name' => "VANCOMYCIN"));
+        $cefoxitin = Drug::create(array('name' => "CEFOXITIN"));
+        $tobramycin = Drug::create(array('name' => "TOBRAMYCIN"));
+        $sulbactam = Drug::create(array('name' => "AMPICILLIN-SULBACTAM"));
+        $trimethoprim = Drug::create(array('name' => "TRIMETHOPRIM"));
+        $amikacin = Drug::create(['name' => 'AMIKACIN']);
+        $augmentin = Drug::create(['name' => 'AUGMENTIN']);
+        $ceftriaxione = Drug::create(['name' => 'CEFTRIAXIONE']);
+        $cotrimoxazole = Drug::create(['name' => 'CO-TRIMOXAZOLE']);
+        $imipenem = Drug::create(['name' => 'IMIPENEM']);
+        $meropenem = Drug::create(['name' => 'MEROPENEM']);
+        $peperacillintazobactam = Drug::create(['name' => 'PIPERACILLIN/TAZO']);
+
+        $this->command->info('Drugs table seeded');
+        //Seed for organisims
+        $staphylococci = Organism::create(array('name' => "Staphylococci species"));
+        $gramnegative = Organism::create(array('name' => "Gram negative cocci"));
+        $pseudomonas = Organism::create(array('name' => "Pseudomonas aeruginosa"));
+        $enterococcus = Organism::create(array('name' => "Enterococcus species"));
+        $pneumoniae = Organism::create(array('name' => "Streptococcus pneumoniae"));
+        $streptococcus = Organism::create(array('name' => "Streptococcus species viridans group"));
+        $beta = Organism::create(array('name' => "Beta-haemolytic streptococci"));
+        $haemophilus = Organism::create(array('name' => "Haemophilus influenzae"));
+        $naisseria = Organism::create(array('name' => "Naisseria menengitidis"));
+        $salmonella = Organism::create(array('name' => "Salmonella species"));
+        $shigella = Organism::create(array('name' => "Shigella"));
+        $vibrio = Organism::create(array('name' => "Vibrio cholerae"));
+        $grampositive = Organism::create(array('name' => "Gram positive cocci"));
+        $ecoli = Organism::create(['name' => 'E.coli']);
+        $oralPharyngealFlora = Organism::create(['name' => 'Oral-pharyngeal flora']);
+
+        $this->command->info('Organisms table seeded');
+        $microbiologyVisit = UnhlsVisit::create(["patient_id" => 1]);
+
+        $specimenTypeSputum = SpecimenType::create(["name" => "Sputum"]);
+
+        $specimenSputum = UnhlsSpecimen::create([
+            "specimen_type_id" => $specimenTypeSputum->id,
+            "specimen_status_id" => UnhlsSpecimen::ACCEPTED,
+            "accepted_by" => 1,
+            "time_accepted" => date('Y-m-d H:i:s')]);
+
+        $testTypeAST = TestType::create([
+                "name" => "AST",
+                "test_category_id" => $lab_section_microbiology->id,
+                "orderable_test" => 1
+        ]);
+        $testTypeAppearance = TestType::create([
+            'name' => 'Appearance',
+            'test_category_id' => $lab_section_microbiology->id,
+            'orderable_test' => 1
+        ]);
+        $testTypeGramStain = TestType::create([
+            'name' => 'Gram stain',
+            'test_category_id' => $lab_section_microbiology->id,
+            'orderable_test' => 1
+        ]);
+        $testTypeZnStain = TestType::create([
+            'name' => 'ZN stain',
+            'test_category_id' => $lab_section_microbiology->id,
+            'orderable_test' => 1
+        ]);
+        $testTypeModifiedZn = TestType::create([
+            'name' => 'Modified ZN',
+            'test_category_id' => $lab_section_microbiology->id,
+            'orderable_test' => 1
+        ]);
+        $testTypeWetSalineIodinePrep = TestType::create([
+            'name' => 'Wet Saline Iodine Prep',
+            'test_category_id' => $lab_section_microbiology->id,
+            'orderable_test' => 1
+        ]);
+
+        $measureAppearance = Measure::create(['measure_type_id' => '4', 'name' => 'Appearance', 'unit' => '']);
+        $measureGramStain = Measure::create(['measure_type_id' => '4', 'name' => 'Gram stain', 'unit' => '']);
+        $measureZnStain = Measure::create(['measure_type_id' => '4', 'name' => 'ZN stain', 'unit' => '']);
+        $measureModifiedZn = Measure::create(['measure_type_id' => '4', 'name' => 'Modified ZN', 'unit' => '']);
+        $measureWetSalineIodinePrep = Measure::create(['measure_type_id' => '4', 'name' => 'Wet Saline Iodine Prep', 'unit' => '']);
+        $measureAST = Measure::create(['measure_type_id' => '4', 'name' => 'AST', 'unit' => '']);
+
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[0]->id]);// Ascitic Tap
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[1]->id]);// Aspirate
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[2]->id]);// CSF
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[3]->id]);// Dried Blood Spot
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[4]->id]);// High Vaginal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[5]->id]);// Nasal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[6]->id]);// Plasma
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[7]->id]);// Plasma EDTA
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[8]->id]);// Pleural Tap
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[9]->id]);// Pus Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[10]->id]);// Rectal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[11]->id]);// Semen
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[12]->id]);// Serum
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[13]->id]);// Skin
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[14]->id]);// Vomitus
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[15]->id]);// Stool
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[16]->id]);// Synovial Fluid
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[17]->id]);// Throat Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[18]->id]);// Urethral Smear
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[19]->id]);// Urine
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[20]->id]);// Vaginal Smear
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[21]->id]);// Water
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[22]->id]);// Whole Blood
+
+
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[0]->id]);// Ascitic Tap
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[1]->id]);// Aspirate
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[2]->id]);// CSF
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[3]->id]);// Dried Blood Spot
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[4]->id]);// High Vaginal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[5]->id]);// Nasal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[6]->id]);// Plasma
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[7]->id]);// Plasma EDTA
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[8]->id]);// Pleural Tap
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[9]->id]);// Pus Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[10]->id]);// Rectal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[11]->id]);// Semen
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[12]->id]);// Serum
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[13]->id]);// Skin
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[14]->id]);// Vomitus
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[15]->id]);// Stool
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[16]->id]);// Synovial Fluid
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[17]->id]);// Throat Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[18]->id]);// Urethral Smear
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[19]->id]);// Urine
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[20]->id]);// Vaginal Smear
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[21]->id]);// Water
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[22]->id]);// Whole Blood
+
+
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[0]->id]);// Ascitic Tap
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[1]->id]);// Aspirate
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[2]->id]);// CSF
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[3]->id]);// Dried Blood Spot
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[4]->id]);// High Vaginal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[5]->id]);// Nasal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[6]->id]);// Plasma
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[7]->id]);// Plasma EDTA
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[8]->id]);// Pleural Tap
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[9]->id]);// Pus Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[10]->id]);// Rectal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[11]->id]);// Semen
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[12]->id]);// Serum
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[13]->id]);// Skin
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[14]->id]);// Vomitus
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[15]->id]);// Stool
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[16]->id]);// Synovial Fluid
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[17]->id]);// Throat Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[18]->id]);// Urethral Smear
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[19]->id]);// Urine
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[20]->id]);// Vaginal Smear
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[21]->id]);// Water
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[22]->id]);// Whole Blood
+
+
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[0]->id]);// Ascitic Tap
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[1]->id]);// Aspirate
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[2]->id]);// CSF
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[3]->id]);// Dried Blood Spot
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[4]->id]);// High Vaginal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[5]->id]);// Nasal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[6]->id]);// Plasma
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[7]->id]);// Plasma EDTA
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[8]->id]);// Pleural Tap
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[9]->id]);// Pus Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[10]->id]);// Rectal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[11]->id]);// Semen
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[12]->id]);// Serum
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[13]->id]);// Skin
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[14]->id]);// Vomitus
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[15]->id]);// Stool
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[16]->id]);// Synovial Fluid
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[17]->id]);// Throat Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[18]->id]);// Urethral Smear
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[19]->id]);// Urine
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[20]->id]);// Vaginal Smear
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[21]->id]);// Water
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[22]->id]);// Whole Blood
+
+
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[0]->id]);// Ascitic Tap
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[1]->id]);// Aspirate
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[2]->id]);// CSF
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[3]->id]);// Dried Blood Spot
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[4]->id]);// High Vaginal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[5]->id]);// Nasal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[6]->id]);// Plasma
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[7]->id]);// Plasma EDTA
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[8]->id]);// Pleural Tap
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[9]->id]);// Pus Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[10]->id]);// Rectal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[11]->id]);// Semen
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[12]->id]);// Serum
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[13]->id]);// Skin
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[14]->id]);// Vomitus
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[15]->id]);// Stool
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[16]->id]);// Synovial Fluid
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[17]->id]);// Throat Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[18]->id]);// Urethral Smear
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[19]->id]);// Urine
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[20]->id]);// Vaginal Smear
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[21]->id]);// Water
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[22]->id]);// Whole Blood
+
+
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[0]->id]);// Ascitic Tap
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[1]->id]);// Aspirate
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[2]->id]);// CSF
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[3]->id]);// Dried Blood Spot
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[4]->id]);// High Vaginal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[5]->id]);// Nasal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[6]->id]);// Plasma
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[7]->id]);// Plasma EDTA
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[8]->id]);// Pleural Tap
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[9]->id]);// Pus Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[10]->id]);// Rectal Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[11]->id]);// Semen
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[12]->id]);// Serum
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[13]->id]);// Skin
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[14]->id]);// Vomitus
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[15]->id]);// Stool
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[16]->id]);// Synovial Fluid
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[17]->id]);// Throat Swab
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[18]->id]);// Urethral Smear
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[19]->id]);// Urine
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[20]->id]);// Vaginal Smear
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[21]->id]);// Water
+        DB::table('testtype_specimentypes')->insert(
+            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[22]->id]);// Whole Blood
+
+        $testAST = UnhlsTest::create([
+                "visit_id" => $microbiologyVisit->id,
+                "test_type_id" => $testTypeAST->id,
+                'specimen_id' => $specimenSputum->id,
+                "interpretation" => "Format being deliberated",
+                "test_status_id" => UnhlsTest::VERIFIED,
+                "created_by" => "3",
+                "tested_by" => "2",
+                "verified_by" => "3",
+                "requested_by" => "Genghiz Khan",
+                "time_created" => "2014-10-17 19:16:15",
+                "time_started" => "2014-10-17 19:17:15",
+                "time_completed" => "2014-10-17 19:52:40",
+                "time_verified" => "2014-10-17 19:53:48",
+        ]);
+        $testAppearanceMucoSalivary = UnhlsTest::create([
+            'visit_id' => $microbiologyVisit->id,
+            'test_type_id' => $testTypeAppearance->id,
+            'specimen_id' => $specimenSputum->id,
+            'interpretation' => '',
+            'test_status_id' => UnhlsTest::VERIFIED,
+            'created_by' => '3',
+            'tested_by' => '2',
+            'verified_by' => '3',
+            'requested_by' => 'Genghiz Khan',
+            'time_created' => '2014-10-17 19:16:15',
+            'time_started' => '2014-10-17 19:17:15',
+            'time_completed' => '2014-10-17 19:52:40',
+            'time_verified' => '2014-10-17 19:53:48',
+        ]);
+        $testGramStain = UnhlsTest::create([
+            'visit_id' => $microbiologyVisit->id,
+            'test_type_id' => $testTypeGramStain->id,
+            'specimen_id' => $specimenSputum->id,
+            'interpretation' => '',
+            'test_status_id' => UnhlsTest::VERIFIED,
+            'created_by' => '3',
+            'tested_by' => '2',
+            'verified_by' => '3',
+            'requested_by' => 'Genghiz Khan',
+            'time_created' => '2014-10-17 19:16:15',
+            'time_started' => '2014-10-17 19:17:15',
+            'time_completed' => '2014-10-17 19:52:40',
+            'time_verified' => '2014-10-17 19:53:48',
+        ]);
+        $testZnStain = UnhlsTest::create([
+            'visit_id' => $microbiologyVisit->id,
+            'test_type_id' => $testTypeZnStain->id,
+            'specimen_id' => $specimenSputum->id,
+            'interpretation' => '',
+            'test_status_id' => UnhlsTest::VERIFIED,
+            'created_by' => '3',
+            'tested_by' => '2',
+            'verified_by' => '3',
+            'requested_by' => 'Genghiz Khan',
+            'time_created' => '2014-10-17 19:16:15',
+            'time_started' => '2014-10-17 19:17:15',
+            'time_completed' => '2014-10-17 19:52:40',
+            'time_verified' => '2014-10-17 19:53:48',
+        ]);
+        $testASToralPharyngealFlora = UnhlsTest::create([
+            'visit_id' => $microbiologyVisit->id,
+            'test_type_id' => $testTypeAST->id,
+            'specimen_id' => '1',
+            'interpretation' => '',
+            'test_status_id' => UnhlsTest::PENDING,
+            'created_by' => '3',
+            'tested_by' => '2',
+            'verified_by' => '3',
+            'requested_by' => 'Genghiz Khan',
+            'time_created' => '2014-10-17 19:16:15',
+            'time_started' => '2014-10-17 19:17:15',
+            'time_completed' => '2014-10-17 19:52:40',
+            'time_verified' => '2014-10-17 19:53:48',
+        ]);
+        $testAppearanceFormed = UnhlsTest::create([
+            'visit_id' => $microbiologyVisit->id,
+            'test_type_id' => $testTypeAppearance->id,
+            'specimen_id' => $specimenSputum->id,
+            'interpretation' => '',
+            'test_status_id' => UnhlsTest::VERIFIED,
+            'created_by' => '3',
+            'tested_by' => '2',
+            'verified_by' => '3',
+            'requested_by' => 'Genghiz Khan',
+            'time_created' => '2014-10-17 19:16:15',
+            'time_started' => '2014-10-17 19:17:15',
+            'time_completed' => '2014-10-17 19:52:40',
+            'time_verified' => '2014-10-17 19:53:48',
+        ]);
+        $testModifiedZn = UnhlsTest::create([
+            'visit_id' => $microbiologyVisit->id,
+            'test_type_id' => $testTypeModifiedZn->id,
+            'specimen_id' => $specimenSputum->id,
+            'interpretation' => '',
+            'test_status_id' => UnhlsTest::VERIFIED,
+            'created_by' => '3',
+            'tested_by' => '2',
+            'verified_by' => '3',
+            'requested_by' => 'Genghiz Khan',
+            'time_created' => '2014-10-17 19:16:15',
+            'time_started' => '2014-10-17 19:17:15',
+            'time_completed' => '2014-10-17 19:52:40',
+            'time_verified' => '2014-10-17 19:53:48',
+        ]);
+        $testWetSalineIodinePrep = UnhlsTest::create([
+            'visit_id' => $microbiologyVisit->id,
+            'test_type_id' => $testTypeWetSalineIodinePrep->id,
+            'specimen_id' => $specimenSputum->id,
+            'interpretation' => '',
+            'test_status_id' => UnhlsTest::VERIFIED,
+            'created_by' => '3',
+            'tested_by' => '2',
+            'verified_by' => '3',
+            'requested_by' => 'Genghiz Khan',
+            'time_created' => '2014-10-17 19:16:15',
+            'time_started' => '2014-10-17 19:17:15',
+            'time_completed' => '2014-10-17 19:52:40',
+            'time_verified' => '2014-10-17 19:53:48',
+        ]);
+        $testASTecoli = UnhlsTest::create([
+            'visit_id' => $microbiologyVisit->id,
+            'test_type_id' => $testTypeAST->id,
+            'specimen_id' => '2',
+            'interpretation' => '',
+            'test_status_id' => UnhlsTest::PENDING,
+            'created_by' => '3',
+            'tested_by' => '2',
+            'verified_by' => '3',
+            'requested_by' => 'Genghiz Khan',
+            'time_created' => '2014-10-17 19:16:15',
+            'time_started' => '2014-10-17 19:17:15',
+            'time_completed' => '2014-10-17 19:52:40',
+            'time_verified' => '2014-10-17 19:53:48',
+        ]);
+
+        $cultureDurationAST12h = CultureDuration::create(['duration' => '12 hours',]);
+        $cultureDurationAST24h = CultureDuration::create(['duration' => '24 hours',]);
+        $cultureDurationAST36h = CultureDuration::create(['duration' => '36 hours',]);
+        $cultureDurationAST48h = CultureDuration::create(['duration' => '48 hours',]);
+        $cultureDurationAST60h = CultureDuration::create(['duration' => '60 hours',]);
+        $cultureDurationAST72h = CultureDuration::create(['duration' => '72 hours',]);
+        $cultureDurationAST4d = CultureDuration::create(['duration' => '4 days',]);
+        $cultureDurationAST5d = CultureDuration::create(['duration' => '5 days',]);
+        $cultureDurationAST6d = CultureDuration::create(['duration' => '6 days',]);
+        $cultureDurationAST7d = CultureDuration::create(['duration' => '7 days',]);
+        $cultureObservationAST = CultureObservation::create([
+            'user_id' => $user1->id,
+            'test_id' => $testAST->id,
+            'culture_duration_id' => $cultureDurationAST48h->id,
+            'observation' => 'NBG',
+        ]);
+        $cultureObservationAST = CultureObservation::create([
+            'user_id' => $user1->id,
+            'test_id' => $testAST->id,
+            'culture_duration_id' => $cultureDurationAST5d->id,
+            'observation' => 'NSG',
+        ]);
+        $cultureObservationAST = CultureObservation::create([
+            'user_id' => $user1->id,
+            'test_id' => $testAST->id,
+            'culture_duration_id' => $cultureDurationAST7d->id,
+            'observation' => 'SG',
+        ]);
+
+        $isolatedOrganism = IsolatedOrganism::create([
+            'user_id' => $user1->id,
+            'test_id' => $testAST->id,
+            'organism_id' => $pneumoniae->id,
+        ]);
+        $isolatedOrganismOralPharyngealFlora = IsolatedOrganism::create([
+            'user_id' => $user1->id,
+            'test_id' => $testASTecoli->id,
+            'organism_id' => $oralPharyngealFlora->id,
+        ]);
+        $isolatedOrganismEcoli = IsolatedOrganism::create([
+            'user_id' => $user1->id,
+            'test_id' => $testASToralPharyngealFlora->id,
+            'organism_id' => $ecoli->id,
+        ]);
+
+        $drugSusceptibilityMeasureS = DrugSusceptibilityMeasure::create([
+            'symbol' => 'S',
+            'interpretation'=>'Sensitive',
+        ]);
+        $drugSusceptibilityMeasureI = DrugSusceptibilityMeasure::create([
+            'symbol' => 'I',
+            'interpretation'=>'Intermediate',
+        ]);
+        $drugSusceptibilityMeasureR = DrugSusceptibilityMeasure::create([
+            'symbol' => 'R',
+            'interpretation'=>'Resistant',
+        ]);
+        $drugSusceptibilityChloramphenicol = DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganism->id,
+            'drug_id' => $chloramphenicol->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureR->id,
+        ]);
+        $drugSusceptibilityClindamycin = DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganism->id,
+            'drug_id' => $clindamycin->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureS->id,
+        ]);
+        $drugSusceptibilityErythromycin = DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganism->id,
+            'drug_id' => $erythromycin->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureR->id,
+        ]);
+        $drugSusceptibilityTetracycline = DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganism->id,
+            'drug_id' => $tetracycline->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureR->id,
+        ]);
+        $drugSusceptibilityTrimethoprim = DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganism->id,
+            'drug_id' => $trimethoprim->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureR->id,
+        ]);
+        DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganismEcoli->id,
+            'drug_id' => $amikacin->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureI->id,
+        ]);
+        DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganismEcoli->id,
+            'drug_id' => $ampicillin->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureR->id,
+        ]);
+        DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganismEcoli->id,
+            'drug_id' => $augmentin->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureR->id,
+        ]);
+        DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganismEcoli->id,
+            'drug_id' => $cefotaxime->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureR->id,
+        ]);
+        DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganismEcoli->id,
+            'drug_id' => $ceftriaxione->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureR->id,
+        ]);
+        DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganismEcoli->id,
+            'drug_id' => $cefuroxime->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureR->id,
+        ]);
+        DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganismEcoli->id,
+            'drug_id' => $chloramphenicol->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureS->id,
+        ]);
+        DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganismEcoli->id,
+            'drug_id' => $ciprofloxacin->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureR->id,
+        ]);
+        DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganismEcoli->id,
+            'drug_id' => $cotrimoxazole->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureR->id,
+        ]);
+        DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganismEcoli->id,
+            'drug_id' => $gentamicin->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureR->id,
+        ]);
+        DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganismEcoli->id,
+            'drug_id' => $imipenem->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureS->id,
+        ]);
+        DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganismEcoli->id,
+            'drug_id' => $meropenem->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureI->id,
+        ]);
+        DrugSusceptibility::create([
+            'user_id' => $user1->id,
+            'isolated_organism_id' => $isolatedOrganismEcoli->id,
+            'drug_id' => $peperacillintazobactam->id,
+            'drug_susceptibility_measure_id' => $drugSusceptibilityMeasureI->id,
+        ]);
+
+        UnhlsTestResult::create([
+            'test_id' => $testAppearanceMucoSalivary->id,
+            'measure_id' => $measureAppearance->id,
+            'result' => 'Muco-Salivary',
+        ]);
+        UnhlsTestResult::create([
+            'test_id' => $testGramStain->id,
+            'measure_id' => $measureGramStain->id,
+            'result' => '3+ Gram positive diplococci,1+ Gram negative cocci,<5 pmns and 5-10 epithelial cells seen.',
+        ]);
+        UnhlsTestResult::create([
+            'test_id' => $testZnStain->id,
+            'measure_id' => $measureZnStain->id,
+            'result' => 'No AFB seen',
+        ]);
+        UnhlsTestResult::create([
+            'test_id' => $testASToralPharyngealFlora->id,
+            'measure_id' => $measureAST->id,
+            'result' => '-',
+        ]);
+        UnhlsTestResult::create([
+            'test_id' => $testAppearanceFormed->id,
+            'measure_id' => $measureAppearance->id,
+            'result' => 'Formed',
+        ]);
+        UnhlsTestResult::create([
+            'test_id' => $testModifiedZn->id,
+            'measure_id' => $measureModifiedZn->id,
+            'result' => 'No Oocysts seen.',
+        ]);
+        UnhlsTestResult::create([
+            'test_id' => $testWetSalineIodinePrep->id,
+            'measure_id' => $measureWetSalineIodinePrep->id,
+            'result' => 'No Ova/cysts seen.',
+        ]);
+        UnhlsTestResult::create([
+            'test_id' => $testASTecoli->id,
+            'measure_id' => $measureAST->id,
+            'result' => 'ESBL Positive',
+        ]);
+        UnhlsTestResult::create([
+            'test_id' => $testAST->id,
+            'measure_id' => $measureAST->id,
+            'result' => 'General Comment',
+        ]);
     }
 
     public function createSpecimen(
@@ -1665,18 +2432,19 @@ class TestDataSeeder extends DatabaseSeeder
         $values["specimen_type_id"] = $specimenTypeID;
         $values["specimen_status_id"] = $specimenStatus;
 
-        if($specimenStatus == Specimen::ACCEPTED){
+        if($specimenStatus == UnhlsSpecimen::ACCEPTED){
             $values["accepted_by"] = $acceptor;
             $values["time_accepted"] = date('Y-m-d H:i:s');
         }
-        if($specimenStatus == Specimen::REJECTED){
-            $values["rejected_by"] = $rejector;
-            $values["rejection_reason_id"] = $rejectReason;
-            $values["time_rejected"] = date('Y-m-d H:i:s');
-        }
-        
-        $specimen = Specimen::create($values);
+        $specimen = UnhlsSpecimen::create($values);
 
+        if($specimenStatus == UnhlsSpecimen::REJECTED){
+            $rejection["specimen_id"] = $specimen->id;
+            $rejection["rejected_by"] = $rejector;
+            $rejection["rejection_reason_id"] = $rejectReason;
+            $rejection["time_rejected"] = date('Y-m-d H:i:s');
+            $preanalyticRejection = PreAnalyticSpecimenRejection::create($rejection);
+        }
         return $specimen->id;
     }
 

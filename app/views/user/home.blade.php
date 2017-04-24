@@ -1,56 +1,63 @@
-@extends("layout")
+@extends("layout-menu")
 @section("content")
-	<div class="panel panel-primary">
-		<div class="panel-heading ">
-			<span class="glyphicon glyphicon-home	"></span>
-			Home Page
-		</div>
-		<div class="panel-body">
-			<div id="carousel-example-generic" class="carousel slide" data-ride="carousel" data-interval="10000">
-			  <!-- Indicators -->
-			  <ol class="carousel-indicators">
-			    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-			    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-			    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-			    <li data-target="#carousel-example-generic" data-slide-to="3"></li>
-			  </ol>
 
-			  <!-- Wrapper for slides -->
-			  <div class="carousel-inner">
-			    <div class="item active">
-			      <img class="img-responsive" src="{{ URL::asset('i/two.JPG') }}" alt="...">
-			      <div class="carousel-caption">
-			        Specimen ready for testing
-			      </div>
-			    </div>
-			    <div class="item">
-			      <img class="img-responsive" src="{{ URL::asset('i/three.JPG') }}" alt="...">
-			      <div class="carousel-caption">
-			        Full Haemogram machine - CELLTAC F
-			      </div>
-			    </div>
-			    <div class="item">
-			      <img class="img-responsive" src="{{ URL::asset('i/five.JPG') }}" alt="...">
-			      <div class="carousel-caption">
-			        Specimen in preparation for testing
-			      </div>
-			    </div>
-			    <div class="item">
-			      <img class="img-responsive" src="{{ URL::asset('i/six.JPG') }}" alt="...">
-			      <div class="carousel-caption">
-			        Humalyzer 200 machine for laboratory tests
-			      </div>
-			    </div>
-			  </div>
+<div class="panel panel-primary row">
 
-			  <!-- Controls -->
-			  <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
-			    <span class="glyphicon glyphicon-chevron-left"></span>
-			  </a>
-			  <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
-			    <span class="glyphicon glyphicon-chevron-right"></span>
-			  </a>
-			</div>
+<div class="">
+
+	<a href="{{ URL::route('user.dashboard')}}">
+		<div class="panel panel-default col-sm-3">
+		<span class="ion-speedometer" style="font-size:80px"></span> <br><span class="nav_title">DASHBOARD</span>
 		</div>
-	</div>
+	</a>
+
+	<a href="{{ URL::route('unhls_patient.index')}}">
+		<div class="panel panel-default col-sm-3">
+		<span class="ion-person-stalker" style="font-size:80px"></span> <br><span class="nav_title">PATIENTS</span>
+		</div>
+	</a>
+
+	<a href="{{ URL::route('unhls_els.index')}}">
+		<div class="panel panel-default col-sm-3">
+		<span class="ion-ios-cart" style="font-size:80px"></span> <br><span class="nav_title">INVENTORY & EQUIPMENT</span>
+		</div>
+	</a>
+	
+	<a href="#">
+		<div class="panel panel-default col-sm-3">
+		<span class="ion-icon ion-ios-folder"></span> <br><span class="nav_title">OTHER RESOURCES</span>
+		</div>
+	</a>	
+</div>
+
+
+<div class="">
+	<a href="{{ URL::route('reports.index')}}">
+		<div class="panel panel-default col-sm-3">
+		<span class="ion-icon ion-stats-bars"></span> <br><span class="nav_title">REPORTS</span>
+		</div>
+	</a>
+	
+	<a href="{{ URL::route('unhls_test.index')}}">
+		<div class="panel panel-default col-sm-3">
+		<span class="ion-erlenmeyer-flask" style="font-size:80px"></span> <br><span class="nav_title">TESTS</span>
+		</div>
+	</a>
+	
+	<a href="{{ URL::route('bbincidence.index')}}">
+		<div class="panel panel-default col-sm-3">
+		<span class="ion-icon ion-nuclear"></span> <br><span class="nav_title">BIOSAFETY & BIOSECURITY</span>
+		</div>
+	</a>
+	
+	<a href="{{ URL::route('user.index')}}">
+		<div class="panel panel-default col-sm-3">
+		<span class="ion-icon ion-key"></span> <br><span class="nav_title">ACCESS CONTROL</span>
+		</div>
+	</a>
+	
+</div>
+
+</div>
+
 @stop

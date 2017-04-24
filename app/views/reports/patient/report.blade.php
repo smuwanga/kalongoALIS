@@ -119,15 +119,15 @@
 							<td>{{ $test->testType->name }}</td>
 							<td>{{ $test->isExternal()?$test->external()->request_date:$test->time_created }}</td>
 							<td>{{ $test->testType->testCategory->name }}</td>
-							@if($test->specimen->specimen_status_id == Specimen::NOT_COLLECTED)
+							@if($test->specimen->specimen_status_id == UnhlsSpecimen::NOT_COLLECTED)
 								<td>{{trans('messages.specimen-not-collected')}}</td>
 								<td></td>
 								<td></td>
-							@elseif($test->specimen->specimen_status_id == Specimen::ACCEPTED)
+							@elseif($test->specimen->specimen_status_id == UnhlsSpecimen::ACCEPTED)
 								<td>{{trans('messages.specimen-accepted')}}</td>
 								<td>{{$test->specimen->acceptedBy->name}}</td>
 								<td>{{$test->specimen->time_accepted}}</td>
-							@elseif($test->specimen->specimen_status_id == Specimen::REJECTED)
+							@elseif($test->test_status_id == UnhlsTest::REJECTED)
 								<td>{{trans('messages.specimen-rejected')}}</td>
 								<td>{{$test->specimen->rejectedBy->name}}</td>
 								<td>{{$test->specimen->time_rejected}}</td>
@@ -169,7 +169,7 @@
 								@endforeach</td>
 							<td>{{ $test->interpretation == '' ? 'N/A' : $test->interpretation }}</td>
 							<td>{{ $test->testedBy->name or trans('messages.pending')}}</td>
-							<td>{{ $test->testResults->last()->time_entered }}</td>
+							<td>{{ $test->testResults->count() ? $test->testResults->last()->time_entered : '' }}</td>
 							<td>{{ $test->time_completed }}</td>
 							<td>{{ $test->verifiedBy->name or trans('messages.verification-pending')}}</td>
 							<td>{{ $test->time_verified }}</td>

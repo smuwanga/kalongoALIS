@@ -23,6 +23,15 @@ Route::group(array("before" => "guest"), function()
         "as" => "api.receiver",
         "uses" => "InterfacerController@receiveLabRequest"
     ));
+    Route::post('/api/testinfo', array(
+        "uses" => "InterfacerController@getTestInfo"
+    ));
+    Route::post('/api/searchtests', array(
+        "uses" => "InterfacerController@getTests"
+    ));
+    Route::post('/api/saveresults', array(
+        "uses" => "InterfacerController@saveTestResults"
+    ));
     Route::any('/', array(
         "as" => "user.login",
         "uses" => "UserController@loginAction"
@@ -35,6 +44,11 @@ Route::group(array("before" => "auth"), function()
     Route::any('/home', array(
         "as" => "user.home",
         "uses" => "UserController@homeAction"
+        ));
+
+    Route::any('/dashboard', array(
+        "as" => "user.dashboard",
+        "uses" => "UserController@dashboard"
         ));
     Route::group(array("before" => "checkPerms:manage_users"), function() {
         Route::resource('user', 'UserController');
@@ -53,7 +67,9 @@ Route::group(array("before" => "auth"), function()
         "uses" => "UserController@updateOwnPassword"
         ));
     Route::resource('patient', 'PatientController');
-    Route::get("/patient/{id}/delete", array(
+	Route::resource('bbincidence', 'BbincidenceController'); /* Added by Justus */
+    
+	Route::get("/patient/{id}/delete", array(
         "as"   => "patient.delete",
         "uses" => "PatientController@delete"
     ));
@@ -61,6 +77,17 @@ Route::group(array("before" => "auth"), function()
         "as"   => "patient.search",
         "uses" => "PatientController@search"
     ));
+    //Unhls patient routes start here
+    Route::resource('unhls_patient', 'UnhlsPatientController');
+    Route::get("/unhls_patient/{id}/delete", array(
+        "as"   => "unhls_patient.delete",
+        "uses" => "UnhlsPatientController@delete"
+    ));
+    Route::post("/unhls_patient/search", array(
+        "as"   => "unhls_patient.search",
+        "uses" => "UnhlsPatientController@search"
+    ));
+    //Unhls patiend routes end
     Route::any("/instrument/getresult", array(
         "as"   => "instrument.getResult",
         "uses" => "InstrumentController@getTestResult"
@@ -89,10 +116,10 @@ Route::group(array("before" => "auth"), function()
             "as"   => "testtype.delete",
             "uses" => "TestTypeController@delete"
         ));
-        Route::resource('specimenrejection', 'SpecimenRejectionController');
+        Route::resource('specimenrejection', 'RejectionReasonController');
         Route::any("/specimenrejection/{id}/delete", array(
             "as"   => "specimenrejection.delete",
-            "uses" => "SpecimenRejectionController@delete"
+            "uses" => "RejectionReasonController@delete"
         ));
         Route::resource('drug', 'DrugController');
         
@@ -123,97 +150,197 @@ Route::group(array("before" => "auth"), function()
         "as"   => "test.index",
         "uses" => "TestController@index"
     ));
+    //Unhls test route starts 
+    Route::any("/unhls_test", array(
+        "as"   => "unhls_test.index",
+        "uses" => "UnhlsTestController@index"
+    ));
+    Route::post("/unhls_test/testlist", array(
+        "as"   => "unhls_test.testList",
+        "uses" => "UnhlsTestController@testList"
+    ));
+    //unhls test route ends
     Route::post("/test/resultinterpretation", array(
     "as"   => "test.resultinterpretation",
     "uses" => "TestController@getResultInterpretation"
     ));
+    //Repeat of above route for UNHLS
+    Route::post("/unhls_test/resultinterpretation", array(
+    "as"   => "unhls_test.resultinterpretation",
+    "uses" => "UnhlsTestController@getResultInterpretation"
+    ));
      Route::any("/test/{id}/receive", array(
         "before" => "checkPerms:receive_external_test",
         "as"   => "test.receive",
-        "uses" => "TestController@receive"
+        "uses" => "UnhlsTestController@receive"
     ));
     Route::any("/test/create/{patient?}", array(
         "before" => "checkPerms:request_test",
         "as"   => "test.create",
-        "uses" => "TestController@create"
+        "uses" => "UnhlsTestController@create"
     ));
+    //Unhls test  create route starts
+    Route::any("/unhls_test/create/{patient?}", array(
+        "before" => "checkPerms:request_test",
+        "as"   => "unhls_test.create",
+        "uses" => "UnhlsTestController@create"
+    ));
+    //Unhls test create route ends
      Route::post("/test/savenewtest", array(
         "before" => "checkPerms:request_test",
         "as"   => "test.saveNewTest",
         "uses" => "TestController@saveNewTest"
     ));
-     Route::post("/test/acceptspecimen", array(
-        "before" => "checkPerms:accept_test_specimen",
-        "as"   => "test.acceptSpecimen",
-        "uses" => "TestController@accept"
+     //unhls test savenewtest starts here
+     Route::post("/unhls_test/savenewtest", array(
+        "before" => "checkPerms:request_test",
+        "as"   => "unhls_test.saveNewTest",
+        "uses" => "UnhlsTestController@saveNewTest"
     ));
+     //unhls test refer starts here
+    Route::post("/unhls_test/acceptspecimen", array(
+        "before" => "checkPerms:accept_test_specimen",
+        "as"   => "unhls_test.acceptSpecimen",
+        "uses" => "UnhlsTestController@acceptSpecimenAction"
+    ));
+     //unhls test refer ends here
      Route::get("/test/{id}/refer", array(
         "before" => "checkPerms:refer_specimens",
         "as"   => "test.refer",
         "uses" => "TestController@showRefer"
+    ));
+     //Repeat of above code for UNHLS test
+    Route::get("/unhls_test/{id}/refer", array(
+        "before" => "checkPerms:refer_specimens",
+        "as"   => "unhls_test.refer",
+        "uses" => "UnhlsTestController@showRefer"
     ));
     Route::post("/test/referaction", array(
         "before" => "checkPerms:refer_specimens",
         "as"   => "test.referAction",
         "uses" => "TestController@referAction"
     ));
+    //Repeat of above Route for UNHLS
+    Route::post("/unhls_test/referaction", array(
+        "before" => "checkPerms:refer_specimens",
+        "as"   => "unhls_test.referAction",
+        "uses" => "UnhlsTestController@referAction"
+    ));
     Route::get("/test/{id}/reject", array(
         "before" => "checkPerms:reject_test_specimen",
         "as"   => "test.reject",
-        "uses" => "TestController@reject"
+        "uses" => "UnhlsTestController@reject"
+    ));
+    //Repeat of above code for UNHLS
+    Route::get("/unhls_test/{id}/reject", array(
+        "before" => "checkPerms:reject_test_specimen",
+        "as"   => "unhls_test.reject",
+        "uses" => "UnhlsTestController@reject"
     ));
     Route::post("/test/rejectaction", array(
         "before" => "checkPerms:reject_test_specimen",
         "as"   => "test.rejectAction",
-        "uses" => "TestController@rejectAction"
+        "uses" => "UnhlsTestController@rejectAction"
+    ));
+    //Repeat of above code for UNHLS
+    Route::post("/unhls_test/rejectaction", array(
+        "before" => "checkPerms:reject_test_specimen",
+        "as"   => "unhls_test.rejectAction",
+        "uses" => "UnhlsTestController@rejectAction"
     ));
      Route::post("/test/changespecimen", array(
         "before" => "checkPerms:change_test_specimen",
         "as"   => "test.changeSpecimenType",
         "uses" => "TestController@changeSpecimenType"
     ));
+     //Repeat of above code for UNHLS test
+     Route::post("/unhls_test/changespecimen", array(
+        "before" => "checkPerms:change_test_specimen",
+        "as"   => "unhls_test.changeSpecimenType",
+        "uses" => "UnhlsTestController@changeSpecimenType"
+    ));
      Route::post("/test/updatespecimentype", array(
         "before" => "checkPerms:change_test_specimen",
         "as"   => "test.updateSpecimenType",
         "uses" => "TestController@updateSpecimenType"
     ));
-    Route::post("/test/start", array(
-        "before" => "checkPerms:start_test",
-        "as"   => "test.start",
-        "uses" => "TestController@start"
+     //Unhls test updatespecimentype starts here
+     Route::post("/unhls_test/updatespecimentype", array(
+        "before" => "checkPerms:change_test_specimen",
+        "as"   => "unhls_test.updateSpecimenType",
+        "uses" => "UnhlsTestController@updateSpecimenType"
     ));
-     Route::get("/test/{test}/enterresults", array(
+     //Unhls test updatespecimentype ends
+
+    Route::post("/unhls_test/start", array(
+        "before" => "checkPerms:start_test",
+        "as"   => "unhls_test.start",
+        "uses" => "UnhlsTestController@start"
+    ));
+     //Repeat of above route for UNHLS
+     Route::get("/unhls_test/{test}/enterresults", array(
         "before" => "checkPerms:enter_test_results",
-        "as"   => "test.enterResults",
-        "uses" => "TestController@enterResults"
+        "as"   => "unhls_test.enterResults",
+        "uses" => "UnhlsTestController@enterResults"
     ));
     Route::get("/test/{test}/edit", array(
         "before" => "checkPerms:edit_test_results",
         "as"   => "test.edit",
         "uses" => "TestController@edit"
     ));
-     Route::post("/test/{test}/saveresults", array(
+    //Repeat of above route for UNHLS
+    Route::get("/unhls_test/{test}/edit", array(
         "before" => "checkPerms:edit_test_results",
-        "as"   => "test.saveResults",
-        "uses" => "TestController@saveResults"
+        "as"   => "unhls_test.edit",
+        "uses" => "UnhlsTestController@edit"
+    ));
+    Route::post("/unhls_test/{test}/saveresults", array(
+        "before" => "checkPerms:edit_test_results",
+        "as"   => "unhls_test.saveResults",
+        "uses" => "UnhlsTestController@saveResults"
     ));
     Route::get("/test/{test}/viewdetails", array(
         "as"   => "test.viewDetails",
         "uses" => "TestController@viewDetails"
     ));
+    Route::post("unhls_test/collectspecimen", array(
+        "as" => "unhls_test.collectSpecimen",
+        "uses" => "UnhlsTestController@acceptSpecimen"));
+    Route::post("/unhls_test/collectspecimenaction", array(
+        "before" => "checkPerms:refer_specimens", //TODO create permissions for collecting sample and update acordingly
+        "as"   => "unhls_test.collectSpecimenAction",
+        "uses" => "UnhlsTestController@collectSpecimenAction"
+    ));
+    Route::get("unhls_test/completed", array(
+        "as" => "unhls_test.completed",
+        "uses" => "UnhlsTestController@completed"));
+    Route::get("unhls_test/pending", array(
+        "as" => "unhls_test.pending",
+        "uses" => "UnhlsTestController@pending"));
+    Route::get("unhls_test/started", array(
+        "as" => "unhls_test.started",
+        "uses" => "UnhlsTestController@started"));
+    Route::get("unhls_test/notrecieved", array(
+        "as" => "unhls_test.notrecieved",
+        "uses" => "UnhlsTestController@notRecieved"));
+    Route::get("unhls_test/verified", array(
+        "as" => "unhls_test.verified",
+        "uses" => "UnhlsTestController@verified"));
+    //Test viewDetails start
+    Route::get("/unhls_test/{test}/viewdetails", array(
+        "as"   => "unhls_test.viewDetails",
+        "uses" => "UnhlsTestController@viewDetails"
+    ));
+    //Test viewDetail ends
     Route::any("/test/{test}/verify", array(
         "before" => "checkPerms:verify_test_results",
         "as"   => "test.verify",
-        "uses" => "TestController@verify"
+        "uses" => "UnhlsTestController@verify"
     ));
-    Route::any("/culture/storeObservation", array(
-        "as"   => "culture.worksheet",
-        "uses" => "CultureController@store"
-    ));
-    Route::any("/susceptibility/saveSusceptibility", array(
-        "as"   => "drug.susceptibility",
-        "uses" => "SusceptibilityController@store"
-    ));
+    Route::resource('culture', 'CultureController');
+    Route::resource('cultureobservation', 'CultureObservationController');
+    Route::resource('drugsusceptibility', 'DrugSusceptibilityController');
+    Route::resource('isolatedorganism', 'IsolatedOrganismController');
     Route::group(array("before" => "admin"), function()
     {
         Route::resource("permission", "PermissionController");
@@ -266,7 +393,9 @@ Route::group(array("before" => "auth"), function()
     //  Check if able to manage reports
     Route::group(array("before" => "checkPerms:view_reports"), function()
     {
-        Route::any("/patientreport", array(
+        Route::resource('reports', 'ReportController');
+		
+		Route::any("/patientreport", array(
             "as"   => "reports.patient.index",
             "uses" => "ReportController@loadPatients"
         ));
@@ -277,6 +406,14 @@ Route::group(array("before" => "auth"), function()
         Route::any("/patientreport/{id}/{visit}/{testId?}", array(
             "as" => "reports.patient.report", 
             "uses" => "ReportController@viewPatientReport"
+        ));
+        Route::any("/visitreport/{id}", array(
+            "as" => "reports.visit.report", 
+            "uses" => "ReportController@viewVisitReport"
+        ));
+        Route::any("/visitreport/{id}/print", array(
+            "as" => "reports.visit.report.print", 
+            "uses" => "ReportController@printVisitReport"
         ));
         Route::any("/dailylog", array(
             "as"   => "reports.daily.log",
@@ -435,5 +572,231 @@ Route::group(array("before" => "auth"), function()
             "as"   => "receipt.delete",
             "uses" => "ReceiptController@delete"
         ));
+        //Stock card
+        Route::post("/stockcard/index", array(
+            "as"   => "stockcard.index",
+            "uses" => "StockCardController@index"
+        ));        
+        Route::post("/stockcard/create", array(
+            "as"   => "stockcard.create",
+            "uses" => "StockCardController@create"
+        ));
+        Route::post("/stockcard/store", array(
+            "as"   => "stockcard.store",
+            "uses" => "StockCardController@store"
+        ));
+        Route::get("/stockcard/{id}/delete", array(
+            "as"   => "stockcard.delete",
+            "uses" => "StockCardController@delete"
+        ));
+        Route::resource('stockcard', 'StockCardController');   
+
+        //Stock requisition form
+        Route::post("/stockrequisition/index", array(
+            "as"   => "stockrequisition.index",
+            "uses" => "StockRequisitionController@index"
+        ));        
+        Route::post("/stockrequisition/create", array(
+            "as"   => "stockrequisition.create",
+            "uses" => "StockRequisitionController@create"
+        ));
+        Route::post("/stockrequisition/store", array(
+            "as"   => "stockrequisition.store",
+            "uses" => "StockRequisitionController@store"
+        ));        
+        Route::get("/stockrequisition/{id}/delete", array(
+            "as"   => "stockrequisition.delete",
+            "uses" => "StockRequisitionController@delete"
+        ));
+        Route::resource('stockrequisition', 'StockRequisitionController');
+
+
+        //Equipment supplier form
+       Route::post("/equipmentsupplier/index", array(
+            "as"   => "equipmentsupplier.index",
+            "uses" => "EquipmentSupplierController@index"
+        ));        
+        Route::post("/equipmentsupplier/create", array(
+            "as"   => "equipmentsupplier.create",
+            "uses" => "EquipmentSupplierController@create"
+        ));
+        Route::post("/equipmentsupplier/store", array(
+            "as"   => "equipmentsupplier.store",
+            "uses" => "EquipmentSupplierController@store"
+        ));        
+        Route::get("/equipmentsupplier/{id}/delete", array(
+            "as"   => "equipmentsupplier.delete",
+            "uses" => "EquipmentSupplierController@delete"
+        ));
+        Route::resource('equipmentsupplier', 'EquipmentSupplierController');
+ 
+
+        //Equipment inventory
+       Route::post("/equipmentinventory/index", array(
+            "as"   => "equipmentinventory.index",
+            "uses" => "EquipmentInventoryController@index"
+        ));        
+        Route::post("/equipmentinventory/create", array(
+            "as"   => "equipmentinventory.create",
+            "uses" => "EquipmentInventoryController@create"
+        ));
+        Route::post("/equipmentinventory/store", array(
+            "as"   => "equipmentinventory.store",
+            "uses" => "EquipmentInventoryController@store"
+        ));        
+        Route::get("/equipmentinventory/{id}/delete", array(
+            "as"   => "equipmentinventory.delete",
+            "uses" => "EquipmentInventoryController@delete"
+        ));
+        Route::resource('equipmentinventory', 'EquipmentInventoryController');
+
+        //Equipment maintenance
+       Route::post("/equipmentmaintenance/index", array(
+            "as"   => "equipmentmaintenance.index",
+            "uses" => "EquipmentMaintenanceController@index"
+        ));        
+        Route::post("/equipmentmaintenance/create", array(
+            "as"   => "equipmentmaintenance.create",
+            "uses" => "EquipmentMaintenanceController@create"
+        ));
+        Route::post("/equipmentmaintenance/store", array(
+            "as"   => "equipmentmaintenance.store",
+            "uses" => "EquipmentMaintenanceController@store"
+        ));        
+        Route::get("/equipmentmaintenance/{id}/delete", array(
+            "as"   => "equipmentmaintenance.delete",
+            "uses" => "EquipmentMaintenanceController@delete"
+        ));
+        Route::resource('equipmentmaintenance', 'EquipmentMaintenanceController');
+
+
+        //Equipment breakdown
+       Route::post("/equipmentbreakdown/index", array(
+            "as"   => "equipmentbreakdown.index",
+            "uses" => "EquipmentBreakdownController@index"
+        ));        
+        Route::post("/equipmentbreakdown/create", array(
+            "as"   => "equipmentbreakdown.create",
+            "uses" => "EquipmentBreakdownController@create"
+        ));
+        Route::post("/equipmentbreakdown/store", array(
+            "as"   => "equipmentbreakdown.store",
+            "uses" => "EquipmentBreakdownController@store"
+        ));        
+        Route::get("/equipmentbreakdown/{id}/delete", array(
+            "as"   => "equipmentbreakdown.delete",
+            "uses" => "EquipmentBreakdownController@delete"
+        ));
+        Route::resource('equipmentbreakdown', 'EquipmentBreakdownController');
+
+
+        //API controller        
+        Route::resource('apite', 'ApiController');       
+        Route::post("/apite/facility", array(
+            "as"   => "apite.facility",
+            "uses" => "ApiController@facility"
+        ));
+
+        //Route::get('api/facility-by-district/{districtId}', 'ApiController@getFacilityListByDistrict');
+
     });
+	//BB Incidents
+	Route::resource('bbincidence', 'BbincidenceController');
+    
+	Route::get("/bbincidence/clinical/clinical", array(
+        "as"   => "bbincidence.clinical",
+        "uses" => "BbincidenceController@clinical"
+    ));
+	
+	Route::get("/bbincidence/{id}/clinicaledit", array(
+        "as"   => "bbincidence.clinicaledit",
+        "uses" => "BbincidenceController@clinicaledit"
+    ));
+
+    Route::any("/bbincidence/{id}/clinicalupdate", array(
+        "as"   => "bbincidence.clinicalupdate",
+        "uses" => "BbincidenceController@clinicalupdate"
+    ));
+
+    Route::any("/bbincidence/bbfacilityreport/bbfacilityreport", array(
+        "as"   => "bbincidence.bbfacilityreport",
+        "uses" => "BbincidenceController@bbfacilityreport"
+    ));
+
+    Route::get("/bbincidence/{id}/analysisedit", array(
+        "as"   => "bbincidence.analysisedit",
+        "uses" => "BbincidenceController@analysisedit"
+    ));
+
+    Route::any("/bbincidence/{id}/analysisupdate", array(
+        "as"   => "bbincidence.analysisupdate",
+        "uses" => "BbincidenceController@analysisupdate"
+    ));
+
+    Route::get("/bbincidence/{id}/responseedit", array(
+        "as"   => "bbincidence.responseedit",
+        "uses" => "BbincidenceController@responseedit"
+    ));
+
+    Route::any("/bbincidence/{id}/responseupdate", array(
+        "as"   => "bbincidence.responseupdate",
+        "uses" => "BbincidenceController@responseupdate"
+    ));
+
+    //Bike Management
+    Route::resource('bike', 'BikeController');
+
+    //Events/Activities Reporting
+    Route::resource('event', 'EventController');
+
+    // Route for downloading Activity/Event reports
+    Route::get('/attachments', 'EventController@downloadAttachment');
+
+    Route::any("/event/{id}/editobjectives", array(
+        "as"   => "event.editobjectives",
+        "uses" => "EventController@editobjectives"
+    ));
+
+    Route::any("/event/{id}/updateobjectives", array(
+        "as"   => "event.updateobjectives",
+        "uses" => "EventController@updateobjectives"
+    ));
+
+    Route::any("/event/{id}/editlessons", array(
+        "as"   => "event.editlessons",
+        "uses" => "EventController@editlessons"
+    ));
+
+    Route::any("/event/{id}/updatelessons", array(
+        "as"   => "event.updatelessons",
+        "uses" => "EventController@updatelessons"
+    ));
+
+    Route::any("/event/{id}/editrecommendations", array(
+        "as"   => "event.editrecommendations",
+        "uses" => "EventController@editrecommendations"
+    ));
+
+    Route::any("/event/{id}/updaterecommendations", array(
+        "as"   => "event.updaterecommendations",
+        "uses" => "EventController@updaterecommendations"
+    ));
+
+    Route::any("/event/{id}/editactions", array(
+        "as"   => "event.editactions",
+        "uses" => "EventController@editactions"
+    ));
+
+    Route::any("/event/{id}/updateactions", array(
+        "as"   => "event.updateactions",
+        "uses" => "EventController@updateactions"
+    ));
+
+    Route::any("/event/eventfilter/eventfilter", array(
+        "as"   => "event.eventfilter",
+        "uses" => "EventController@eventfilter"
+    ));
+	
+	 Route::resource('unhls_els', 'UnhlsElsController');
+
 });

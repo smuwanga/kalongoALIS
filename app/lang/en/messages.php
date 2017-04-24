@@ -16,6 +16,7 @@ return array(
     'cancel' => 'Cancel',
     'close' => 'Close',
     'create' => 'Create',
+    'comment' => 'Comment',
     'date-created' => 'Date Created',
     'delete' => 'Delete',
     'description' => 'Description',
@@ -26,6 +27,7 @@ return array(
     'for' => 'For',
     'email-address' => 'Email Address',
     'gender' => 'Gender',
+    'horizontal' => 'Horizontal',
     'field-required' => 'This field is required',
     'full-name' => 'Full Name',
     'home' => 'Home',
@@ -40,6 +42,7 @@ return array(
     'photo' => 'Photo',
     'role' => 'Role|Roles',
     'save' => 'Save',
+    'submit' => 'Submit',
     'save-all' => 'Save All',
     'type' => 'Type',
     'unit' => 'Unit',
@@ -51,7 +54,9 @@ return array(
     'contacts' => 'Contacts',
     'refer' => 'Refer',
     'in' => 'In',
+    'others-specify' => 'Others (Specify)', //UNHLS entry
     'out' => 'Out',
+    'vertical' =>'Vertical', //UNHLS terminology
 
     /** 
      *   Generic phrases
@@ -99,13 +104,23 @@ return array(
     'external-patient-number' => 'External Patient Number',
     'list-patients' => 'List Patients',
     'new-patient' => 'New Patient',
+    'national-id' => 'National Identification No: (NIN)', //Unhls terminology
+    'occupation' => 'Occupation',//Unhls entry
     'patient' => 'Patient|Patients',
+    'patient-unhls' => 'Patient Information',
     'patient-details' => 'Patient Details',
     'patient-id' => 'Patient ID',
-    'patient-search-button' => 'Go!',
-    'patient-number' => 'Patient No.',
+    //'patient-search-button' => 'Go!', UNHLS Terminology
+    'patient-search-button' => 'View!',
+    'patient-number' => 'Patient OPD/IPD Number.',
     'phone-number' => 'Phone Number',
     'physical-address' => 'Physical Address',
+    'register-new-patient' => 'Register New Patient', //Unhls entry
+    'view-patients' => 'View Existing Patients', //Unhls entry
+    'residence-village' => 'Village of Residence', //Unhls entry
+    'sex' => 'Sex', //Unhls prefers this to Gender
+    'ulin' => 'Unique Lab Identification Number', //Unhls entry
+    'workplace-village' => 'Village of Workplace', //Unhls entry
     
     /** 
      *   Specimen
@@ -113,9 +128,13 @@ return array(
     'not-paid' => 'Not Paid',
     'accept-specimen' => 'Accept',
     'accept-specimen-title' => 'Accept Specimen',
+    'date-specimen-collected' => 'Date of Sample Collection', //unhls terminolgy
+    'date-dispatch' => 'Date of Sample Dispatch', //UNHLS terminology
+    'destination-facility' => 'Destination Facility/Hub', //unhls terminology
     'change-specimen' => 'Change',
     'change-specimen-title' => 'Change Specimen Type',
     'create-specimen-type' => 'Create Specimen Type',
+    'collect-specimen-title' => 'Collect Sample',
     'edit-specimen-type' => 'Edit Specimen Type',
     'list-specimen-types' => 'List Specimen Types',
     'new-specimen-type' => 'New Specimen Type',
@@ -124,11 +143,13 @@ return array(
     'reject-title' => 'Reject Specimen',
     'rejection-reason' => 'Reason',
     'rejection-reason-title' => 'Rejection Reason',
+    'reasons-for-referral' => 'Reasons for referral', //UNHLS terminology
     'specimen' => 'Specimen',
     'specimen-accepted' => 'Accepted',
     'specimen-accepted-label' => 'Specimen Accepted',
     'specimen-details' => 'Specimen Details',
     'specimen-id' => 'Specimen ID',
+    'specimen-information' => 'Sample Information', //UNHLS terminology
     'specimen-number' => 'ID',
     'specimen-number-title' => 'Specimen ID',
     'specimen-not-collected' => 'Not Collected',
@@ -138,11 +159,18 @@ return array(
     'specimen-status' => 'Status',
     'specimen-type' => 'Type|Specimen Types',
     'specimen-type-details' => 'Specimen Type Details',
-    'specimen-type-title' => 'Specimen Type',
+    //'specimen-type-title' => 'Specimen Type',
+    'specimen-type-title' =>'Sample Type', //UNHLS terminolgy of the above
+    'storage-condition' => 'Storage Condition', //UNHLS terminolgy
     'success-rejecting-specimen' => 'The specimen was rejected!',
+    'transport-type' => 'Type of Transport', //UNHLS terminology
     'update' => 'Update',
+    'priority-of-specimen' => 'Priority of Specimen',
     'refer-sample' => 'Refer sample',
     'referrals' => 'Referrals',
+    'referral-type' => 'Type of Referral',
+    'referring-health-worker' => 'Referring Health Worker',//UNHLS terminology
+    'rejecting-officer' => 'Recieving/Rejecting Officer',
     'specimen-successful-refer' => 'The specimen was referred',
     'specimen-referred-label' => 'Specimen Referred',
     'person-involved' => 'Person involved',
@@ -150,6 +178,10 @@ return array(
     'originating-from' => 'Originating From',
     'referred-by' => 'Referred by',
     'recieved-by' => 'Recieved by',
+    'collect-specimen' => 'Collect Sample',
+    'time-specimen-collected' => 'Time Specimen Collected', //UNHLS terminolgy
+    'time-dispatch' => 'Time of Sample dispatch: ', //UNHLS terminolgy
+    'specimen-collected-by' => 'Specimen Collected and Recieved By', //UNHLS terminology
 
     /** 
      *   Test Catalog
@@ -269,6 +301,7 @@ return array(
     'select-isolates'   =>  'Select Isolated Organisms',
     'zone-size' =>  'Zone size (mm)',
     'interp'    =>  'Interpretation (S, I, R)',
+    'set-to-completed' =>  'Set to Completed',
 
     /**
      *  Tests
@@ -276,7 +309,9 @@ return array(
 
     'all' => 'All',
     'create-new-test' => 'Create New Test',
+    'comments' => 'Comments',
     'completed' => 'Test Completed',
+    'completed-tests' => 'Completed Tests',
     'date-ordered' => 'Date Ordered',
     'fetch-test-data' => 'Fetch',
     'fetch-test-data-title' => 'Fetch Test data from associated equipment.',
@@ -284,28 +319,31 @@ return array(
     'in-patient' => 'In Patient',
     'interpretation' => 'Interpretation',
     'lab-receipt-date' => 'Receipt Date',
-    'list-tests' => 'Ordered Tests List',
-    'new-test' => 'New Test',
+    'list-tests' => 'Test Requests',
+    'new-test' => 'Request For a Test',
     'not-received' => 'Test Not Received',
     'out-patient' => 'Out Patient',
     'patient-name' => 'Patient name',
-    'pending' => 'Test Pending',
+    'pending' => 'Pending',
+    'pending-tests' => 'Pending Tests',
     'physician' => 'Requesting Physician',
     'receive-test' => 'Receive',
     'receive-test-title' => 'Receive Test',
     'registered-by' => 'Registered By',
     'save-test' => 'Save Test Request',
     'select-tests' => 'Select Test(s)',
-    'start-test' => 'Start',
+    'start-test' => 'Analysis',
     'start-test-title' => 'Start Test',
     'started' => 'Test Started',
     'success-creating-test' => 'Successfully created test!',
-    'test' => 'Test|Tests',
+    'test' => 'Test|Tests|Test-Request',
+    'test-unhls' => 'Test|List of All Test Requests', //Unhls  terminology
     'test-catalog' => 'Test Catalog',
     'test-details' => 'Test Details',
     'test-phase' => 'Test Phase',
     'test-remarks' => 'Remarks',
     'test-status' => 'Test Status',
+    'test-request-status' => 'Actions', //unhls terminology
     'tested-by' => 'Performed By',
     'turnaround-time' => 'Turnaround Time',
     'unknown' => 'Unknown',
@@ -695,4 +733,39 @@ return array(
     'follow-up' =>  'Follow Up',
     'cd4-less'  =>  '< 500',
     'cd4-greater'   =>  '> 500',   
+	
+	
+	/**
+	* BB Incidences
+	*/
+	'bbincidence' => 'BB Incidence | BB Incidences',
+	'new-bbincidence' => 'New BB Incidence',
+	'incident-serial-number' => 'Incident Serial Number',
+	'date-of-occurrence' => 'Date of Occurrence',
+	'time-of-occurrence' => 'Time of Occurrence',
+	'age' => 'Age',
+	'dob' => 'Date of Birth',
+	'filter' => 'Filter',
+	
+	
+
+    //BLIS uganda
+    'stock-card' => 'Stock card' ,   
+    'equipment-log' => 'Equipment log',
+    'requisition-voucher'=>'Requisition voucher',
+    'stock-entries'=> 'Stock Entries',
+    'add-stock'=> 'Add',
+    'stock-list'=> 'Stock List',
+    'stock-requisition' => 'Stockbook',    
+    'edit-stock-entry'=> 'Edit',
+    'stock-succesfully-deleted' => 'Stock has been succesfully deleted',
+    'stock-succesfully-added' => 'Successifully added a new stock entry',
+    'settings' => 'Settings',
+    'add-stock'=> 'Add',
+    'equipment-list'=> 'Equipment List',      
+    'equipment-breakdown'=> 'Equipment breakdown', 
+    'equipment-maintenance'=> 'Equipment maintenance',         
+    'supplier-list'=> 'Supplier List',    
+    'add'=> 'Add',
+
 );

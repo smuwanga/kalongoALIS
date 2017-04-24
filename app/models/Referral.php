@@ -16,7 +16,7 @@ class Referral extends Eloquent
 
     public function facility()
     {
-    	return $this->belongsTo('Facility');
+    	return $this->belongsTo('UNHLSFacility');
     }
 
 }

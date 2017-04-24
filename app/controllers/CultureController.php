@@ -31,24 +31,7 @@ class CultureController extends \BaseController {
 	 */
 	public function store()
 	{
-		$action = Input::get('action');
-		$workUp = new Culture;
-		$workUp->user_id = Input::get('userId');
-		$workUp->test_id = Input::get('testId');
-		$workUp->observation = Input::get('obs');
-		if($action == 'add'){
-			$workUp->save();
-			return 0;
-		}
-		else if($action == 'draw'){
-			$obsv = Test::find($workUp->test_id)->culture;
-
-			foreach ($obsv as $observation) {
-				$observation->user = User::find($observation->user_id)->name;
-				$observation->timeStamp = Culture::showTimeAgo($observation->created_at);
-			}
-			return json_encode($obsv);
-		}
+		//
 	}
 
 
@@ -60,7 +43,18 @@ class CultureController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		//
+		$test = UnhlsTest::find($id);
+		$test->load(
+			'cultureObservations.cultureDuration',
+			'isolatedOrganisms.organism',
+			'isolatedOrganisms.drugSusceptibilities.drug',
+			'isolatedOrganisms.drugSusceptibilities.drugSusceptibilityMeasure');
+
+		$content = View::make('test.culture.microbiologyreport')
+			->with('test', $test);
+		$pdf = App::make('dompdf');
+		$pdf->loadHTML($content);
+		return $pdf->stream('microbiology.pdf');
 	}
 
 
@@ -72,7 +66,25 @@ class CultureController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		//
+		$test = UnhlsTest::find($id);
+
+		$test->load(
+			'isolatedOrganisms.organism',
+			'cultureObservations.cultureDuration',
+			'isolatedOrganisms.drugSusceptibilities.drug',
+			'isolatedOrganisms.drugSusceptibilities.drugSusceptibilityMeasure');
+
+		$drugSusceptibilityMeasures = ['']+DrugSusceptibilityMeasure::all()->lists('interpretation','id');
+		$cultureDurations = ['']+CultureDuration::all()->lists('duration','id');
+		$organisms = ['']+Organism::all()->lists('name','id');
+		$drugs = ['']+Drug::all()->lists('name','id');
+
+		return View::make('test.culture.worksheet')
+			->with('drugSusceptibilityMeasures', $drugSusceptibilityMeasures)
+			->with('cultureDurations', $cultureDurations)
+			->with('organisms', $organisms)
+			->with('test', $test)
+			->with('drugs', $drugs);
 	}
 
 
