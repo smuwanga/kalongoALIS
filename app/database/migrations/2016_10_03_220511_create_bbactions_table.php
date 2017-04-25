@@ -16,8 +16,9 @@ class CreateBbactionsTable extends Migration {
 		{
 			$table->increments('id');
 			$table->string('actionname');
+
 			$table->timestamps();
-			$table->timestamp('deleted_at');
+			$table->softDeletes();
 		});
 	}
 
@@ -30,5 +31,4 @@ class CreateBbactionsTable extends Migration {
 	{
 		Schema::drop('unhls_bbactions');
 	}
-
 }

@@ -59,12 +59,7 @@ class TestType extends Eloquent
 	{
 	  return $this->belongsToMany('Instrument', 'instrument_testtypes');
 	}
-	/**
-	 * Microbiology test type relationship
-	 */
-	public function microbiologyTestType(){
-		return $this->hasOne('MicrobiologyTestType');
-	}
+
 	/**
 	 * Set compatible specimen types
 	 *
@@ -423,5 +418,13 @@ class TestType extends Eloquent
 		}
 		$qualifier = $qualifier->lists('test_id');
 		return count(array_intersect(array_unique($qualifier), array_unique($results)));
+	}
+
+	public function isCulture(){
+		if($this->name == 'Culture and Sensitivity'){
+			return true;
+		}else {
+			return false;
+		}
 	}
 }

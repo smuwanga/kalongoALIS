@@ -19,8 +19,8 @@ class CreateBbincidencesNatureTable extends Migration {
 			$table->integer('nature_id')->unsigned();
 			$table->foreign('bbincidence_id')->references('id')->on('unhls_bbincidences');
 			$table->foreign('nature_id')->references('id')->on('unhls_bbnatures');
-			$table->timestamps();
-			$table->timestamp('deleted_at');
+            $table->softDeletes();
+            $table->timestamps();
 		});
 	}
 

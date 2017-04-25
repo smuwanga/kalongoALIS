@@ -30,16 +30,17 @@
 			</div>
 		@endif
 		{{ Form::open(array('route' => 'unhls_test.rejectAction')) }}
-			{{ Form::hidden('specimen_id', $specimen->id) }}
+			{{ Form::hidden('specimen_id', $test->specimen->id) }}
+			{{ Form::hidden('test_id', $test->id) }}
 			<div class="panel-body">
 				<div class="display-details">
 				    <p><strong>{{ Lang::choice('messages.test-type',1) }}</strong>
-				        {{$specimen->test->testType->name}}</p>
+				        {{$test->testType->name}}</p>
 				    <p><strong>{{trans('messages.specimen-type-title')}}</strong>
-				        {{$specimen->specimenType->name}}</p>
+				        {{$test->specimen->specimenType->name}}</p>
 				    <p>
 				        <strong>{{trans('messages.specimen-number-title')}}</strong>
-				        {{$specimen->id}}
+				        {{$test->specimen->id}}
 				    </p>
 				</div>
 				<div class="form-group">

@@ -74,8 +74,8 @@ class CreateBbincidencesTable extends Migration {
 			$table->integer('updatedby')->nullable()->unsigned();
 			$table->foreign('facility_id')->references('id')->on('unhls_facilities');
 			$table->foreign('createdby')->references('id')->on('users');
-			$table->timestamps();
-			$table->timestamp('deleted_at');
+            $table->softDeletes();
+            $table->timestamps();
 		});
 	}
 

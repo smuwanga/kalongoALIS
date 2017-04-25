@@ -94,15 +94,6 @@ class CreateMicrobiologyTables extends Migration {
             $table->foreign('isolated_organism_id')->references('id')->on('isolated_organisms');
             $table->foreign('drug_susceptibility_measure_id')->references('id')->on('drug_susceptibility_measures');
         });
-        /* microbiology test types table */
-        Schema::create('microbiology_test_types', function(Blueprint $table)
-        {
-            $table->increments('id')->unsigned();
-            $table->integer('test_type_id')->unsigned();
-            $table->boolean('worksheet_required')->default(0);
-
-            $table->foreign('test_type_id')->references('id')->on('test_types');
-        });
 	}
 	/**
 	 * Reverse the migrations.

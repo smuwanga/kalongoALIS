@@ -53,20 +53,7 @@
 		case 'lot': $active[8] = "active"; break;
 	}
 ?>
-	<ul class="nav nav-sidebar">
-		<li>
-			<div class="main-menu {{$active[0]}}">
-				<a href="{{ URL::route('user.home')}}" title="{{trans('messages.home')}}">
-					<span class="glyphicon glyphicon-home"></span> {{trans('messages.home')}}</a>
-			</div>
-		</li>
-		<li>
-			<div class="main-menu {{$active[0]}}">
-				<a href="{{ URL::route('patient.index')}}">
-					<span class="glyphicon glyphicon-download-alt"></span> {{ Lang::choice('messages.patient', 2)}}</a>
-			</div>
-		</li>
-<nav id="side_nav">
+	<nav id="side_nav">
 			<ul>
 
 				<li>

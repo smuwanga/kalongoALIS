@@ -5,11 +5,11 @@ use Illuminate\Database\Eloquent\SoftDeletingTrait;
 class Bbincidence extends Eloquent
 {
 	/**
-	 * Enabling soft deletes for bbincidence details.
+	 * Enabling soft deletes for specimen type details.
 	 *
 	 */
-	//use SoftDeletingTrait;
-	//protected $dates = ['deleted_at'];
+	use SoftDeletingTrait;
+	protected $dates = ['deleted_at'];
     	
 	/**
 	 * The database table used by the model.

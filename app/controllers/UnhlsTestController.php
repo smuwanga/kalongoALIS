@@ -396,10 +396,22 @@ class UnhlsTestController extends \BaseController {
 	 */
 	public function testList()
 	{
-		$id =Input::get('id');
-		$tests = DB::table('test_types')->select('id', 'name')->where('test_category_id', $id)->get(); 
+		$testCategoryId =Input::get('test_category_id');
+		// todo: to use when specifying test for specimens as well
+		// $specimenTypeId =Input::get('specimen_type_id');
 
-		return $tests;
+		$testCategoryId = isset($input['test_category'])?$input['test_category']:'';
+		if($testCategoryId){
+			$testTypes = TestType::where('test_category_id', $testCategoryId);
+			if(count($testTypes) == 0){
+				Session::flash('message', trans('messages.empty-search'));
+			}
+		}else {
+
+			$testTypes = TestType::where('orderable_test', 1)-> orderBy('name', 'asc')->get();
+		}
+		return View::make('unhls_test.testTypeList')
+			->with('testTypes', $testTypes);
 	}
 
 	/**
@@ -414,12 +426,8 @@ class UnhlsTestController extends \BaseController {
 		}
 
 		//Create a Lab categories Array
-		//$categories = array('all')+TestCategory::all('name', 'id'); //unhls test menu varriable
-		$categories = array('Click to select Test Menu')+TestCategory::lists('name', 'id');//->get()->lists('name', 'id'); //UNHLS
+		$categories = ['Select Lab Section']+TestCategory::lists('name', 'id');
 
-		/* ($categories as $key => $value) {
-			$categories[$key] = $value;
-		}*/
 		$fromRedirect = Session::pull('TEST_CATEGORY');
 
 		if($fromRedirect){
@@ -428,22 +436,23 @@ class UnhlsTestController extends \BaseController {
 			$input = Input::except('_token');
 		}
 
-		$testCategoryId = isset($input['test_cat'])?$input['test_cat']:'';
+		$specimenTypes = ['select Specimen Type']+SpecimenType::lists('name', 'id');
 
+		$testCategoryId = isset($input['test_category'])?$input['test_category']:'';
 		if($testCategoryId){
 			$testTypes = TestType::where('test_category_id', $testCategoryId);
 			if(count($testTypes) == 0){
 				Session::flash('message', trans('messages.empty-search'));
 			}
 		}else {
-
-		$testTypes = TestType::where('orderable_test', 1)-> orderBy('name', 'asc')->get();
-		$patient = UnhlsPatient::find($patientID);
+			$testTypes = TestType::where('orderable_test', 1)-> orderBy('name', 'asc')->get();
+			$patient = UnhlsPatient::find($patientID);
 		}
 
 		//Load Test Create View
 		return View::make('unhls_test.create')
 					->with('testtypes', $testTypes)
+					->with('specimenType', $specimenTypes)
 					->with('patient', $patient)
 					->with('testCategory', $categories)
 					->with('testId', $testCategoryId);
@@ -474,27 +483,27 @@ class UnhlsTestController extends \BaseController {
 			$activeTest = array();
 
 			/*
-			* - Create a visit
-			* - Fields required: visit_type, patient_id
-			*/
+			 * - Create a visit
+			 * - Fields required: visit_type, patient_id
+			 */
 			$visit = new UnhlsVisit;
 			$visit->patient_id = Input::get('patient_id');
 			$visit->visit_type = $visitType[Input::get('visit_type')];
 			$visit->save();
 
 			/*
-			* - Create tests requested
-			* - Fields required: visit_id, test_type_id, specimen_id, test_status_id, created_by, requested_by
-			*/
+			 * - Create tests requested
+			 * - Fields required: visit_id, test_type_id, specimen_id, test_status_id, created_by, requested_by
+			 */
 			$testTypes = Input::get('testtypes');
 			if(is_array($testTypes)){
+				// Create Specimen - specimen_type_id, accepted_by, referred_from, referred_to
+				$specimen = new UnhlsSpecimen;
+				$specimen->specimen_type_id = Input::get('specimen_type');
+				$specimen->accepted_by = Auth::user()->id;
+				$specimen->save();
 				foreach ($testTypes as $value) {
 					$testTypeID = (int)$value;
-					// Create Specimen - specimen_type_id, accepted_by, referred_from, referred_to
-					$specimen = new UnhlsSpecimen;
-					$specimen->specimen_type_id = TestType::find($testTypeID)->specimenTypes->lists('id')[0];
-					$specimen->accepted_by = Auth::user()->id;
-					$specimen->save();
 
 					$test = new UnhlsTest;
 					$test->visit_id = $visit->id;
@@ -526,8 +535,6 @@ class UnhlsTestController extends \BaseController {
 	public function collectSpecimen($specimenID)
 	{
 		$specimen = UnhlsSpecimen::find($specimenID);
-		
-
 		return View::make('unhls_test.collect')->with('specimen', $specimen);
 	}
 
@@ -598,11 +605,11 @@ class UnhlsTestController extends \BaseController {
 	 * @param
 	 * @return
 	 */
-	public function reject($specimenID)
+	public function reject($testID)
 	{
-		$specimen = UnhlsSpecimen::find($specimenID);
+		$test = UnhlsTest::find($testID);
 		$rejectionReason = RejectionReason::all();
-		return View::make('unhls_test.reject')->with('specimen', $specimen)
+		return View::make('unhls_test.reject')->with('test', $test)
 						->with('rejectionReason', $rejectionReason);
 	}
 
@@ -627,6 +634,7 @@ class UnhlsTestController extends \BaseController {
 	 * @param
 	 * @return
 	 */
+	// todo: create a functions for pre-analytic rejection
 	public function rejectAction()
 	{
 		//Reject justifying why.
@@ -637,22 +645,28 @@ class UnhlsTestController extends \BaseController {
 		$validator = Validator::make(Input::all(), $rules);
 
 		if ($validator->fails()) {
-			return Redirect::route('unhls_test.reject', array(Input::get('specimen_id')))
+			return Redirect::route('unhls_test.reject', array(Input::get('test_id')))
 				->withInput()
 				->withErrors($validator);
 		} else {
-			$specimen = UnhlsSpecimen::find(Input::get('specimen_id'));
-			$specimen->rejection_reason_id = Input::get('rejectionReason');
-			$specimen->specimen_status_id = UnhlsSpecimen::REJECTED;
-			$specimen->rejected_by = Auth::user()->id;
-			$specimen->time_rejected = date('Y-m-d H:i:s');
-			$specimen->reject_explained_to = Input::get('reject_explained_to');
-			$specimen->save();
+			$test = UnhlsTest::find(Input::get('test_id'));
+			// this refers to analytic rejection of specimen
+			$test->test_status_id = UnhlsTest::REJECTED;
+			$test->save();
+			// todo: create cascade deletion for it, incase rejection is reversed
+			$rejection = new AnalyticSpecimenRejection;
+			$rejection->rejection_reason_id = Input::get('rejectionReason');
+			$rejection->test_id = Input::get('test_id');
+			$rejection->specimen_id = Input::get('specimen_id');
+			$rejection->rejected_by = Auth::user()->id;
+			$rejection->time_rejected = date('Y-m-d H:i:s');
+			$rejection->reject_explained_to = Input::get('reject_explained_to');
+			$rejection->save();
 			
 			$url = Session::get('SOURCE_URL');
 			
 			return Redirect::to($url)->with('message', 'messages.success-rejecting-specimen')
-						->with('activeTest', array($specimen->test->id));
+						->with('activeTest', array($test->id));
 		}
 	}
 
@@ -728,10 +742,9 @@ class UnhlsTestController extends \BaseController {
 	{
 		$test = UnhlsTest::find($testID);
 		// if the test being carried out requires a culture worksheet
-		try {
-			$test->testType->microbiologyTestType->worksheet_required;
+		if ($test->testType->name == 'Culture and Sensitivity') {
 			return Redirect::route('culture.edit', [$test->id]);
-		} catch (Exception $e){
+		}else{
 			return View::make('unhls_test.enterResults')->with('test', $test);
 		}
 	}
@@ -819,13 +832,11 @@ class UnhlsTestController extends \BaseController {
 	{
 		$test = UnhlsTest::find($testID);
 		// if the test being carried out requires a culture worksheet
-		try {
-			$test->testType->microbiologyTestType->worksheet_required;
+		if ($test->testType->name == 'Culture and Sensitivity') {
 			return Redirect::route('culture.edit', [$test->id]);
-		} catch (Exception $e){
+		}else{
 			return View::make('unhls_test.edit')->with('test', $test);
 		}
-
 	}
 
 	/**

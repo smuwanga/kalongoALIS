@@ -116,10 +116,10 @@ Route::group(array("before" => "auth"), function()
             "as"   => "testtype.delete",
             "uses" => "TestTypeController@delete"
         ));
-        Route::resource('specimenrejection', 'SpecimenRejectionController');
+        Route::resource('specimenrejection', 'RejectionReasonController');
         Route::any("/specimenrejection/{id}/delete", array(
             "as"   => "specimenrejection.delete",
-            "uses" => "SpecimenRejectionController@delete"
+            "uses" => "RejectionReasonController@delete"
         ));
         Route::resource('drug', 'DrugController');
         
@@ -341,14 +341,6 @@ Route::group(array("before" => "auth"), function()
     Route::resource('cultureobservation', 'CultureObservationController');
     Route::resource('drugsusceptibility', 'DrugSusceptibilityController');
     Route::resource('isolatedorganism', 'IsolatedOrganismController');
-    Route::any("/culture/storeObservation", array(
-        "as"   => "culture.worksheet",
-        "uses" => "CultureController@store"
-    ));
-    Route::any("/susceptibility/saveSusceptibility", array(
-        "as"   => "drug.susceptibility",
-        "uses" => "DrugSusceptibilityController@store"
-    ));
     Route::group(array("before" => "admin"), function()
     {
         Route::resource("permission", "PermissionController");

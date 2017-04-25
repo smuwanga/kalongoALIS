@@ -19,6 +19,9 @@ class UnhlsTest extends Eloquent
 	const STARTED = 3;
 	const COMPLETED = 4;
 	const VERIFIED = 5;
+	// when a specimen is at the analytic stage, it's rejected only for that particular test
+	const REJECTED = 6;
+
 
 	/**
 	 * Other constants
@@ -47,6 +50,14 @@ class UnhlsTest extends Eloquent
 	public function specimen()
 	{
 		return $this->belongsTo('UnhlsSpecimen');
+	}
+
+	/**
+	 * Rejected specimen relationship
+	 */
+	public function rejectedSpecimen()
+	{
+		return $this->belongsTo('AnalyticSpecimenRejection', 'test_id');
 	}
 
 	/**
@@ -182,7 +193,23 @@ class UnhlsTest extends Eloquent
 		else 
 			return false;
 	}
-    
+
+    /**
+    * Check if specimen is rejected
+    *
+    * @return boolean
+    */
+    public function specimenIsRejected()
+    {
+        if($this->test_status_id == UnhlsTest::REJECTED)
+        {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
     /**
     * Function to get formatted specimenID's e.g PAR-3333
     *

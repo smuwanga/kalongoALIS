@@ -29,7 +29,7 @@
 	</div>
 <hr>
     <footer class="footer">
-        <div class="row">
+        <div class="col-md-12 row">
         	<div class="col-md-2 col-md-offset-4">
         		<a href="http://health.go.ug/" target="_blank">
         			<img src="{{ Config::get('kblis.uganda-logo') }}" alt="Government of Uganda">

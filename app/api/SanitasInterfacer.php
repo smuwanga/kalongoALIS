@@ -51,7 +51,7 @@ class SanitasInterfacer implements InterfacerInterface{
         }
 
         //Get the test and results 
-        $test = Test::find($testId);
+        $test = UnhlsTest::find($testId);
         $testResults = $test->testResults;
 
         //Measures
@@ -74,19 +74,19 @@ class SanitasInterfacer implements InterfacerInterface{
         $interpretation = "";
         //IF the test has no children prepend the status to the result
         if ($externlabRequestTree->isEmpty()) {
-            if($test->test_status_id == Test::COMPLETED){
+            if($test->test_status_id == UnhlsTest::COMPLETED){
                 $interpretation = "Done: ".$test->interpretation;
             }
-            elseif ($test->test_status_id == Test::VERIFIED) {
+            elseif ($test->test_status_id == UnhlsTest::VERIFIED) {
                 $interpretation = "Tested and verified: ".$test->interpretation;
             }
         }
         //IF the test has children, prepend the status to the interpretation
         else {
-            if($test->test_status_id == Test::COMPLETED){
+            if($test->test_status_id == UnhlsTest::COMPLETED){
                 $interpretation = "Done ".$test->interpretation;
             }
-            elseif ($test->test_status_id == Test::VERIFIED) {
+            elseif ($test->test_status_id == UnhlsTest::VERIFIED) {
                 $interpretation = "Tested and verified ".$test->interpretation;
             }
         }
@@ -197,15 +197,15 @@ class SanitasInterfacer implements InterfacerInterface{
     public function process($labRequest)
     {
         //First: Check if patient exists, if true dont save again
-        $patient = Patient::where('external_patient_number', '=', $labRequest->patient->id)->get();
+        $patient = UnhlsPatient::where('external_patient_number', '=', $labRequest->patient->id)->get();
         
         if (!$patient->first())
         {
-            $patient = new Patient();
+            $patient = new UnhlsPatient();
             $patient->external_patient_number = $labRequest->patient->id;
             $patient->patient_number = $labRequest->patient->id;
             $patient->name = $labRequest->patient->fullName;
-            $gender = array('Male' => Patient::MALE, 'Female' => Patient::FEMALE); 
+            $gender = array('Male' => UnhlsPatient::MALE, 'Female' => UnhlsPatient::FEMALE); 
             
             $patient->gender = $gender[$labRequest->patient->gender];
 
@@ -234,10 +234,10 @@ class SanitasInterfacer implements InterfacerInterface{
         }
         //Check if visit exists, if true dont save again
         $visitType = array('ip' => 'In-patient', 'op' => 'Out-patient');//Should be a constant
-        $visit = Visit::where('visit_number', '=', $labRequest->patientVisitNumber)->where('visit_type', '=', $visitType[$labRequest->orderStage])->get();
+        $visit = UnhlsVisit::where('visit_number', '=', $labRequest->patientVisitNumber)->where('visit_type', '=', $visitType[$labRequest->orderStage])->get();
         if (!$visit->first())
         {
-            $visit = new Visit();
+            $visit = new UnhlsVisit();
             $visit->patient_id = $patient->id;
             $visit->visit_type = $visitType[$labRequest->orderStage];
             $visit->visit_number = $labRequest->patientVisitNumber;
@@ -248,7 +248,7 @@ class SanitasInterfacer implements InterfacerInterface{
             $visit = $visit->first();
             if(strcmp($visitType[$labRequest->orderStage], $visit->visit_type) !=0)
             {
-                $visit = new Visit();
+                $visit = new UnhlsVisit();
                 $visit->patient_id = $patient->id;
                 $visit->visit_type = $visitType[$labRequest->orderStage];
                 $visit->visit_number = $labRequest->patientVisitNumber;
@@ -260,7 +260,7 @@ class SanitasInterfacer implements InterfacerInterface{
         if($labRequest->parentLabNo == '0')
         {
             //Check via the labno, if this is a duplicate request and we already saved the test 
-            $test = Test::where('external_id', '=', $labRequest->labNo)->get();
+            $test = UnhlsTest::where('external_id', '=', $labRequest->labNo)->get();
             if (!$test->first())
             {
                 //Specimen
@@ -270,7 +270,7 @@ class SanitasInterfacer implements InterfacerInterface{
                 // We'll save the Specimen in a transaction a little bit below
                 $test = new Test();
                 $test->test_type_id = $testTypeId;
-                $test->test_status_id = Test::NOT_RECEIVED;
+                $test->test_status_id = UnhlsTest::NOT_RECEIVED;
                 $test->created_by = User::EXTERNAL_SYSTEM_USER; //Created by external system 0
                 $test->requested_by = $labRequest->requestingClinician;
                 $test->external_id = $labRequest->labNo;

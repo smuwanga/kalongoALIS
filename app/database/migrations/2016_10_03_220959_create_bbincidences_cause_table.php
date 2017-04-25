@@ -19,8 +19,8 @@ class CreateBbincidencesCauseTable extends Migration {
 			$table->integer('cause_id')->unsigned();
 			$table->foreign('bbincidence_id')->references('id')->on('unhls_bbincidences');
 			$table->foreign('cause_id')->references('id')->on('unhls_bbcauses');
-			$table->timestamps();
-			$table->timestamp('deleted_at');
+            $table->softDeletes();
+            $table->timestamps();
 		});
 	}
 
