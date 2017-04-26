@@ -1167,7 +1167,8 @@ class DeploymentSeeder extends DatabaseSeeder
         $cBCMeasureID[] = $measureBASOpercent->id;
 
 
-        $testTypeCBC = TestType::create(array("name" => "CBC", "test_category_id" => $lab_section_hematology->id));
+        $testTypeCBC = TestType::create(array("name" => "CBC", "test_category_id" => $lab_section_hematology->id,
+            "orderable_test" => 1));
 
         /* testtype_specimentypes table */
         DB::table('testtype_specimentypes')->insert(
