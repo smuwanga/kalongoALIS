@@ -488,7 +488,7 @@ $(function(){
 	 */
 	$(function(){
 		$('#dob').combodate({
-			format: 'DD-MM-YYYY', 
+			format: 'YYYY-MM-DD', 
 			template: 'D / MMM / YYYY',
 			//min year
 			minYear: '1916'
