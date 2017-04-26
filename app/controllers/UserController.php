@@ -107,6 +107,9 @@ class UserController extends Controller {
             $user->designation = Input::get('designation');
             $user->email = Input::get('email');
             $user->password = Hash::make(Input::get('password'));
+            // todo this facility id has to be removed from here since the system is local
+            // leaving it here because of dependencies
+            $user->facility_id = 1;
 
             $user->save();
             $id = $user->id;
