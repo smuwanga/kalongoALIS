@@ -378,6 +378,13 @@ class CreatekBLIStables extends Migration {
             $table->foreign('test_type_id')->references('id')->on('test_types');
             $table->unique(array('instrument_id','test_type_id'));
         });
+
+        Schema::create('wards', function(Blueprint $table)
+        {
+            $table->increments('id');
+            $table->string('name', 45);
+            $table->string('description', 100)->nullable();
+        });
 	}
 
 	/**
@@ -387,6 +394,7 @@ class CreatekBLIStables extends Migration {
 	 */
 	public function down()
 	{
+        Schema::dropIfExists('wards');
         Schema::dropIfExists('instrument_testtypes');
         Schema::dropIfExists('instruments');
 		Schema::dropIfExists('unhls_test_results');
