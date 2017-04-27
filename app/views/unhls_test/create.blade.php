@@ -63,13 +63,17 @@
 											{{ Form::select('visit_type', [' ' => '--- Select visit type ---','0' => trans("messages.out-patient"),'1' => trans("messages.in-patient")], null,
 												 array('class' => 'form-control')) }}
 										</div>
+
+
+
 										<div class="form-group">
-											{{ Form::label('sample_origin','Ward/Clinic/Health Unit') }}
-											{{ Form::text('sample_origin', Input::old('sample_origin'), array('class' => 'form-control')) }}
+											{{ Form::label('ward_id','Ward/Clinic/Health Unit') }}
+											{{ Form::select('ward_id', $ward, Input::get('ward_id'),
+											array('class' => 'form-control')) }}
 										</div>
 										<div class="form-group">
 												{{ Form::label('bed_no','Bed No:', array('text-align' => 'right')) }}
-												{{ Form::text('bed_no', Input::old('sample_origin'), array('class' => 'form-control')) }}
+												{{ Form::text('bed_no', Input::old('bed_no'), array('class' => 'form-control')) }}
 										</div>
 										<div class="form-group">
 											{{ Form::label('clinical_notes','Clinical Notes') }}

@@ -427,6 +427,7 @@ class UnhlsTestController extends \BaseController {
 
 		//Create a Lab categories Array
 		$categories = ['Select Lab Section']+TestCategory::lists('name', 'id');
+		$wards = ['Select Sample Origin']+Ward::lists('name', 'id');
 
 		$fromRedirect = Session::pull('TEST_CATEGORY');
 
@@ -445,7 +446,7 @@ class UnhlsTestController extends \BaseController {
 				Session::flash('message', trans('messages.empty-search'));
 			}
 		}else {
-			$testTypes = TestType::where('orderable_test', 1)-> orderBy('name', 'asc')->get();
+			$testTypes = TestType::all();
 			$patient = UnhlsPatient::find($patientID);
 		}
 
@@ -455,6 +456,7 @@ class UnhlsTestController extends \BaseController {
 					->with('specimenType', $specimenTypes)
 					->with('patient', $patient)
 					->with('testCategory', $categories)
+					->with('ward', $wards)
 					->with('testId', $testCategoryId);
 	}
 
@@ -489,7 +491,16 @@ class UnhlsTestController extends \BaseController {
 			$visit = new UnhlsVisit;
 			$visit->patient_id = Input::get('patient_id');
 			$visit->visit_type = $visitType[Input::get('visit_type')];
+			$visit->ward_id = Input::get('ward_id');;
+			$visit->bed_no = Input::get('bed_no');;
 			$visit->save();
+
+			$therapy = new Therapy;
+			$therapy->patient_id = Input::get('patient_id');
+			$therapy->visit_id = $visit->id;
+			$therapy->previous_therapy = Input::get('previous_therapy');;
+			$therapy->current_therapy = Input::get('current_therapy');;
+			$therapy->save();
 
 			/*
 			 * - Create tests requested
