@@ -408,7 +408,7 @@ class UnhlsTestController extends \BaseController {
 			}
 		}else {
 
-			$testTypes = TestType::where('orderable_test', 1)-> orderBy('name', 'asc')->get();
+			$testTypes = TestType::all();
 		}
 		return View::make('unhls_test.testTypeList')
 			->with('testTypes', $testTypes);
