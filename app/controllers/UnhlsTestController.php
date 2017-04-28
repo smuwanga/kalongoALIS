@@ -45,7 +45,7 @@ class UnhlsTestController extends \BaseController {
 		else
 		{
 		// List all the active tests
-			$tests = UnhlsTest::orderBy('time_created', 'DESC');
+			$tests = UnhlsTest::orderBy('time_created', 'ASC');
 		}
 
 		// Create Test Statuses array. Include a first entry for ALL
