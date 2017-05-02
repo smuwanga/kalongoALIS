@@ -397,20 +397,13 @@ class UnhlsTestController extends \BaseController {
 	public function testList()
 	{
 		$testCategoryId =Input::get('test_category_id');
-		// todo: to use when specifying test for specimens as well
-		// $specimenTypeId =Input::get('specimen_type_id');
+		$specimenTypeId =Input::get('specimen_type_id');
 
-		$testCategoryId = isset($input['test_category'])?$input['test_category']:'';
-		if($testCategoryId){
-			$testTypes = TestType::where('test_category_id', $testCategoryId);
-			if(count($testTypes) == 0){
-				Session::flash('message', trans('messages.empty-search'));
-			}
-		}else {
+		$specimenType = SpecimenType::find($specimenTypeId);
+		$testTypes = $specimenType->testTypes;
 
-			$testTypes = TestType::all();
-		}
 		return View::make('unhls_test.testTypeList')
+			->with('testCategoryId', $testCategoryId)
 			->with('testTypes', $testTypes);
 	}
 
@@ -506,28 +499,30 @@ class UnhlsTestController extends \BaseController {
 			 * - Create tests requested
 			 * - Fields required: visit_id, test_type_id, specimen_id, test_status_id, created_by, requested_by
 			 */
-			$testTypes = Input::get('testtypes');
-			if(is_array($testTypes)){
-				// Create Specimen - specimen_type_id, accepted_by, referred_from, referred_to
-				$specimen = new UnhlsSpecimen;
-				$specimen->specimen_type_id = Input::get('specimen_type');
-				$specimen->accepted_by = Auth::user()->id;
-				$specimen->save();
-				foreach ($testTypes as $value) {
-					$testTypeID = (int)$value;
+            $testLists = Input::get('test_list');
+            if(is_array($testLists)){
+                foreach ($testLists as $testList) {
+                    // Create Specimen - specimen_type_id, accepted_by, referred_from, referred_to
+                    $specimen = new UnhlsSpecimen;
+                    $specimen->specimen_type_id = $testList['specimen_type_id'];
+                    $specimen->accepted_by = Auth::user()->id;
+                    $specimen->save();
+                    foreach ($testList['test_type_id'] as $id) {
+                        $testTypeID = (int)$id;
 
-					$test = new UnhlsTest;
-					$test->visit_id = $visit->id;
-					$test->test_type_id = $testTypeID;
-					$test->specimen_id = $specimen->id;
-					$test->test_status_id = UnhlsTest::PENDING;
-					$test->created_by = Auth::user()->id;
-					$test->requested_by = Input::get('physician');
-					$test->save();
+                        $test = new UnhlsTest;
+                        $test->visit_id = $visit->id;
+                        $test->test_type_id = $testTypeID;
+                        $test->specimen_id = $specimen->id;
+                        $test->test_status_id = UnhlsTest::PENDING;
+                        $test->created_by = Auth::user()->id;
+                        $test->requested_by = Input::get('physician');
+                        $test->save();
 
-					$activeTest[] = $test->id;
-				}
-			}
+                        $activeTest[] = $test->id;
+                    }
+                }
+            }
 
 			$url = Session::get('SOURCE_URL');
 			

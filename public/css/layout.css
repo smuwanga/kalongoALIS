@@ -399,6 +399,14 @@ label, input {
     }
 
 /*
+* Test list
+*/
+.test-list-row {
+  border-bottom: 1px solid #cecfd5;
+}
+
+
+/*
 * REPORTS PAGES
 * 
 */
