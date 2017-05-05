@@ -561,14 +561,15 @@ $(function(){
     /**
 	 * formatting date and time text/input fields as dropdown selection
 	 */
-	$(function(){
-		$('#dob').combodate({
-			format: 'YYYY-MM-DD',
-			template: 'D / MMM / YYYY',
-			//min year
-			minYear: '1916'
-		});
-	});
+    $(function(){
+        $('#dob').combodate({
+            format: 'YYYY-MM-DD',
+            template: 'D / MMM / YYYY',
+            //min year
+            minYear: '1916',
+            maxYear: '2022'
+        });
+    });
 
     $(function(){
         $('#datetime12').combodate();

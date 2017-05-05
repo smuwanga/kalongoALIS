@@ -480,15 +480,15 @@ class UnhlsTestController extends \BaseController {
 			$visit = new UnhlsVisit;
 			$visit->patient_id = Input::get('patient_id');
 			$visit->visit_type = $visitType[Input::get('visit_type')];
-			$visit->ward_id = Input::get('ward_id');;
-			$visit->bed_no = Input::get('bed_no');;
+			$visit->ward_id = Input::get('ward_id');
+			$visit->bed_no = Input::get('bed_no');
 			$visit->save();
 
 			$therapy = new Therapy;
 			$therapy->patient_id = Input::get('patient_id');
 			$therapy->visit_id = $visit->id;
-			$therapy->previous_therapy = Input::get('previous_therapy');;
-			$therapy->current_therapy = Input::get('current_therapy');;
+			$therapy->previous_therapy = Input::get('previous_therapy');
+			$therapy->current_therapy = Input::get('current_therapy');
 			$therapy->save();
 
 			/*
