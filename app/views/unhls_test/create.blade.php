@@ -195,8 +195,9 @@
             </div>
         </div>
         <div class="col-md-1">
-            <button class="col-md-12 delete-test-from-list close" aria-hidden="true" type="button" 
-                title="{{trans('messages.delete')}}">×</button>
+			<!-- todo: not functional, needs a fix before uncommenting -->
+            <!-- <button class="col-md-12 delete-test-from-list close" aria-hidden="true" type="button"
+                title="{{trans('messages.delete')}}">×</button> -->
         </div>
     </div><!-- Test List Item -->
 </div><!-- Test List Item Loader-->

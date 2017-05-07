@@ -24,7 +24,7 @@ class CreateSurveillance extends Migration {
             $table->integer('test_type_id')->unsigned();
             $table->integer('disease_id')->unsigned();
 
-            $table->unique( array('test_type_id','disease_id') );
+            $table->unique( ['test_type_id','disease_id'] );
             $table->foreign('test_type_id')->references('id')->on('test_types');
             $table->foreign('disease_id')->references('id')->on('diseases');
         });
