@@ -4,7 +4,7 @@
             <tr>
                 <td>{{ HTML::image(Config::get('kblis.organization-logo'),  Config::get('kblis.country') . trans('messages.court-of-arms'), array('width' => '90px')) }}</td>
                 <td colspan="3" style="text-align:center;">
-                    <strong><p> {{ strtoupper(Config::get('kblis.organization')) }}<br>
+                    <strong><p> {{ strtoupper(Config::get('constants.FACILITY_NAME')) }}<br>
                     {{ strtoupper(Config::get('kblis.address-info')) }}</p>
                     <p>{{ trans('messages.laboratory-report')}}<br>
                 </td>

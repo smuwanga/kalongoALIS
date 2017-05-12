@@ -106,7 +106,8 @@ class ReportController extends \BaseController {
 	    	return Response::make($content,200, $headers);
 		}
 		else{
-			return View::make('reports.patient.report')
+			// return View::make('reports.patient.report')
+			$content = View::make('reports.patient.report')
 						->with('patient', $patient)
 						->with('tests', $tests)
 						->with('pending', $pending)
@@ -115,6 +116,8 @@ class ReportController extends \BaseController {
 						->with('accredited', $accredited)
 						->with('verified', $verified)
 						->withInput(Input::all());
+			return PDF::loadHTML($content)->stream('report.pdf');
+
 		}
 	}
 

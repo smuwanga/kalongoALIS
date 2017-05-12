@@ -47,11 +47,9 @@ return array(
 	|--------------------------------------------------------------------------
 	|
 	*/
-	'address-info' => 'REGIONAL REFERRAL HOSPITAL, A-LIS<br>
-                    REFERRAL HOSPITAL LOCATION<br>
-                    P.O. BOX PRIVATE BAG,<br>
+	'address-info' => 'P.O. BOX 7272, KAMPALA<br>
                     UGANDA.<br>
-                    Phone: +0000000 Ext 203/208</p>',
+                    Phone: +256 414-230265</p>',
 	
 	/*
 	|--------------------------------------------------------------------------

@@ -1,66 +1,18 @@
-@extends("layout")
-@section("content")
-<div>
-	<ol class="breadcrumb">
-	  <li><a href="{{{URL::route('user.home')}}}">{{ trans('messages.home') }}</a></li>
-	  <li class="active"><a href="{{ URL::route('reports.patient.index') }}">{{ Lang::choice('messages.report', 2) }}</a></li>
-	  <li class="active">{{ trans('messages.patient-report') }}</li>
-	</ol>
-</div>
-<div class='container-fluid'>
-    {{ Form::open(array('url' => 'patientreport/'.$patient->id, 'class' => 'form-inline', 'id' => 'form-patientreport-filter', 'method'=>'POST')) }}
-		{{ Form::hidden('patient', $patient->id, array('id' => 'patient')) }}
-		<div class="row">
-			<div class="col-sm-3">
-				<label class="checkbox-inline">
-	        		{{ Form::checkbox('pending', "1", isset($pending)) }}{{trans('messages.include-pending-tests')}}
-				</label>
-			</div>
-			<div class="col-sm-3">
-				<div class="row">
-					<div class="col-sm-2">
-						{{ Form::label('start', trans("messages.from")) }}</div><div class="col-sm-1">
-			        	{{ Form::text('start', isset($input['start'])?$input['start']:null, 
-			                array('class' => 'form-control standard-datepicker')) }}
-			        </div>
-		        </div>
-	        </div>
-	        <div class="col-sm-3">
-				<div class="row">
-			        <div class="col-sm-2">
-				        {{ Form::label('end', trans("messages.to")) }}
-				    </div>
-				    <div class="col-sm-1">
-		                {{ Form::text('end', isset($input['end'])?$input['end']:null, 
-		                    array('class' => 'form-control standard-datepicker')) }}
-		            </div>
-	            </div>
-            </div>
-            <div class="col-sm-3">
-				<div class="row">
-		            <div class="col-sm-4">
-			            {{ Form::button("<span class='glyphicon glyphicon-filter'></span> ".trans('messages.view'), 
-			                    array('class' => 'btn btn-primary', 'id' => 'filter', 'type' => 'submit')) }}
-		            </div>
-		            @if(count($verified) == count($tests))
-		            <div class="col-sm-1">
-				        {{ Form::submit(trans('messages.export-to-word'), array('class' => 'btn btn-success', 
-				        	'id' => 'word', 'name' => 'word')) }}
-				    </div>
-				    @endif
-			    </div>
-		    </div>
-	    </div>
-	    {{ Form::hidden('visit_id', $visit, array('id'=>'visit_id')) }}
-	{{ Form::close() }}
-</div>
-<br />
-<div class="panel panel-primary" id="patientReport">
-	<div class="panel-heading ">
-		<span class="glyphicon glyphicon-user"></span>
-		{{ trans('messages.patient-report') }}
-	</div>
-	<div class="panel-body">
+<html>
+<head>
+{{ HTML::style('css/bootstrap.min.css') }}
+{{ HTML::style('css/bootstrap-theme.min.css') }}
+<style type="text/css">
+	#content table, #content th, #content td {
+	   border: 1px solid black;
+	   font-size:12px;
+	}
+	#content p{
+		font-size:12px;
+	 }
+</style>
+</head>
+<body>
 		@if($error!='')
 		<!-- if there are search errors, they will show here -->
 			<div class="alert alert-info">{{ $error }}</div>
@@ -90,12 +42,6 @@
 					<td>{{ $patient->patient_number}}</td>
 					<th>{{ trans('messages.age')}}</th>
 					<td>{{ $patient->getAge()}}</td>
-				</tr>
-				<tr>
-					<th>{{ trans('messages.patient-lab-number')}}</th>
-					<td>{{ $patient->external_patient_number }}</td>
-					<th>{{ trans('messages.requesting-facility-department')}}</th>
-					<td>{{ Config::get('kblis.organization') }}</td>
 				</tr>
 			</tbody>
 		</table>
@@ -153,9 +99,9 @@
 					<th>{{trans('messages.tested-by')}}</th>
 					<th>{{trans('messages.results-entry-date')}}</th>
 					<th>{{trans('messages.date-tested')}}</th>
-					<th>{{trans('messages.verified-by')}}</th>
+<!-- 					<th>{{trans('messages.verified-by')}}</th>
 					<th>{{trans('messages.date-verified')}}</th>
-				</tr>
+ -->				</tr>
 				@forelse($tests as $test)
 						<tr>
 							<td>{{ $test->testType->name }}</td>
@@ -168,12 +114,12 @@
 									</p>
 								@endforeach</td>
 							<td>{{ $test->interpretation == '' ? 'N/A' : $test->interpretation }}</td>
-							<td>{{ $test->testedBy->name or trans('messages.pending')}}</td>
+							<td>{{ $test->testedBy->name}}</td>
 							<td>{{ $test->testResults->count() ? $test->testResults->last()->time_entered : '' }}</td>
 							<td>{{ $test->time_completed }}</td>
-							<td>{{ $test->verifiedBy->name or trans('messages.verification-pending')}}</td>
+<!-- 							<td>{{ $test->verifiedBy->name or trans('messages.verification-pending')}}</td>
 							<td>{{ $test->time_verified }}</td>
-						</tr>
+ -->						</tr>
 				@empty
 					<tr>
 						<td colspan="8">{{trans("messages.no-records-found")}}</td>
@@ -182,8 +128,7 @@
 			</tbody>
 		</table></div>
 		@endif
-		</div>
-	</div>
 
 </div>
-@stop
+</body>
+</html>
