@@ -63,9 +63,9 @@ class SpecimenType extends Eloquent
 				$specimens = $specimens->whereBetween('time_accepted', [$from, $to]);
 			}
 			if($gender){
-				$specimens = $specimens->join('tests', 'specimens.id', '=', 'tests.specimen_id')
-									   ->join('visits', 'tests.visit_id', '=', 'visits.id')
-									   ->join('patients', 'visits.patient_id', '=', 'patients.id')
+				$specimens = $specimens->join('unhls_tests', 'specimens.id', '=', 'unhls_tests.specimen_id')
+									   ->join('unhls_visits', 'unhls_tests.visit_id', '=', 'unhls_visits.id')
+									   ->join('unhls_patients', 'unhls_visits.patient_id', '=', 'unhls_patients.id')
 									   ->whereIn('gender', $gender);
 			}
 			if($ageRange){

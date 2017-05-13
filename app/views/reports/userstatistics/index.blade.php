@@ -160,7 +160,7 @@
 					</thead>
 					<tbody>
 						@forelse($reportData as $row)
-							<?php $specimen = Specimen::find($row->id);?>
+							<?php $specimen = UnhlsSpecimen::find($row->id);?>
 							<tr>
 								<td>{{$specimen->id}}</td>
 								<td>{{$specimen->specimenType->name}}</td>
@@ -188,7 +188,7 @@
 					</thead>
 					<tbody>
 						@forelse($reportData as $row)
-							<?php $test = Test::find($row->id);?>
+							<?php $test = UnhlsTest::find($row->id);?>
 							<tr>
 								<td>{{$test->id}}</td>
 								<td>{{$test->testType->name}}</td>

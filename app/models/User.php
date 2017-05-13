@@ -128,9 +128,10 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 						count(DISTINCT IF(u.id=t.tested_by AND (t.time_completed BETWEEN ? AND ?),t.id,NULL)) AS tested, 
 						count(DISTINCT IF(u.id=t.verified_by AND (t.time_verified BETWEEN ? AND ?),t.id,NULL)) AS verified, 
 						count(DISTINCT IF(u.id=s.accepted_by AND (s.time_accepted BETWEEN ? AND ?),t.id,NULL)) AS specimen_registered, 
-						count(DISTINCT IF(u.id=s.rejected_by AND (s.time_rejected BETWEEN ? AND ?),t.id,NULL)) AS specimen_rejected 
+						count(DISTINCT IF(u.id=a.rejected_by AND (a.time_rejected BETWEEN ? AND ?),t.id,NULL)) AS specimen_rejected 
 					FROM unhls_tests AS t 
 						LEFT JOIN specimens AS s ON t.specimen_id = s.id 
+						LEFT JOIN analytic_specimen_rejections AS a ON a.specimen_id = a.id 
 						LEFT JOIN unhls_visits AS v ON t.visit_id = v.id 
 						INNER JOIN unhls_patients AS p ON v.patient_id = p.id 
 						CROSS JOIN users AS u 
@@ -153,7 +154,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	public static function getPatientsRegistered($from, $to, $userID=0)
 	{
 
-		$patients = Patient::select(['id'])->whereBetween('created_at', [$from, $to]);
+		$patients = UnhlsPatient::select(['id'])->whereBetween('created_at', [$from, $to]);
 		
 		if($userID > 0)
 			$patients = $patients->where('created_by', '=', $userID);
@@ -169,7 +170,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	public static function getSpecimensRegistered($from, $to, $userID=0)
 	{
 
-		$specimens = Specimen::select(['id'])->whereBetween('time_accepted', [$from, $to]);
+		$specimens = UnhlsSpecimen::select(['id'])->whereBetween('time_accepted', [$from, $to]);
 		
 		if($userID > 0)
 			$specimens = $specimens->where('accepted_by', '=', $userID);

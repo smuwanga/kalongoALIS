@@ -199,6 +199,9 @@ class ReportController extends \BaseController {
 		if(!$to){
 			$to=$date;
 		}
+		if(!$from){
+			$from=$date;
+		}
 		$toPlusOne = date_add(new DateTime($to), date_interval_create_from_date_string('1 day'));
 		$records = Input::get('records');
 		$testCategory = Input::get('section_id');
@@ -269,7 +272,13 @@ class ReportController extends \BaseController {
 				}
 				else
 				{
-					$specimens = $specimens->whereBetween('time_rejected', 
+					/*$specimens = $specimens->whereBetween('time_rejected', 
+						array($from, $toPlusOne))->get(array('specimens.*'));*/
+
+					/*$specimens = $specimens->join('pre_analytic_specimen_rejections', 'pre_analytic_specimen_rejections.specimen_id', '=', 'specimens.id')->whereBetween('time_rejected', 
+						array($from, $toPlusOne))->get(array('specimens.*'));*/
+					// analytic specimen rejection is the functional one now
+					$specimens = $specimens->join('analytic_specimen_rejections', 'analytic_specimen_rejections.specimen_id', '=', 'specimens.id')->whereBetween('time_rejected', 
 						array($from, $toPlusOne))->get(array('specimens.*'));
 				}
 			}
