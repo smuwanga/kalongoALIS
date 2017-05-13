@@ -3,11 +3,11 @@
 {{ HTML::style('css/bootstrap.min.css') }}
 {{ HTML::style('css/bootstrap-theme.min.css') }}
 <style type="text/css">
-	#content table, #content th, #content td {
-	   border: 1px solid black;
+	#report_content table, #report_content th, #report_content td {
+	   /*border: 1px solid black;*/
 	   font-size:12px;
 	}
-	#content p{
+	#report_content p{
 		font-size:12px;
 	 }
 </style>
