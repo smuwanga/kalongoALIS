@@ -121,7 +121,7 @@ class UnhlsTestController extends \BaseController {
 		//	Barcode
 		$barcode = Barcode::first();
 
-		return View::make('unhls_test.completed')
+		return View::make('unhls_test.index')
 					->with('testSet', $tests)
 					->with('testStatus', $statuses)
 					->with('barcode', $barcode)
@@ -181,7 +181,7 @@ class UnhlsTestController extends \BaseController {
 		//	Barcode
 		$barcode = Barcode::first();
 
-		return View::make('unhls_test.pending')
+		return View::make('unhls_test.index')
 					->with('testSet', $tests)
 					->with('testStatus', $statuses)
 					->with('barcode', $barcode)
@@ -241,7 +241,7 @@ class UnhlsTestController extends \BaseController {
 		//	Barcode
 		$barcode = Barcode::first();
 
-		return View::make('unhls_test.completed')
+		return View::make('unhls_test.index')
 					->with('testSet', $tests)
 					->with('testStatus', $statuses)
 					->with('barcode', $barcode)
@@ -301,7 +301,7 @@ class UnhlsTestController extends \BaseController {
 		//	Barcode
 		$barcode = Barcode::first();
 
-		return View::make('unhls_test.completed')
+		return View::make('unhls_test.index')
 					->with('testSet', $tests)
 					->with('testStatus', $statuses)
 					->with('barcode', $barcode)
@@ -362,7 +362,7 @@ class UnhlsTestController extends \BaseController {
 		//	Barcode
 		$barcode = Barcode::first();
 
-		return View::make('unhls_test.completed')
+		return View::make('unhls_test.index')
 					->with('testSet', $tests)
 					->with('testStatus', $statuses)
 					->with('barcode', $barcode)
@@ -440,7 +440,7 @@ class UnhlsTestController extends \BaseController {
 		$patient = UnhlsPatient::find($patientID);
 
 		//Load Test Create View
-		return View::make('unhls_test.create')
+		return View::make('visit.create')
 					->with('collectionDate', $collectionDate)
 					->with('receptionDate', $receptionDate)
 					->with('specimenType', $specimenTypes)
@@ -556,52 +556,6 @@ class UnhlsTestController extends \BaseController {
 			->with('specimen', $specimen)
 			->with('specimenTypes', $specimenTypes);
     }
-
-	/**
-	 * Refer action
-	 *
-	 * @return View
-	 */
-	public function collectSpecimenAction()
-	{
-		//Validate
-		$rules = array(
-			'referral-status' => 'required',
-			'facility_id' => 'required|non_zero_key',
-			'person',
-			'contacts'
-			);
-		$validator = Validator::make(Input::all(), $rules);
-		$specimenId = Input::get('specimen_id');
-
-		if ($validator->fails())
-		{
-			return Redirect::route('unhls_test.refer', array($specimenId))-> withInput()->withErrors($validator);
-		} 
-
-		//Insert into referral table
-		
-
-		//Update specimen referral statuss
-		//$specimen = Specimen::find($specimenId);
-		$specimen =Input::get('specimen_id');
-
-		/*DB::transaction(function() use ($referral, $specimen) {
-			$referral->save();
-			$specimen->referral_id = $referral->id;
-			//$specimen->save();
-		});*/
-
-		//Start test
-		//Input::merge(array('id' => $specimen->test->id)); //Add the testID to the Input
-		//$this->start();
-
-		//Return view
-		$url = Session::get('SOURCE_URL');
-
-		return Redirect::to($url)->with('message', 'You have successfully captured specimen collection details');
-					//->with('activeTest', array($specimen->test->id));
-	}
 
 	/**
 	 * Display Rejection page 
@@ -820,7 +774,7 @@ class UnhlsTestController extends \BaseController {
 		}
 
 		// redirect
-		return Redirect::action('UnhlsTestController@index')
+		return Redirect::to($url)
 					->with('message', trans('messages.success-saving-results'))
 					->with('activeTest', array($test->id))
 					->withInput($input);

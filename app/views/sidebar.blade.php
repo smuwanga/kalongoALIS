@@ -121,7 +121,7 @@
 										{{trans('messages.user-statistics-report')}}</a>
 									</div>
 								</li>
-								<li>
+<!-- 								<li>
 									<div><a href="{{ URL::route('reports.aggregate.moh706')}}">
 										<span class="glyphicon glyphicon-tag"></span>
 										{{trans('messages.moh-706')}}</a>
@@ -133,7 +133,7 @@
 										HMIS 105</a>
 									</div>
 								</li>
-								<li>
+ -->								<li>
 									<div><a href="{{ URL::route('reports.aggregate.cd4')}}">
 										<span class="glyphicon glyphicon-tag"></span>
 										{{trans('messages.cd4-report')}}</a>

@@ -53,7 +53,8 @@ class UnhlsPatient extends Eloquent
 				$age = $interval->y ." years ";break;
 			default:
 				$age = ($interval->y > 0)?$interval->y ." years ":"";
-				$age .= ($interval->m > 0)?$interval->m ." months":"";
+				// todo: stop this from showing except for babies under 1 year
+				// $age .= ($interval->m > 0)?$interval->m ." months":"";
 				break;
 		}
 

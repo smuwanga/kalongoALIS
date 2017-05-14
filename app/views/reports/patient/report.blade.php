@@ -48,10 +48,10 @@
 		<table class="table table-bordered">
 			<tbody>
 				<tr>
-					<th colspan="7">{{trans('messages.specimen')}}</th>
+					<th colspan="7">Lab Reception</th>
 				</tr>
 				<tr>
-					<th>{{ Lang::choice('messages.specimen-type', 1)}}</th>
+					<th>Specimen Type</th>
 					<th>{{ Lang::choice('messages.test', 2)}}</th>
 					<th>{{ trans('messages.date-ordered') }}</th>
 					<th>{{ Lang::choice('messages.test-category', 2)}}</th>
@@ -126,8 +126,38 @@
 					</tr>
 				@endforelse
 			</tbody>
-		</table></div>
+		</table>
+		</div>
 		@endif
+		<hr>
+		<table class="table table-bordered"  width="100%" style="font-size:12px;">
+			<tbody>
+				<tr>
+					<td>
+						<strong>{{ Lang::choice('messages.name', 1).":" }}</strong>
+						{{ trans('messages.signature-holder') }}
+					</td>
+					<td>
+						<strong>{{ Lang::choice('messages.name', 1).":" }}</strong>
+						{{ trans('messages.signature-holder') }}
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<strong>Organization</strong>
+						{{ trans('messages.signature-holder') }}
+					</td>
+					<td>
+						<strong>Organization</strong>
+						{{ trans('messages.signature-holder') }}
+					</td>
+				</tr>
+				<tr>
+					<td><u><strong>Requesting Clinician</strong></u></td>
+					<td><u><strong>{{ trans('messages.lab-manager') }}</strong></u></td>
+				</tr>
+			</tbody>
+		</table>
 
 </div>
 </body>
