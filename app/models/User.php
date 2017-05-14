@@ -131,7 +131,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 						count(DISTINCT IF(u.id=a.rejected_by AND (a.time_rejected BETWEEN ? AND ?),t.id,NULL)) AS specimen_rejected 
 					FROM unhls_tests AS t 
 						LEFT JOIN specimens AS s ON t.specimen_id = s.id 
-						LEFT JOIN analytic_specimen_rejections AS a ON a.specimen_id = a.id 
+						LEFT JOIN analytic_specimen_rejections AS a ON a.specimen_id = s.id 
 						LEFT JOIN unhls_visits AS v ON t.visit_id = v.id 
 						INNER JOIN unhls_patients AS p ON v.patient_id = p.id 
 						CROSS JOIN users AS u 

@@ -132,7 +132,7 @@
 					<tbody>
 						<?php $i = 1;?>
 						@forelse($reportData as $row)
-							<?php $patient = Patient::find($row->id);?>
+							<?php $patient = UnhlsPatient::find($row->id);?>
 							<tr>
 								<td>{{$i++}}</td>
 								<td>{{$patient->patient_number}}</td>
