@@ -440,7 +440,7 @@ class UnhlsTestController extends \BaseController {
 		$patient = UnhlsPatient::find($patientID);
 
 		//Load Test Create View
-		return View::make('visit.create')
+		return View::make('unhls_test.create')
 					->with('collectionDate', $collectionDate)
 					->with('receptionDate', $receptionDate)
 					->with('specimenType', $specimenTypes)
