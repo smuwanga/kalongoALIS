@@ -11,7 +11,7 @@
 										<div class="stat_box stat_down">
 											<div class="stat_ico color_a"><i class="ion-ios-people"></i></div>
 											<div class="stat_content">
-												<span class="stat_count">321 (53% - OPD)</span>
+												<span class="stat_count">{{UnhlsVisit::count()}} ({{UnhlsVisit::where('visit_type', '=', 'Out-patient')->count()*100/UnhlsVisit::count()}}% - OPD)</span>
 												<span class="stat_name">Number of patients</span>
 											</div>
 
@@ -19,7 +19,7 @@
 										<div class="stat_box stat_up">
 											<div class="stat_ico color_a"><i class="ion-clipboard"></i></div>
 											<div class="stat_content">
-												<span class="stat_count">621</span>
+												<span class="stat_count">{{UnhlsTest::where('test_status_id','=', 4)->count()}}</span>
 												<span class="stat_name">Tests done</span>
 											</div>
 											
@@ -27,7 +27,7 @@
 										<div class="stat_box stat_up">
 											<div class="stat_ico color_a"><i class="ion-forward"></i></div>
 											<div class="stat_content">
-												<span class="stat_count">221</span>
+												<span class="stat_count">{{round(Referral::count()/UnhlsTest::where('test_status_id','=', 4)->count()/100, 2)}}%</span>
 												<span class="stat_name">Tests referred</span>
 											</div>
 											
@@ -40,14 +40,14 @@
 										<div class="stat_box stat_up">
 											<div class="stat_ico color_b"><i class="ion-ios-personadd"></i></div>
 											<div class="stat_content">
-												<span class="stat_count">8 % </span>
+												<span class="stat_count"> 8 % </span>
 												<span class="stat_name">HIV Prevalence</span>
 											</div>
 										</div>
 										<div class="stat_box stat_down">
 											<div class="stat_ico color_b"><i class="ion-ios-personadd"></i></div>
 											<div class="stat_content">
-												<span class="stat_count">6 % </span>
+												<span class="stat_count"> 6 % </span>
 												<span class="stat_name">Malaria Prevalence</span>
 											</div>
 										</div>
@@ -66,21 +66,21 @@
 										<div class="stat_box stat_down">
 											<div class="stat_ico color_c"><i class="ion-ios-people"></i></div>
 											<div class="stat_content">
-												<span class="stat_count">67</span>
+												<span class="stat_count">{{UnhlsSpecimen::count()}}</span>
 												<span class="stat_name">Samples collected</span>
 											</div>
 										</div>
 										<div class="stat_box stat_down">
 											<div class="stat_ico color_c"><i class="ion-ios-close"></i></div>
 											<div class="stat_content">
-												<span class="stat_count">26 %</span>
+												<span class="stat_count">{{round(UnhlsSpecimen::where('specimen_status_id', '=',3)->count()*100/UnhlsSpecimen::count(), 2)}} % </span>
 												<span class="stat_name">Samples rejected</span>
 											</div>
 										</div>
 										<div class="stat_box stat_down">
 											<div class="stat_ico color_c"><i class="ion-ios-checkmark"></i></div>
 											<div class="stat_content">
-												<span class="stat_count">74%</span>
+												<span class="stat_count">{{round(UnhlsSpecimen::where('specimen_status_id', '=', 2)->count()*100/UnhlsSpecimen::count(), 2)}} %</span>
 												<span class="stat_name">Samples accepted</span>
 											</div>
 										</div>
