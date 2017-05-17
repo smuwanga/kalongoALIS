@@ -27,4 +27,11 @@ class UnhlsVisit extends Eloquent
 		return $this->belongsTo('UnhlsPatient');
 	}
 
+	/**
+	 * Specimen relationship
+	 */
+	public function specimens()
+	{
+		return $this->belongsTo('UnhlsSpecimen', 'visit_id');
+	}
 }

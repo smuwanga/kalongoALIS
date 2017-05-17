@@ -176,14 +176,8 @@ Route::group(array("before" => "auth"), function()
         "as"   => "unhls_test.create",
         "uses" => "UnhlsTestController@create"
     ));
-    //Unhls test create route ends
-     Route::post("/test/savenewtest", array(
-        "before" => "checkPerms:request_test",
-        "as"   => "test.saveNewTest",
-        "uses" => "TestController@saveNewTest"
-    ));
-     //unhls test savenewtest starts here
-     Route::post("/unhls_test/savenewtest", array(
+    Route::resource('testrequest', 'VisitController');
+    Route::post("/unhls_test/savenewtest", array(
         "before" => "checkPerms:request_test",
         "as"   => "unhls_test.saveNewTest",
         "uses" => "UnhlsTestController@saveNewTest"
