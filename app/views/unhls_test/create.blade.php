@@ -152,7 +152,6 @@
 									</div>
 									<div class="form-pane panel panel-default test-list-panel">
 							            <div class="col-md-12">
-								            <div class="col-md-11">
 								                <div class="col-md-4">
 													<b>Specimen</b>
 								                </div>
@@ -160,11 +159,9 @@
 													<b>Lab Section</b>
 								                </div>
 								                <div class="col-md-4">
-													<b>Test</b>
+													<div class="col-md-11"><b>Test</b></div>
+									            	<div class="col-md-1"></div>
 								                </div>
-								            </div>
-								            <div class="col-md-1">
-								            </div>
 							            </div>
 									</div>
 									</div>
@@ -184,20 +181,17 @@
 
 <div class="hidden test-list-loader">
     <div class="col-md-12 new-test-list-row">
-        <div class="col-md-11">
-            <div class="col-md-4 specimen-name">
-            </div>
-            <div class="col-md-4 test-type-category-name">
-            </div>
-            <div class="col-md-4 test-type-name">
+        <div class="col-md-4 specimen-name">
+        </div>
+        <div class="col-md-4 test-type-category-name">
+        </div>
+        <div class="col-md-4">
+            <div class="col-md-11 test-type-name">
                 <input class="specimen-type-id" type="hidden">
                 <input class="test-type-id" type="hidden">
             </div>
-        </div>
-        <div class="col-md-1">
-			<!-- todo: not functional, needs a fix before uncommenting -->
-            <!-- <button class="col-md-12 delete-test-from-list close" aria-hidden="true" type="button"
-                title="{{trans('messages.delete')}}">×</button> -->
+            <button class="col-md-1 delete-test-from-list close" aria-hidden="true" type="button"
+                title="{{trans('messages.delete')}}">×</button>
         </div>
     </div><!-- Test List Item -->
 </div><!-- Test List Item Loader-->

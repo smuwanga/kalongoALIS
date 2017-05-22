@@ -526,9 +526,6 @@ $(function(){
                     '.specimen-name').append(specimenName);
                 $('.test-list-panel .new-test-list-row').find(
                     '.test-type-category-name').append(testTypeCategoryName);
-            }else {
-                $('.test-list-panel .new-test-list-row').find(
-                    '.test-type-name').addClass('col-md-offset-8');
             }
             $('.test-list-panel .new-test-list-row').find(
                 '.test-type-name').append($('.test-type.id-'+el.value).data('test-type-name'));
@@ -543,8 +540,6 @@ $(function(){
                 '.specimen-type-id').val($('.specimen-type').val());
             $('.test-list-panel .new-test-list-row').find(
                 '.test-type-id').val(el.value);
-            $('.test-list-panel .new-test-list-row').find(
-                '.delete-test-from-list').attr('data-test-type-id', el.value);
             $('.test-list-panel .new-test-list-row').addClass(
                 'test-list-row-'+el.value).removeClass('new-test-list-row');
             count++;
@@ -554,8 +549,8 @@ $(function(){
 
     // todo: fix, not entirely functional at the moment
     $('.test-list-panel').on( "click", '.delete-test-from-list', function(e) {
-        testTypeId = $(this).data('test-type-id');
-        $('test-list-row-'+testTypeId).remove();
+        $(this).siblings('.test-type-name').remove();
+        $(this).remove();
     });
 
     /**
