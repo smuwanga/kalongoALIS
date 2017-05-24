@@ -128,6 +128,7 @@ Route::group(array("before" => "auth"), function()
     Route::group(array("before" => "checkPerms:manage_lab_configurations"), function()
     {
         Route::resource('instrument', 'InstrumentController');
+        Route::resource('ward', 'WardController');
         Route::get("/instrument/{id}/delete", array(
             "as"   => "instrument.delete",
             "uses" => "InstrumentController@delete"
