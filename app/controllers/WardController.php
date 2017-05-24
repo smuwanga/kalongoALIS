@@ -44,7 +44,7 @@ class WardController extends \BaseController {
     
         //process
         if($validator->fails()){
-                return return Redirect::back()->withErrors($validator);
+                return Redirect::back()->withErrors($validator);
         }else{
             //store
             $ward = new Ward;
@@ -53,7 +53,7 @@ class WardController extends \BaseController {
             try{
                 $ward->save();
             
-                return return Redirect::route('ward.index')
+                return Redirect::route('ward.index')
                     ->with('message', 'Health Unit Successfully Create');
             }catch(QueryException $e){
                 Log::error($e);
@@ -114,7 +114,7 @@ class WardController extends \BaseController {
 
             // redirect
             
-            return return Redirect::route('ward.index')
+            return Redirect::route('ward.index')
                 ->with('message', 'Health Unit Successfully Updated') ->with('activeward', $ward ->id);
         }
     }
@@ -137,7 +137,7 @@ class WardController extends \BaseController {
         } else {
             // The ward is in use
             
-            return return Redirect::route('ward.index')
+            return Redirect::route('ward.index')
                 ->with('message', 'This Health Unit is in use');
         }
         // redirect

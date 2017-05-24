@@ -219,7 +219,7 @@
 							<ul>
 								<li>
 									<a href="{{URL::route("ward.index")}}">
-									<span class="glyphicon glyphicon-tag"></span>Health Units</a>
+									<span class="glyphicon glyphicon-tag"></span> Health Units</a>
 								</li>
 								<li>
 									<a href="{{URL::route("instrument.index")}}">
