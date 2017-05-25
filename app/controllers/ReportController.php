@@ -121,7 +121,6 @@ class ReportController extends \BaseController {
 		}
 	}
 
-
 	/**
 	 *
 	 *
@@ -144,30 +143,6 @@ class ReportController extends \BaseController {
 					->with('visit', $visit)
 					->withInput(Input::all());
 	}
-
-	/**
-	 *
-	 *
-	 * @return Response
-	 */
-	public function printVisitReport($id){
-		$visit = UnhlsVisit::find($id);
-		$visit->load(
-			'patient',
-			'tests.testType',
-			'tests.testResults',
-			'tests.isolatedOrganisms.organism',
-			'tests.isolatedOrganisms.drugSusceptibilities.drug',
-			'tests.isolatedOrganisms.drugSusceptibilities.drugSusceptibilityMeasure');
-
-		$content = View::make('reports.visit.printreport')
-			->with('visit', $visit);
-		$pdf = App::make('dompdf');
-		$pdf->loadHTML($content);
-		return $pdf->stream('microbiology.pdf');
-
-	}
-	//	End patient report functions
 
 	/**
 	*	Function to return test types of a particular test category to fill test types dropdown
