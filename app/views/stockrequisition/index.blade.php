@@ -17,15 +17,19 @@
     <form class="form-horizontal">
       <fieldset>
  
-    <div class="form-group">
-      <label for="select" class="col-lg-2 control-label">Tracer item</label>
-      <div class="col-lg-10">
-        <select class="form-control" id="select">
-          <option>Select item</option>
-          <option>Sysmex Lysing Reagents </option>          
-        </select>
-      </div>
-    </div>
+                 <div class="form-group">
+                                {{  Form::label('commodity_id', 'Tracer item', array('class'=>'control-label')) }}
+                                  <div class="col-md-4">
+                                        {{ Form::select('commodity_id', array('' => 'Select tracer item') +Commodity::lists('name','id'), [], array('class' => 'form-control', 'id' => 'commodity_id', 'required'=>'required')) }}  
+                                      
+                                        @if ($errors->has('commodity_id'))
+                                            <span class="text-danger">
+                                                <strong>{{ $errors->first('commodity_id') }}</strong>
+                                            </span>
+                                        @endif
+
+                                  </div>
+                  </div>  
 
 
           <div class="form-group">

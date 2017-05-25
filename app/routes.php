@@ -790,4 +790,15 @@ Route::group(array("before" => "auth"), function()
 	
 	 Route::resource('unhls_els', 'UnhlsElsController');
 
+    Route::get("/equipmentbreakdown/{id}/restore", array(
+        "as"   => "equipmentbreakdown.restore",
+        "uses" => "EquipmentBreakdownController@restore"
+    ));
+
+     //unhls test savenewtest starts here
+     Route::post("/equipmentbreakdown/saveRestore", array(
+        "as"   => "equipmentbreakdown.saveRestore",
+        "uses" => "EquipmentBreakdownController@saveRestore"
+    ));
+
 });
