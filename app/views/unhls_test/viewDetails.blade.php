@@ -34,7 +34,7 @@
 						<div class="panel-btn">
 							@if(Auth::user()->can('view_reports'))
 								<a class="btn btn-sm btn-default"
-								href="{{ URL::to('visitreport/'.$test->visit->id.'/print') }}"
+								href="{{ URL::to('patientreport/'.$test->visit->patient->id.'/'.$test->visit->id ) }}"
 								>
 									<span class="glyphicon glyphicon-eye-open"></span>
 									{{trans('messages.view-visit-report')}}
