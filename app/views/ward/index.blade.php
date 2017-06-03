@@ -50,7 +50,8 @@
                         </a>
                         
                     <!-- delete this ward (uses delete method found at GET /ward/{id}/delete -->
-                        {{ Form::open(['route' => ['ward.destroy', $value->id], 'method' => 'DELETE']) }}
+                        {{ Form::open(['route' => ['ward.destroy', $value->id], 'method' => 'DELETE',
+                            'style' => 'display: inline-block;']) }}
                         <button class="btn btn-sm btn-danger">
                             <span class="glyphicon glyphicon-trash"></span>
                             {{ trans('messages.delete') }}
