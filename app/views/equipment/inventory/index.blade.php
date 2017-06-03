@@ -12,7 +12,7 @@
 @endif
 <div class="panel panel-primary">
 	<div class="panel-heading ">
-		<span class="glyphicon glyphicon-user"></span>
+		<span class="ion-gear-a"></span>
 		{{trans('messages.equipment-list')}}
 		<div class="panel-btn">
 

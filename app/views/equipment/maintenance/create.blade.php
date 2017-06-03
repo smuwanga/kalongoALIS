@@ -20,7 +20,7 @@
 
 <div class="panel panel-primary">
 	<div class="panel-heading ">
-		<span class="glyphicon glyphicon-user"></span>
+		<span class="ion-gear-a"></span>
 		{{ Lang::choice('messages.equipment-maintenance',2) }}
 	</div>
 	<div class="panel-body">
@@ -106,7 +106,7 @@
                                 <div class="form-group">
                                 {{ Form::label('supplier', 'Supplier', ['class' => 'col-lg-2 control-label']) }}
                                   <div class="col-md-4">
-                                        {{ Form::select('supplier_id', array(null => 'Select')+ $supplier_list, Input::old('supplier_id'), array('class' => 'form-control', 'id' => 'warranty_id','required'=>'required')) }}  
+                                        {{ Form::select('supplier_id', array(null => 'Select')+ UNHLSEquipmentSupplier::lists('name','id'), Input::old('supplier_id'), array('class' => 'form-control', 'id' => 'warranty_id','required'=>'required')) }}  
                                       
                                         @if ($errors->has('supplier_id'))
                                             <span class="text-danger">

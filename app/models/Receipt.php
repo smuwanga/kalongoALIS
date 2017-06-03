@@ -39,13 +39,12 @@ class Receipt extends Eloquent
 	public static function getIssuedCommodities($from, $to){
 
 	//$params = array($from, $to);
-		$reportData = DB::select("SELECT *
-			FROM receipts
-			CROSS JOIN issues"
+		$reportData = UNHLSStockcard::with('District','Year','Facility','Commodity')
+				->get();
 	//,
 		//$params
 
-		); 
+		 
 		return $reportData;
 
 
