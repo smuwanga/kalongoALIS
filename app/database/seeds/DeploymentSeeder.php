@@ -6,10 +6,10 @@ class DeploymentSeeder extends DatabaseSeeder
     {
         /* DISTRICT table */
         $districtsData = array(
-            array("id" => \Config::get('constants.DISTRICT_ID'), 
+            array("id" => \Config::get('constants.DISTRICT_ID'),
                 'name' => \Config::get('constants.DISTRICT_NAME')
                 ),
-            
+
         );
 
         foreach ($districtsData as $district)
@@ -25,7 +25,7 @@ class DeploymentSeeder extends DatabaseSeeder
             array("owner" => "PFP"),
             array("owner" => "PNFP"),
             array("owner" => "Other"),
-            
+
         );
 
         foreach ($facilityownershipsData as $facilityownership)
@@ -34,7 +34,7 @@ class DeploymentSeeder extends DatabaseSeeder
         }
         $this->command->info('Facility Ownerships seeded');
 
-        
+
         /* Facility Levels table */
         $facilitylevelsData = array(
             array("level" => "Public NRH"),
@@ -117,8 +117,8 @@ class DeploymentSeeder extends DatabaseSeeder
             $bbactions[] = BbincidenceAction::create($bbaction);
         }
         $this->command->info('BB Actions seeded');
-        
-        
+
+
         /* BB Causes table */
         $bbcausesData = array(
             array("causename" => "Defective Equipment"),
@@ -139,7 +139,7 @@ class DeploymentSeeder extends DatabaseSeeder
             $bbcauses[] = BbincidenceCause::create($bbcause);
         }
         $this->command->info('BB Causes seeded');
-        
+
         /* BB Natures table */
         $bbnaturesData = array(
             array("name"=>"Assault/Fight among staff","class"=>"Physical","priority"=>"Minor"),
@@ -180,9 +180,9 @@ class DeploymentSeeder extends DatabaseSeeder
             $bbnatures[] = BbincidenceNature::create($bbnature);
         }
         $this->command->info('BB Natures seeded');
-        
 
-       
+
+
         /* Specimen Types table */
         $specTypesData = array(
             array("name" => "Ascitic Tap"),
@@ -215,14 +215,14 @@ class DeploymentSeeder extends DatabaseSeeder
             $specTypes[] = SpecimenType::create($specimenType);
         }
         $this->command->info('specimen_types seeded');
-        
+
         /* Test Categories table - These map on to the lab sections */
         $test_categories = TestCategory::create(array("name" => "PARASITOLOGY","description" => ""));
         $lab_section_microbiology = TestCategory::create(array("name" => "MICROBIOLOGY","description" => ""));
 
         $this->command->info('test_categories seeded');
-        
-        
+
+
         /* Measure Types */
         $measureTypes = array(
             array("id" => "1", "name" => "Numeric Range"),
@@ -236,11 +236,11 @@ class DeploymentSeeder extends DatabaseSeeder
             MeasureType::create($measureType);
         }
         $this->command->info('measure_types seeded');
-                
+
         /* Measures table */
         $measureBSforMPS = Measure::create(
             array("measure_type_id" => "2",
-                "name" => "BS for mps", 
+                "name" => "BS for mps",
                 "unit" => ""));
         $measure1 = Measure::create(array("measure_type_id" => "2", "name" => "Grams stain", "unit" => ""));
         $measure2 = Measure::create(array("measure_type_id" => "2", "name" => "SERUM AMYLASE", "unit" => ""));
@@ -249,12 +249,12 @@ class DeploymentSeeder extends DatabaseSeeder
         $measure5 = Measure::create(array("measure_type_id" => "2", "name" => "Indirect COOMBS test", "unit" => ""));
         $measure6 = Measure::create(array("measure_type_id" => "2", "name" => "Direct COOMBS test", "unit" => ""));
         $measure7 = Measure::create(array("measure_type_id" => "2", "name" => "Du test", "unit" => ""));
-        
+
         MeasureRange::create(array("measure_id" => $measureBSforMPS->id, "alphanumeric" => "No mps seen", "interpretation" => "Negative"));
         MeasureRange::create(array("measure_id" => $measureBSforMPS->id, "alphanumeric" => "+", "interpretation" => "Positive"));
         MeasureRange::create(array("measure_id" => $measureBSforMPS->id, "alphanumeric" => "++", "interpretation" => "Positive"));
         MeasureRange::create(array("measure_id" => $measureBSforMPS->id, "alphanumeric" => "+++", "interpretation" => "Positive"));
-        
+
         MeasureRange::create(array("measure_id" => $measure1->id, "alphanumeric" => "Negative"));
         MeasureRange::create(array("measure_id" => $measure1->id, "alphanumeric" => "Positive"));
 
@@ -269,7 +269,7 @@ class DeploymentSeeder extends DatabaseSeeder
         MeasureRange::create(array("measure_id" => $measure4->id, "alphanumeric" => "High"));
         MeasureRange::create(array("measure_id" => $measure4->id, "alphanumeric" => "Low"));
         MeasureRange::create(array("measure_id" => $measure4->id, "alphanumeric" => "Normal"));
-        
+
         MeasureRange::create(array("measure_id" => $measure5->id, "alphanumeric" => "Positive"));
         MeasureRange::create(array("measure_id" => $measure5->id, "alphanumeric" => "Negative"));
 
@@ -304,7 +304,7 @@ class DeploymentSeeder extends DatabaseSeeder
         $measureGXM = Measure::create(array("measure_type_id" => "4", "name" => "GXM", "unit" => ""));
         $measureBG = Measure::create(
             array("measure_type_id" => "2",
-                "name" => "Blood Grouping", 
+                "name" => "Blood Grouping",
                 "unit" => ""));
         MeasureRange::create(array("measure_id" => $measureBG->id, "alphanumeric" => "O-"));
         MeasureRange::create(array("measure_id" => $measureBG->id, "alphanumeric" => "O+"));
@@ -313,8 +313,8 @@ class DeploymentSeeder extends DatabaseSeeder
         MeasureRange::create(array("measure_id" => $measureBG->id, "alphanumeric" => "B-"));
         MeasureRange::create(array("measure_id" => $measureBG->id, "alphanumeric" => "B+"));
         MeasureRange::create(array("measure_id" => $measureBG->id, "alphanumeric" => "AB-"));
-        MeasureRange::create(array("measure_id" => $measureBG->id, "alphanumeric" => "AB+"));        
-        $measureHB = Measure::create(array("measure_type_id" => Measure::NUMERIC, "name" => "HB", 
+        MeasureRange::create(array("measure_id" => $measureBG->id, "alphanumeric" => "AB+"));
+        $measureHB = Measure::create(array("measure_type_id" => Measure::NUMERIC, "name" => "HB",
             "unit" => "g/dL"));
 
         $measuresUrinalysisData = array(
@@ -343,7 +343,7 @@ class DeploymentSeeder extends DatabaseSeeder
         }
 
         $measuresWBCData = array(
-            array("measure_type_id" => Measure::NUMERIC, "name" => "WBC", 
+            array("measure_type_id" => Measure::NUMERIC, "name" => "WBC",
                 "unit" => "x10³/µL"),
             array("measure_type_id" => Measure::NUMERIC, "name" => "Lym", "unit" => "L"),
             array("measure_type_id" => Measure::NUMERIC, "name" => "Mon", "unit" => "*"),
@@ -376,7 +376,7 @@ class DeploymentSeeder extends DatabaseSeeder
         }
 
         $this->command->info('measures seeded');
-        
+
         /* Test Types table */
         $testTypeBS = TestType::create(array("name" => "BS for mps", "test_category_id" => $test_categories->id, "orderable_test" => 1));
         $testTypeStoolCS = TestType::create(array("name" => "Stool for C/S", "test_category_id" => $lab_section_microbiology->id));
@@ -508,13 +508,18 @@ class DeploymentSeeder extends DatabaseSeeder
         $this->command->info('rejection_reasons seeded');
 
         /* Specimen table */
-       
+
         $this->command->info('specimens seeded');
         $now = new DateTime();
 
-        
+
         /* Permissions table */
         $permissions = array(
+
+          array("name" => "register_incident", "display_name" => "Can Register BB Incidences"),
+          array("name" => "summary_log", "display_name" => "Can view BB summary log"),
+          array("name" => "facility_report", "display_name" => "Can create faility BB report"),
+          
             array("name" => "view_names", "display_name" => "Can view patient names"),
             array("name" => "manage_patients", "display_name" => "Can add patients"),
 
@@ -574,7 +579,7 @@ class DeploymentSeeder extends DatabaseSeeder
             "ip" => "192.168.1.12",
             "hostname" => "HEMASERVER"
         );
-        
+
         $instrument = Instrument::create($instrumentsData);
         $instrument->testTypes()->attach(array($testTypeWBC->id));
 
@@ -601,28 +606,28 @@ class DeploymentSeeder extends DatabaseSeeder
         $this->command->info('Test Types seeded');
 
         /* Test Types and specimen types relationship for prevalence */
-        DB::insert('INSERT INTO testtype_specimentypes (test_type_id, specimen_type_id) VALUES (?, ?)', 
+        DB::insert('INSERT INTO testtype_specimentypes (test_type_id, specimen_type_id) VALUES (?, ?)',
             array($test_types_salmonella->id, "13"));
-        DB::insert('INSERT INTO testtype_specimentypes (test_type_id, specimen_type_id) VALUES (?, ?)', 
+        DB::insert('INSERT INTO testtype_specimentypes (test_type_id, specimen_type_id) VALUES (?, ?)',
             array($test_types_direct->id, "23"));
-        DB::insert('INSERT INTO testtype_specimentypes (test_type_id, specimen_type_id) VALUES (?, ?)', 
+        DB::insert('INSERT INTO testtype_specimentypes (test_type_id, specimen_type_id) VALUES (?, ?)',
             array($test_types_du->id, "23"));
-         DB::insert('INSERT INTO testtype_specimentypes (test_type_id, specimen_type_id) VALUES (?, ?)', 
+         DB::insert('INSERT INTO testtype_specimentypes (test_type_id, specimen_type_id) VALUES (?, ?)',
             array($test_types_sickling->id, "23"));
-        DB::insert('INSERT INTO testtype_specimentypes (test_type_id, specimen_type_id) VALUES (?, ?)', 
+        DB::insert('INSERT INTO testtype_specimentypes (test_type_id, specimen_type_id) VALUES (?, ?)',
             array($test_types_borrelia->id, "23"));
-        DB::insert('INSERT INTO testtype_specimentypes (test_type_id, specimen_type_id) VALUES (?, ?)', 
+        DB::insert('INSERT INTO testtype_specimentypes (test_type_id, specimen_type_id) VALUES (?, ?)',
             array($test_types_vdrl->id, "13"));
-         DB::insert('INSERT INTO testtype_specimentypes (test_type_id, specimen_type_id) VALUES (?, ?)', 
+         DB::insert('INSERT INTO testtype_specimentypes (test_type_id, specimen_type_id) VALUES (?, ?)',
             array($test_types_pregnancy->id, "20"));
-        DB::insert('INSERT INTO testtype_specimentypes (test_type_id, specimen_type_id) VALUES (?, ?)', 
+        DB::insert('INSERT INTO testtype_specimentypes (test_type_id, specimen_type_id) VALUES (?, ?)',
             array($test_types_brucella->id, "13"));
-        DB::insert('INSERT INTO testtype_specimentypes (test_type_id, specimen_type_id) VALUES (?, ?)', 
+        DB::insert('INSERT INTO testtype_specimentypes (test_type_id, specimen_type_id) VALUES (?, ?)',
             array($test_types_pylori->id, "13"));
-        DB::insert('INSERT INTO testtype_specimentypes (test_type_id, specimen_type_id) VALUES (?, ?)', 
+        DB::insert('INSERT INTO testtype_specimentypes (test_type_id, specimen_type_id) VALUES (?, ?)',
             array($testTypeStoolCS->id, "16"));
         $this->command->info('TestTypes/SpecimenTypes seeded');
-        
+
         /*New measures for prevalence*/
         $measure_salmonella = Measure::create(array("measure_type_id" => "2", "name" => "Salmonella Antigen Test", "unit" => ""));
         $measure_direct = Measure::create(array("measure_type_id" => "2", "name" => "Direct COOMBS Test", "unit" => ""));

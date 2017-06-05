@@ -128,6 +128,7 @@ Route::group(array("before" => "auth"), function()
     Route::group(array("before" => "checkPerms:manage_lab_configurations"), function()
     {
         Route::resource('instrument', 'InstrumentController');
+        Route::resource('ward', 'WardController');
         Route::get("/instrument/{id}/delete", array(
             "as"   => "instrument.delete",
             "uses" => "InstrumentController@delete"
@@ -401,10 +402,6 @@ Route::group(array("before" => "auth"), function()
         Route::any("/visitreport/{id}", array(
             "as" => "reports.visit.report", 
             "uses" => "ReportController@viewVisitReport"
-        ));
-        Route::any("/visitreport/{id}/print", array(
-            "as" => "reports.visit.report.print", 
-            "uses" => "ReportController@printVisitReport"
         ));
         Route::any("/dailylog", array(
             "as"   => "reports.daily.log",
@@ -789,5 +786,16 @@ Route::group(array("before" => "auth"), function()
     ));
 	
 	 Route::resource('unhls_els', 'UnhlsElsController');
+
+    Route::get("/equipmentbreakdown/{id}/restore", array(
+        "as"   => "equipmentbreakdown.restore",
+        "uses" => "EquipmentBreakdownController@restore"
+    ));
+
+     //unhls test savenewtest starts here
+     Route::post("/equipmentbreakdown/saveRestore", array(
+        "as"   => "equipmentbreakdown.saveRestore",
+        "uses" => "EquipmentBreakdownController@saveRestore"
+    ));
 
 });
