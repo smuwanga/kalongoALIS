@@ -562,7 +562,7 @@ $(function(){
             template: 'D / MMM / YYYY',
             //min year
             minYear: '1916',
-            maxYear: '2022'
+            maxYear: new Date().getFullYear()
         });
     });
 
