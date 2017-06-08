@@ -79,12 +79,13 @@
 										HMIS 105</a>
 									</div>
 								</li>
- -->								<li>
+ 								<li>
 									<div><a href="{{ URL::route('reports.aggregate.cd4')}}">
 										<span class="glyphicon glyphicon-tag"></span>
 										{{trans('messages.cd4-report')}}</a>
 									</div>
 								</li>
+ -->
 								<li>
 									<div><a href="{{ URL::route('reports.qualityControl')}}">
 										<span class="glyphicon glyphicon-tag"></span>
