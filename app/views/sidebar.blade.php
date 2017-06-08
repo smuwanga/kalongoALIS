@@ -85,13 +85,13 @@
 										{{trans('messages.cd4-report')}}</a>
 									</div>
 								</li>
- -->
 								<li>
 									<div><a href="{{ URL::route('reports.qualityControl')}}">
 										<span class="glyphicon glyphicon-tag"></span>
 										{{Lang::choice('messages.quality-control', 2)}}</a>
 									</div>
 								</li>
+ -->
 							</ul>
 							<h4 class="panel_heading panel_heading_first">{{trans('messages.inventory-reports')}}</h4>
 							<ul>
