@@ -31,7 +31,7 @@
 								<li>
 									<div><a href="{{ URL::route('reports.aggregate.prevalence')}}">
 										<span class="glyphicon glyphicon-tag"></span>
-										{{trans('messages.prevalence-rates')}}</a>
+										{{trans('messages.positivity-rates')}}</a>
 									</div>
 								</li>
 								<li>

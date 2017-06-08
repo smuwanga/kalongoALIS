@@ -4,7 +4,7 @@
 	<ol class="breadcrumb">
 	  <li><a href="{{{URL::route('user.home')}}}">{{ trans('messages.home') }}</a></li>
 	  <li class="active"><a href="{{ URL::route('reports.patient.index') }}">{{ Lang::choice('messages.report', 2) }}</a></li>
-	  <li class="active">{{ trans('messages.prevalence-rates') }}</li>
+	  <li class="active">{{ trans('messages.positivity-rates') }}</li>
 	</ol>
 </div>
 {{ Form::open(array('route' => array('reports.aggregate.prevalence'), 'id' => 'prevalence_rates', 'method' => 'post')) }}
@@ -51,7 +51,7 @@
 			<div class="row less-gutter">
 				<div class="col-md-8">
 					<span class="glyphicon glyphicon-user"></span>
-					{{ trans('messages.prevalence-rates') }}
+					{{ trans('messages.positivity-rates') }}
 				</div>
 				<div class="col-md-4">
 					<a class="btn btn-info pull-right" id="reveal" href="#" onclick="return false;"
