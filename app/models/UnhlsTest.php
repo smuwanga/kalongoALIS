@@ -239,9 +239,10 @@ class UnhlsTest extends Eloquent
 	 */
 	public function getTurnaroundTime()
 	{
-		$startTime = new DateTime($this->time_started);
+		// use time time the specimen was received
+		$timeReceived = new DateTime($this->specimen->time_accepted);
 		$endTime = new DateTime($this->time_completed);
-		$interval = $startTime->diff($endTime);
+		$interval = $timeReceived->diff($endTime);
 
 		$turnaroundTime = ($interval->days * 24 * 3600) + ($interval->h * 3600) + ($interval->i * 60) + ($interval->s);
 		return $turnaroundTime;
