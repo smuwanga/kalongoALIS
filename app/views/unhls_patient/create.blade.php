@@ -33,7 +33,7 @@
 						array('class' => 'form-control', 'readonly' =>'true')) }}
 				</div> 
 				<div class="form-group">
-					{{ Form::label('nin', trans('messages.national-id')) }}
+					{{ Form::label('nin', trans('messages.national')) }}
 					{{ Form::text('nin', Input::old('nin'), array('class' => 'form-control')) }}
 				</div>
 				<div class="form-group">
