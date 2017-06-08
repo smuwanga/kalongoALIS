@@ -27,7 +27,7 @@
 						array('class' => 'form-control', 'readonly')) }}
 				</div>
 				<div class="form-group">
-					{{ Form::label('nin', trans('messages.nin')) }}
+					{{ Form::label('nin', trans('messages.national-id')) }}
 					{{ Form::text('nin', Input::old('nin'), array('class' => 'form-control')) }}
 				</div>
 				<div class="form-group">
