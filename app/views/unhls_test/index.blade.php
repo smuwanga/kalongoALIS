@@ -79,7 +79,7 @@
             </div>
         </div>
         <div class="panel-body">
-            <table class="table table-striped table-hover table-condensed search-table">
+            <table class="table table-striped table-hover table-condensed">
                 <thead>
                     <tr>
                         <th>{{trans('messages.date-ordered')}}</th>
