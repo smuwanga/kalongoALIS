@@ -465,7 +465,7 @@ class ReportController extends \BaseController {
 		        "type": "spline"
 		    },
 		    "title": {
-		        "text":"'.trans('messages.prevalence-rates').'"
+		        "text":"'.trans('messages.positivity-rates').'"
 		    },
 		    "subtitle": {
 		        "text":'; 
@@ -537,7 +537,20 @@ class ReportController extends \BaseController {
 		        },
 	            "min": "0",
 	            "max": "100"
-		    }
+		    },
+		    "exporting": {
+				"buttons":{
+					"contextButtons": {
+						"symbol": "url(../../../i/button_download.png)",
+						"symbolStrokeWidth": "1",
+						"symbolFill": "#a4edba",
+						"symbolStroke": "#330033"
+
+
+					}
+				} 
+
+			} 
 		}';
 	return $options;
 	}

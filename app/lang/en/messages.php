@@ -417,7 +417,7 @@ return array(
     'include-range-visualization' => 'Include Range Visualization',
     'no-records-found' => 'No records found.',
     'patient-report' => 'Patient Report',
-    'prevalence-rates' => 'Prevalence Rates',
+    'positivity-rates' => 'Positivity Rates',
     'report' => 'Report|Reports',
     'print' => 'Print',
     'rejected-by'   =>  'Rejected by',
