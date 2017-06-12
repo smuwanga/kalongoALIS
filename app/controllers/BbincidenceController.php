@@ -265,9 +265,10 @@ class BbincidenceController extends \BaseController {
 		//dd($bbincidence);
 
 		//Show the view and pass the $bbincidence to it
-		return View::make('bbincidence.show')->with('bbincidence', $bbincidence)->with('nextbbincidence', $nextbbincidence)
+		$content = View::make('bbincidence.show')->with('bbincidence', $bbincidence)->with('nextbbincidence', $nextbbincidence)
 		->with('previousbbincidence', $previousbbincidence);
 
+		return PDF::loadHTML($content)->stream('bbincidenceReport.pdf');
 	}
 
 	/**
