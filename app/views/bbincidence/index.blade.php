@@ -103,11 +103,13 @@
 					<td>
 					<a class="btn btn-sm btn-success" href="{{ URL::route('bbincidence.show', array($bbincidence->id)) }}" >
 							<span class="glyphicon glyphicon-eye-open"></span>
-							{{trans('messages.view')}}
+							<!--{{trans('messages.edit')}}-->
+							Download
 						</a>
 						<a class="btn btn-sm btn-info" href="{{ URL::route('bbincidence.edit', array($bbincidence->id)) }}" >
 							<span class="glyphicon glyphicon-edit"></span>
-							{{trans('messages.edit')}}
+							Update
+							<!--{{trans('messages.edit')}}-->
 						</a>
 						<a class="btn btn-sm btn-info" href="{{ URL::route('bbincidence.clinicaledit', array($bbincidence->id)) }}" >
 							<span class="glyphicon glyphicon-edit"></span>

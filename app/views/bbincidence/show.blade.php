@@ -188,7 +188,7 @@
           <div class="col-sm-2"><strong>Next Of Kin Name</strong></div>
           <div class="col-sm-4">{{ $bbincidence->nok_name }}</div>
 
-          <div class="col-sm-2"><strong>NOK Telephone</strong></div>
+          <div class="col-sm-2"><strong>Next Of Kin Telephone</strong></div>
           <div class="col-sm-4">{{ $bbincidence->nok_telephone }}</div>
         </div>
 =======
@@ -223,15 +223,15 @@
           <th>Email</th>
           <td>{{ $bbincidence->personnel_email }}</td>
 
-          <th>NOK Email (Next of Kin)</th>
+          <th>Next Of Kin Email</th>
           <td>{{ $bbincidence->nok_email }}</td>
         </tr>
 
         <tr>
-          <th>NOK Name</th>
+          <th>Next Of Kin Name</th>
           <td>{{ $bbincidence->nok_name }}</td>
 
-          <th>NOK Telephone</th>
+          <th>Next Of Kin Telephone</th>
           <td>{{ $bbincidence->nok_telephone }}</td>
         </tr>
           </tbody>
