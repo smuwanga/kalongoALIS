@@ -326,6 +326,7 @@ return array(
     'patient-name' => 'Patient name',
     'pending' => 'Pending',
     'pending-tests' => 'Pending Tests',
+    'purpose' => 'Purpose',
     'physician' => 'Requesting Physician',
     'receive-test' => 'Receive',
     'receive-test-title' => 'Receive Test',
