@@ -529,6 +529,9 @@ $(function(){
             }
             $('.test-list-panel .new-test-list-row').find(
                 '.test-type-name').append($('.test-type.id-'+el.value).data('test-type-name'));
+            if($('.test-type.id-'+el.value).data('test-type-name') =='HIV'){
+                $('.hiv-purpose').removeClass('hidden');
+            }
             // store test type details for submission
             $('.test-list-panel .new-test-list-row').find(
                 '.specimen-type-id').attr(
@@ -551,8 +554,32 @@ $(function(){
     $('.test-list-panel').on( "click", '.delete-test-from-list', function(e) {
         $(this).siblings('.test-type-name').remove();
         $(this).remove();
+        $('hiv-purpose').addClass('hidden');
     });
 
+    /**
+     * HIV testing Algorithm - Basic for now, Proceeding from Screening to Statpak to Unigold
+     */
+     $('#m_91').on('change', function(){
+        //TODO Reset all fields each time Screening result is changed!
+        if(this.value == 'Non-Reactive'){
+            $("#m_92").prop("disabled", true);
+            $("#m_93").prop("disabled", true);
+        }
+        else if(this.value == 'Reactive'){
+            $("#m_92").prop("disabled", false);
+            $("#m_93").prop("disabled", true);
+        }
+     });
+
+     $('#m_92').on('change', function(){
+        if(this.value == 'Reactive'){
+            $("#m_93").prop("disabled", true);
+        }
+        else if(this.value == 'Non-Reactive'){
+            $("#m_93").prop("disabled", false);
+        }
+     });
     /**
 	 * formatting date and time text/input fields as dropdown selection
 	 */
@@ -620,10 +647,10 @@ $(function(){
 
     $(function(){
         $('#collection-date').combodate({
-            maxYear:2022
+            maxYear: new Date().getFullYear()
         });
     	$('#reception-date').combodate({
-            maxYear:2022
+            maxYear:new Date().getFullYear()
         });
     });
     
