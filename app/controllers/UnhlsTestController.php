@@ -515,6 +515,7 @@ class UnhlsTestController extends \BaseController {
                         $test->test_status_id = UnhlsTest::PENDING;
                         $test->created_by = Auth::user()->id;
                         $test->requested_by = Input::get('physician');
+                        $test->purpose = Input::get('hiv_purpose');
                         $test->save();
 
                         $activeTest[] = $test->id;
