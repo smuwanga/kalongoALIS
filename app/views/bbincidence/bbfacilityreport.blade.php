@@ -4,7 +4,7 @@
         <ol class="breadcrumb">
           <li><a href="{{{URL::route('user.home')}}}">{{ trans('messages.home') }}</a></li>
           <li><a href="{{ URL::route('bbincidence.index') }}">Register Incident</a></li>
-          <li><a href="{{ URL::route('bbincidence.index') }}">BB Incidents</a></li>
+          <li><a href="{{ URL::route('bbincidence.create') }}">BB Incidents</a></li>
           <li class="active">Facility Report</li>
         </ol>
     </div>
