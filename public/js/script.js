@@ -560,24 +560,24 @@ $(function(){
     /**
      * HIV testing Algorithm - Basic for now, Proceeding from Screening to Statpak to Unigold
      */
-     $('#m_91').on('change', function(){
+     $('#m_1').on('change', function(){
         //TODO Reset all fields each time Screening result is changed!
         if(this.value == 'Non-Reactive'){
-            $("#m_92").prop("disabled", true);
-            $("#m_93").prop("disabled", true);
+            $("#m_2").prop("disabled", true);
+            $("#m_3").prop("disabled", true);
         }
         else if(this.value == 'Reactive'){
-            $("#m_92").prop("disabled", false);
-            $("#m_93").prop("disabled", true);
+            $("#m_2").prop("disabled", false);
+            $("#m_3").prop("disabled", true);
         }
      });
 
-     $('#m_92').on('change', function(){
+     $('#m_2').on('change', function(){
         if(this.value == 'Reactive'){
-            $("#m_93").prop("disabled", true);
+            $("#m_3").prop("disabled", true);
         }
         else if(this.value == 'Non-Reactive'){
-            $("#m_93").prop("disabled", false);
+            $("#m_3").prop("disabled", false);
         }
      });
     /**
