@@ -3,7 +3,7 @@
 use Illuminate\Database\QueryException;
 
 /**
- *Contains functions for managing patient records 
+ *Contains functions for managing patient records
  *
  */
 class UnhlsPatientController extends \BaseController {
@@ -54,7 +54,8 @@ class UnhlsPatientController extends \BaseController {
 			'ulin'			=> 'required',
 			'name'       => 'required',
 			'gender' => 'required',
-			'dob' => 'required'
+			'dob' => 'required' ,
+			'village_residence' => 'required'
 		);
 		$validator = Validator::make(Input::all(), $rules);
 
@@ -87,7 +88,7 @@ class UnhlsPatientController extends \BaseController {
 				Log::error($e);
 				echo $e->getMessage();
 			}
-			
+
 			// redirect
 		}
 	}
@@ -215,14 +216,14 @@ class UnhlsPatientController extends \BaseController {
 	 */
 	Private function generateUniqueLabID(){
 
-		//Get Year, Month and day of today. If Jan O1 then reset last insert ID to 1 to start a new cycle of IDs 
+		//Get Year, Month and day of today. If Jan O1 then reset last insert ID to 1 to start a new cycle of IDs
 		$year = date('Y');
 		$month = date('m');
 		$day = date('d');
 
 		if($month == '01' && $day == '01'){
 			$lastInsertId = 1;
-		} 
+		}
 		$lastInsertId = DB::table('unhls_patients')->max('id')+1;
 		$fcode = \Config::get('constants.FACILITY_CODE');
 		$num = $year.str_pad($lastInsertId, 6, '0', STR_PAD_LEFT);
