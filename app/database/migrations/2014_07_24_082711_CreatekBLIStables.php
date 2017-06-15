@@ -299,6 +299,7 @@ class CreatekBLIStables extends Migration {
             $table->integer('tested_by')->unsigned()->default(0);
             $table->integer('verified_by')->unsigned()->default(0);
             $table->string('requested_by',60);
+            $table->string('purpose', 10);
             $table->timestamp('time_created')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('time_started')->nullable();
             $table->timestamp('time_completed')->nullable();
