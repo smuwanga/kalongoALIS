@@ -213,11 +213,14 @@ class DeploymentSeeder extends DatabaseSeeder
         }
         $this->command->info('specimen_types seeded');
 
+                //  Begin seed for prevalence rates report
         /* Test Categories table - These map on to the lab sections */
         $test_categories = TestCategory::create(array("name" => "PARASITOLOGY","description" => ""));
         $lab_section_microbiology = TestCategory::create(array("name" => "MICROBIOLOGY","description" => ""));
-
-        $this->command->info('test_categories seeded');
+        $lab_section_hematology = TestCategory::create(array("name" => "HEMATOLOGY","description" => ""));
+        $lab_section_serology = TestCategory::create(array("name" => "SEROLOGY","description" => ""));
+        $lab_section_trans = TestCategory::create(array("name" => "BLOOD TRANSFUSION","description" => ""));
+        $this->command->info('Lab Sections seeded');
 
 
         /* Measure Types */
@@ -386,7 +389,7 @@ class DeploymentSeeder extends DatabaseSeeder
         $this->command->info('measures seeded');
 
         /* Test Types table */
-        $testTypeHIV = TestType::create(array("name" => "HIV", "test_category_id" => $test_categories->id, "orderable_test" => 1));
+        $testTypeHIV = TestType::create(array("name" => "HIV", "test_category_id" => $lab_section_serology ->id, "orderable_test" => 1));
         $testTypeBS = TestType::create(array("name" => "BS for mps", "test_category_id" => $test_categories->id, "orderable_test" => 1));
         $testTypeStoolCS = TestType::create(array("name" => "Stool for C/S", "test_category_id" => $lab_section_microbiology->id));
         $testTypeGXM = TestType::create(array("name" => "GXM", "test_category_id" => $test_categories->id));
@@ -599,12 +602,6 @@ class DeploymentSeeder extends DatabaseSeeder
 
         $this->command->info('Instruments table seeded');
 
-        //  Begin seed for prevalence rates report
-        /* Test Categories table - These map on to the lab sections */
-        $lab_section_hematology = TestCategory::create(array("name" => "HEMATOLOGY","description" => ""));
-        $lab_section_serology = TestCategory::create(array("name" => "SEROLOGY","description" => ""));
-        $lab_section_trans = TestCategory::create(array("name" => "BLOOD TRANSFUSION","description" => ""));
-        $this->command->info('Lab Sections seeded');
 
         /* Test Types for prevalence */
         $test_types_salmonella = TestType::create(array("name" => "Salmonella Antigen Test", "test_category_id" => $test_categories->id));
