@@ -58,8 +58,8 @@
 		{{ Lang::choice('messages.stock-card',2) }}
 	</div>
 	<div class="panel-body">
+ 	
 
-	
       {{ Form::open(array('url' => 'stockcard/store', 'data-toggle' => 'validator')) }}
 
         <div class="col-md-12">            
@@ -72,6 +72,11 @@
             <div class="form-group">
                 <label for="voucher_no" class="control-label">Voucher number</label>
                 {{ Form::text('voucher_no', Input::old('voucher_no'), array('class' => 'form-control','required'=>'required')) }}
+            </div>
+
+            <div class="form-group">
+                <label for="transaction_date" class="control-label">Date</label>
+                {{ Form::text('transaction_date', Input::old('transaction_date'),array('class' => 'form-control standard-datepicker standard-datepicker-nofuture','required'=>'required')) }}
             </div>
 
             <div class="form-group" id="quantity_in_div">
@@ -88,6 +93,11 @@
                 {{ Form::text('losses_adjustments', Input::old('losses_adjustments'), array('class' => 'form-control','id'=>'losses_adjustments')) }}
             </div>
 
+            <div class="form-group hidden">
+                {{ Form::label('balance_original', 'Balance original') }}                
+                {{ Form::text('balance_original', $balance_on_hand, array('class' => 'form-control text-right','readonly'=>'readonly')) }} 
+            </div>
+
             <div class="form-group">
                 {{ Form::label('balance_on_hand', 'Balance on Hand') }}                
                 {{ Form::text('balance_on_hand', $balance_on_hand, array('class' => 'form-control text-right','readonly'=>'readonly')) }} 
@@ -100,8 +110,10 @@
 
             <div class="form-group">
                 <label for="expiry_date" class="control-label">Expiry date</label>
-                {{ Form::text('expiry_date', Input::old('expiry_date'),array('class' => 'form-control standard-datepicker','required'=>'required')) }}
+                {{ Form::text('expiry_date', Input::old('expiry_date'),array('class' => 'form-control standard-datepicker')) }}
             </div>
+
+
 
             <div class="form-group" id="remarks_div">
                 <label for="remarks" class="control-label">Remarks</label>
@@ -116,7 +128,7 @@
 
             <div class="form-group">
                 {{ Form::label('action', 'Action',array('class'=>'hidden')) }}
-                {{ Form::hidden('action', Session::get('action'),Input::old('action'), array('class' => 'form-control')) }}
+                {{ Form::text('action', Session::get('action'),Input::old('action'), array('class' => 'form-control')) }}
             </div>   
 
             <div class="form-group">
@@ -137,4 +149,35 @@
 	</div>
 	
 </div>
+
+<script>
+
+
+$(".standard-datepicker-nofuture").datepicker({
+    maxDate: 0
+});
+
+$("#quantity_in").keyup(function() {
+
+    if( $.isNumeric( parseInt( $("#quantity_in").val() ) ))
+    {
+        $("#balance_on_hand").val( parseInt($("#quantity_in").val())+parseInt($("#balance_original").val()) );
+    }
+  
+});
+
+
+$("#quantity_out").keyup(function() {
+
+    if( $.isNumeric( parseInt( $("#quantity_out").val() ) ))
+    {
+        $("#balance_on_hand").val( parseInt($("#balance_original").val())-parseInt($("#quantity_out").val()) );
+    }
+  
+});
+
+
+
+
+</script>
 @stop

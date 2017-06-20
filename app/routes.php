@@ -798,4 +798,9 @@ Route::group(array("before" => "auth"), function()
         "uses" => "EquipmentBreakdownController@saveRestore"
     ));
 
+    Route::get("/stockbook/{id}/fetch", array(
+        "as"   => "stockbook.fetch",
+        "uses" => "StockRequisitionController@fetch"
+    ));
+
 });

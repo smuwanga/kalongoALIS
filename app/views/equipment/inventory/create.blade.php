@@ -76,7 +76,7 @@
                                 <div class="form-group">
                                 {{  Form::label('location', 'Location', array('class'=>'control-label')) }}
                                   <div class="col-md-4">
-                                        {{ Form::select('location', array(null => 'Select')+ array('0' => 'Chemistry', '1' => 'Microbiology'), Input::old('location'), array('class' => 'form-control', 'id' => 'location_contract_id')) }}  
+                                        {{ Form::select('location', array_merge(array(null => 'Select'), $location_list), Input::old('location'), array('class' => 'form-control', 'id' => 'location_id')) }}  
                                       
                                         @if ($errors->has('location'))
                                             <span class="text-danger">
@@ -90,7 +90,7 @@
                                 <div class="form-group">
                                 {{  Form::label('procurement_type', 'Procurement type', array('class'=>'control-label')) }}
                                   <div class="col-md-4">
-                                        {{ Form::select('procurement_type', array(null => 'Select')+ array('0' => 'Placement', '1' => 'Procured'), Input::old('procurement_type'), array('class' => 'form-control', 'id' => 'procurement_type_id')) }}  
+                                        {{ Form::select('procurement_type', array(null => 'Select')+ array('0' => 'Placement', '1' => 'Procured', '2' => 'Donation'), Input::old('procurement_type'), array('class' => 'form-control', 'id' => 'procurement_type_id')) }}  
                                       
                                         @if ($errors->has('procurement_type'))
                                             <span class="text-danger">
@@ -233,7 +233,21 @@
 
                                   </div>
                                 </div>  
-                                                            
+                                        
+
+                                <div class="form-group">
+                                {{  Form::label('supplier_id', 'Supplier', array('class'=>'control-label')) }}
+                                  <div class="col-md-4">
+                                        {{ Form::select('supplier_id', array(null => 'Select')+ $supplier_list, Input::old('supplier'), array('class' => 'form-control', 'id' => 'service_contract_id','required'=>'required')) }}  
+                                      
+                                        @if ($errors->has('supplier_id'))
+                                            <span class="text-danger">
+                                                <strong>{{ $errors->first('supplier_id') }}</strong>
+                                            </span>
+                                        @endif
+
+                                  </div>
+                                </div>                                                              
 
                                     <div class="form-group">
                                       <div class="col-lg-10 col-lg-offset-2">
@@ -252,4 +266,11 @@
 	</div>
 	
 </div>
+
+<script>
+$(".standard-datepicker").datepicker({
+    maxDate: 0
+});
+</script>
 @stop
+

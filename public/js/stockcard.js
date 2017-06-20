@@ -45,7 +45,7 @@ if($("#action").val()!=null && $("#action").val()=="A")
 	$("#quantity_in_div").addClass("hidden");
 	$("#quantity_out_div").addClass("hidden");
 	$("#losses_adjustments").attr("required",true);	
-	$("#remarks").attr("required",true);		
+	$("#remarks").attr("required",true);	
 }
 
 });

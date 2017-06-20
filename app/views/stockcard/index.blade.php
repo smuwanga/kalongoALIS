@@ -104,7 +104,7 @@
 			<div class="col-sm-8">
             	<label  class="radio-inline">            
 					{{ Form::radio('optAction', 'I', (Input::old('optAction') == 'I'), array('id'=>'stock-in', 'class'=>'radio')) }}     
-            		Inbound stock
+            		Stock in
             	</label>
         	</div>
 		</div>
@@ -112,7 +112,7 @@
     		<div class="col-sm-offset-4 col-sm-8">				
 				<label  class="radio-inline">            
 					{{ Form::radio('optAction', 'O', (Input::old('optAction') == 'O'), array('id'=>'stock-out', 'class'=>'radio')) }}     
-            		Outbound stock
+            		Stock out
             	</label>
 			</div>
 		</div>

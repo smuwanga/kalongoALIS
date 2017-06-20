@@ -47,9 +47,9 @@
 
 
                                 <div class="form-group">
-                                {{ Form::label('service_date', 'Service date', ['class' => 'col-md-2 control-label']) }}
+                                {{ Form::label('service_date', 'Date of service', ['class' => 'col-md-2 control-label']) }}
                                   <div class="col-md-4">
-                                        {{ Form::text('service_date', Input::old('service_date'),array('class' => 'form-control standard-datepicker','required'=>'required')) }}
+                                        {{ Form::text('service_date', Input::old('service_date'),array('placeholder' => 'Date of service','class' => 'form-control standard-datepicker','required'=>'required')) }}
 
                                         @if ($errors->has('service_date'))
                                             <span class="text-danger">
@@ -62,9 +62,9 @@
 
 
                                 <div class="form-group">
-                                {{ Form::label('next_service_date', 'Next service date', ['class' => 'col-md-2 control-label']) }}
+                                {{ Form::label('next_service_date', 'Date of next service', ['class' => 'col-md-2 control-label']) }}
                                   <div class="col-md-4">
-                                        {{ Form::text('next_service_date', Input::old('next_service_date'),array('class' => 'form-control standard-datepicker','required'=>'required')) }}
+                                        {{ Form::text('next_service_date', Input::old('next_service_date'),array('placeholder' => 'Date of next service','class' => 'form-control standard-datepicker','required'=>'required')) }}
 
                                         @if ($errors->has('next_service_date'))
                                             <span class="text-danger">

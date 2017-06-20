@@ -27,8 +27,8 @@ class EquipmentBreakdownController extends \BaseController {
 	{
 		//
 
-//		$equipment_list = UNHLSEquipmentInventory::get()->list('name','id');
-		return View::make('equipment.breakdown.create');
+		$breakdown_type = array('1' => 'Hardware', '2' => 'Software', '3' => 'Both');
+		return View::make('equipment.breakdown.create')->with('breakdown_type',$breakdown_type);
 
 	}
 
@@ -50,6 +50,9 @@ class EquipmentBreakdownController extends \BaseController {
 		'request_hsd' => 'required',		
 		'priority' => 'required',
 		'in_charge' => 'required',
+		'breakdown_type' => 'required',
+		'breakdown_date' => 'required',
+		'reported_by' => 'required',
 		'report_date' => 'required'									
 
 		);
@@ -72,7 +75,10 @@ class EquipmentBreakdownController extends \BaseController {
 			$item->hsd_request = Input::get('request_hsd');
 			$item->priority = Input::get('priority'); 
 			$item->in_charge_id = Input::get('in_charge');      
-			$item->report_date = Input::get('report_date');           
+			$item->report_date = Input::get('report_date');     
+			$item->breakdown_date = Input::get('report_date');     
+			$item->breakdown_type = Input::get('breakdown_type');     
+			$item->reported_by = Input::get('reported_by');           
       
 
 			$item->save();
