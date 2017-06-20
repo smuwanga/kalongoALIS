@@ -35,7 +35,7 @@
                                 <div class="form-group">
                                 {{  Form::label('equipment_id', 'Equipment', array('class'=>'control-label')) }}
                                   <div class="col-md-4">
-                                        {{ Form::select('equipment_id', UNHLSEquipmentInventory::lists('name','id'), Input::old('equipment_id'), array('class' => 'form-control', 'id' => 'equipment_id', 'required'=>'required')) }}  
+                                        {{ Form::select('equipment_id', array(null => 'Select')+UNHLSEquipmentInventory::lists('name','id'), Input::old('equipment_id'), array('class' => 'form-control', 'id' => 'equipment_id', 'required'=>'required')) }}  
                                       
                                         @if ($errors->has('equipment_id'))
                                             <span class="text-danger">
@@ -46,6 +46,19 @@
                                   </div>
                                 </div>  
 
+                                <div class="form-group">
+                                {{  Form::label('breakdown_type', 'Type of breakdown', array('class'=>'control-label')) }}
+                                  <div class="col-md-4">
+                                        {{ Form::select('breakdown_type', array(null => 'Select')+ $breakdown_type, Input::old('supplier'), array('class' => 'form-control', 'id' => 'service_contract_id','required'=>'required')) }}  
+                                      
+                                        @if ($errors->has('breakdown_type'))
+                                            <span class="text-danger">
+                                                <strong>{{ $errors->first('breakdown_type') }}</strong>
+                                            </span>
+                                        @endif
+
+                                  </div>
+                                </div>  
 
                                 <div class="form-group">
                                 {{ Form::label('description_problem', 'Description of problem', ['class' => 'col-lg-2 control-label']) }}
@@ -90,6 +103,36 @@
 
                                   </div>
                                 </div>        
+
+
+                                <div class="form-group">
+                                {{ Form::label('breakdown_date', 'Breakdown date', ['class' => 'col-md-2 control-label']) }}
+                                  <div class="col-md-4">
+                                        {{ Form::text('breakdown_date', Input::old('breakdown_date'),array('class' => 'form-control standard-datepicker','required'=>'required')) }}
+
+                                        @if ($errors->has('breakdown_date'))
+                                            <span class="text-danger">
+                                                <strong>{{ $errors->first('breakdown_date') }}</strong>
+                                            </span>
+                                        @endif
+
+                                  </div>
+                                </div>
+
+                                <div class="form-group">
+                                {{ Form::label('reported_by', 'Reported by', ['class' => 'col-lg-2 control-label']) }}
+                                  <div class="col-lg-7">
+                                        {{ Form::text('reported_by',null,['class' => 'form-control','placeholder' => 'Reported by', 'required' => 'true']) }}
+
+                                        @if ($errors->has('reported_by'))
+                                            <span class="text-danger">
+                                                <strong>{{ $errors->first('reported_by') }}</strong>
+                                            </span>
+                                        @endif
+
+                                  </div>
+                                </div>
+
 
                                 <div class="form-group">
                                 {{  Form::label('priority', 'Priority', array('class'=>'control-label')) }}
@@ -154,4 +197,9 @@
 	</div>
 	
 </div>
+<script>
+$(".standard-datepicker").datepicker({
+    maxDate: 0
+});
+</script>
 @stop

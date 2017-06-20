@@ -65,7 +65,7 @@
 				@endif
 
 				<td class="text-right">{{ $row->voucher_number }}</td>
-				<td class="text-right">{{ $row->quantity }}</td>
+				<td class="text-right">{{ ($row->action=='I'?$row->quantity_in:($row->action=='O'?$row->quantity_out:$row->quantity) )}}</td>
 				<td class="text-center">{{ $row->action }}</td>
 				<td class="text-center">{{ date('d M Y', strtotime($row->expiry_date)) }}</td>
 				<td class="text-right">{{$row->batch_number}}</td>
@@ -104,7 +104,7 @@
 			<div class="col-sm-8">
             	<label  class="radio-inline">            
 					{{ Form::radio('optAction', 'I', (Input::old('optAction') == 'I'), array('id'=>'stock-in', 'class'=>'radio')) }}     
-            		Inbound stock
+            		Stock in
             	</label>
         	</div>
 		</div>
@@ -112,7 +112,7 @@
     		<div class="col-sm-offset-4 col-sm-8">				
 				<label  class="radio-inline">            
 					{{ Form::radio('optAction', 'O', (Input::old('optAction') == 'O'), array('id'=>'stock-out', 'class'=>'radio')) }}     
-            		Outbound stock
+            		Stock out
             	</label>
 			</div>
 		</div>

@@ -20,6 +20,20 @@ class StockRequisitionController extends \BaseController {
 			->with('items', $items);
 	}
 
+	public function fetch()
+	{
+		
+		$commodity = Commodity::find(Input::get('id'));
+
+		$results = DB::select( DB::raw("SELECT year(transaction_date) as year,monthname(transaction_date) as month,sum(quantity) as adjustment,sum(quantity_in) as stock_in,sum(quantity_out) as stock_out,(sum(quantity_in)-sum(quantity_out)+sum(quantity)) balance FROM unhls_stockcard where commodity_id=:commodity_id
+		GROUP by monthname(transaction_date),year(transaction_date)"), array(
+		   'commodity_id' => Input::get('id'),
+		 ));
+
+
+		return Response::json(array("commodity"=>$commodity,"results"=>$results));
+	}
+
 	/**
 	 * Show the form for creating a new resource.
 	 *

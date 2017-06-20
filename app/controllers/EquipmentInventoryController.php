@@ -11,8 +11,8 @@ class EquipmentInventoryController extends \BaseController {
 	{
 		//
 		$items = UNHLSEquipmentInventory::get();
-		$procurement_type = array('0' => 'Placement', '1' => 'Procured');
-		$location = array('0' => 'Chemistry', '1' => 'Microbiology');
+		$procurement_type = array('0' => 'Placement', '1' => 'Procured','2'=>'Donation');
+		$location = array('0' => 'Chemistry', '1' => 'Microbiology', '2' => 'Mycology','3' => 'Heamatology', '4' => 'Serology', '5' => 'Blood Transfusion', '6' => 'Immunology', '7' => 'Ecology', '8' => 'Parasitology', '9' => 'Pathology');
 		$yes_no = array('1' => 'Yes', '0' => 'No');
 		$service_frequency = array('0' => '3 months', '1' => '6 months', '2' => '9 months', '4' => '12 months');
 
@@ -34,17 +34,20 @@ class EquipmentInventoryController extends \BaseController {
 	{
 		//
 		$procurement_type_list = array('0' => 'Placement', '1' => 'Procured');
-		$location_list = array('0' => 'Chemistry', '1' => 'Microbiology');
+		$location_list = array('0' => 'Chemistry', '1' => 'Microbiology', '2' => 'Mycology','3' => 'Heamatology', '4' => 'Serology', '5' => 'Blood Transfusion', '6' => 'Immunology', '7' => 'Ecology', '8' => 'Parasitology', '9' => 'Pathology');
 		$yes_no_list = array('1' => 'Yes', '0' => 'No');
 		$service_frequency_list = array('0' => '3 months', '1' => '6 months', '2' => '9 months', '4' => '12 months');	
-		$warranty_list = array('0' => '1 year', '1' => '2 years', '2' => '3 years', '4' => '4 years', '5' => '5 years');	
+		$warranty_list = array('0' => '6 months','1' => '1 year', '2' => '2 years', '3' => '3 years', '4' => '4 years', '5' => '5 years');	
+
+		$supplier_list = UNHLSEquipmentSupplier::get(['name','id'])->lists('name','id');
 
 		return View::make('equipment.inventory.create')
 					->with('service_frequency_list',$service_frequency_list)
 					->with('yes_no_list',$yes_no_list)
 					->with('procurement_type_list',$procurement_type_list)
 					->with('location_list',$location_list)
-					->with('warranty_list',$warranty_list);
+					->with('warranty_list',$warranty_list)
+					->with('supplier_list',$supplier_list);
 
 	}
 
@@ -72,6 +75,7 @@ class EquipmentInventoryController extends \BaseController {
 		'warranty' => 'required',
 		'life_time' => 'required',
 		'service_frequency' => 'required',
+		'supplier_id' => 'required',
 		'service_contract' => 'required'									
 
 		);
@@ -101,6 +105,7 @@ class EquipmentInventoryController extends \BaseController {
 			$item->warranty = Input::get('warranty');      
 			$item->life_span = Input::get('life_time');      
 			$item->service_frequency = Input::get('service_frequency');
+			$item->supplier_id = Input::get('supplier_id');
 			$item->service_contract = Input::get('service_contract');          
 
 			$item->save();
