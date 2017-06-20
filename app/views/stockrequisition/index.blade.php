@@ -110,8 +110,8 @@
 
                 $("#stockbook tbody").empty();
 
-$("#item_code").text(response.commodity.item_code);
-$("#item_description").text(response.commodity.description);
+                $("#item_code").text(response.commodity.item_code);
+                $("#item_description").text(response.commodity.description);
 
                 if(response.results.length>0)
                 {
@@ -132,9 +132,6 @@ $("#item_description").text(response.commodity.description);
 
       $("#stockcard_table").removeClass("hidden").addClass("visible");
   });
-
-
-
 
 
 });

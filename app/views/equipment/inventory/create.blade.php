@@ -104,7 +104,7 @@
                                 <div class="form-group">
                                 {{ Form::label('purchase_date', 'Purchase date', ['class' => 'col-md-2 control-label']) }}
                                   <div class="col-md-4">
-                                        {{ Form::text('purchase_date', Input::old('purchase_date'),array('class' => 'form-control standard-datepicker','required'=>'required')) }}
+                                        {{ Form::text('purchase_date', Input::old('purchase_date'),array('class' => 'form-control standard-datepicker purchase-date','required'=>'required')) }}
 
                                         @if ($errors->has('purchase_date'))
                                             <span class="text-danger">
@@ -119,7 +119,7 @@
                                 <div class="form-group">
                                 {{ Form::label('delivery_date', 'Delivery date', ['class' => 'col-md-2 control-label']) }}
                                   <div class="col-md-4">
-                                        {{ Form::text('delivery_date', Input::old('delivery_date'),array('class' => 'form-control standard-datepicker','required'=>'required')) }}
+                                        {{ Form::text('delivery_date', Input::old('delivery_date'),array('class' => 'form-control standard-datepicker delivery-date','required'=>'required')) }}
 
                                         @if ($errors->has('delivery_date'))
                                             <span class="text-danger">
@@ -134,7 +134,7 @@
                                 <div class="form-group">
                                 {{ Form::label('verification_date', 'Verification date', ['class' => 'col-md-2 control-label']) }}
                                   <div class="col-md-4">
-                                        {{ Form::text('verification_date', Input::old('verification_date'),array('class' => 'form-control standard-datepicker','required'=>'required')) }}
+                                        {{ Form::text('verification_date', Input::old('verification_date'),array('class' => 'form-control standard-datepicker verification-date','required'=>'required')) }}
 
                                         @if ($errors->has('verification_date'))
                                             <span class="text-danger">
@@ -149,7 +149,7 @@
                                 <div class="form-group">
                                 {{ Form::label('installation_date', 'Installation date', ['class' => 'col-md-2 control-label']) }}
                                   <div class="col-md-4">
-                                        {{ Form::text('installation_date', Input::old('installation_date'),array('class' => 'form-control standard-datepicker','required'=>'required')) }}
+                                        {{ Form::text('installation_date', Input::old('installation_date'),array('class' => 'form-control standard-datepicker installation-date','required'=>'required')) }}
 
                                         @if ($errors->has('installation_date'))
                                             <span class="text-danger">
@@ -268,8 +268,39 @@
 </div>
 
 <script>
-$(".standard-datepicker").datepicker({
-    maxDate: 0
+
+$(".purchase-date").datepicker({
+    maxDate: 0,
+    dateFormat:"yy-mm-dd",
+    onSelect: function(dateText, inst){
+     $(".verification-date,.delivery-date").datepicker("option","minDate",
+     $("#purchase_date").datepicker("getDate"));
+  
+  }
+});
+
+
+    $(".delivery-date").datepicker({
+        maxDate: 0,
+        dateFormat:"yy-mm-dd",
+        onSelect: function(dateText, inst){
+         $(".installation-date").datepicker("option","minDate",
+         $("#delivery_date").datepicker("getDate"));    
+      }
+
+    });
+
+
+$(".verification-date").datepicker({
+    maxDate: 0,
+    dateFormat:"yy-mm-dd",
+});
+
+
+
+$(".installation-date").datepicker({
+    maxDate: 0,
+    dateFormat:"yy-mm-dd",
 });
 </script>
 @stop

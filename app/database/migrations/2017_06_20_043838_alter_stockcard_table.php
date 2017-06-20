@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class UpdateUnhlsStockcardTable extends Migration {
+class AlterStockcardTable extends Migration {
 
 	/**
 	 * Run the migrations.

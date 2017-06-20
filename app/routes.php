@@ -798,6 +798,12 @@ Route::group(array("before" => "auth"), function()
         "uses" => "EquipmentBreakdownController@saveRestore"
     ));
 
+
+    Route::get("/stockcard/{id}/validate_batch", array(
+        "as"   => "stockcard.validate_batch",
+        "uses" => "StockCardController@validate_batch"
+    ));
+
     Route::get("/stockbook/{id}/fetch", array(
         "as"   => "stockbook.fetch",
         "uses" => "StockRequisitionController@fetch"

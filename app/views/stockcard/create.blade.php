@@ -73,6 +73,14 @@
                 <label for="voucher_no" class="control-label">Voucher number</label>
                 {{ Form::text('voucher_no', Input::old('voucher_no'), array('class' => 'form-control','required'=>'required')) }}
             </div>
+            
+            <div class="form-group">
+                <label for="batch_no" class="control-label">Batch number</label>
+                {{ Form::text('batch_no', Input::old('batch_no'), array('class' => 'form-control','required'=>'required', 'id'=>'batch_no')) }}
+            </div>
+            <div class="col-md-offset-2 batch_validatiton_div hidden">
+                <p class="text-danger batch_validatiton"><span></span></p>
+            </div>
 
             <div class="form-group">
                 <label for="transaction_date" class="control-label">Date</label>
@@ -102,15 +110,10 @@
                 {{ Form::label('balance_on_hand', 'Balance on Hand') }}                
                 {{ Form::text('balance_on_hand', $balance_on_hand, array('class' => 'form-control text-right','readonly'=>'readonly')) }} 
             </div>
-            
-            <div class="form-group">
-                <label for="batch_no" class="control-label">Batch number</label>
-                {{ Form::text('batch_no', Input::old('batch_no'), array('class' => 'form-control','required'=>'required')) }}
-            </div>
 
-            <div class="form-group">
+            <div class="form-group" id="expiry_date_div">
                 <label for="expiry_date" class="control-label">Expiry date</label>
-                {{ Form::text('expiry_date', Input::old('expiry_date'),array('class' => 'form-control standard-datepicker')) }}
+                {{ Form::text('expiry_date', Input::old('expiry_date'),array('class' => 'form-control standard-datepicker','required'=>'required','id'=>'expiry_date')) }}
             </div>
 
 
@@ -125,6 +128,11 @@
                 {{ Form::text('initials', Input::old('initials'), array('class' => 'form-control','required'=>'required')) }}
             </div>  
 
+            <div class="form-group">
+                <label for="batch_validation_control" class="control-label hidden">Validation</label>
+                {{ Form::hidden('batch_validation_control', Input::old('batch_validation_control'), array('class' => 'form-control','required'=>'required','id'=>'batch_validation_control')) }}
+            </div>  
+  
 
             <div class="form-group">
                 {{ Form::label('action', 'Action',array('class'=>'hidden')) }}
@@ -176,6 +184,43 @@ $("#quantity_out").keyup(function() {
   
 });
 
+
+   $('#batch_no').change(function(){
+
+            var data = {
+                batch_no: $("#batch_no").val()
+            };
+
+        $.ajax({
+            type: 'GET',
+            url: '/stockcard/'+$("#batch_no").val()+'/validate_batch',
+            data: data
+        }).done(function(response) {
+
+            if(response.isValid==false)
+            {   
+                $(".batch_validatiton_div").removeClass('hidden');
+                $(".batch_validatiton").text(response.message);
+
+                $("#batch_validation_control").attr("required",true);
+            }
+            else
+            {
+                $(".batch_validatiton_div").addClass('hidden');
+                $(".batch_validatiton").text("");
+                $("#batch_validation_control").attr("required",false);
+            }
+
+            //console.log(response);
+            
+
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            //TODO handle fails on note post backs.
+            console.log(textStatus + ' : ' + errorThrown);
+        });
+
+
+  });
 
 
 

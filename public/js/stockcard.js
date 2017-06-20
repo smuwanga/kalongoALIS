@@ -37,6 +37,8 @@ if($("#action").val()!=null && $("#action").val()=="O")
 	$("#losses_adjustments_div").addClass("hidden");
 	$("#remarks_div").addClass("hidden");	
 	$("#quantity_out").attr("required",true);
+	$("#expiry_date").attr("required",false);
+	$("#expiry_date_div").addClass("hidden");
 }
 
 

@@ -109,6 +109,24 @@ class StockCardController extends \BaseController {
 	}
 
 
+	public function validate_batch()
+	{
+
+		$batch = 	UNHLSStockcard::where('action','=','I')->where('batch_number','=',Input::get('batch_no'))->orderBy('created_at','asc')->first();
+
+		if ($batch==null)
+		{
+			return Response::json(array("isValid"=>false,"message"=>"Invalid batch number provided"));
+		}
+		else if($batch->expiry_date<date('Y-m-d'))
+		{
+			return Response::json(array("isValid"=>false,"message"=>"Selected batch has expired"));
+		}
+
+		return Response::json(array("isValid"=>true));
+	}
+
+
 	public function store()
 	{
 
@@ -117,12 +135,8 @@ class StockCardController extends \BaseController {
 		'to_from' => 'required',
 		'transaction_date'=>'required'
 		);
-
-
-
 		
 		$validator = Validator::make(Input::all(), $rules);
-		$batch = 	UNHLSStockcard::where('batch_number','=',Input::get('batch_no'))->get();
 
 		if ($validator->fails()) {
 			return Redirect::back()->withErrors($validator);
