@@ -58,7 +58,7 @@
 		{{ Lang::choice('messages.stock-card',2) }}
 	</div>
 	<div class="panel-body">
- 	
+  
 
       {{ Form::open(array('url' => 'stockcard/store', 'data-toggle' => 'validator')) }}
 
@@ -128,7 +128,7 @@
 
             <div class="form-group">
                 {{ Form::label('action', 'Action',array('class'=>'hidden')) }}
-                {{ Form::text('action', Session::get('action'),Input::old('action'), array('class' => 'form-control')) }}
+                {{ Form::hidden('action', Session::get('action'),Input::old('action'), array('class' => 'form-control')) }}
             </div>   
 
             <div class="form-group">

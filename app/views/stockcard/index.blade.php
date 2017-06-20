@@ -65,7 +65,7 @@
 				@endif
 
 				<td class="text-right">{{ $row->voucher_number }}</td>
-				<td class="text-right">{{ $row->quantity }}</td>
+				<td class="text-right">{{ ($row->action=='I'?$row->quantity_in:($row->action=='O'?$row->quantity_out:$row->quantity) )}}</td>
 				<td class="text-center">{{ $row->action }}</td>
 				<td class="text-center">{{ date('d M Y', strtotime($row->expiry_date)) }}</td>
 				<td class="text-right">{{$row->batch_number}}</td>

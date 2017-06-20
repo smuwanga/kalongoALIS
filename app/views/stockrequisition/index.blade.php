@@ -110,8 +110,6 @@
 
                 $("#stockbook tbody").empty();
 
-console.log(response.commodity);
-
 $("#item_code").text(response.commodity.item_code);
 $("#item_description").text(response.commodity.description);
 

@@ -112,20 +112,29 @@ class StockCardController extends \BaseController {
 	public function store()
 	{
 
-//date('Y-m-d',strtotime(Input::get('transaction_date')));
 		$rules = array(
 		'voucher_no' => 'required',
 		'to_from' => 'required',
 		'transaction_date'=>'required'
 		);
+
+
+
 		
 		$validator = Validator::make(Input::all(), $rules);
-
+		$batch = 	UNHLSStockcard::where('batch_number','=',Input::get('batch_no'))->get();
 
 		if ($validator->fails()) {
 			return Redirect::back()->withErrors($validator);
-		} else {
+		}		
+		/*else if ($batch->count()==0) {
+			Session::put('batch_error',Input::get('batch_no').' is an invalid batch number');
 
+			dd($batch);
+		}*/ else {
+
+
+		//check for batch number validity
 		$stockcard = new UNHLSStockcard;
 
 		$action = Input::get('action');
