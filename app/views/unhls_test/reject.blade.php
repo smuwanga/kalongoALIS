@@ -50,9 +50,18 @@
 				</div>
 				<div class="form-group">
 					{{ Form::label('rejecting_officer', trans("messages.rejecting-officer")) }}
-					{{Form::text('rejecting_officer', Input::old('rejecting_officer'),
+					{{Form::text('rejecting_officer', Auth::user()->name, Input::old('rejecting_officer'),
 						array('class' => 'form-control'))}}
 				</div>
+				<div class="form-group">
+					{{ Form::label('cadre-obtainer', 'Cadre of Rejecting officer') }}
+                    {{Form::text('cadre-obtainer',Auth::user()->designation, Input::old('cadre_obtainer'), array('class' => 'form-control'))}}
+				</div>	
+				<div class="form-group">
+                    {{ Form::label('contacts', trans("messages.contacts").' of Rejecting officer') }}
+                    {{Form::textarea('contacts', Input::old('contacts'),
+                        array('class' => 'form-control'))}}
+                </div>
 				<div class="form-group">
 					{{ Form::label('reject_explained_to', trans("messages.reject-explained-to")) }}
 					{{Form::text('reject_explained_to', Input::old('reject_explained_to'),

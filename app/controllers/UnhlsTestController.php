@@ -878,6 +878,15 @@ class UnhlsTestController extends \BaseController {
 		//Insert into referral table
 		$referral = new Referral();
 		$referral->status = Input::get('referral-status');
+		$referral->sample_obtainer = Input::get('sample-obtainer');
+		$referral->cadre_obtainer = Input::get('cadre-obtainer');
+		$referral->sample_date = Input::get('sample-date');
+		$referral->sample_time = Input::get('sample-time');
+		$referral->time_dispatch = Input::get('time-dispatch');
+		$referral->storage_condition = Input::get('storage-condition');
+		$referral->transport_type = Input::get('transport-type');
+		$referral->referral_reason = Input::get('referral-reason');
+		$referral->priority_specimen = Input::get('priority-specimen');
 		$referral->facility_id = Input::get('facility_id');
 		$referral->person = Input::get('person');
 		$referral->contacts = Input::get('contacts');

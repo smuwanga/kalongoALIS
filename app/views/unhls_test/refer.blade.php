@@ -54,37 +54,37 @@
                 </div>
                 <div class="form-group">
                     {{ Form::label('sample_obtainer', 'Sample Collected by') }}
-                    {{Form::text('sample_obtainer', Input::old('sample_obtainer'), array('class' => 'form-control'))}}
-                    {{ Form::label('cadre_obtainer', 'Cadre') }}
-                    {{Form::text('cadre_obtainer', Input::old('cadre_obtainer'), array('class' => 'form-control'))}}
+                    {{Form::text('sample-obtainer', Input::old('sample_obtainer'), array('class' => 'form-control'))}}
+                    {{ Form::label('cadre-obtainer', 'Cadre') }}
+                    {{Form::text('cadre-obtainer', Input::old('cadre_obtainer'), array('class' => 'form-control'))}}
                 </div>
                 <div class="form-group">
-                    {{ Form::label('sample_date', 'Date sample recieved in Lab') }}
-                    {{Form::text('sample_date', Input::old('sample_date'), array('class' => 'form-control standard-datepicker'))}}
-                    {{ Form::label('sample_time', 'Time Sample Recieved in Lab') }}
-                    {{Form::text('sample_time', Input::old('sample_time'), array('class' => 'form-control', 'placeholder' => 'HH:MM'))}}
+                    {{ Form::label('sample-date', 'Date sample recieved in Lab') }}
+                    {{Form::text('sample-date', Input::old('sample_date'), array('class' => 'form-control standard-datepicker'))}}
+                    {{ Form::label('sample-time', 'Time Sample Recieved in Lab') }}
+                    {{Form::text('sample-time', Input::old('sample_time'), array('class' => 'form-control', 'placeholder' => 'HH:MM'))}}
                 </div> 
                 <div class="form-group">
-                     {{ Form::label('time_dispatch', trans('messages.time-dispatch')) }}
-                     {{Form::text('time_dispatch', Input::old('time-dispatch'), array('class' => 'form-control', 'placeholder' => 'HH:MM'))}} 
+                     {{ Form::label('time-dispatch', trans('messages.time-dispatch')) }}
+                     {{Form::text('time-dispatch', Input::old('time-dispatch'), array('class' => 'form-control', 'placeholder' => 'HH:MM'))}} 
                 </div>
                 <div class="form-group">
-                        {{ Form::label('storage_condition', trans("messages.storage-condition")) }}
-                        {{ Form::select('storage_condition', [' ' => '--- Select storage type ---','1' => 'Cold Chain','2' => 'Room Temp', '3' => 'Other'], null,
+                        {{ Form::label('storage-condition', trans("messages.storage-condition")) }}
+                        {{ Form::select('storage-condition', [' ' => '--- Select storage type ---','1' => 'Cold Chain','2' => 'Room Temp', '3' => 'Other'], null,
                                      array('class' => 'form-control')) }}
                 </div>
                 <div class = "form-group" id ="other_storage" style="display:none"> <!--TODO avoid the inline css -->
-                    {{Form::text('storage_condition', Input::old('storage_condition'), array('class' => 'form-control', 'placeholder' => 'Other (Specify)'))}}
+                    {{Form::text('storage-condition', Input::old('storage_condition'), array('class' => 'form-control', 'placeholder' => 'Other (Specify)'))}}
                 </div>
                 <div class="form-group">
-                        {{ Form::label('transport_type', trans("messages.transport-type")) }}
-                        {{ Form::select('transport_type', [' ' => '--- Select storage type ---',
+                        {{ Form::label('transport-type', trans("messages.transport-type")) }}
+                        {{ Form::select('transport-type', [' ' => '--- Select storage type ---',
                         '1' => 'Hub System (hub rider and poster)','2' => 'Private means', '3' => 'Arrangement with Public means',
                         '4' => 'Other'], null,
                                      array('class' => 'form-control')) }}
                 </div>
                 <div class = "form-group" id ="other_transport" style="display:none"> <!--TODO avoid the inline css -->
-                    {{Form::text('transport_type', Input::old('transport_type'), array('class' => 'form-control', 'placeholder' => 'Other (Specify)'))}}
+                    {{Form::text('transport-type', Input::old('transport_type'), array('class' => 'form-control', 'placeholder' => 'Other (Specify)'))}}
                 </div>
                 <div class="display-details">
                     <p><strong>{{ Lang::choice('messages.test-type',1) }}</strong>
@@ -93,18 +93,18 @@
                 </div>
                 <br>
                 <div class="form-group">
-                    {{ Form::label('referralType', trans('messages.referral-type')) }}
+                    {{ Form::label('referral-type', trans('messages.referral-type')) }}
                     <div>{{ Form::radio('referral-status', '0', true) }}<span class='input-tag'>
                         {{trans('messages.vertical')}}</span></div>
                     <div>{{ Form::radio('referral-status', '1', false) }}<span class='input-tag'>
                         {{trans('messages.horizontal')}}</span></div>
                 </div>
                 <div class="form-group">
-                    {{ Form::label('referReason', trans('messages.reasons-for-referral')) }}
-                    {{ Form::select('referralReason', array(0 => '')+$referralReason->lists('reason', 'id'),
-                        Input::old('referralReason'), array('class' => 'form-control')) }}
-                    {{ Form::label('prioritySpecimen', trans("messages.priority-of-specimen")) }}
-                    {{Form::text('prioritySpecimen', Input::old('prioritySpecimen'),
+                    {{ Form::label('refer-reason', trans('messages.reasons-for-referral')) }}
+                    {{ Form::select('referral-reason', array(0 => '')+$referralReason->lists('reason', 'id'),
+                        Input::old('referral-reason'), array('class' => 'form-control')) }}
+                    {{ Form::label('priority-specimen', trans("messages.priority-of-specimen")) }}
+                    {{Form::text('priority-specimen', Input::old('prioritySpecimen'),
                         array('class' => 'form-control'))}}
                 </div>
                 <div class="form-group">
