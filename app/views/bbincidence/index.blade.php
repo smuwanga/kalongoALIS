@@ -4,6 +4,7 @@
 	<ol class="breadcrumb">
 	  <li><a href="{{{URL::route('user.home')}}}">{{trans('messages.home')}}</a></li>
 		<li><a href="{{{URL::route('bbincidence.create')}}}">{{trans('Register New BB Incident')}}</a></li>
+		<li><a href="{{ URL::route('bbincidence.bbfacilityreport') }}">Facility Report</a></li>
 	  <li class="active">BB Incidents</li>
 	</ol>
 </div>
@@ -87,7 +88,7 @@
 					@endif >
 					<td>{{ $bbincidence->id }}</td>
 					<td>{{ $bbincidence->serial_no }}</td>
-					<td>{{ date('d M Y', strtotime($bbincidence->occurrence_date)) }}<br>{{ $bbincidence->occurrence_time }}</td>
+					<td>{{ date('d M Y', strtotime($bbincidence->occurrence_date)) }}<br>{{ $bbincidence->occurrence_time }} </td>
 					<td>
 						@foreach ($bbincidence->bbnature as $nature)
 							<span title="{{$nature->name}}">{{$nature->priority}}/{{$nature->class}};</span>
@@ -104,7 +105,7 @@
 					<a class="btn btn-sm btn-success" href="{{ URL::route('bbincidence.show', array($bbincidence->id)) }}" >
 							<span class="glyphicon glyphicon-eye-open"></span>
 							<!--{{trans('messages.edit')}}-->
-							Download
+							View
 						</a>
 						<a class="btn btn-sm btn-primary" href="{{ URL::route('bbincidence.edit', array($bbincidence->id)) }}" >
 							<span class="glyphicon glyphicon-edit"></span>
