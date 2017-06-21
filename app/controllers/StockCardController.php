@@ -61,7 +61,7 @@ class StockCardController extends \BaseController {
 
 		if(Session::get('action')==\Config::get('constants.INCOMING_STOCK_FLAG') )
 		{
-			$card_action = 'inbound stock';
+			$card_action = 'stock in';
 			if(Input::get('inboundOption')==1)
 			{
 				$source_destination_list = UNHLSFacility::orderBy('name', 'ASC')->lists('name', 'id');
@@ -75,7 +75,7 @@ class StockCardController extends \BaseController {
 		}	
 		elseif(Session::get('action')==\Config::get('constants.OUTGOING_STOCK_FLAG'))
 		{
-			$card_action = 'outbound stock';
+			$card_action = 'stock out';
 			$source_destination_label = "To";
 
 			if(Input::get('outboundOption')==3)
@@ -109,20 +109,46 @@ class StockCardController extends \BaseController {
 	}
 
 
+	public function validate_batch()
+	{
+
+		$batch = 	UNHLSStockcard::where('action','=','I')->where('batch_number','=',Input::get('batch_no'))->orderBy('created_at','asc')->first();
+
+		if ($batch==null)
+		{
+			return Response::json(array("isValid"=>false,"message"=>"Invalid batch number provided"));
+		}
+		else if($batch->expiry_date<date('Y-m-d'))
+		{
+			return Response::json(array("isValid"=>false,"message"=>"Selected batch has expired"));
+		}
+
+		return Response::json(array("isValid"=>true));
+	}
+
+
 	public function store()
 	{
 
 		$rules = array(
 		'voucher_no' => 'required',
-		'to_from' => 'required'
+		'to_from' => 'required',
+		'transaction_date'=>'required'
 		);
 		
 		$validator = Validator::make(Input::all(), $rules);
 
 		if ($validator->fails()) {
 			return Redirect::back()->withErrors($validator);
-		} else {
+		}		
+		/*else if ($batch->count()==0) {
+			Session::put('batch_error',Input::get('batch_no').' is an invalid batch number');
 
+			dd($batch);
+		}*/ else {
+
+
+		//check for batch number validity
 		$stockcard = new UNHLSStockcard;
 
 		$action = Input::get('action');
@@ -139,7 +165,8 @@ class StockCardController extends \BaseController {
         $stockcard->commodity_id = Session::get('item');
         $stockcard->voucher_number = Input::get('voucher_no');    
         $stockcard->batch_number = Input::get('batch_no');            
-        $stockcard->expiry_date = Input::get('expiry_date');      
+        $stockcard->expiry_date = Input::get('expiry_date');          
+        $stockcard->transaction_date = date('Y-m-d',strtotime(Input::get('transaction_date')));      
         $stockcard->issue_date = new DateTime();      
         $stockcard->remarks = Input::get('remarks');                
         $stockcard->initials = Input::get('initials');        
@@ -149,20 +176,25 @@ class StockCardController extends \BaseController {
 		{
 			$quantity = Input::get('quantity_in');
 			$balance += $quantity;
+
+ 		    $stockcard->quantity_in = $quantity; 
 		}
 		else if($action==\Config::get('constants.OUTGOING_STOCK_FLAG'))
 		{
 			$quantity = Input::get('quantity_out');			
 			$balance -= $quantity;
+
+ 		    $stockcard->quantity_out = $quantity; 
 		}
 		else{
 			$quantity = Input::get('losses_adjustments');			
 			$balance += $quantity;
+
+ 	        $stockcard->quantity = $quantity; 
 			$stockcard->to_from = \Config::get('constants.FACILITY_ID');        
         	$stockcard->to_from_type = \Config::get('constants.FROM_FACILITY');
 		}
-		
-        $stockcard->quantity = $quantity;   
+		  
         $stockcard->balance = $balance;      
 
         $stockcard->save();

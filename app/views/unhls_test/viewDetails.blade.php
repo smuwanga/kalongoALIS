@@ -72,6 +72,10 @@
 								{{trans('messages.'.$test->testStatus->name)}}</p>
 							<p class="view-striped"><strong>{{trans('messages.physician')}}</strong>
 								{{$test->requested_by or trans('messages.unknown') }}</p>
+							@if($test->testType->name = 'HIV' || $test->testType->name = 'H.I.V' )
+								<p class="view-striped"><strong>{{trans('messages.purpose')}}</strong>
+									{{$test->purpose or trans('messages.unknown') }}</p>
+							@endif
 							<p class="view-striped"><strong>{{trans('messages.request-origin')}}</strong>
 								@if($test->specimen->isReferred() && $test->specimen->referral->status == Referral::REFERRED_IN)
 									{{ trans("messages.in") }}

@@ -10,7 +10,7 @@
             </tr>
         </thead>
     </table>
-    <h3 align="center"><font color="black"> ASLM {{ Config::get('kblis.organization') }} (ALIS)</font></h3>
+    <h3 align="center"><font color="black"> ASLM Laboratory Information System (ALIS)</font></h3>
     <p align="center"><i><font color ="black">Towards quality laboratory data for evidence based planning and decision making</font></i></p>
 @show
 

@@ -259,7 +259,16 @@ class CreatekBLIStables extends Migration {
         Schema::create('referrals', function(Blueprint $table)
         {
             $table->increments('id')->unsigned();
+            $table->string('sample_obtainer', 45);
+            $table->string('cadre_obtainer', 45);
+            $table->date('sample_date');
+            $table->timestamp('sample_time')->nullable();
+            $table->timestamp('time_dispatch')->nullable();
+            $table->string('storage_condition', 20);
+            $table->string('transport_type', 20);
             $table->integer('status')->unsigned();
+            $table->integer('referral_reason')->unsigned();
+            $table->string('priority_specimen', 20);
             $table->integer('facility_id')->unsigned();
             $table->string('person', 500);
             $table->text('contacts');
@@ -299,6 +308,7 @@ class CreatekBLIStables extends Migration {
             $table->integer('tested_by')->unsigned()->default(0);
             $table->integer('verified_by')->unsigned()->default(0);
             $table->string('requested_by',60);
+            $table->string('purpose', 10);
             $table->timestamp('time_created')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('time_started')->nullable();
             $table->timestamp('time_completed')->nullable();
