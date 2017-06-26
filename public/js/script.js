@@ -26,6 +26,25 @@ $(function(){
 		$(this).siblings().show();
 	});
 
+
+    /**
+     *  Dashboard tooltip script
+     */
+
+    $(".dashboard").hover(
+        function() {
+            $(this).find(".dashboard_item:first").removeClass('hidden');
+            // $('.dashboard_item').removeClass('hidden')
+        },
+        function() {
+            $(this).find(".dashboard_item:first").addClass('hidden');
+    }
+    );
+
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();   
+    });
+
 	/**  USER
 	 *-  Load password reset input field
 	 */
