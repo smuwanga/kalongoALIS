@@ -171,7 +171,7 @@
                                     </a>
                                 @endif
                                 @if(Auth::user()->can('refer_specimens') && !($test->isExternal()) && !($test->specimen->isReferred()))
-                                    <a class="btn btn-sm btn-info" href="{{ URL::route('unhls_test.refer', array($test->id)) }}">
+                                    <a class="btn btn-sm btn-info" href="{{ URL::route('unhls_test.refer', array($test->specimen_id)) }}">
                                         <span class="glyphicon glyphicon-edit"></span>
                                         {{trans('messages.refer-sample')}}
                                     </a>
