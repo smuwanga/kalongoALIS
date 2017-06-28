@@ -820,10 +820,8 @@ class UnhlsTestController extends \BaseController {
 	 */
 	public function viewDetails($testID)
 	{
-		//$result = UnhlsTest::find($testID)->toSql(); to be deleted for debuging
-		//dd($result);
 		return View::make('unhls_test.viewDetails')->with('test', UnhlsTest::find($testID));
-		//var_dump($test);
+		
 	}
 
 	/**

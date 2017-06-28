@@ -138,11 +138,6 @@ Route::group(array("before" => "auth"), function()
             "uses" => "InstrumentController@importDriver"
         ));
     });
-    Route::any("/test", array(
-        "as"   => "test.index",
-        "uses" => "TestController@index"
-    ));
-    //Unhls test route starts 
     Route::any("/unhls_test", array(
         "as"   => "unhls_test.index",
         "uses" => "UnhlsTestController@index"
@@ -151,136 +146,71 @@ Route::group(array("before" => "auth"), function()
         "as"   => "unhls_test.testList",
         "uses" => "UnhlsTestController@testList"
     ));
-    //unhls test route ends
-    Route::post("/test/resultinterpretation", array(
-    "as"   => "test.resultinterpretation",
-    "uses" => "TestController@getResultInterpretation"
-    ));
-    //Repeat of above route for UNHLS
     Route::post("/unhls_test/resultinterpretation", array(
     "as"   => "unhls_test.resultinterpretation",
     "uses" => "UnhlsTestController@getResultInterpretation"
     ));
-     Route::any("/test/{id}/receive", array(
+    Route::any("/test/{id}/receive", array(
         "before" => "checkPerms:receive_external_test",
         "as"   => "test.receive",
         "uses" => "UnhlsTestController@receive"
     ));
-    Route::any("/test/create/{patient?}", array(
-        "before" => "checkPerms:request_test",
-        "as"   => "test.create",
-        "uses" => "UnhlsTestController@create"
-    ));
-    //Unhls test  create route starts
     Route::any("/unhls_test/create/{patient?}", array(
         "before" => "checkPerms:request_test",
         "as"   => "unhls_test.create",
         "uses" => "UnhlsTestController@create"
     ));
-    //Unhls test create route ends
-     Route::post("/test/savenewtest", array(
-        "before" => "checkPerms:request_test",
-        "as"   => "test.saveNewTest",
-        "uses" => "TestController@saveNewTest"
-    ));
-     //unhls test savenewtest starts here
-     Route::post("/unhls_test/savenewtest", array(
+    Route::post("/unhls_test/savenewtest", array(
         "before" => "checkPerms:request_test",
         "as"   => "unhls_test.saveNewTest",
         "uses" => "UnhlsTestController@saveNewTest"
     ));
-     //unhls test refer starts here
     Route::post("/unhls_test/acceptspecimen", array(
         "before" => "checkPerms:accept_test_specimen",
         "as"   => "unhls_test.acceptSpecimen",
         "uses" => "UnhlsTestController@acceptSpecimenAction"
     ));
-     //unhls test refer ends here
-     Route::get("/test/{id}/refer", array(
-        "before" => "checkPerms:refer_specimens",
-        "as"   => "test.refer",
-        "uses" => "TestController@showRefer"
-    ));
-     //Repeat of above code for UNHLS test
     Route::get("/unhls_test/{id}/refer", array(
         "before" => "checkPerms:refer_specimens",
         "as"   => "unhls_test.refer",
         "uses" => "UnhlsTestController@showRefer"
     ));
-    Route::post("/test/referaction", array(
-        "before" => "checkPerms:refer_specimens",
-        "as"   => "test.referAction",
-        "uses" => "TestController@referAction"
-    ));
-    //Repeat of above Route for UNHLS
     Route::post("/unhls_test/referaction", array(
         "before" => "checkPerms:refer_specimens",
         "as"   => "unhls_test.referAction",
         "uses" => "UnhlsTestController@referAction"
     ));
-    Route::get("/test/{id}/reject", array(
-        "before" => "checkPerms:reject_test_specimen",
-        "as"   => "test.reject",
-        "uses" => "UnhlsTestController@reject"
-    ));
-    //Repeat of above code for UNHLS
     Route::get("/unhls_test/{id}/reject", array(
         "before" => "checkPerms:reject_test_specimen",
         "as"   => "unhls_test.reject",
         "uses" => "UnhlsTestController@reject"
     ));
-    Route::post("/test/rejectaction", array(
-        "before" => "checkPerms:reject_test_specimen",
-        "as"   => "test.rejectAction",
-        "uses" => "UnhlsTestController@rejectAction"
-    ));
-    //Repeat of above code for UNHLS
     Route::post("/unhls_test/rejectaction", array(
         "before" => "checkPerms:reject_test_specimen",
         "as"   => "unhls_test.rejectAction",
         "uses" => "UnhlsTestController@rejectAction"
     ));
-     Route::post("/test/changespecimen", array(
-        "before" => "checkPerms:change_test_specimen",
-        "as"   => "test.changeSpecimenType",
-        "uses" => "TestController@changeSpecimenType"
-    ));
-     //Repeat of above code for UNHLS test
-     Route::post("/unhls_test/changespecimen", array(
+    Route::post("/unhls_test/changespecimen", array(
         "before" => "checkPerms:change_test_specimen",
         "as"   => "unhls_test.changeSpecimenType",
         "uses" => "UnhlsTestController@changeSpecimenType"
     ));
-     Route::post("/test/updatespecimentype", array(
-        "before" => "checkPerms:change_test_specimen",
-        "as"   => "test.updateSpecimenType",
-        "uses" => "TestController@updateSpecimenType"
-    ));
-     //Unhls test updatespecimentype starts here
-     Route::post("/unhls_test/updatespecimentype", array(
+    Route::post("/unhls_test/updatespecimentype", array(
         "before" => "checkPerms:change_test_specimen",
         "as"   => "unhls_test.updateSpecimenType",
         "uses" => "UnhlsTestController@updateSpecimenType"
     ));
-     //Unhls test updatespecimentype ends
-
     Route::post("/unhls_test/start", array(
         "before" => "checkPerms:start_test",
         "as"   => "unhls_test.start",
         "uses" => "UnhlsTestController@start"
     ));
-     //Repeat of above route for UNHLS
-     Route::get("/unhls_test/{test}/enterresults", array(
+    Route::get("/unhls_test/{test}/enterresults", array(
         "before" => "checkPerms:enter_test_results",
         "as"   => "unhls_test.enterResults",
         "uses" => "UnhlsTestController@enterResults"
     ));
-    Route::get("/test/{test}/edit", array(
-        "before" => "checkPerms:edit_test_results",
-        "as"   => "test.edit",
-        "uses" => "TestController@edit"
-    ));
-    //Repeat of above route for UNHLS
+
     Route::get("/unhls_test/{test}/edit", array(
         "before" => "checkPerms:edit_test_results",
         "as"   => "unhls_test.edit",

@@ -150,7 +150,7 @@
                             @if(Auth::user()->can('reject_test_specimen') && !($test->specimen->isReferred()))
                                 @if(!($test->specimenIsRejected()))
                                 <a class="btn btn-sm btn-danger" id="reject-{{$test->id}}-link"
-                                    href="{{URL::route('unhls_test.reject', array($test->specimen_id))}}"
+                                    href="{{URL::route('unhls_test.reject', array($test->id))}}"
                                     title="{{trans('messages.reject-title')}}">
                                     <span class="glyphicon glyphicon-thumbs-down"></span>
                                     {{trans('messages.reject')}}
@@ -171,7 +171,7 @@
                                     </a>
                                 @endif
                                 @if(Auth::user()->can('refer_specimens') && !($test->isExternal()) && !($test->specimen->isReferred()))
-                                    <a class="btn btn-sm btn-info" href="{{ URL::route('unhls_test.refer', array($test->specimen_id)) }}">
+                                    <a class="btn btn-sm btn-info" href="{{ URL::route('unhls_test.refer', array($test->id)) }}">
                                         <span class="glyphicon glyphicon-edit"></span>
                                         {{trans('messages.refer-sample')}}
                                     </a>
