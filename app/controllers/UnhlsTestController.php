@@ -614,14 +614,28 @@ class UnhlsTestController extends \BaseController {
 			$test->save();
 			// todo: create cascade deletion for it, incase rejection is reversed
 			$rejection = new AnalyticSpecimenRejection;
-			$rejection->rejection_reason_id = Input::get('rejectionReason');
+			//$rejection->rejection_reason_id = Input::get('rejectionReason');
 			$rejection->test_id = Input::get('test_id');
 			$rejection->specimen_id = Input::get('specimen_id');
 			$rejection->rejected_by = Auth::user()->id;
 			$rejection->time_rejected = date('Y-m-d H:i:s');
 			$rejection->reject_explained_to = Input::get('reject_explained_to');
 			$rejection->save();
-			
+
+			/**
+			 * Create rejection reasons
+			 */
+			$reasons = Input::get('rejectionReason');
+			if(is_array($reasons)){
+				foreach ($reasons as $id => $value) {
+					$reason =new AnalyticSpecimenRejectionReason;
+
+					$reason->rejection_id = $rejection->id;
+					$reason->specimen_id = Input::get('specimen_id');
+					$reason->reason_id = $value;
+					$reason->save();
+				}
+			}
 			$url = Session::get('SOURCE_URL');
 			
 			return Redirect::to($url)->with('message', 'messages.success-rejecting-specimen')
