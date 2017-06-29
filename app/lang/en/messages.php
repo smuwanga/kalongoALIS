@@ -155,6 +155,7 @@ return array(
     'specimen-not-collected' => 'Not Collected',
     'specimen-not-collected-label' => 'Specimen Not Collected',
     'specimen-rejected' => 'Rejected',
+    'specimen-rejected-at-analysis' => 'Specimen Rejected at Analysis',
     'specimen-rejected-label' => 'Specimen Rejected',
     'specimen-status' => 'Status',
     'specimen-type' => 'Type|Specimen Types',

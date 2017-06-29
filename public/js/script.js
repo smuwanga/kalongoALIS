@@ -26,6 +26,25 @@ $(function(){
 		$(this).siblings().show();
 	});
 
+
+    /**
+     *  Dashboard tooltip script
+     */
+
+    $(".dashboard").hover(
+        function() {
+            $(this).find(".dashboard_item:first").removeClass('hidden');
+            // $('.dashboard_item').removeClass('hidden')
+        },
+        function() {
+            $(this).find(".dashboard_item:first").addClass('hidden');
+    }
+    );
+
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();   
+    });
+
 	/**  USER
 	 *-  Load password reset input field
 	 */
@@ -776,17 +795,6 @@ $(function(){
 		}
 	});
 
-	/*
-	* Repeat of above code for UNHLS to Prevent patient search modal form submit (default action) when the ENTER key is pressed
-	
-
-	$('#new-test-modal-unhls .search-text').keypress(function( event ) {
-		if ( event.which == 13 ) {
-			event.preventDefault();
-			$('#new-test-modal-unhls .search-patient').click();
-		}
-	}); */
-
 
     /** - Get a specimen->id from the button clicked,
      *  - Fetch corresponding specimen data
@@ -868,6 +876,30 @@ $(function(){
         // Now remove the unnecessary buttons
         $(this).siblings('.change-specimen').remove();
         $(this).remove();
+    });
+
+    /**Rejecting a Specimen
+     * - Allow for selection of multiple rejection reasons
+     */
+    $(document).ready(function () {
+      var rejectReason = $('#reject-reason');
+      var reasonRow = rejectReason.children(":first");
+      var reasonRowTemp = reasonRow.clone();
+      reasonRow.find('button.remove-reason').remove();
+      
+      // nb can't use .length for inputCount as we are dynamically removing from middle of collection
+      var inputCount = 1; 
+
+      $('#add').click(function () {
+        var newRow = reasonRowTemp.clone();
+        inputCount++;
+        newRow.find('select.rejectionReason').attr('placeholder', 'Select '+inputCount);
+        rejectReason.append(newRow);
+      });  
+      
+      $('#reject-reason').on('click', 'button.remove-reason', function () {
+        $(this).parent().remove();
+      }); 
     });
 
 	/**

@@ -43,14 +43,21 @@
 				        {{$test->specimen->id}}
 				    </p>
 				</div>
-				<div class="form-group">
-					{{ Form::label('rejectionReason', trans('messages.rejection-reason')) }}
-					{{ Form::select('rejectionReason', array(0 => '')+$rejectionReason->lists('reason', 'id'),
-						Input::old('rejectionReason'), array('class' => 'form-control')) }}
+				<div id="reject-reason">
+					<div class="row">
+						<div class="form-group col-md-4">
+							{{ Form::label('rejectionReason', trans('messages.rejection-reason')) }}
+							{{ Form::select('rejectionReason[]', array(0 => '')+$rejectionReason->lists('reason', 'id'),
+								Input::old('rejectionReason'), array('class' => 'form-control')) }}
+						</div>
+						{{ Form::button("<span class='glyphicon glyphicon-delete'></span> ".'Remove', ['class' => 'remove-reason btn-normal']) }}
+					</div>
 				</div>
+				<div>
+				<a href="#" id="add"><i>Add Rejection Reason if more than one</i></a></div>
 				<div class="form-group">
 					{{ Form::label('rejecting_officer', trans("messages.rejecting-officer")) }}
-					{{Form::text('rejecting_officer', Auth::user()->name, Input::old('rejecting_officer'),
+					{{Form::text('rejecting-officer', Auth::user()->name, Input::old('rejecting_officer'),
 						array('class' => 'form-control'))}}
 				</div>
 				<div class="form-group">
