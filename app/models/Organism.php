@@ -22,29 +22,19 @@ class Organism extends Eloquent
 	 *
 	 * @return void
 	 */
-	public function setDrugs($drugs){
+	// todo: should set several antibiotics at ago... evetually
+	public function setAntibiotic($drug_id,$resistant_max,$intermediate_min,$intermediate_max,$sensitive_min){
 
-		$drugsAdded = array();
-		$organismID = 0;	
-
-		if(is_array($drugs)){
-			foreach ($drugs as $key => $value) {
-				$drugsAdded[] = array(
-					'organism_id' => (int)$this->id,
-					'drug_id' => (int)$value,
-					'created_at' => date('Y-m-d H:i:s'),
-					'updated_at' => date('Y-m-d H:i:s')
-					);
-				$organismID = (int)$this->id;
-			}
-
-		}
-		// Delete existing test_type measure mappings
-		DB::table('organism_drugs')->where('organism_id', '=', $organismID)->delete();
-
-		// Add the new mapping
-		DB::table('organism_drugs')->insert($drugsAdded);
+		$zoneDiameter = new ZoneDiameter;
+		$zoneDiameter->drug_id = $drug_id; 
+		$zoneDiameter->organism_id = $this->id;
+		$zoneDiameter->resistant_max = $resistant_max;
+		$zoneDiameter->intermediate_min = $intermediate_min;
+		$zoneDiameter->intermediate_max = $intermediate_max;
+		$zoneDiameter->sensitive_min = $sensitive_min;
+		$zoneDiameter->save();
 	}
+
 	/**
 	 * Drug-susceptibility relationship
 	 */
@@ -52,11 +42,12 @@ class Organism extends Eloquent
 	{
 	  return $this->hasMany('DrugSusceptibility');
 	}
+
 	/**
 	 * sensitivity relationship for a single test
 	 */
-	public function sensitivity($id)
+	public function zoneDiameters()
 	{
-	  return $this->susceptibility()->where('test_id', $id)->count();
+	  return $this->hasMany('ZoneDiameter');
 	}
 }

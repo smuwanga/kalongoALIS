@@ -762,7 +762,7 @@ class DeploymentSeeder extends DatabaseSeeder
             'orderable_test' => 1
         ]);
         $testTypeGramStain = TestType::create([
-            'name' => 'Gram stain',
+            'name' => 'Gram Staining',
             'test_category_id' => $lab_section_microbiology->id,
             'orderable_test' => 1
         ]);

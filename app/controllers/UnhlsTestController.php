@@ -716,7 +716,9 @@ class UnhlsTestController extends \BaseController {
 		$test = UnhlsTest::find($testID);
 		// if the test being carried out requires a culture worksheet
 		if ($test->testType->name == 'Culture and Sensitivity') {
-			return Redirect::route('culture.edit', [$test->id]);
+			return Redirect::route('unhls_test.culture', [$test->id]);
+		}elseif ($test->testType->name == 'Gram Staining') {
+			return Redirect::route('unhls_test.gramstain', [$test->id]);
 		}else{
 			return View::make('unhls_test.enterResults')->with('test', $test);
 		}
