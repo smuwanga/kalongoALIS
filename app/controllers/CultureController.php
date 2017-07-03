@@ -45,7 +45,6 @@ class CultureController extends \BaseController {
 	{
 		$test = UnhlsTest::find($id);
 		$test->load(
-			'cultureObservation',
 			'isolatedOrganisms.organism',
 			'isolatedOrganisms.drugSusceptibilities.drug',
 			'isolatedOrganisms.drugSusceptibilities.drugSusceptibilityMeasure');
@@ -70,14 +69,13 @@ class CultureController extends \BaseController {
 
 		$test->load(
 			'isolatedOrganisms.organism',
-			'cultureObservation',
 			'isolatedOrganisms.drugSusceptibilities.drug',
 			'isolatedOrganisms.drugSusceptibilities.drugSusceptibilityMeasure');
 
 		$drugSusceptibilityMeasures = ['']+DrugSusceptibilityMeasure::all()->lists('interpretation','id');
 		$organisms = ['']+Organism::all()->lists('name','id');
 
-		return View::make('test.culture.worksheet')
+		return View::make('unhls_test.culture')
 			->with('drugSusceptibilityMeasures', $drugSusceptibilityMeasures)
 			->with('organisms', $organisms)
 			->with('test', $test);

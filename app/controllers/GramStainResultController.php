@@ -62,7 +62,7 @@ class GramStainResultController extends \BaseController {
 		//Get the gram stain ranges for gram stain
 		$test = UnhlsTest::find($testId);
 		$gramStainRanges = ['']+GramStainRange::lists('name', 'id');
-		return View::make('unhls_test.gramstain.edit')
+		return View::make('unhls_test.gramstain')
 			->with('gramStainRanges', $gramStainRanges)
 			->with('test', $test);
 	}

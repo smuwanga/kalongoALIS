@@ -4,9 +4,7 @@
     <div>
         <ol class="breadcrumb">
           <li><a href="{{{URL::route('user.home')}}}">{{trans('messages.home')}}</a></li>
-          <li>
-            <a href="{{ URL::route('specimen.show', [$test->specimen->id]) }}">Specimen</a>
-          </li>
+          <li><a href="{{ URL::route('unhls_test.index') }}">{{ Lang::choice('messages.test',2) }}</a></li>
           <li class="active">Culture and Sensitivity</li>
         </ol>
     </div>
@@ -14,7 +12,7 @@
         <div class="panel-heading">
             <div class="container-fluid">
                 <div class="row less-gutter">
-                    <span class="glyphicon glyphicon-adjust"></span>Culture and Sensitivity | Lab Id: {{$test->specimen->lab_id }}
+                    <span class="glyphicon glyphicon-adjust"></span>Culture and Sensitivity
                     <a class="btn btn-sm btn-success add-isolated-organism"
                         data-test-id="{{ $test->id }}"
                         data-url="{{ URL::route('isolatedorganism.store') }}"
