@@ -1,14 +1,15 @@
 @section ("reportHeader")
-    <table width="100%" style="font-size:12px;">
+<style type="text/css"></style>
+    <table style="text-align:center;" >
         <thead>
             <tr>
-                <td>{{ HTML::image(Config::get('kblis.organization-logo'),  Config::get('kblis.country') . trans('messages.court-of-arms'), array('width' => '90px')) }}</td>
-                <td colspan="3" style="text-align:center;">
-                    <strong><p> {{ strtoupper(Config::get('constants.FACILITY_NAME')) }}<br>
-                    {{ strtoupper(Config::get('kblis.address-info')) }}</p>
-                    <p>{{ trans('messages.laboratory-report')}}<br>
+                <td colspan="2" style="test-align:left;">{{ HTML::image(Config::get('kblis.organization-logo'),  Config::get('kblis.country') . trans('messages.court-of-arms'), array('width' => '90px')) }}</td>
+                <td colspan="8" style="text-align:center;"><strong>
+                    {{ strtoupper(Config::get('constants.FACILITY_NAME')) }},<br>
+                    {{Config::get('kblis.organization')}}<br>
+                    {{ trans('messages.laboratory-report')}}</strong>
                 </td>
-                <td>
+                <td colspan="2" style="text-align:right;">
                     {{ HTML::image(Config::get('kblis.organization-logo'),  Config::get('kblis.country') . trans('messages.court-of-arms'), array('width' => '90px')) }}
                 </td>
             </tr>
