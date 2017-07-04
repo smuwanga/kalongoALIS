@@ -9,7 +9,6 @@ class DeploymentSeeder extends DatabaseSeeder
             array("id" => \Config::get('constants.DISTRICT_ID'),
                 'name' => \Config::get('constants.DISTRICT_NAME')
                 ),
-
         );
 
         foreach ($districtsData as $district)
@@ -17,6 +16,124 @@ class DeploymentSeeder extends DatabaseSeeder
             $districts[] = District::create($district);
         }
         $this->command->info('Districts seeded');
+
+        District::create(['name' => 'Buikwe']);
+        District::create(['name' => 'Bukomansimbi']);
+        District::create(['name' => 'Butambala']);
+        District::create(['name' => 'Buvuma']);
+        District::create(['name' => 'Gomba']);
+        District::create(['name' => 'Kalangala']);
+        District::create(['name' => 'Kalungu']);
+        District::create(['name' => 'Kayunga']);
+        District::create(['name' => 'Kiboga']);
+        District::create(['name' => 'Kyankwanzi']);
+        District::create(['name' => 'Luweero']);
+        District::create(['name' => 'Lwengo']);
+        District::create(['name' => 'Lyantonde']);
+        District::create(['name' => 'Masaka']);
+        District::create(['name' => 'Mityana']);
+        District::create(['name' => 'Mpigi']);
+        District::create(['name' => 'Mubende']);
+        District::create(['name' => 'Mukono']);
+        District::create(['name' => 'Nakaseke']);
+        District::create(['name' => 'Nakasongola']);
+        District::create(['name' => 'Rakai']);
+        District::create(['name' => 'Ssembabule']);
+        District::create(['name' => 'Wakiso']);
+        District::create(['name' => 'Amuria']);
+        District::create(['name' => 'Budaka']);
+        District::create(['name' => 'Bududa']);
+        District::create(['name' => 'Bugiri']);
+        District::create(['name' => 'Bukedea']);
+        District::create(['name' => 'Bukwa']);
+        District::create(['name' => 'Bulambuli']);
+        District::create(['name' => 'Busia']);
+        District::create(['name' => 'Butaleja']);
+        District::create(['name' => 'Buyende']);
+        District::create(['name' => 'Iganga']);
+        District::create(['name' => 'Jinja']);
+        District::create(['name' => 'Kaberamaido']);
+        District::create(['name' => 'Kaliro']);
+        District::create(['name' => 'Kamuli']);
+        District::create(['name' => 'Kapchorwa']);
+        District::create(['name' => 'Katakwi']);
+        District::create(['name' => 'Kibuku']);
+        District::create(['name' => 'Kumi']);
+        District::create(['name' => 'Kween']);
+        District::create(['name' => 'Luuka']);
+        District::create(['name' => 'Manafwa']);
+        District::create(['name' => 'Mayuge']);
+        District::create(['name' => 'Mbale']);
+        District::create(['name' => 'Namayingo']);
+        District::create(['name' => 'Namutumba']);
+        District::create(['name' => 'Ngora']);
+        District::create(['name' => 'Pallisa']);
+        District::create(['name' => 'Serere']);
+        District::create(['name' => 'Sironko']);
+        District::create(['name' => 'Soroti']);
+        District::create(['name' => 'Tororo']);
+        District::create(['name' => 'Abim']);
+        District::create(['name' => 'Adjumani']);
+        District::create(['name' => 'Agago']);
+        District::create(['name' => 'Alebtong']);
+        District::create(['name' => 'Amolatar']);
+        District::create(['name' => 'Amudat']);
+        District::create(['name' => 'Amuru']);
+        District::create(['name' => 'Apac']);
+        District::create(['name' => 'Arua']);
+        District::create(['name' => 'Dokolo']);
+        District::create(['name' => 'Gulu']);
+        District::create(['name' => 'Kaabong']);
+        District::create(['name' => 'Kitgum']);
+        District::create(['name' => 'Koboko']);
+        District::create(['name' => 'Kole']);
+        District::create(['name' => 'Kotido']);
+        District::create(['name' => 'Lamwo']);
+        District::create(['name' => 'Lira']);
+        District::create(['name' => 'Maracha']);
+        District::create(['name' => 'Moroto']);
+        District::create(['name' => 'Moyo']);
+        District::create(['name' => 'Nakapiripirit']);
+        District::create(['name' => 'Napak']);
+        District::create(['name' => 'Nebbi']);
+        District::create(['name' => 'Nwoya']);
+        District::create(['name' => 'Otuke']);
+        District::create(['name' => 'Oyam']);
+        District::create(['name' => 'Pader']);
+        District::create(['name' => 'Yumbe']);
+        District::create(['name' => 'Zombo']);
+        District::create(['name' => 'Buhweju']);
+        District::create(['name' => 'Buliisa']);
+        District::create(['name' => 'Bundibugyo']);
+        District::create(['name' => 'Bushenyi']);
+        District::create(['name' => 'Hoima']);
+        District::create(['name' => 'Ibanda']);
+        District::create(['name' => 'Isingiro']);
+        District::create(['name' => 'Kabale']);
+        District::create(['name' => 'Kabarole']);
+        District::create(['name' => 'Kamwenge']);
+        District::create(['name' => 'Kanungu']);
+        District::create(['name' => 'Kasese']);
+        District::create(['name' => 'Kibaale']);
+        District::create(['name' => 'Kiruhura']);
+        District::create(['name' => 'Kiryandongo']);
+        District::create(['name' => 'Kisoro']);
+        District::create(['name' => 'Kyegegwa']);
+        District::create(['name' => 'Kyenjojo']);
+        District::create(['name' => 'Masindi']);
+        District::create(['name' => 'Mbarara']);
+        District::create(['name' => 'Mitooma']);
+        District::create(['name' => 'Ntoroko']);
+        District::create(['name' => 'Ntungamo']);
+        District::create(['name' => 'Rubirizi']);
+        District::create(['name' => 'Rukungiri']);
+        District::create(['name' => 'Sheema']);
+        District::create(['name' => 'Omoro']);
+        District::create(['name' => 'Kagadi']);
+        District::create(['name' => 'Kakumiro']);
+        District::create(['name' => 'Rubanda']);
+        District::create(['name' => 'Bukwo']);
+        $this->command->info('Other Districts seeded');
 
 
         /* Facility Ownership table */
@@ -42,9 +159,7 @@ class DeploymentSeeder extends DatabaseSeeder
             array("level" => "Public GH"),
             array("level" => "Public HCIV"),
             array("level" => "Public HCIII"),
-            array("level" => "Private Level 3"),
-            array("level" => "Private Level 2"),
-            array("level" => "Private Level 1"),
+            array("level" => "Hospital"),
         );
 
         foreach ($facilitylevelsData as $facilitylevel)
@@ -76,7 +191,7 @@ class DeploymentSeeder extends DatabaseSeeder
         $usersData = array(
             array(
                 "username" => "administrator", "password" => Hash::make("password"),
-                "email" => "", "name" => "A-LIS Admin", "designation" => "Programmer",
+                "email" => "", "name" => "A-LIS Admin", "designation" => "Systems Administrator",
                 "facility_id" => \Config::get('constants.FACILITY_ID')
             ),
         );
@@ -182,266 +297,6 @@ class DeploymentSeeder extends DatabaseSeeder
         $this->command->info('BB Natures seeded');
 
 
-
-        /* Specimen Types table */
-        $specTypesData = array(
-            array("name" => "Ascitic Tap"),
-            array("name" => "Aspirate"),
-            array("name" => "CSF"),
-            array("name" => "Dried Blood Spot"),
-            array("name" => "High Vaginal Swab"),
-            array("name" => "Nasal Swab"),
-            array("name" => "Pleural Tap"),
-            array("name" => "Pus Swab"),
-            array("name" => "Rectal Swab"),
-            array("name" => "Semen"),
-            array("name" => "Skin"),
-            array("name" => "Vomitus"),
-            array("name" => "Stool"),
-            array("name" => "Synovial Fluid"),
-            array("name" => "Throat Swab"),
-            array("name" => "Urethral Smear"),
-            array("name" => "Urine"),
-            array("name" => "Vaginal Smear"),
-            array("name" => "Water"),
-            array("name" => "Blood"),
-        );
-
-        foreach ($specTypesData as $specimenType)
-        {
-            $specTypes[] = SpecimenType::create($specimenType);
-        }
-        $this->command->info('specimen_types seeded');
-
-                //  Begin seed for prevalence rates report
-        /* Test Categories table - These map on to the lab sections */
-        $test_categories = TestCategory::create(array("name" => "PARASITOLOGY","description" => ""));
-        $lab_section_microbiology = TestCategory::create(array("name" => "MICROBIOLOGY","description" => ""));
-        $lab_section_hematology = TestCategory::create(array("name" => "HEMATOLOGY","description" => ""));
-        $lab_section_serology = TestCategory::create(array("name" => "SEROLOGY","description" => ""));
-        $lab_section_trans = TestCategory::create(array("name" => "BLOOD TRANSFUSION","description" => ""));
-        $this->command->info('Lab Sections seeded');
-
-
-        /* Measure Types */
-        $measureTypes = array(
-            array("id" => "1", "name" => "Numeric Range"),
-            array("id" => "2", "name" => "Alphanumeric Values"),
-            array("id" => "3", "name" => "Autocomplete"),
-            array("id" => "4", "name" => "Free Text")
-        );
-
-        foreach ($measureTypes as $measureType)
-        {
-            MeasureType::create($measureType);
-        }
-        $this->command->info('measure_types seeded');
-
-        /* Measures table */
-        $measureHIV = array(
-            array("measure_type_id" => "2","name" => "Screening", "unit" => ""),
-            array("measure_type_id" => "2", "name" => "Confirmatory Test (Statpak)", "unit" => ""),
-            array("measure_type_id" => "2", "name" => "Unigold", "unit" =>"")
-            );
-
-        foreach($measureHIV as $measureH){
-            $measuresHIV[] = Measure::create($measureH);
-        }
-
-        $measureBSforMPS = Measure::create(array("measure_type_id" => "2", "name" => "BS for mps", "unit" => ""));
-        $measure1 = Measure::create(array("measure_type_id" => "2", "name" => "Grams stain", "unit" => ""));
-        $measure2 = Measure::create(array("measure_type_id" => "2", "name" => "SERUM AMYLASE", "unit" => ""));
-        $measure3 = Measure::create(array("measure_type_id" => "2", "name" => "calcium", "unit" => ""));
-        $measure4 = Measure::create(array("measure_type_id" => "2", "name" => "SGOT", "unit" => ""));
-        $measure5 = Measure::create(array("measure_type_id" => "2", "name" => "Indirect COOMBS test", "unit" => ""));
-        $measure6 = Measure::create(array("measure_type_id" => "2", "name" => "Direct COOMBS test", "unit" => ""));
-        $measure7 = Measure::create(array("measure_type_id" => "2", "name" => "Du test", "unit" => ""));
-
-        foreach ($measuresHIV as $key => $measure) {
-            MeasureRange::create(array("measure_id" => $measure->id, "alphanumeric" => "Reactive", "interpretation" => ""));
-            MeasureRange::create(array("measure_id" => $measure->id, "alphanumeric" => "Non-Reactive", "interpretation" => ""));
-        }
-        MeasureRange::create(array("measure_id" => $measureBSforMPS->id, "alphanumeric" => "No mps seen", "interpretation" => "Negative"));
-        MeasureRange::create(array("measure_id" => $measureBSforMPS->id, "alphanumeric" => "+", "interpretation" => "Positive"));
-        MeasureRange::create(array("measure_id" => $measureBSforMPS->id, "alphanumeric" => "++", "interpretation" => "Positive"));
-        MeasureRange::create(array("measure_id" => $measureBSforMPS->id, "alphanumeric" => "+++", "interpretation" => "Positive"));
-
-        MeasureRange::create(array("measure_id" => $measure1->id, "alphanumeric" => "Negative"));
-        MeasureRange::create(array("measure_id" => $measure1->id, "alphanumeric" => "Positive"));
-
-        MeasureRange::create(array("measure_id" => $measure2->id, "alphanumeric" => "Low"));
-        MeasureRange::create(array("measure_id" => $measure2->id, "alphanumeric" => "High"));
-        MeasureRange::create(array("measure_id" => $measure2->id, "alphanumeric" => "Normal"));
-
-        MeasureRange::create(array("measure_id" => $measure3->id, "alphanumeric" => "High"));
-        MeasureRange::create(array("measure_id" => $measure3->id, "alphanumeric" => "Low"));
-        MeasureRange::create(array("measure_id" => $measure3->id, "alphanumeric" => "Normal"));
-
-        MeasureRange::create(array("measure_id" => $measure4->id, "alphanumeric" => "High"));
-        MeasureRange::create(array("measure_id" => $measure4->id, "alphanumeric" => "Low"));
-        MeasureRange::create(array("measure_id" => $measure4->id, "alphanumeric" => "Normal"));
-
-        MeasureRange::create(array("measure_id" => $measure5->id, "alphanumeric" => "Positive"));
-        MeasureRange::create(array("measure_id" => $measure5->id, "alphanumeric" => "Negative"));
-
-        MeasureRange::create(array("measure_id" => $measure6->id, "alphanumeric" => "Positive"));
-        MeasureRange::create(array("measure_id" => $measure6->id, "alphanumeric" => "Negative"));
-
-        MeasureRange::create(array("measure_id" => $measure7->id, "alphanumeric" => "Positive"));
-        MeasureRange::create(array("measure_id" => $measure7->id, "alphanumeric" => "Negative"));
-        $measures = array(
-            array("measure_type_id" => "1", "name" => "URIC ACID", "unit" => "mg/dl"),
-            array("measure_type_id" => "4", "name" => "CSF for biochemistry", "unit" => ""),
-            array("measure_type_id" => "4", "name" => "PSA", "unit" => ""),
-            array("measure_type_id" => "1", "name" => "Total", "unit" => "mg/dl"),
-            array("measure_type_id" => "1", "name" => "Alkaline Phosphate", "unit" => "u/l"),
-            array("measure_type_id" => "1", "name" => "Direct", "unit" => "mg/dl"),
-            array("measure_type_id" => "1", "name" => "Total Proteins", "unit" => ""),
-            array("measure_type_id" => "4", "name" => "LFTS", "unit" => "NULL"),
-            array("measure_type_id" => "1", "name" => "Chloride", "unit" => "mmol/l"),
-            array("measure_type_id" => "1", "name" => "Potassium", "unit" => "mmol/l"),
-            array("measure_type_id" => "1", "name" => "Sodium", "unit" => "mmol/l"),
-            array("measure_type_id" => "4", "name" => "Electrolytes", "unit" => ""),
-            array("measure_type_id" => "1", "name" => "Creatinine", "unit" => "mg/dl"),
-            array("measure_type_id" => "1", "name" => "Urea", "unit" => "mg/dl"),
-            array("measure_type_id" => "4", "name" => "RFTS", "unit" => ""),
-            array("measure_type_id" => "4", "name" => "TFT", "unit" => ""),
-        );
-
-        foreach ($measures as $measure)
-        {
-            Measure::create($measure);
-        }
-        $measureGXM = Measure::create(array("measure_type_id" => "4", "name" => "GXM", "unit" => ""));
-        $measureBG = Measure::create(
-            array("measure_type_id" => "2",
-                "name" => "Blood Grouping",
-                "unit" => ""));
-        MeasureRange::create(array("measure_id" => $measureBG->id, "alphanumeric" => "O-"));
-        MeasureRange::create(array("measure_id" => $measureBG->id, "alphanumeric" => "O+"));
-        MeasureRange::create(array("measure_id" => $measureBG->id, "alphanumeric" => "A-"));
-        MeasureRange::create(array("measure_id" => $measureBG->id, "alphanumeric" => "A+"));
-        MeasureRange::create(array("measure_id" => $measureBG->id, "alphanumeric" => "B-"));
-        MeasureRange::create(array("measure_id" => $measureBG->id, "alphanumeric" => "B+"));
-        MeasureRange::create(array("measure_id" => $measureBG->id, "alphanumeric" => "AB-"));
-        MeasureRange::create(array("measure_id" => $measureBG->id, "alphanumeric" => "AB+"));
-        $measureHB = Measure::create(array("measure_type_id" => Measure::NUMERIC, "name" => "HB",
-            "unit" => "g/dL"));
-
-        $measuresUrinalysisData = array(
-            array("measure_type_id" => "4", "name" => "Urine microscopy", "unit" => ""),
-            array("measure_type_id" => "4", "name" => "Pus cells", "unit" => ""),
-            array("measure_type_id" => "4", "name" => "S. haematobium", "unit" => ""),
-            array("measure_type_id" => "4", "name" => "T. vaginalis", "unit" => ""),
-            array("measure_type_id" => "4", "name" => "Yeast cells", "unit" => ""),
-            array("measure_type_id" => "4", "name" => "Red blood cells", "unit" => ""),
-            array("measure_type_id" => "4", "name" => "Bacteria", "unit" => ""),
-            array("measure_type_id" => "4", "name" => "Spermatozoa", "unit" => ""),
-            array("measure_type_id" => "4", "name" => "Epithelial cells", "unit" => ""),
-            array("measure_type_id" => "4", "name" => "ph", "unit" => ""),
-            array("measure_type_id" => "4", "name" => "Urine chemistry", "unit" => ""),
-            array("measure_type_id" => "4", "name" => "Glucose", "unit" => ""),
-            array("measure_type_id" => "4", "name" => "Ketones", "unit" => ""),
-            array("measure_type_id" => "4", "name" => "Proteins", "unit" => ""),
-            array("measure_type_id" => "4", "name" => "Blood", "unit" => ""),
-            array("measure_type_id" => "4", "name" => "Bilirubin", "unit" => ""),
-            array("measure_type_id" => "4", "name" => "Urobilinogen Phenlpyruvic acid", "unit" => ""),
-            array("measure_type_id" => "4", "name" => "pH", "unit" => "")
-            );
-
-        foreach ($measuresUrinalysisData as $measureU) {
-            $measuresUrinalysis[] = Measure::create($measureU);
-        }
-
-        $measuresWBCData = array(
-            array("measure_type_id" => Measure::NUMERIC, "name" => "WBC",
-                "unit" => "x10³/µL"),
-            array("measure_type_id" => Measure::NUMERIC, "name" => "Lym", "unit" => "L"),
-            array("measure_type_id" => Measure::NUMERIC, "name" => "Mon", "unit" => "*"),
-            array("measure_type_id" => Measure::NUMERIC, "name" => "Neu", "unit" => "*"),
-            array("measure_type_id" => Measure::NUMERIC, "name" => "Eos", "unit" => ""),
-            array("measure_type_id" => Measure::NUMERIC, "name" => "Baso", "unit" => ""),
-            );
-
-        foreach ($measuresWBCData as $value) {
-            $measuresWBC[] = Measure::create($value);
-        }
-
-        $measureRangesWBC = array(
-            array("measure_id" => $measuresWBC[0]->id, "age_min" => 0, "age_max" => 100, "gender" => MeasureRange::BOTH,
-                "range_lower" => 4, "range_upper" => 11),
-            array("measure_id" => $measuresWBC[1]->id, "age_min" => 0, "age_max" => 100, "gender" => MeasureRange::BOTH,
-                "range_lower" => 1.5, "range_upper" => 4),
-            array("measure_id" => $measuresWBC[2]->id, "age_min" => 0, "age_max" => 100, "gender" => MeasureRange::BOTH,
-                "range_lower" => 0.1, "range_upper" => 9),
-            array("measure_id" => $measuresWBC[3]->id, "age_min" => 0, "age_max" => 100, "gender" => MeasureRange::BOTH,
-                "range_lower" => 2.5, "range_upper" => 7),
-            array("measure_id" => $measuresWBC[4]->id, "age_min" => 0, "age_max" => 100, "gender" => MeasureRange::BOTH,
-                "range_lower" => 0, "range_upper" => 6),
-            array("measure_id" => $measuresWBC[5]->id, "age_min" => 0, "age_max" => 100, "gender" => MeasureRange::BOTH,
-                "range_lower" => 0, "range_upper" => 2),
-            );
-
-        foreach ($measureRangesWBC as $value) {
-            MeasureRange::create($value);
-        }
-
-        $this->command->info('measures seeded');
-
-        /* Test Types table */
-        $testTypeHIV = TestType::create(array("name" => "HIV", "test_category_id" => $lab_section_serology ->id, "orderable_test" => 1));
-        $testTypeBS = TestType::create(array("name" => "BS for mps", "test_category_id" => $test_categories->id, "orderable_test" => 1));
-        $testTypeStoolCS = TestType::create(array("name" => "Stool for C/S", "test_category_id" => $lab_section_microbiology->id));
-        $testTypeGXM = TestType::create(array("name" => "GXM", "test_category_id" => $test_categories->id));
-        $testTypeHB = TestType::create(array("name" => "HB", "test_category_id" => $test_categories->id, "orderable_test" => 1));
-        $testTypeUrinalysis = TestType::create(array("name" => "Urinalysis", "test_category_id" => $test_categories->id));
-        $testTypeWBC = TestType::create(array("name" => "WBC", "test_category_id" => $test_categories->id));
-
-        $this->command->info('test_types seeded');
-
-        /* TestType Measure table */
-        foreach ($measuresHIV as $value) {
-            TestTypeMeasure::create(array("test_type_id" => $testTypeHIV->id, "measure_id" => $value->id));
-        }
-        TestTypeMeasure::create(array("test_type_id" => $testTypeBS->id, "measure_id" => $measureBSforMPS->id));
-        TestTypeMeasure::create(array("test_type_id" => $testTypeGXM->id, "measure_id" => $measureGXM->id));
-        TestTypeMeasure::create(array("test_type_id" => $testTypeGXM->id, "measure_id" => $measureBG->id));
-        TestTypeMeasure::create(array("test_type_id" => $testTypeHB->id, "measure_id" => $measureHB->id));
-
-        foreach ($measuresUrinalysis as $value) {
-            TestTypeMeasure::create(array("test_type_id" => $testTypeUrinalysis->id, "measure_id" => $value->id));
-        }
-
-        foreach ($measuresWBC as $value) {
-            TestTypeMeasure::create(array("test_type_id" => $testTypeWBC->id, "measure_id" => $value->id));
-        }
-
-        $this->command->info('testtype_measures seeded');
-
-        /* testtype_specimentypes table */
-        DB::table('testtype_specimentypes')->insert(
-            array("test_type_id" => $testTypeHIV->id, "specimen_type_id" => $specTypes[count($specTypes)-1]->id));
-        DB::table('testtype_specimentypes')->insert(
-            array("test_type_id" => $testTypeBS->id, "specimen_type_id" => $specTypes[count($specTypes)-1]->id));
-        DB::table('testtype_specimentypes')->insert(
-            array("test_type_id" => $testTypeGXM->id, "specimen_type_id" => $specTypes[count($specTypes)-1]->id));
-        DB::table('testtype_specimentypes')->insert(
-            array("test_type_id" => $testTypeHB->id, "specimen_type_id" => $specTypes[count($specTypes)-1]->id));
-        DB::table('testtype_specimentypes')->insert(
-            array("test_type_id" => $testTypeHB->id, "specimen_type_id" => $specTypes[6]->id));
-        DB::table('testtype_specimentypes')->insert(
-            array("test_type_id" => $testTypeHB->id, "specimen_type_id" => $specTypes[7]->id));
-        DB::table('testtype_specimentypes')->insert(
-            array("test_type_id" => $testTypeHB->id, "specimen_type_id" => $specTypes[12]->id));
-        DB::table('testtype_specimentypes')->insert(
-            array("test_type_id" => $testTypeUrinalysis->id, "specimen_type_id" => $specTypes[16]->id));
-        DB::table('testtype_specimentypes')->insert(
-            array("test_type_id" => $testTypeUrinalysis->id, "specimen_type_id" => $specTypes[19]->id));
-        DB::table('testtype_specimentypes')->insert(
-            array("test_type_id" => $testTypeWBC->id, "specimen_type_id" => $specTypes[count($specTypes)-1]->id));
-
-        $this->command->info('testtype_specimentypes seeded');
-
         /* Test Phase table */
         $test_phases = array(
           array("id" => "1", "name" => "Pre-Analytical"),
@@ -506,11 +361,6 @@ class DeploymentSeeder extends DatabaseSeeder
         }
         $this->command->info('rejection_reasons seeded');
 
-        /* Specimen table */
-
-        $this->command->info('specimens seeded');
-        $now = new DateTime();
-
 
         /* Permissions table */
         $permissions = array(
@@ -569,712 +419,5 @@ class DeploymentSeeder extends DatabaseSeeder
         }
         //Assign role Administrator to user 1 administrator
         $user1->attachRole($role1);
-
-        /* Instruments table */
-        $instrumentsData = array(
-            "name" => "Celltac F Mek 8222",
-            "description" => "Automatic analyzer with 22 parameters and WBC 5 part diff Hematology Analyzer",
-            "driver_name" => "KBLIS\\Plugins\\CelltacFMachine",
-            "ip" => "192.168.1.12",
-            "hostname" => "HEMASERVER"
-        );
-
-        $instrument = Instrument::create($instrumentsData);
-        $instrument->testTypes()->attach(array($testTypeWBC->id));
-
-        $this->command->info('Instruments table seeded');
-
-
-        /* Test Types for prevalence */
-        $test_types_salmonella = TestType::create(array("name" => "Salmonella Antigen Test", "test_category_id" => $test_categories->id));
-        $test_types_direct = TestType::create(array("name" => "Direct COOMBS Test", "test_category_id" => $lab_section_trans->id));
-        $test_types_du = TestType::create(array("name" => "DU Test", "test_category_id" => $lab_section_trans->id));
-        $test_types_sickling = TestType::create(array("name" => "Sickling Test", "test_category_id" => $lab_section_hematology->id));
-        $test_types_borrelia = TestType::create(array("name" => "Borrelia", "test_category_id" => $test_categories->id));
-        $test_types_vdrl = TestType::create(array("name" => "VDRL", "test_category_id" => $lab_section_serology->id));
-        $test_types_pregnancy = TestType::create(array("name" => "Pregnancy Test", "test_category_id" => $lab_section_serology->id));
-        $test_types_brucella = TestType::create(array("name" => "Brucella", "test_category_id" => $lab_section_serology->id));
-        $test_types_pylori = TestType::create(array("name" => "H. Pylori", "test_category_id" => $lab_section_serology->id));
-
-        $this->command->info('Test Types seeded');
-
-        /* Test Types and specimen types relationship for prevalence */
-        DB::insert('INSERT INTO testtype_specimentypes (test_type_id, specimen_type_id) VALUES (?, ?)',
-            array($test_types_salmonella->id, "20"));
-        DB::insert('INSERT INTO testtype_specimentypes (test_type_id, specimen_type_id) VALUES (?, ?)',
-            array($test_types_direct->id, "20"));
-        DB::insert('INSERT INTO testtype_specimentypes (test_type_id, specimen_type_id) VALUES (?, ?)',
-            array($test_types_du->id, "20"));
-         DB::insert('INSERT INTO testtype_specimentypes (test_type_id, specimen_type_id) VALUES (?, ?)',
-            array($test_types_sickling->id, "20"));
-        DB::insert('INSERT INTO testtype_specimentypes (test_type_id, specimen_type_id) VALUES (?, ?)',
-            array($test_types_borrelia->id, "17"));
-        DB::insert('INSERT INTO testtype_specimentypes (test_type_id, specimen_type_id) VALUES (?, ?)',
-            array($test_types_vdrl->id, "20"));
-         DB::insert('INSERT INTO testtype_specimentypes (test_type_id, specimen_type_id) VALUES (?, ?)',
-            array($test_types_pregnancy->id, "17"));
-        DB::insert('INSERT INTO testtype_specimentypes (test_type_id, specimen_type_id) VALUES (?, ?)',
-            array($test_types_brucella->id, "20"));
-        DB::insert('INSERT INTO testtype_specimentypes (test_type_id, specimen_type_id) VALUES (?, ?)',
-            array($test_types_pylori->id, "13"));
-        DB::insert('INSERT INTO testtype_specimentypes (test_type_id, specimen_type_id) VALUES (?, ?)',
-            array($testTypeStoolCS->id, "13"));
-        $this->command->info('TestTypes/SpecimenTypes seeded');
-
-        /*New measures for prevalence*/
-        $measure_salmonella = Measure::create(array("measure_type_id" => "2", "name" => "Salmonella Antigen Test", "unit" => ""));
-        $measure_direct = Measure::create(array("measure_type_id" => "2", "name" => "Direct COOMBS Test", "unit" => ""));
-        $measure_du = Measure::create(array("measure_type_id" => "2", "name" => "Du Test", "unit" => ""));
-        $measure_sickling = Measure::create(array("measure_type_id" => "2", "name" => "Sickling Test", "unit" => ""));
-        $measure_borrelia = Measure::create(array("measure_type_id" => "2", "name" => "Borrelia", "unit" => ""));
-        $measure_vdrl = Measure::create(array("measure_type_id" => "2", "name" => "VDRL", "unit" => ""));
-        $measure_pregnancy = Measure::create(array("measure_type_id" => "2", "name" => "Pregnancy Test", "unit" => ""));
-        $measure_brucella = Measure::create(array("measure_type_id" => "2", "name" => "Brucella", "unit" => ""));
-        $measure_pylori = Measure::create(array("measure_type_id" => "2", "name" => "H. Pylori", "unit" => ""));
-        MeasureRange::create(array("measure_id" => $measure_salmonella->id, "alphanumeric" => "Positive"));
-        MeasureRange::create(array("measure_id" => $measure_salmonella->id, "alphanumeric" => "Negative"));
-        MeasureRange::create(array("measure_id" => $measure_direct->id, "alphanumeric" => "Positive"));
-        MeasureRange::create(array("measure_id" => $measure_direct->id, "alphanumeric" => "Negative"));
-        MeasureRange::create(array("measure_id" => $measure_du->id, "alphanumeric" => "Positive"));
-        MeasureRange::create(array("measure_id" => $measure_du->id, "alphanumeric" => "Negative"));
-        MeasureRange::create(array("measure_id" => $measure_sickling->id, "alphanumeric" => "Positive"));
-        MeasureRange::create(array("measure_id" => $measure_sickling->id, "alphanumeric" => "Negative"));
-        MeasureRange::create(array("measure_id" => $measure_borrelia->id, "alphanumeric" => "Positive"));
-        MeasureRange::create(array("measure_id" => $measure_borrelia->id, "alphanumeric" => "Negative"));
-        MeasureRange::create(array("measure_id" => $measure_vdrl->id, "alphanumeric" => "Positive"));
-        MeasureRange::create(array("measure_id" => $measure_vdrl->id, "alphanumeric" => "Negative"));
-        MeasureRange::create(array("measure_id" => $measure_pregnancy->id, "alphanumeric" => "Positive"));
-        MeasureRange::create(array("measure_id" => $measure_pregnancy->id, "alphanumeric" => "Negative"));
-        MeasureRange::create(array("measure_id" => $measure_brucella->id, "alphanumeric" => "Positive"));
-        MeasureRange::create(array("measure_id" => $measure_brucella->id, "alphanumeric" => "Negative"));
-        MeasureRange::create(array("measure_id" => $measure_pylori->id, "alphanumeric" => "Positive"));
-        MeasureRange::create(array("measure_id" => $measure_pylori->id, "alphanumeric" => "Negative"));
-        $this->command->info('Measures seeded again');
-
-        /* TestType Measure for prevalence */
-        $testtype_measure = TestTypeMeasure::create(array("test_type_id" => $test_types_salmonella->id, "measure_id" => $measure_salmonella->id));
-        $testtype_measure = TestTypeMeasure::create(array("test_type_id" => $test_types_direct->id, "measure_id" => $measure_direct->id));
-        $testtype_measure = TestTypeMeasure::create(array("test_type_id" => $test_types_du->id, "measure_id" => $measure_du->id));
-        $testtype_measure = TestTypeMeasure::create(array("test_type_id" => $test_types_sickling->id, "measure_id" => $measure_sickling->id));
-        $testtype_measure = TestTypeMeasure::create(array("test_type_id" => $test_types_borrelia->id, "measure_id" => $measure_borrelia->id));
-        $testtype_measure = TestTypeMeasure::create(array("test_type_id" => $test_types_vdrl->id, "measure_id" => $measure_vdrl->id));
-        $testtype_measure = TestTypeMeasure::create(array("test_type_id" => $test_types_pregnancy->id, "measure_id" => $measure_pregnancy->id));
-        $testtype_measure = TestTypeMeasure::create(array("test_type_id" => $test_types_brucella->id, "measure_id" => $measure_brucella->id));
-        $testtype_measure = TestTypeMeasure::create(array("test_type_id" => $test_types_pylori->id, "measure_id" => $measure_pylori->id));
-        $this->command->info('Test Type Measures seeded again');
-
-        //Seed for diseases
-        $malaria = Disease::create(array('name' => "Malaria"));
-        $typhoid = Disease::create(array('name' => "Typhoid"));
-        $dysentry = Disease::create(array('name' => "Shigella Dysentry"));
-
-        $this->command->info("Dieases table seeded");
-
-        $reportDiseases = array(
-            array(
-                "test_type_id" => $testTypeBS->id,
-                "disease_id" => $malaria->id,
-                ),
-             array(
-                "test_type_id" => $test_types_salmonella->id,
-                "disease_id" => $typhoid->id,
-                ),
-             array(
-                "test_type_id" => $testTypeStoolCS->id,
-                "disease_id" => $dysentry->id,
-                ),
-        );
-
-        foreach ($reportDiseases as $reportDisease) {
-            ReportDisease::create($reportDisease);
-        }
-        $this->command->info("Report Disease table seeded");
-
-
-
-        //Seed for drugs
-        $penicillin = Drug::create(array('name' => "PENICILLIN"));
-        $ampicillin = Drug::create(array('name' => "AMPICILLIN"));
-        $clindamycin = Drug::create(array('name' => "CLINDAMYCIN"));
-        $tetracycline = Drug::create(array('name' => "TETRACYCLINE"));
-        $ciprofloxacin = Drug::create(array('name' => "CIPROFLOXACIN"));
-        $trimeth = Drug::create(array('name' => "TRIMETHOPRIM/SULFA"));
-        $nitrofurantoin = Drug::create(array('name' => "NITROFURANTOIN"));
-        $chloramphenicol = Drug::create(array('name' => "CHLORAMPHENICOL"));
-        $cefazolin = Drug::create(array('name' => "CEFAZOLIN"));
-        $gentamicin = Drug::create(array('name' => "GENTAMICIN"));
-        $amoxicillin = Drug::create(array('name' => "AMOXICILLIN-CLAV"));
-        $cephalothin = Drug::create(array('name' => "CEPHALOTHIN"));
-        $cefuroxime = Drug::create(array('name' => "CEFUROXIME"));
-        $cefotaxime = Drug::create(array('name' => "CEFOTAXIME"));
-        $piperacillin = Drug::create(array('name' => "PIPERACILLIN"));
-        $cefixime = Drug::create(array('name' => "CEFIXIME"));
-        $ceftazidime = Drug::create(array('name' => "CEFTAZIDIME"));
-        $cefriaxone = Drug::create(array('name' => "CEFRIAXONE"));
-        $levofloxacin = Drug::create(array('name' => "LEVOFLOXACIN"));
-        $merodenem = Drug::create(array('name' => "MERODENEM"));
-        $imedenem = Drug::create(array('name' => "IMEDENEM"));
-        $oxacillin = Drug::create(array('name' => "OXACILLIN (CEFOXITIN)"));
-        $erythromycin = Drug::create(array('name' => "ERYTHROMYCIN"));
-        $vancomycin = Drug::create(array('name' => "VANCOMYCIN"));
-        $cefoxitin = Drug::create(array('name' => "CEFOXITIN"));
-        $tobramycin = Drug::create(array('name' => "TOBRAMYCIN"));
-        $sulbactam = Drug::create(array('name' => "AMPICILLIN-SULBACTAM"));
-        $trimethoprim = Drug::create(array('name' => "TRIMETHOPRIM"));
-        $amikacin = Drug::create(['name' => 'AMIKACIN']);
-        $augmentin = Drug::create(['name' => 'AUGMENTIN']);
-        $ceftriaxione = Drug::create(['name' => 'CEFTRIAXIONE']);
-        $cotrimoxazole = Drug::create(['name' => 'CO-TRIMOXAZOLE']);
-        $imipenem = Drug::create(['name' => 'IMIPENEM']);
-        $meropenem = Drug::create(['name' => 'MEROPENEM']);
-        $peperacillintazobactam = Drug::create(['name' => 'PIPERACILLIN/TAZO']);
-
-        $this->command->info('Drugs table seeded');
-        //Seed for organisims
-        $staphylococci = Organism::create(array('name' => "Staphylococci species"));
-        $gramnegative = Organism::create(array('name' => "Gram negative cocci"));
-        $pseudomonas = Organism::create(array('name' => "Pseudomonas aeruginosa"));
-        $enterococcus = Organism::create(array('name' => "Enterococcus species"));
-        $pneumoniae = Organism::create(array('name' => "Streptococcus pneumoniae"));
-        $streptococcus = Organism::create(array('name' => "Streptococcus species viridans group"));
-        $beta = Organism::create(array('name' => "Beta-haemolytic streptococci"));
-        $haemophilus = Organism::create(array('name' => "Haemophilus influenzae"));
-        $naisseria = Organism::create(array('name' => "Naisseria menengitidis"));
-        $salmonella = Organism::create(array('name' => "Salmonella species"));
-        $shigella = Organism::create(array('name' => "Shigella"));
-        $vibrio = Organism::create(array('name' => "Vibrio cholerae"));
-        $grampositive = Organism::create(array('name' => "Gram positive cocci"));
-        $ecoli = Organism::create(['name' => 'E.coli']);
-        $oralPharyngealFlora = Organism::create(['name' => 'Oral-pharyngeal flora']);
-
-        $this->command->info('Organisms table seeded');
-
-        $specimenTypeSputum = SpecimenType::create(["name" => "Sputum"]);
-
-        $testTypeAST = TestType::create([
-                "name" => "Culture and Sensitivity",
-                "test_category_id" => $lab_section_microbiology->id,
-                "orderable_test" => 1
-        ]);
-        $testTypeAppearance = TestType::create([
-            'name' => 'Appearance',
-            'test_category_id' => $lab_section_microbiology->id,
-            'orderable_test' => 1
-        ]);
-        $testTypeGramStain = TestType::create([
-            'name' => 'Gram stain',
-            'test_category_id' => $lab_section_microbiology->id,
-            'orderable_test' => 1
-        ]);
-        $testTypeZnStain = TestType::create([
-            'name' => 'ZN stain',
-            'test_category_id' => $lab_section_microbiology->id,
-            'orderable_test' => 1
-        ]);
-        $testTypeModifiedZn = TestType::create([
-            'name' => 'Modified ZN',
-            'test_category_id' => $lab_section_microbiology->id,
-            'orderable_test' => 1
-        ]);
-        $testTypeWetSalineIodinePrep = TestType::create([
-            'name' => 'Wet Saline Iodine Prep',
-            'test_category_id' => $lab_section_microbiology->id,
-            'orderable_test' => 1
-        ]);
-
-        $measureAppearance = Measure::create(['measure_type_id' => '4', 'name' => 'Appearance', 'unit' => '']);
-        $measureGramStain = Measure::create(['measure_type_id' => '4', 'name' => 'Gram stain', 'unit' => '']);
-        $measureZnStain = Measure::create(['measure_type_id' => '4', 'name' => 'ZN stain', 'unit' => '']);
-        $measureModifiedZn = Measure::create(['measure_type_id' => '4', 'name' => 'Modified ZN', 'unit' => '']);
-        $measureWetSalineIodinePrep = Measure::create(['measure_type_id' => '4', 'name' => 'Wet Saline Iodine Prep', 'unit' => '']);
-        $measureAST = Measure::create(['measure_type_id' => '4', 'name' => 'AST', 'unit' => '']);
-
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[0]->id]);// Ascitic Tap
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[1]->id]);// Aspirate
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[2]->id]);// CSF
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[3]->id]);// Dried Blood Spot
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[4]->id]);// High Vaginal Swab
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[5]->id]);// Nasal Swab
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[6]->id]);// Pleural Tap
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[7]->id]);// Pus Swab
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[8]->id]);// Rectal Swab
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[9]->id]);// Semen
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[10]->id]);// Skin
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[11]->id]);// Vomitus
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[12]->id]);// Stool
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[13]->id]);// Synovial Fluid
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[14]->id]);// Throat Swab
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[15]->id]);// Urethral Smear
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[16]->id]);// Urine
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[17]->id]);// Vaginal Smear
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[18]->id]);// Water
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeAST->id, "specimen_type_id" => $specTypes[19]->id]);// Whole Blood
-
-
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[0]->id]);// Ascitic Tap
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[1]->id]);// Aspirate
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[2]->id]);// CSF
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[3]->id]);// Dried Blood Spot
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[4]->id]);// High Vaginal Swab
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[5]->id]);// Nasal Swab
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[6]->id]);// Pleural Tap
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[7]->id]);// Pus Swab
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[8]->id]);// Rectal Swab
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[9]->id]);// Semen
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[10]->id]);// Skin
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[11]->id]);// Vomitus
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[12]->id]);// Stool
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[13]->id]);// Synovial Fluid
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[14]->id]);// Throat Swab
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[15]->id]);// Urethral Smear
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[16]->id]);// Urine
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[17]->id]);// Vaginal Smear
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[18]->id]);// Water
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeAppearance->id, "specimen_type_id" => $specTypes[19]->id]);// Whole Blood
-
-
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[0]->id]);// Ascitic Tap
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[1]->id]);// Aspirate
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[2]->id]);// CSF
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[3]->id]);// Dried Blood Spot
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[4]->id]);// High Vaginal Swab
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[5]->id]);// Nasal Swab
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[6]->id]);// Pleural Tap
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[7]->id]);// Pus Swab
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[8]->id]);// Rectal Swab
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[9]->id]);// Semen
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[10]->id]);// Skin
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[11]->id]);// Vomitus
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[12]->id]);// Stool
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[13]->id]);// Synovial Fluid
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[14]->id]);// Throat Swab
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[15]->id]);// Urethral Smear
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[16]->id]);// Urine
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[17]->id]);// Vaginal Smear
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[18]->id]);// Water
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeGramStain->id, "specimen_type_id" => $specTypes[19]->id]);// Whole Blood
-
-
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[0]->id]);// Ascitic Tap
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[1]->id]);// Aspirate
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[2]->id]);// CSF
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[3]->id]);// Dried Blood Spot
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[4]->id]);// High Vaginal Swab
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[5]->id]);// Nasal Swab
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[6]->id]);// Pleural Tap
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[7]->id]);// Pus Swab
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[8]->id]);// Rectal Swab
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[9]->id]);// Semen
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[10]->id]);// Skin
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[11]->id]);// Vomitus
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[12]->id]);// Stool
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[13]->id]);// Synovial Fluid
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[14]->id]);// Throat Swab
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[15]->id]);// Urethral Smear
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[16]->id]);// Urine
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[17]->id]);// Vaginal Smear
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[18]->id]);// Water
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeZnStain->id, "specimen_type_id" => $specTypes[19]->id]);// Whole Blood
-
-
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[0]->id]);// Ascitic Tap
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[1]->id]);// Aspirate
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[2]->id]);// CSF
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[3]->id]);// Dried Blood Spot
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[4]->id]);// High Vaginal Swab
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[5]->id]);// Nasal Swab
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[6]->id]);// Pleural Tap
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[7]->id]);// Pus Swab
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[8]->id]);// Rectal Swab
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[9]->id]);// Semen
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[10]->id]);// Skin
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[11]->id]);// Vomitus
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[12]->id]);// Stool
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[13]->id]);// Synovial Fluid
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[14]->id]);// Throat Swab
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[15]->id]);// Urethral Smear
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[16]->id]);// Urine
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[17]->id]);// Vaginal Smear
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[18]->id]);// Water
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeModifiedZn->id, "specimen_type_id" => $specTypes[19]->id]);// Whole Blood
-
-
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[0]->id]);// Ascitic Tap
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[1]->id]);// Aspirate
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[2]->id]);// CSF
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[3]->id]);// Dried Blood Spot
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[4]->id]);// High Vaginal Swab
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[5]->id]);// Nasal Swab
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[6]->id]);// Pleural Tap
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[7]->id]);// Pus Swab
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[8]->id]);// Rectal Swab
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[9]->id]);// Semen
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[10]->id]);// Skin
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[11]->id]);// Vomitus
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[12]->id]);// Stool
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[13]->id]);// Synovial Fluid
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[14]->id]);// Throat Swab
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[15]->id]);// Urethral Smear
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[16]->id]);// Urine
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[17]->id]);// Vaginal Smear
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[18]->id]);// Water
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeWetSalineIodinePrep->id, "specimen_type_id" => $specTypes[19]->id]);// Whole Blood
-
-
-        $cultureDurationAST12h = CultureDuration::create(['duration' => '12 hours',]);
-        $cultureDurationAST24h = CultureDuration::create(['duration' => '24 hours',]);
-        $cultureDurationAST36h = CultureDuration::create(['duration' => '36 hours',]);
-        $cultureDurationAST48h = CultureDuration::create(['duration' => '48 hours',]);
-        $cultureDurationAST60h = CultureDuration::create(['duration' => '60 hours',]);
-        $cultureDurationAST72h = CultureDuration::create(['duration' => '72 hours',]);
-        $cultureDurationAST4d = CultureDuration::create(['duration' => '4 days',]);
-        $cultureDurationAST5d = CultureDuration::create(['duration' => '5 days',]);
-        $cultureDurationAST6d = CultureDuration::create(['duration' => '6 days',]);
-        $cultureDurationAST7d = CultureDuration::create(['duration' => '7 days',]);
-
-        $cBCMeasureID = [];
-
-        $measureWBC = Measure::create(["measure_type_id" => Measure::NUMERIC,
-            "name" => "WBC", "unit" => "x10³/µL"]);
-        $measureRBC = Measure::create(["measure_type_id" => Measure::NUMERIC,
-            "name" => "RBC", "unit" => "x10⁶/µL"]);
-        $measureHGB = Measure::create(["measure_type_id" => Measure::NUMERIC,
-            "name" => "HGB", "unit" => "g/dL"]);
-        $measureHCT = Measure::create(["measure_type_id" => Measure::NUMERIC,
-            "name" => "HCT", "unit" => "%"]);
-        $measureMCV = Measure::create(["measure_type_id" => Measure::NUMERIC,
-            "name" => "MCV", "unit" => "fL"]);
-        $measureMCH = Measure::create(["measure_type_id" => Measure::NUMERIC,
-            "name" => "MCH", "unit" => "pg"]);
-        $measureMCHC = Measure::create(["measure_type_id" => Measure::NUMERIC,
-            "name" => "MCHC", "unit" => "g/dL"]);
-        $measurePLT = Measure::create(["measure_type_id" => Measure::NUMERIC,
-            "name" => "PLT", "unit" => "x10³/µL"]);
-        $measureRDWSD = Measure::create(["measure_type_id" => Measure::NUMERIC,
-            "name" => "RDW-SD", "unit" => "fL"]);
-        $measureRDWCV = Measure::create(["measure_type_id" => Measure::NUMERIC,
-            "name" => "RDW-CV", "unit" => "%"]);
-        $measurePDW = Measure::create(["measure_type_id" => Measure::NUMERIC,
-            "name" => "PDW", "unit" => "fL"]);
-        $measureMPV = Measure::create(["measure_type_id" => Measure::NUMERIC,
-            "name" => "MPV", "unit" => "fL"]);
-        $measurePLCR = Measure::create(["measure_type_id" => Measure::NUMERIC,
-            "name" => "P-LCR", "unit" => "%"]);
-        $measurePCT = Measure::create(["measure_type_id" => Measure::NUMERIC,
-            "name" => "PCT", "unit" => "%"]);
-        $measureNEUThash = Measure::create(["measure_type_id" => Measure::NUMERIC,
-            "name" => "NEUT#", "unit" => "x10³/µL"]);
-        $measureLYMPHhash = Measure::create(["measure_type_id" => Measure::NUMERIC,
-            "name" => "LYMPH#", "unit" => "x10³/µL"]);
-        $measureMONOhash = Measure::create(["measure_type_id" => Measure::NUMERIC,
-            "name" => "MONO#", "unit" => "x10³/µL"]);
-        $measureEOhash = Measure::create(["measure_type_id" => Measure::NUMERIC,
-            "name" => "EO#", "unit" => "x10³/µL"]);
-        $measureBASOhash = Measure::create(["measure_type_id" => Measure::NUMERIC,
-            "name" => "BASO#", "unit" => "x10³/µL"]);
-        $measureNEUTpercent = Measure::create(["measure_type_id" => Measure::NUMERIC,
-            "name" => "NEUT%", "unit" => "%"]);
-        $measureLYMPHpercent = Measure::create(["measure_type_id" => Measure::NUMERIC,
-            "name" => "LYMPH%", "unit" => "%"]);
-        $measureMONOpercent = Measure::create(["measure_type_id" => Measure::NUMERIC,
-            "name" => "MONO%", "unit" => "%"]);
-        $measureEOpercent = Measure::create(["measure_type_id" => Measure::NUMERIC,
-            "name" => "EO%", "unit" => "%"]);
-        $measureBASOpercent = Measure::create(["measure_type_id" => Measure::NUMERIC,
-            "name" => "BASO%", "unit" => "%"]);
-
-        $cBCMeasureID[] = $measureWBC->id;
-        $cBCMeasureID[] = $measureRBC->id;
-        $cBCMeasureID[] = $measureHGB->id;
-        $cBCMeasureID[] = $measureHCT->id;
-        $cBCMeasureID[] = $measureMCV->id;
-        $cBCMeasureID[] = $measureMCH->id;
-        $cBCMeasureID[] = $measureMCHC->id;
-        $cBCMeasureID[] = $measurePLT->id;
-        $cBCMeasureID[] = $measureRDWSD->id;
-        $cBCMeasureID[] = $measureRDWCV->id;
-        $cBCMeasureID[] = $measurePDW->id;
-        $cBCMeasureID[] = $measureMPV->id;
-        $cBCMeasureID[] = $measurePLCR->id;
-        $cBCMeasureID[] = $measurePCT->id;
-        $cBCMeasureID[] = $measureNEUThash->id;
-        $cBCMeasureID[] = $measureLYMPHhash->id;
-        $cBCMeasureID[] = $measureMONOhash->id;
-        $cBCMeasureID[] = $measureEOhash->id;
-        $cBCMeasureID[] = $measureBASOhash->id;
-        $cBCMeasureID[] = $measureNEUTpercent->id;
-        $cBCMeasureID[] = $measureLYMPHpercent->id;
-        $cBCMeasureID[] = $measureMONOpercent->id;
-        $cBCMeasureID[] = $measureEOpercent->id;
-        $cBCMeasureID[] = $measureBASOpercent->id;
-
-
-        $testTypeCBC = TestType::create(array("name" => "CBC", "test_category_id" => $lab_section_hematology->id,
-            "orderable_test" => 1));
-
-        /* testtype_specimentypes table */
-        DB::table('testtype_specimentypes')->insert(
-            ["test_type_id" => $testTypeCBC->id, "specimen_type_id" => 20]);
-
-        /* TestType Measure table */
-        TestTypeMeasure::create(["test_type_id" => $testTypeCBC->id, "measure_id" => $measureWBC->id]);
-        TestTypeMeasure::create(["test_type_id" => $testTypeCBC->id, "measure_id" => $measureRBC->id]);
-        TestTypeMeasure::create(["test_type_id" => $testTypeCBC->id, "measure_id" => $measureHGB->id]);
-        TestTypeMeasure::create(["test_type_id" => $testTypeCBC->id, "measure_id" => $measureHCT->id]);
-        TestTypeMeasure::create(["test_type_id" => $testTypeCBC->id, "measure_id" => $measureMCV->id]);
-        TestTypeMeasure::create(["test_type_id" => $testTypeCBC->id, "measure_id" => $measureMCH->id]);
-        TestTypeMeasure::create(["test_type_id" => $testTypeCBC->id, "measure_id" => $measureMCHC->id]);
-        TestTypeMeasure::create(["test_type_id" => $testTypeCBC->id, "measure_id" => $measurePLT->id]);
-        TestTypeMeasure::create(["test_type_id" => $testTypeCBC->id, "measure_id" => $measureRDWSD->id]);
-        TestTypeMeasure::create(["test_type_id" => $testTypeCBC->id, "measure_id" => $measureRDWCV->id]);
-        TestTypeMeasure::create(["test_type_id" => $testTypeCBC->id, "measure_id" => $measurePDW->id]);
-        TestTypeMeasure::create(["test_type_id" => $testTypeCBC->id, "measure_id" => $measureMPV->id]);
-        TestTypeMeasure::create(["test_type_id" => $testTypeCBC->id, "measure_id" => $measurePLCR->id]);
-        TestTypeMeasure::create(["test_type_id" => $testTypeCBC->id, "measure_id" => $measurePCT->id]);
-        TestTypeMeasure::create(["test_type_id" => $testTypeCBC->id, "measure_id" => $measureNEUThash->id]);
-        TestTypeMeasure::create(["test_type_id" => $testTypeCBC->id, "measure_id" => $measureLYMPHhash->id]);
-        TestTypeMeasure::create(["test_type_id" => $testTypeCBC->id, "measure_id" => $measureMONOhash->id]);
-        TestTypeMeasure::create(["test_type_id" => $testTypeCBC->id, "measure_id" => $measureEOhash->id]);
-        TestTypeMeasure::create(["test_type_id" => $testTypeCBC->id, "measure_id" => $measureBASOhash->id]);
-        TestTypeMeasure::create(["test_type_id" => $testTypeCBC->id, "measure_id" => $measureNEUTpercent->id]);
-        TestTypeMeasure::create(["test_type_id" => $testTypeCBC->id, "measure_id" => $measureLYMPHpercent->id]);
-        TestTypeMeasure::create(["test_type_id" => $testTypeCBC->id, "measure_id" => $measureMONOpercent->id]);
-        TestTypeMeasure::create(["test_type_id" => $testTypeCBC->id, "measure_id" => $measureEOpercent->id]);
-        TestTypeMeasure::create(["test_type_id" => $testTypeCBC->id, "measure_id" => $measureBASOpercent->id]);
-
-        $measureRangeCBCGroup1 = [
-            "age_min" => "0",
-            "age_max" => "0.01923",
-            "gender" => MeasureRange::BOTH,
-            "range_lower" => [3,2.5,12,26,86,26,31,50,37,11,9,9,13,0.17,1.5,1,0,0,0,37,20,0,0,0],
-            "range_upper" => [15,5.5,16,50,110,38,37,400,54,16,17,13,43,0.35,7,3.7,0.7,0.4,0.1,72,50,14,6,1],
-            ];
-        $measureRangeCBCGroup2 = [
-            "age_min" => "0.01923",
-            "age_max" => "0.08333",
-            "gender" => MeasureRange::BOTH,
-            "range_lower" => [3,2.5,8,26,86,26,31,50,37,11,9,9,13,0.17,1.5,1,0,0,0,37,20,0,0,0],
-            "range_upper" => [15,5.5,17,50,110,38,37,400,54,16,17,13,43,0.35,7,3.7,0.7,0.4,0.1,72,50,14,6,1],
-            ];
-        $measureRangeCBCGroup3 = [
-            "age_min" => "0.08333",
-            "age_max" => "1",
-            "gender" => MeasureRange::BOTH,
-            "range_lower" => [3,2.5,8,26,86,26,31,50,37,11,9,9,13,0.17,1.5,1,0,0,0,37,20,0,0,0],
-            "range_upper" => [15,5.5,17,50,110,38,37,400,54,16,17,13,43,0.35,7,3.7,0.7,0.4,0.1,72,50,14,6,1],
-            ];
-        $measureRangeCBCGroup4 = [
-            "age_min" => "1",
-            "age_max" => "12",
-            "gender" => MeasureRange::BOTH,
-            "range_lower" => [3,2.5,8,26,86,26,31,50,37,11,9,9,13,0.17,1.5,1,0,0,0,37,20,0,0,0],
-            "range_upper" => [15,5.5,17,50,110,38,37,400,54,16,17,13,43,0.35,7,3.7,0.7,0.4,0.1,72,50,14,6,1],
-            ];
-        $measureRangeCBCGroup5 = [
-            "age_min" => "12",
-            "age_max" => "60",
-            "gender" => MeasureRange::MALE,
-            "range_lower" => [3,2.5,13,26,86,26,31,50,37,11,9,9,13,0.17,1.5,1,0,0,0,37,20,0,0,0],
-            "range_upper" => [15,5.5,17,50,110,38,37,400,54,16,17,13,43,0.35,7,3.7,0.7,0.4,0.1,72,50,14,6,1],
-            ];
-        $measureRangeCBCGroup6 = [
-            "age_min" => "12",
-            "age_max" => "60",
-            "gender" => MeasureRange::FEMALE,
-            "range_lower" => [4,2.5,12,26,86,26,31,50,37,11,9,9,13,0.17,1.5,1,0,0,0,37,20,0,0,0],
-            "range_upper" => [11,5.5,14,50,110,38,37,400,54,16,17,13,43,0.35,7,3.7,0.7,0.4,0.1,72,50,14,6,1],
-            ];
-        $measureRangeCBCGroup7 = [
-            "age_min" => "60",
-            "age_max" => "999",
-            "gender" => MeasureRange::BOTH,
-            "range_lower" => [3,2.5,8,26,86,26,31,50,37,11,9,9,13,0.17,1.5,1,0,0,0,37,20,0,0,0],
-            "range_upper" => [15,5.5,17,50,110,38,37,400,54,16,17,13,43,0.35,7,3.7,0.7,0.4,0.1,72,50,14,6,1],
-            ];
-
-        for ($i = 0; $i <= 23; $i++) {
-            $measureRange = MeasureRange::create([
-                "measure_id" => $cBCMeasureID[$i],
-                "age_min" => $measureRangeCBCGroup1["age_min"],
-                "age_max" => $measureRangeCBCGroup1["age_max"],
-                "gender" => $measureRangeCBCGroup1["gender"],
-                "range_lower" => $measureRangeCBCGroup1["range_lower"][$i],
-                "range_upper" => $measureRangeCBCGroup1["range_upper"][$i]
-            ]);
-
-            $measureRange = MeasureRange::create([
-                "measure_id" => $cBCMeasureID[$i],
-                "age_min" => $measureRangeCBCGroup2["age_min"],
-                "age_max" => $measureRangeCBCGroup2["age_max"],
-                "gender" => $measureRangeCBCGroup2["gender"],
-                "range_lower" => $measureRangeCBCGroup2["range_lower"][$i],
-                "range_upper" => $measureRangeCBCGroup2["range_upper"][$i]
-            ]);
-
-            $measureRange = MeasureRange::create([
-                "measure_id" => $cBCMeasureID[$i],
-                "age_min" => $measureRangeCBCGroup3["age_min"],
-                "age_max" => $measureRangeCBCGroup3["age_max"],
-                "gender" => $measureRangeCBCGroup3["gender"],
-                "range_lower" => $measureRangeCBCGroup3["range_lower"][$i],
-                "range_upper" => $measureRangeCBCGroup3["range_upper"][$i]
-            ]);
-
-            $measureRange = MeasureRange::create([
-                "measure_id" => $cBCMeasureID[$i],
-                "age_min" => $measureRangeCBCGroup4["age_min"],
-                "age_max" => $measureRangeCBCGroup4["age_max"],
-                "gender" => $measureRangeCBCGroup4["gender"],
-                "range_lower" => $measureRangeCBCGroup4["range_lower"][$i],
-                "range_upper" => $measureRangeCBCGroup4["range_upper"][$i]
-            ]);
-
-            $measureRange = MeasureRange::create([
-                "measure_id" => $cBCMeasureID[$i],
-                "age_min" => $measureRangeCBCGroup5["age_min"],
-                "age_max" => $measureRangeCBCGroup5["age_max"],
-                "gender" => $measureRangeCBCGroup5["gender"],
-                "range_lower" => $measureRangeCBCGroup5["range_lower"][$i],
-                "range_upper" => $measureRangeCBCGroup5["range_upper"][$i]
-            ]);
-
-            $measureRange = MeasureRange::create([
-                "measure_id" => $cBCMeasureID[$i],
-                "age_min" => $measureRangeCBCGroup6["age_min"],
-                "age_max" => $measureRangeCBCGroup6["age_max"],
-                "gender" => $measureRangeCBCGroup6["gender"],
-                "range_lower" => $measureRangeCBCGroup6["range_lower"][$i],
-                "range_upper" => $measureRangeCBCGroup6["range_upper"][$i]
-            ]);
-
-            $measureRange = MeasureRange::create([
-                "measure_id" => $cBCMeasureID[$i],
-                "age_min" => $measureRangeCBCGroup7["age_min"],
-                "age_max" => $measureRangeCBCGroup7["age_max"],
-                "gender" => $measureRangeCBCGroup7["gender"],
-                "range_lower" => $measureRangeCBCGroup7["range_lower"][$i],
-                "range_upper" => $measureRangeCBCGroup7["range_upper"][$i]
-            ]);
-        }
     }
 }
