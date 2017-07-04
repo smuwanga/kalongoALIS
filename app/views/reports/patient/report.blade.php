@@ -10,45 +10,41 @@
 	#report_content p{
 		font-size:12px;
 	 }
+	 table {
+	 	padding: 2px;
+	 }
 </style>
 </head>
 <body>
-		@if($error!='')
-		<!-- if there are search errors, they will show here -->
-			<div class="alert alert-info">{{ $error }}</div>
-		@else
-
-		<div id="report_content">
-		@include("reportHeader")
 		<strong>
-			<p>
-				{{trans('messages.patient-report').' - '.date('d-m-Y')}}
+			<p> 
+				{{trans('messages.patient-report').': '.date('d-m-Y')}}
 			</p>
-		</strong>
-		<table class="table table-bordered">
-			<tbody>
+		</strong>	
+		<table width="100%" class="table table-bordered">
+			<thead>
 				<tr>
-					<th>{{ trans('messages.patient-name')}}</th>
+					<th><strong>{{ trans('messages.patient-name')}}</strong></th>
 					@if(Entrust::can('view_names'))
 						<td>{{ $patient->name }}</td>
 					@else
 						<td>N/A</td>
 					@endif
-					<th>{{ trans('messages.gender')}}</th>
+					<th><strong>{{ trans('messages.gender')}}</strong></th>
 					<td>{{ $patient->getGender(false) }}</td>
 				</tr>
 				<tr>
-					<th>{{ trans('messages.patient-id')}}</th>
+					<th><strong>{{ trans('messages.patient-id')}}</strong></th>
 					<td>{{ $patient->patient_number}}</td>
-					<th>{{ trans('messages.age')}}</th>
+					<th><strong>{{ trans('messages.age')}}</strong></th>
 					<td>{{ $patient->getAge()}}</td>
 				</tr>
-			</tbody>
+			</thead>
 		</table>
 		<table class="table table-bordered">
-			<tbody>
+			<thead>
 				<tr>
-					<th colspan="7">Lab Reception</th>
+					<th colspan="7"><strong>Lab Reception</strong></th>
 				</tr>
 				<tr>
 					<th>Specimen Type</th>
@@ -85,12 +81,13 @@
 					</tr>
 				@endforelse
 
-			</tbody>
+			</thead>
 		</table>
+
 		<table class="table table-bordered">
-			<tbody>
+			<thead>
 				<tr>
-					<th colspan="8">{{trans('messages.test-results')}}</th>
+					<th colspan="8"><strong>{{trans('messages.test-results')}}</strong></th>
 				</tr>
 				<tr>
 					<th>{{Lang::choice('messages.test-type', 1)}}</th>
@@ -99,16 +96,16 @@
 					<th>{{trans('messages.tested-by')}}</th>
 					<th>{{trans('messages.results-entry-date')}}</th>
 					<th>{{trans('messages.date-tested')}}</th>
-<!-- 					<th>{{trans('messages.verified-by')}}</th>
+					<th>{{trans('messages.verified-by')}}</th>
 					<th>{{trans('messages.date-verified')}}</th>
- -->				</tr>
+			</tr>
 				@forelse($tests as $test)
 						<tr>
 							<td>{{ $test->testType->name }}</td>
 							<td>
 								@foreach($test->testResults as $result)
 									<p>
-										{{ Measure::find($result->measure_id)->name }}: {{ $result->result }}
+										{{ $result->result }}
 										{{ Measure::getRange($test->visit->patient, $result->measure_id) }}
 										{{ Measure::find($result->measure_id)->unit }}
 									</p>
@@ -117,21 +114,20 @@
 							<td>{{ $test->testedBy->name}}</td>
 							<td>{{ $test->testResults->count() ? $test->testResults->last()->time_entered : '' }}</td>
 							<td>{{ $test->time_completed }}</td>
-<!-- 							<td>{{ $test->verifiedBy->name or trans('messages.verification-pending')}}</td>
+							<td>{{ $test->verifiedBy->name or trans('messages.verification-pending')}}</td>
 							<td>{{ $test->time_verified }}</td>
- -->						</tr>
+					</tr>
 				@empty
 					<tr>
 						<td colspan="8">{{trans("messages.no-records-found")}}</td>
 					</tr>
 				@endforelse
-			</tbody>
+			</thead>
 		</table>
-		</div>
-		@endif
+
 		<hr>
 		<table class="table table-bordered"  width="100%" style="font-size:12px;">
-			<tbody>
+			<thead>
 				<tr>
 					<td>
 						<strong>{{ Lang::choice('messages.name', 1).":" }}</strong>
@@ -156,9 +152,9 @@
 					<td><u><strong>Requesting Clinician</strong></u></td>
 					<td><u><strong>{{ trans('messages.lab-manager') }}</strong></u></td>
 				</tr>
-			</tbody>
+			</thead>
 		</table>
 
-</div>
+		
 </body>
 </html>

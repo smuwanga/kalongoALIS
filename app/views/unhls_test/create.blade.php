@@ -151,7 +151,7 @@
 							            </div>
 									</div>
 									<div class="form-pane panel panel-default test-list-panel">
-							            <div class="col-md-12">
+							            <div class=" test-list col-md-12">
 								                <div class="col-md-4">
 													<b>Specimen</b>
 								                </div>

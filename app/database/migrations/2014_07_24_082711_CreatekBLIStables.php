@@ -279,7 +279,7 @@ class CreatekBLIStables extends Migration {
 
             $table->timestamps();
         });
-
+        
         Schema::create('specimens', function(Blueprint $table)
         {
             $table->increments('id')->unsigned();
@@ -355,6 +355,20 @@ class CreatekBLIStables extends Migration {
             $table->foreign('rejection_reason_id')->references('id')->on('rejection_reasons');
         });
 
+        Schema::create('analytic_specimen_rejection_reasons', function(Blueprint $table){
+            $table->increments('id')->unsigned();
+            $table->integer('specimen_id')->unsigned();
+            $table->integer('rejection_id')->unsigned();
+            $table->integer('reason_id')->unsigned();
+           
+            $table->foreign('specimen_id')->references('specimen_id')->on('analytic_specimen_rejections');
+            $table->foreign('rejection_id')->references('id')->on('analytic_specimen_rejections');
+            $table->foreign('reason_id')->references('id')->on('rejection_reasons');
+
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
 		Schema::create('unhls_test_results', function(Blueprint $table)
 		{
 			$table->bigIncrements('id');
@@ -404,6 +418,7 @@ class CreatekBLIStables extends Migration {
 		Schema::dropIfExists('unhls_tests');
 		Schema::dropIfExists('specimens');
         Schema::dropIfExists('referrals');
+        Schema::dropIfExists('analytic_rejections_reasons');
         Schema::dropIfExists('facilities');
 		Schema::dropIfExists('rejection_reasons');
 		Schema::dropIfExists('unhls_visits');

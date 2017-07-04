@@ -116,7 +116,14 @@ class ReportController extends \BaseController {
 						->with('accredited', $accredited)
 						->with('verified', $verified)
 						->withInput(Input::all());
-			return PDF::loadHTML($content)->stream('report.pdf');
+			// return PDF::loadHTML($content)->stream('report.pdf');
+			$pdf = new Mypdf;
+			$pdf->AddPage();
+			$pdf->SetFont('times','','12');
+			$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP-19, PDF_MARGIN_RIGHT);
+			$pdf->writeHTML($content, 'true', 'false', 'true', 'false');
+
+			return $pdf->output('report.pdf');
 
 		}
 	}
