@@ -38,9 +38,7 @@
 		            {{ Form::text('dateto', Input::get('dateto'), array('class' => 'form-control test-search standard-datepicker', 'required' => 'required')) }}
 				</div>
 				<div class="form-group">
-					{{ Form::button("<span class='glyphicon glyphicon-search'></span> ".trans('messages.filter'),
-				        array('class' => 'btn btn-primary', 'type' => 'submit')) }}
-				</div>
+					</div>
 			{{ Form::close() }}
 		</div>
 	</div>
@@ -74,10 +72,12 @@
 					<th>#</th>
 					<th>ID No</th>
 					<th>Date / Time</th>
-					<th>Nature of Incident</th>
-					<th>Cause of Incident</th>
 					<th>Description</th>
-					<th>Actions</th>
+					<!--<th>Victim Details</th>-->
+					<!--<th>Nature of Incident</th>
+					<th>Cause of Incident</th>
+
+					<th>Actions</th> -->
 
 				</tr>
 			</thead>
@@ -85,21 +85,28 @@
 			@foreach($bbincidences as $key => $bbincidence)
 				<tr  @if(Session::has('activebbincidence'))
 						{{(Session::get('activebbincidence') == $bbincidence->id)?"class='info'":""}}
-					@endif >
-					<td>{{ $bbincidence->id }}</td>
-					<td>{{ $bbincidence->serial_no }}</td>
-					<td>{{ date('d M Y', strtotime($bbincidence->occurrence_date)) }}<br>{{ $bbincidence->occurrence_time }} </td>
-					<td>
+					@endif>
+
+					<td class="text-left">{{ $bbincidence->id }}</td>
+					<td class="text-left">{{ $bbincidence->serial_no }}</td>
+					<td>{{ date('d M Y', strtotime($bbincidence->occurrence_date)) }}<br>{{ $bbincidence->occurrence_time }}
+					</td>
+
+				<!--	<td class="text-left"> {{$bbincidence->personnel_surname}} {{$bbincidence->personnel_othername}}<br>{{$bbincidence->personnel_gender}}</td>-->
+
+				<!--	<td>
 						@foreach ($bbincidence->bbnature as $nature)
 							<span title="{{$nature->name}}">{{$nature->priority}}/{{$nature->class}};</span>
 						@endforeach
 					</td>
+
 					<td>
 						@foreach ($bbincidence->bbcause as $cause)
 							{{$cause->causename}};
 						@endforeach
-					</td>
-					<td title='{{ $bbincidence->description }}'><a>Point Here</a></td>
+					</td>-->
+
+					<td>'{{ $bbincidence->description }}'</td>
 
 					<td>
 					<a class="btn btn-sm btn-success" href="{{ URL::route('bbincidence.show', array($bbincidence->id)) }}" >
@@ -107,22 +114,22 @@
 							<!--{{trans('messages.edit')}}-->
 							View
 						</a>
-						<a class="btn btn-sm btn-primary" href="{{ URL::route('bbincidence.edit', array($bbincidence->id)) }}" >
+						<a class="btn btn-sm btn-info" href="{{ URL::route('bbincidence.edit', array($bbincidence->id)) }}" >
 							<span class="glyphicon glyphicon-edit"></span>
-							Update
+							Edit
 							<!--{{trans('messages.edit')}}-->
 						</a>
-						<a class="btn btn-sm btn-warning" href="{{ URL::route('bbincidence.clinicaledit', array($bbincidence->id)) }}" >
+						<a class="btn btn-sm btn-info" href="{{ URL::route('bbincidence.clinicaledit', array($bbincidence->id)) }}" >
 							<span class="glyphicon glyphicon-edit"></span>
-							Update Clinical
+							Clinical Intervention
 						</a>
 						<a class="btn btn-sm btn-info" href="{{ URL::route('bbincidence.analysisedit', array($bbincidence->id)) }}" >
 							<span class="glyphicon glyphicon-edit"></span>
-							Update Analysis
+							Incident Analysis
 						</a>
-						<a class="btn btn-sm btn-danger" href="{{ URL::route('bbincidence.responseedit', array($bbincidence->id)) }}" >
+						<a class="btn btn-sm btn-warning" href="{{ URL::route('bbincidence.responseedit', array($bbincidence->id)) }}" >
 							<span class="glyphicon glyphicon-edit"></span>
-							Update BRM Response
+							Emergency Incident Response
 						</a>
 
 						<!--<div class="dropdown">
