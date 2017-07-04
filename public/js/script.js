@@ -291,6 +291,7 @@ $(function(){
 
         // fetch relevant list of antibiotics for organism
         organismAntibioticsUrl = $(e.relatedTarget).data('antibiotics-url');
+        see = $(e.relatedTarget).data('zone-diameter');
         var antibiotics;
         $.ajax({
             type: 'GET',
@@ -301,14 +302,15 @@ $(function(){
                 $('.form-control.drug').empty();
                 // if drug susceptibility is being added for the first time
                 if ($(e.relatedTarget).data('verb') == 'POST') {
-                    $('.form-control.drug').append('<option value="">All</option>');
+                    $('.form-control.drug').append('<option value=""></option>');
                 }
                 for (i in antibiotics ) {
                     $('.form-control.drug').append(
                         '<option value="' + antibiotics[i].drug_id + '">' + antibiotics[i].drug.name + '</option>');
                 }
                 if ($(e.relatedTarget).data('verb') == 'PUT') {
-                    $('.form-control.drug').val($(e.relatedTarget).data('drug-id'));
+                    $('.form-control.drug').val($(e.relatedTarget).attr('data-drug-id'));
+                    $('.form-control.zone-diameter').val($(e.relatedTarget).attr('data-zone-diameter'));
                 }
             }
         });
@@ -329,7 +331,7 @@ $(function(){
         // update url value in the save button
         $('.save-drug-susceptibility').attr('data-url', drugSusceptibilityUrl);
         // insert name of isolated organism to be subjected to a drug above the input for drug and result
-        $('.isolated-organism-input-header').append($(e.relatedTarget).data('isolated-organism-name'));
+        $('.isolated-organism-input-header').append($(e.relatedTarget).attr('data-isolated-organism-name'));
     });
     $('.drug-susceptibility-tbody').on('click', '.edit-drug-susceptibility', function(){
         // populate with initial values fields tobe edited
