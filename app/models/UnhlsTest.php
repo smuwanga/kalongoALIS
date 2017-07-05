@@ -1055,7 +1055,6 @@ class UnhlsTest extends Eloquent
      */
     public function interpreteHIVResults(){
     	if($this->testType->name == 'HIV'){
-    		$count = 0;
     		$measures = array();
     		$measuresResult = $this->testResults;
     		foreach($measuresResult as $measureResult){
@@ -1073,7 +1072,7 @@ class UnhlsTest extends Eloquent
     		elseif($determine=='Reactive' || $unigold =='Reactive') {
     			$result = 'Positive';
     		}
-    		    	}
+    	}
     	return $result;
 
     }
