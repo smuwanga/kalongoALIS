@@ -717,6 +717,8 @@ class UnhlsTestController extends \BaseController {
 		// if the test being carried out requires a culture worksheet
 		if ($test->testType->name == 'Culture and Sensitivity') {
 			return Redirect::route('culture.edit', [$test->id]);
+		}elseif ($test->testType->name == 'Gram Staining') {
+			return Redirect::route('gramstain.edit', [$test->id]);
 		}else{
 			return View::make('unhls_test.enterResults')->with('test', $test);
 		}
@@ -757,12 +759,24 @@ class UnhlsTestController extends \BaseController {
 		$test->tested_by = Auth::user()->id;
 		$test->time_completed = date('Y-m-d H:i:s');
 		$test->save();
+
+		if ($test->testType->name == 'Gram Staining') {
+			$results = '';
+			foreach ($test->gramStainResults as $gramStainResult) {
+				$results = $results.$gramStainResult->gramStainRange->name.',';
+			}
+		}
 		
 		foreach ($test->testType->measures as $measure) {
 			$testResult = UnhlsTestResult::firstOrCreate(array('test_id' => $testID, 'measure_id' => $measure->id));
-			$testResult->result = Input::get('m_'.$measure->id);
+			if ($test->testType->name == 'Gram Staining') {
 
-			$inputName = "m_".$measure->id;
+				$testResult->result = $results;
+				$inputName = "m_".$measure->id;
+			}else{
+				$testResult->result = Input::get('m_'.$measure->id);
+				$inputName = "m_".$measure->id;
+			}
 			$rules = array("$inputName" => 'max:255');
 
 			$validator = Validator::make(Input::all(), $rules);
@@ -807,6 +821,8 @@ class UnhlsTestController extends \BaseController {
 		// if the test being carried out requires a culture worksheet
 		if ($test->testType->name == 'Culture and Sensitivity') {
 			return Redirect::route('culture.edit', [$test->id]);
+		}elseif ($test->testType->name == 'Gram Staining') {
+			return Redirect::route('gramstain.edit', [$test->id]);
 		}else{
 			return View::make('unhls_test.edit')->with('test', $test);
 		}

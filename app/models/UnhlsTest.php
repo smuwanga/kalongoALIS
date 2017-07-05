@@ -1037,17 +1037,17 @@ class UnhlsTest extends Eloquent
 	/**
 	 * Isolated Organism relationship
 	 */
-	public function cultureObservations()
-    {
-        return $this->hasMany('CultureObservation', 'test_id');
-    }
-
-	/**
-	 * Isolated Organism relationship
-	 */
 	public function isolatedOrganisms()
     {
         return $this->hasMany('IsolatedOrganism', 'test_id');
+    }
+
+    /**
+     * gram stain relationship
+     */
+    public function gramStainResults()
+    {
+      return $this->hasMany('GramStainResult','test_id','id');
     }
 
     /**

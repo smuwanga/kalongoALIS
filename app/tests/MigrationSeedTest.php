@@ -14,6 +14,7 @@ class MigrationSeedTest extends TestCase
         parent::setUp();
         Artisan::call('migrate');
         Artisan::call('db:seed');
+        Artisan::call('update:seed');
     }
 
 	/**

@@ -73,14 +73,14 @@ class CreateMicrobiologyTables extends Migration {
         /* drug susceptibility measures table */
         Schema::create('drug_susceptibility_measures', function(Blueprint $table)
         {
-            $table->increments('id')->unsigned();
+            $table->increments('id');
             $table->string('symbol',2);
             $table->string('interpretation',60);
         });
         /* drug susceptibility table */
         Schema::create('drug_susceptibility', function(Blueprint $table)
         {
-            $table->increments('id')->unsigned();
+            $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->integer('drug_id')->unsigned();
             $table->integer('isolated_organism_id')->unsigned();
