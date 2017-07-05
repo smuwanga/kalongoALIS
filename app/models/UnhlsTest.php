@@ -819,7 +819,7 @@ class UnhlsTest extends Eloquent
 		return $tests;
 	}
 
-/**
+   /**
 	* Search for verified test meeting the given criteria
 	*
 	* @param String $searchString
@@ -1049,4 +1049,33 @@ class UnhlsTest extends Eloquent
     {
         return $this->hasMany('IsolatedOrganism', 'test_id');
     }
+
+    /**
+     * Result Interpretation of HIV measures - Screening, Determine and Unigold
+     */
+    public function interpreteHIVResults(){
+    	if($this->testType->name == 'HIV'){
+    		$count = 0;
+    		$measures = array();
+    		$measuresResult = $this->testResults;
+    		foreach($measuresResult as $measureResult){
+    			$measures[] = $measureResult;
+    			
+    		}
+    		$screening = $measures['0']['result'];
+    		$determine = $measures['1']['result'];
+    		$unigold = $measures['2']['result'];
+
+    		if($screening == 'Non-Reactive' || $unigold='Non-Reactive'){
+    			$result ='Negative';
+
+    		}
+    		elseif($determine=='Reactive' || $unigold =='Reactive') {
+    			$result = 'Positive';
+    		}
+    		    	}
+    	return $result;
+
+    }
+
 }

@@ -105,12 +105,18 @@
 							<td>
 								@foreach($test->testResults as $result)
 									<p>
-										{{ $result->result }}
+										{{ Measure::find($result->measure_id)->name }}: {{ $result->result }}
 										{{ Measure::getRange($test->visit->patient, $result->measure_id) }}
 										{{ Measure::find($result->measure_id)->unit }}
 									</p>
 								@endforeach</td>
-							<td>{{ $test->interpretation == '' ? 'N/A' : $test->interpretation }}</td>
+							<td>
+								@if($test->testType->name == 'HIV')
+									{{$test->interpreteHIVResults()}}
+								@else
+									{{ $test->interpretation == '' ? 'N/A' : $test->interpretation }}
+								@endif
+							</td>
 							<td>{{ $test->testedBy->name}}</td>
 							<td>{{ $test->testResults->count() ? $test->testResults->last()->time_entered : '' }}</td>
 							<td>{{ $test->time_completed }}</td>
