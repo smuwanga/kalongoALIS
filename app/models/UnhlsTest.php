@@ -1053,7 +1053,9 @@ class UnhlsTest extends Eloquent
     /**
      * Result Interpretation of HIV measures - Screening, Determine and Unigold
      */
+    //TODO, make this more robust/flexible...this is short term fix
     public function interpreteHIVResults(){
+    	$result = '';
     	if($this->testType->name == 'HIV'){
     		$measures = array();
     		$measuresResult = $this->testResults;
@@ -1065,13 +1067,16 @@ class UnhlsTest extends Eloquent
     		$determine = $measures['1']['result'];
     		$unigold = $measures['2']['result'];
 
-    		if($screening == 'Non-Reactive' || $unigold='Non-Reactive'){
+    		if($screening == 'Non-Reactive' && $unigold='Non-Reactive'){
     			$result ='Negative';
 
     		}
     		elseif($determine=='Reactive' || $unigold =='Reactive') {
     			$result = 'Positive';
+
     		}
+
+    		// return $result;
     	}
     	return $result;
 
