@@ -53,6 +53,14 @@ class UnhlsTest extends Eloquent
 	}
 
 	/**
+	 * Measure relationship
+	 */
+	public function measures()
+	{
+		return $this->belongsToMany('Measure', 'testtype_measures','test_type_id');
+	}
+
+	/**
 	 * Rejected specimen relationship
 	 */
 	public function rejectedSpecimen()

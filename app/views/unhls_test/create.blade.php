@@ -88,13 +88,13 @@
 										</div>
 										<div class="form-group">
 											{{ Form::label('physician', 'Test Requested By') }}
-											{{Form::text('physician', Auth::user()->name, array('class' => 'form-control', 'placeholder' =>Auth::user()->name))}}
+											{{Form::text('physician', Input::old('physician'), array('class' => 'form-control'))}}
 										</div>
 									</div>
 									<div class="col-md-6">
 										<div class="form-group">
 											{{ Form::label('cadre', 'Cadre') }}
-											{{Form::text('cadre', Auth::user()->designation, array('class' => 'form-control', 'placeholder' => Auth::user()->designation))}}
+											{{Form::text('cadre', Input::old('physician'), array('class' => 'form-control'))}}
 										</div>
 										<div class="form-group">
 											{{ Form::label('phone_contact', 'Phone Contact') }}

@@ -116,11 +116,10 @@ class ReportController extends \BaseController {
 						->with('accredited', $accredited)
 						->with('verified', $verified)
 						->withInput(Input::all());
-			// return PDF::loadHTML($content)->stream('report.pdf');
 			$pdf = new Mypdf;
 			$pdf->SetAutoPageBreak(FALSE, 15);
 			$pdf->AddPage();
-			$pdf->SetFont('times','','12');
+			$pdf->SetFont('times','','11');
 			$pdf->writeHTML($content, 'true', 'false', 'false', 'false', '');
 
 			return $pdf->output('report.pdf');
