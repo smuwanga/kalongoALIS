@@ -473,7 +473,7 @@ return array(
 
     /* Infection Report*/
     'age-ranges'    =>  'Age Ranges',
-    'infection-report' => 'Infection Report',
+    'infection-report' => 'Test Report',
     'mf-total'  =>  'M/F Total',
     'total'   =>  'Total|Totals',
     'total-tests'   =>  'Total Tests',
