@@ -1252,6 +1252,7 @@ class SeedUpdater extends Command {
         DB::enableQueryLog();
 
         /* Users table */
+        /*
         $usersData = [
             [
                 "username" => "username", "password" => Hash::make("password"),
@@ -1268,6 +1269,7 @@ class SeedUpdater extends Command {
             $users[] = User::create($user);
             echo $user['name']."\n";
         }
+        */
 
         GramStainRange::create(["name" => "Gram positive cocci in singles"]);
         GramStainRange::create(["name" => "Gram positive cocci in chains"]);
