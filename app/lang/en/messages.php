@@ -425,7 +425,7 @@ return array(
     'rejected-by'   =>  'Rejected by',
     'requesting-facility-department' => 'Requesting Facility/Department',
     'results-entry-date' => 'Results Entry Date',
-    'test-results-values' => 'Test Result',
+    'test-results-values' => 'Test Results',
     'view-report' => 'View Report',
     'view-visit-report' => 'View Visit Report',
     'view-test-report' => 'View Test Report',
