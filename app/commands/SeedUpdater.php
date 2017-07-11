@@ -53,22 +53,6 @@ class SeedUpdater extends Command {
         $specimenTypeVaginalSmear = SpecimenType::create(["name" => "Vaginal Smear"]);
         $specimenTypeWater = SpecimenType::create(["name" => "Water"]);
 
-        $specimenTypeStool = SpecimenType::create(["name" => "Stool"]);
-        $specimenTypeCSF = SpecimenType::create(["name" => "CSF"]);
-        $specimenTypeWoundSwab = SpecimenType::create(["name" => "Wound swab"]);
-        $specimenTypePusSwab = SpecimenType::create(["name" => "Pus swab"]);
-        $specimenTypeHVS = SpecimenType::create(["name" => "High Vaginal Swab"]);
-        $specimenTypeEyeSwab = SpecimenType::create(["name" => "Eye swab"]);
-        $specimenTypeEarSwab = SpecimenType::create(["name" => "Ear swab"]);
-        $specimenTypeThroatSwab = SpecimenType::create(["name" => "Throat swab"]);
-        $specimenTypeAspirates = SpecimenType::create(["name" => "Aspirate"]);
-        $specimenTypeBlood = SpecimenType::create(["name" => "Blood"]);
-        $specimenTypeBAL = SpecimenType::create(["name" => "BAL"]);
-        $specimenTypeSputum = SpecimenType::create(["name" => "Sputum"]);
-        $specimenTypeUretheralSwab = SpecimenType::create(["name" => "Uretheral swab"]);
-        $specimenTypeUrine = SpecimenType::create(["name" => "Urine"]);
-
-
         // microb-able specimen types
         $specimenTypeStool = SpecimenType::create(["name" => "Stool"]);
         $specimenTypeCSF = SpecimenType::create(["name" => "CSF"]);
@@ -1250,26 +1234,6 @@ class SeedUpdater extends Command {
         DB::unprepared(file_get_contents(base_path() . "/app/database/seeds/zone_diameters.sql"));
         echo "bulk zone diameters seeded!\n";
         DB::enableQueryLog();
-
-        /* Users table */
-        /*
-        $usersData = [
-            [
-                "username" => "username", "password" => Hash::make("password"),
-                "email" => "user@somemail.com",
-                "name" => "Full Names",
-                "gender" => 0,// this is male
-                "designation" => "Lab Technologist",
-                "facility_id" => \Config::get('constants.FACILITY_ID')
-            ],
-        ];
-
-        foreach ($usersData as $user)
-        {
-            $users[] = User::create($user);
-            echo $user['name']."\n";
-        }
-        */
 
         GramStainRange::create(["name" => "Gram positive cocci in singles"]);
         GramStainRange::create(["name" => "Gram positive cocci in chains"]);
