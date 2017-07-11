@@ -175,7 +175,7 @@ class UnhlsTest extends Eloquent
 	 */
 	public function isCompleted()
 	{
-		if($this->test_status_id == UnhlsTest::COMPLETED)
+		if($this->test_status_id == UnhlsTest::COMPLETED || $this->test_status_id == UnhlsTest::VERIFIED)
 			return true;
 		else 
 			return false;
