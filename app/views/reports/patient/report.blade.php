@@ -88,7 +88,7 @@
 			<td colspan="1">{{ $test->testType->name }}</td>
 			<td colspan="3">
 				@foreach($test->testResults as $result)
-						@if($test->measures->count() > 1)
+						@if($test->testType->measures->count() > 1)
 							{{ Measure::find($result->measure_id)->name }}:
 						@endif
 						{{ $result->result }}

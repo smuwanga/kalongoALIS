@@ -48,7 +48,6 @@ class UnhlsPatient extends Eloquent
 
 		switch ($format) {
 			case 'Y':
-				if($age)
 				$age = $interval->y;break;
 			case 'YY':
 				$age = $interval->y ." years ";break;

@@ -117,7 +117,7 @@ class ReportController extends \BaseController {
 						->with('verified', $verified)
 						->withInput(Input::all());
 			$pdf = new Mypdf;
-			$pdf->SetAutoPageBreak(FALSE, 15);
+			$pdf->SetAutoPageBreak(TRUE, 15);
 			$pdf->AddPage();
 			$pdf->SetFont('times','','11');
 			$pdf->writeHTML($content, 'true', 'false', 'false', 'false', '');
