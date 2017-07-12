@@ -76,7 +76,7 @@
 			                        {{ Form::label($fieldName , $measure->name) }}
 			                        {{ Form::text($fieldName, $ans, array(
 			                            'class' => 'form-control result-interpretation-trigger',
-			                            'data-url' => URL::route('test.resultinterpretation'),
+			                            'data-url' => URL::route('unhls_test.resultinterpretation'),
 			                            'data-age' => $test->visit->patient->dob,
 			                            'data-gender' => $test->visit->patient->gender,
 			                            'data-measureid' => $measure->id
@@ -97,7 +97,7 @@
 		                            {{ Form::label($fieldName , $measure->name) }}
 		                            {{ Form::select($fieldName, $measure_values, array_search($ans, $measure_values),
 		                                array('class' => 'form-control result-interpretation-trigger',
-		                                'data-url' => URL::route('test.resultinterpretation'),
+		                                'data-url' => URL::route('unhls_test.resultinterpretation'),
 		                                'data-measureid' => $measure->id
 		                                )) 
 		                            }}
