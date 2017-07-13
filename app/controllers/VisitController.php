@@ -9,7 +9,14 @@ class VisitController extends \BaseController {
 	 */
 	public function index()
 	{
-		$visits = UnhlsVisit::all();
+
+// todo: by default only show the complete
+// todo: unless searched
+		$visits = UnhlsVisit::orderBy('id', 'desc');
+
+		// $visits = $visits->paginate(Config::get('kblis.page-items'))->appends($input);
+		$visits = $visits->paginate(Config::get('kblis.page-items'));
+
 		return View::make('visit.index')->with('visits', $visits);
 	}
 
@@ -99,14 +106,6 @@ class VisitController extends \BaseController {
 			$therapy->current_therapy = Input::get('current_therapy');
 			$therapy->save();
 
-			// make this functional
-			/*$clinician = new Clinician;
-			$clinician->name = Input::get('physician');// practitioner
-			$clinician->cadre = Input::get('cadre');// designation
-			$clinician->phone_contact = Input::get('phone_contact');
-			$clinician->email = Input::get('email');
-			$clinician->save();*/
-
 			/*
 			 * - Create tests requested
 			 * - Fields required: visit_id, test_type_id, specimen_id, test_status_id, created_by, requested_by
@@ -167,10 +166,6 @@ class VisitController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		if ($patientID == 0) {
-			$patientID = Input::get('patient_id');
-		}
-
 		//Create a Lab categories Array
 		$categories = ['Select Lab Section']+TestCategory::lists('name', 'id');
 		$wards = ['Select Sample Origin']+Ward::lists('name', 'id');
