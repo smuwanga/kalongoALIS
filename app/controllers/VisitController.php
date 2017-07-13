@@ -19,7 +19,7 @@ class VisitController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function create($patientID == 0)
+	public function create($patientID = 0)
 	{
 		if ($patientID == 0) {
 			$patientID = Input::get('patient_id');
