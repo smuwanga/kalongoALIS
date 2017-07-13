@@ -8,26 +8,30 @@
 							<div class="row">
 								<div class="col-lg-4 col-md-6">
 									<div class="panel panel-default"><b>Patients and Tests</b>
-										<div class="stat_box stat_down">
+										<div class="stat_box">
 											<div class="stat_ico color_a"><i class="ion-ios-people"></i></div>
 											<div class="stat_content">
-												<span class="stat_count">321 (53% - OPD)</span>
+												@if(UnhlsVisit::count() > 0)
+												<span class="stat_count">{{UnhlsVisit::count()}} ({{UnhlsVisit::where('visit_type', '=', 'Out-patient')->count()*100/UnhlsVisit::count()}}% - OPD)</span>
+												@endif
 												<span class="stat_name">Number of patients</span>
 											</div>
 
 										</div>
-										<div class="stat_box stat_up">
+										<div class="stat_box">
 											<div class="stat_ico color_a"><i class="ion-clipboard"></i></div>
 											<div class="stat_content">
-												<span class="stat_count">621</span>
+												<span class="stat_count">{{UnhlsTest::where('test_status_id','=', 4)->count()}}</span>
 												<span class="stat_name">Tests done</span>
 											</div>
 											
 										</div>
-										<div class="stat_box stat_up">
+										<div class="stat_box">
 											<div class="stat_ico color_a"><i class="ion-forward"></i></div>
 											<div class="stat_content">
-												<span class="stat_count">221</span>
+												@if(UnhlsTest::where('test_status_id','=', 4)->count() > 0)
+												<span class="stat_count">{{round(Referral::count()/UnhlsTest::where('test_status_id','=', 4)->count()/100, 2)}}%</span>
+												@endif
 												<span class="stat_name">Tests referred</span>
 											</div>
 											
@@ -37,21 +41,21 @@
 
 								<div class="col-lg-4 col-md-6">
 									<div class="panel panel-default"><b>Prevalences</b>
-										<div class="stat_box stat_up">
+										<div class="stat_box">
 											<div class="stat_ico color_b"><i class="ion-ios-personadd"></i></div>
 											<div class="stat_content">
-												<span class="stat_count">8 % </span>
+												<span class="stat_count"> 8 % </span>
 												<span class="stat_name">HIV Prevalence</span>
 											</div>
 										</div>
-										<div class="stat_box stat_down">
+										<div class="stat_box">
 											<div class="stat_ico color_b"><i class="ion-ios-personadd"></i></div>
 											<div class="stat_content">
-												<span class="stat_count">6 % </span>
+												<span class="stat_count"> 6 % </span>
 												<span class="stat_name">Malaria Prevalence</span>
 											</div>
 										</div>
-										<div class="stat_box stat_up">
+										<div class="stat_box">
 											<div class="stat_ico color_b"><i class="ion-ios-personadd"></i></div>
 											<div class="stat_content">
 												<span class="stat_count">9 % </span>
@@ -63,24 +67,28 @@
 
 								<div class="col-lg-4 col-md-6">
 									<div class="panel panel-default"><b>Samples</b>
-										<div class="stat_box stat_down">
+										<div class="stat_box">
 											<div class="stat_ico color_c"><i class="ion-ios-people"></i></div>
 											<div class="stat_content">
-												<span class="stat_count">67</span>
+												<span class="stat_count">{{UnhlsSpecimen::count()}}</span>
 												<span class="stat_name">Samples collected</span>
 											</div>
 										</div>
-										<div class="stat_box stat_down">
+										<div class="stat_box">
 											<div class="stat_ico color_c"><i class="ion-ios-close"></i></div>
 											<div class="stat_content">
-												<span class="stat_count">26 %</span>
+												@if(UnhlsSpecimen::count() > 0)
+												<span class="stat_count">{{round(UnhlsSpecimen::where('specimen_status_id', '=',3)->count()*100/UnhlsSpecimen::count(), 2)}} % </span>
+												@endif
 												<span class="stat_name">Samples rejected</span>
 											</div>
 										</div>
-										<div class="stat_box stat_down">
+										<div class="stat_box">
 											<div class="stat_ico color_c"><i class="ion-ios-checkmark"></i></div>
 											<div class="stat_content">
-												<span class="stat_count">74%</span>
+												@if(UnhlsSpecimen::count() > 0)
+												<span class="stat_count">{{round(UnhlsSpecimen::where('specimen_status_id', '=', 2)->count()*100/UnhlsSpecimen::count(), 2)}} %</span>
+												@endif
 												<span class="stat_name">Samples accepted</span>
 											</div>
 										</div>
@@ -92,7 +100,7 @@
 							<div class="row">
 								<div class="col-lg-4 col-md-6">
 									<div class="panel panel-default"><b>Commodities</b>
-										<div class="stat_box stat_down">
+										<div class="stat_box">
 											<div class="stat_ico color_d"><i class="ion-ios-list"></i></div>
 											<div class="stat_content">
 												<span class="stat_count">5</span>
@@ -100,7 +108,7 @@
 											</div>
 
 										</div>
-										<div class="stat_box stat_up">
+										<div class="stat_box">
 											<div class="stat_ico color_d"><i class="ion-ios-list"></i></div>
 											<div class="stat_content">
 												<span class="stat_count">3</span>
@@ -108,7 +116,7 @@
 											</div>
 											
 										</div>
-										<div class="stat_box stat_up">
+										<div class="stat_box">
 											<div class="stat_ico color_d"><i class="ion-gear-b"></i></div>
 											<div class="stat_content">
 												<span class="stat_count">0</span>
@@ -157,14 +165,14 @@
 
 								<div class="col-lg-4 col-md-6">
 									<div class="panel panel-default">
-										<div class="stat_box stat_down">
+										<div class="stat_box">
 											<div class="stat_ico color_f"><i class="ion-ios-people"></i></div>
 											<div class="stat_content">
 												<span class="stat_count">7</span>
 												<span class="stat_name">Number of Lab Staff</span>
 											</div>
 										</div>
-										<div class="stat_box stat_down">
+										<div class="stat_box">
 											<div class="stat_ico color_f"><i class="ion-ios-person"></i></div>
 											<div class="stat_content">
 												<span class="stat_count">26 %</span>

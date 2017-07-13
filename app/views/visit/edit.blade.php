@@ -88,13 +88,13 @@
 										</div>
 										<div class="form-group">
 											{{ Form::label('physician', 'Test Requested By') }}
-											{{Form::text('physician', Auth::user()->name, array('class' => 'form-control', 'placeholder' =>Auth::user()->name))}}
+											{{Form::text('physician', Input::old('physician'), array('class' => 'form-control'))}}
 										</div>
 									</div>
 									<div class="col-md-6">
 										<div class="form-group">
 											{{ Form::label('cadre', 'Cadre') }}
-											{{Form::text('cadre', Auth::user()->designation, array('class' => 'form-control', 'placeholder' => Auth::user()->designation))}}
+											{{Form::text('cadre', Input::old('physician'), array('class' => 'form-control'))}}
 										</div>
 										<div class="form-group">
 											{{ Form::label('phone_contact', 'Phone Contact') }}
@@ -151,8 +151,7 @@
 							            </div>
 									</div>
 									<div class="form-pane panel panel-default test-list-panel">
-							            <div class="col-md-12">
-								            <div class="col-md-11">
+							            <div class=" test-list col-md-12">
 								                <div class="col-md-4">
 													<b>Specimen</b>
 								                </div>
@@ -160,13 +159,15 @@
 													<b>Lab Section</b>
 								                </div>
 								                <div class="col-md-4">
-													<b>Test</b>
+													<div class="col-md-11"><b>Test</b></div>
+									            	<div class="col-md-1"></div>
 								                </div>
-								            </div>
-								            <div class="col-md-1">
-								            </div>
 							            </div>
 									</div>
+									<div class ="form-group hidden hiv-purpose col-md-12">
+										{{Form::label('hiv_purpose', 'Please select the purpose of HIV test', array('class' => 'required'))}}
+										{{Form::select('hiv_purpose',['' => '----Select purpose of H.I.V----', 'pmtct' => 'PMTCT', 'hct' => 'HCT', 'smc' => 'SMC', 'qc' => 'Quality Control'])}}
+									</div> 
 									</div>
 								</div>
 							</div> <!--div that closes the panel div for clinical and sample information -->
@@ -184,21 +185,18 @@
 
 <div class="hidden test-list-loader">
     <div class="col-md-12 new-test-list-row">
-        <div class="col-md-11">
-            <div class="col-md-4 specimen-name">
-            </div>
-            <div class="col-md-4 test-type-category-name">
-            </div>
-            <div class="col-md-4 test-type-name">
+        <div class="col-md-4 specimen-name">
+        </div>
+        <div class="col-md-4 test-type-category-name">
+        </div>
+        <div class="col-md-4">
+            <div class="col-md-11 test-type-name">
                 <input class="specimen-type-id" type="hidden">
                 <input class="test-type-id" type="hidden">
             </div>
-        </div>
-        <div class="col-md-1">
-			<!-- todo: not functional, needs a fix before uncommenting -->
-            <!-- <button class="col-md-12 delete-test-from-list close" aria-hidden="true" type="button"
-                title="{{trans('messages.delete')}}">×</button> -->
+            <button class="col-md-1 delete-test-from-list close" aria-hidden="true" type="button"
+                title="{{trans('messages.delete')}}">×</button>
         </div>
     </div><!-- Test List Item -->
-</div><!-- Test List Item Loader-->
+</div><!-- Test List Item Loader-->  
 @stop

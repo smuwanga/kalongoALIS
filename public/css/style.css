@@ -788,6 +788,30 @@ fieldset[disabled] .btn-inverse.active {
 .btn .fa_0 {
   margin-right: 0;
 }
+/*Home page links*/
+.btn-group {
+    display:inline-block;
+    color:#444;
+    cursor:pointer;
+    vertical-align:middle;
+    padding: 5px;
+    text-align: center;
+}
+.btn-group:active {
+    color:green;
+    box-shadow: 0 0 5px -1px rgba(0,0,0,0.6);
+}
+/* Tooltip */
+.tooltip > .tooltip-inner {
+    background-color: #040404; 
+    color: #FFFFFF; 
+    padding: 15px;
+    font-size: 14px;
+  }
+/* Tooltip on bottom */
+.tooltip.bottom > .tooltip-arrow {
+    border-bottom: 5px solid blue;
+ }
 /*code */
 code {
   -webkit-border-radius: 0;

@@ -116,11 +116,16 @@ class ReportController extends \BaseController {
 						->with('accredited', $accredited)
 						->with('verified', $verified)
 						->withInput(Input::all());
-			return PDF::loadHTML($content)->stream('report.pdf');
+			$pdf = new Mypdf;
+			$pdf->SetAutoPageBreak(TRUE, 15);
+			$pdf->AddPage();
+			$pdf->SetFont('times','','11');
+			$pdf->writeHTML($content, 'true', 'false', 'false', 'false', '');
+
+			return $pdf->output('report.pdf');
 
 		}
 	}
-
 
 	/**
 	 *
@@ -144,30 +149,6 @@ class ReportController extends \BaseController {
 					->with('visit', $visit)
 					->withInput(Input::all());
 	}
-
-	/**
-	 *
-	 *
-	 * @return Response
-	 */
-	public function printVisitReport($id){
-		$visit = UnhlsVisit::find($id);
-		$visit->load(
-			'patient',
-			'tests.testType',
-			'tests.testResults',
-			'tests.isolatedOrganisms.organism',
-			'tests.isolatedOrganisms.drugSusceptibilities.drug',
-			'tests.isolatedOrganisms.drugSusceptibilities.drugSusceptibilityMeasure');
-
-		$content = View::make('reports.visit.printreport')
-			->with('visit', $visit);
-		$pdf = App::make('dompdf');
-		$pdf->loadHTML($content);
-		return $pdf->stream('microbiology.pdf');
-
-	}
-	//	End patient report functions
 
 	/**
 	*	Function to return test types of a particular test category to fill test types dropdown
@@ -490,7 +471,7 @@ class ReportController extends \BaseController {
 		        "type": "spline"
 		    },
 		    "title": {
-		        "text":"'.trans('messages.prevalence-rates').'"
+		        "text":"'.trans('messages.positivity-rates').'"
 		    },
 		    "subtitle": {
 		        "text":'; 
@@ -562,7 +543,20 @@ class ReportController extends \BaseController {
 		        },
 	            "min": "0",
 	            "max": "100"
-		    }
+		    },
+		    "exporting": {
+				"buttons":{
+					"contextButtons": {
+						"symbol": "url(../../../i/button_download.png)",
+						"symbolStrokeWidth": "1",
+						"symbolFill": "#a4edba",
+						"symbolStroke": "#330033"
+
+
+					}
+				} 
+
+			} 
 		}';
 	return $options;
 	}

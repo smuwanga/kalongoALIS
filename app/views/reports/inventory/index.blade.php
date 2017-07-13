@@ -93,6 +93,7 @@
 						</tr>
 					</thead>
 					<tbody>
+					
 						<?php $i = 1;?>
 						@forelse($reportData as $row)
 						
@@ -100,12 +101,12 @@
 							<tr>
 								<td>{{$i++}}</td>
 								<td>{{Commodity::find($row->commodity_id)->name}}</td>
-								<td>{{Supplier::find($row->supplier_id)->name}}</td>
-								<td>{{$row->batch_no }}</td>
+								<td>{{ $row->sourceOfStock($row->to_from_type,$row->to_from)->name }}</td>
+								<td>{{$row->batch_number }}</td>
 								<td>{{$row->quantity}}</td>
-								<td>{{$row->expiry_date}}</td>
-								<td>{{$row->quantity_issued}}</td>
-								<td>{{$row->quantity-$row->quantity_issued}}</td>
+								<td>{{ date('d M Y', strtotime($row->expiry_date)) }}</td>
+								<td></td>
+								<td>{{$row->balance}}</td>
 							</tr>
 						@empty
 							<tr>
@@ -129,18 +130,19 @@
 						</tr>
 					</thead>
 					<tbody>
+
 						<?php $i = 1;?>
 						@forelse($reportData as $row)
 							
 							<tr>
 								<td>{{$i++}}</td>
-								<td>{{Commodity::find($row->commodity_id)->name}}</td>
-								<td>{{Supplier::find($row->supplier_id)->name}}</td>
-								<td>{{$row->batch_no }}</td>
+								<td>{{$row->balance}}</td>
+								<td>{{ $row->sourceOfStock($row->to_from_type,$row->to_from)->name }}</td>
+								<td>{{$row->batch_number }}</td>
 								<td>{{$row->quantity}}</td>
-								<td>{{$row->expiry_date}}</td>
-								<td>{{$row->quantity_issued}}</td>
-								<td>{{$row->quantity-$row->quantity_issued}}</td>
+								<td>{{ date('d M Y', strtotime($row->expiry_date)) }}</td>								
+								<td></td>								
+								<td>{{$row->balance}}</td>
 							</tr>
 						@empty
 							<tr>

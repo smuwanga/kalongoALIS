@@ -9,10 +9,12 @@
     </head>
     <body>
         <div class="container login-page">
+            <div class="header">
+                @include('user.loginHeader')
+            </div>
             <div class="login-form">
                 <div class="form-head">
-                    <img src="{{ Config::get('kblis.organization-logo') }}" alt="" height="90" width="90">
-                    <h3> {{ Config::get('kblis.organization') }} </h3>
+                    <h4> Login </h4>
                     @if($errors->all())
                         <div class="alert alert-danger">
                             {{ HTML::ul($errors->all()) }}
@@ -62,7 +64,9 @@
                          (BLIS) to Laravel by iLabAfrica. BLIS was originally developed by C4G.
                     </p>
                 </div>
-
+            </div>
+            <div class="footer">
+            @include('user.loginFooter')
             </div>
 
         </div>

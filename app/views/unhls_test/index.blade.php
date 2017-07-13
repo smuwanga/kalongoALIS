@@ -79,7 +79,7 @@
             </div>
         </div>
         <div class="panel-body">
-            <table class="table table-striped table-hover table-condensed search-table">
+            <table class="table table-striped table-hover table-condensed">
                 <thead>
                     <tr>
                         <th>{{trans('messages.date-ordered')}}</th>
@@ -150,7 +150,7 @@
                             @if(Auth::user()->can('reject_test_specimen') && !($test->specimen->isReferred()))
                                 @if(!($test->specimenIsRejected()))
                                 <a class="btn btn-sm btn-danger" id="reject-{{$test->id}}-link"
-                                    href="{{URL::route('unhls_test.reject', array($test->specimen_id))}}"
+                                    href="{{URL::route('unhls_test.reject', array($test->id))}}"
                                     title="{{trans('messages.reject-title')}}">
                                     <span class="glyphicon glyphicon-thumbs-down"></span>
                                     {{trans('messages.reject')}}

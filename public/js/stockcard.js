@@ -37,6 +37,8 @@ if($("#action").val()!=null && $("#action").val()=="O")
 	$("#losses_adjustments_div").addClass("hidden");
 	$("#remarks_div").addClass("hidden");	
 	$("#quantity_out").attr("required",true);
+	$("#expiry_date").attr("required",false);
+	$("#expiry_date_div").addClass("hidden");
 }
 
 
@@ -45,7 +47,7 @@ if($("#action").val()!=null && $("#action").val()=="A")
 	$("#quantity_in_div").addClass("hidden");
 	$("#quantity_out_div").addClass("hidden");
 	$("#losses_adjustments").attr("required",true);	
-	$("#remarks").attr("required",true);		
+	$("#remarks").attr("required",true);	
 }
 
 });

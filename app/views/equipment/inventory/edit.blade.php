@@ -17,7 +17,7 @@
 @endif
 <div class="panel panel-primary">
 	<div class="panel-heading ">
-		<span class="glyphicon glyphicon-user"></span>
+		<span class="ion-gear-a"></span>
 		{{ Lang::choice('messages.metrics',2) }}
 	</div>
 	<div class="panel-body">

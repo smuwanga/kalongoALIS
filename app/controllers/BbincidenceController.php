@@ -3,7 +3,7 @@
 use Illuminate\Database\QueryException;
 
 /**
- *Contains functions for managing bbincidence records 
+ *Contains functions for managing bbincidence records
  *
  */
 class BbincidenceController extends \BaseController {
@@ -25,10 +25,10 @@ class BbincidenceController extends \BaseController {
 			$bbincidences = Bbincidence::filterbydate($datefrom,$dateto)->orderBy('id','DESC')->paginate(Config::get('kblis.page-items'))->appends(Input::except('_token'));
 			}
 			else
-			$bbincidences = Bbincidence::search($search)->orderBy('id','DESC')->paginate(Config::get('kblis.page-items'))->appends(Input::except('_token'));		
+			$bbincidences = Bbincidence::search($search)->orderBy('id','DESC')->paginate(Config::get('kblis.page-items'))->appends(Input::except('_token'));
 		}
 		else{
-		
+
 			if($datefrom != ''){
 			$bbincidences = Bbincidence::filterbydate($datefrom,$dateto)->orderBy('id','DESC')->paginate(Config::get('kblis.page-items'))->appends(Input::except('_token'));
 			}
@@ -39,7 +39,7 @@ class BbincidenceController extends \BaseController {
 		if (count($bbincidences) == 0) {
 		 	Session::flash('message', trans('messages.no-match'));
 		}
-		
+
 		// Load the view and pass the bbincidences
 		$bbcount=count($bbincidences);
 		return View::make('bbincidence.index')->with('bbincidences', $bbincidences)->withInput(Input::all())->with ($bbcount);
@@ -53,22 +53,22 @@ class BbincidenceController extends \BaseController {
 	public function create()
 	{
 		//Create Bbincidence
-		
+
 		//return View::make('bbincidence.create')->with('lastInsertId', $lastInsertId);
-		
+
 		//$user_facility_id = Auth::user()->facility->id;
-		
+
 		//$facilitiesList = DB::table('facilities')->orderBy('name')->lists('name', 'id');
-		
+
 		//$userfacilityList = DB::table('facilities')->where('id', '=', Auth::user()->facility_id)->orderBy('name')->lists('name', 'id');
-		
+
 		//$naturesList = DB::table('unhls_bbnatures')->orderBy('priority')->orderBy('class')->lists('name', 'id');
-		
+
 		$natures = BbincidenceNature::orderBy('name')->get();
 		//$causes = BbincidenceCause::orderBy('causename')->get();
 		//$actions = BbincidenceAction::orderBy('actionname')->get();
-		
-		
+
+
 		return View::make('bbincidence.create')->with('natures', $natures);
 	}
 
@@ -86,10 +86,22 @@ class BbincidenceController extends \BaseController {
 			'description' => 'required',
 			//'occurrence_date' => ['required','date_format:Y-m-d|before:today'],
 			'occurrence_date' => 'required',
-			'occurrence_time' => ['required','regex:/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/'],
+			'occurrence_time' =>'required',
+			'description' =>'required',
+			'officer_fname' => 'required',
+			'officer_lname' => 'required',
+			'officer_cadre' => 'required',
+
+			//'occurrence_time' => date("Y-m-d", strtotime($request->datepicker)),
+
+		//'occurrence_time' => ['required','regex:/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/'],
 		//	'intervention_time' => ['required','regex:/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/'],
 		//	'analysis_time' => ['required','regex:/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/'],
 			'nature' => 'required',
+			'personnel_surname' =>'required',
+			'personnel_othername' => 'required',
+			'personnel_gender' => 'required',
+
 		//	'personnel_dob' => 'required_with:personnel_surname',
 		//	'personnel_age' => 'required_with:personnel_surname',
 		//	'personnel_dob' => 'required_without:personnel_age',
@@ -102,21 +114,21 @@ class BbincidenceController extends \BaseController {
 			return Redirect::back()->withErrors($validator)->withInput(Input::all());
 		} else {
 			// store
-			
-			
+
+
 			$personnel_dob = Input::get('personnel_dob');
 			$personnel_age = Input::get('personnel_age');
-			
+
 			//converting Age to DOB
 			if ($personnel_dob=='' && $personnel_age!=''){
 				$dob_year = date('Y')-$personnel_age;
 				$personnel_dob = $dob_year.'-06-01';
 			}
 
-			
-			
+
+
 			$bbincidence = new Bbincidence;
-						
+
 			$bbincidence->facility_id = Input::get('facility_id');
 			$bbincidence->occurrence_date = Input::get('occurrence_date');
 			$bbincidence->occurrence_time = Input::get('occurrence_time');
@@ -147,7 +159,7 @@ class BbincidenceController extends \BaseController {
 			$bbincidence->officer_telephone = Input::get('officer_telephone');
 
 			$bbincidence->status = 'Ongoing';
-			
+
 			$bbincidence->createdby = Auth::user()->id;
 
 			try{
@@ -172,7 +184,7 @@ class BbincidenceController extends \BaseController {
    					return false;
   				}*/
 
-				
+
 
 				/*$options = Bbincidence::with(array('bbnature' => function($q) use ($occurrence) {
     				$q->wherePivot('nature_id', '=', $occurrence);
@@ -193,7 +205,7 @@ class BbincidenceController extends \BaseController {
 				if($option->priority=='Major'){
 					Mail::send('bbincidence.bbmajornotice', array('occurrence'=>$option->name,
 						'priority'=>$option->priority,'class'=>$option->class,'serial'=>$bbincidenceSerialNo,'entrant'=>Auth::user()->name,
-						'description'=>$bbincidence->description, 'hfacility'=>Auth::user()->facility->name, 
+						'description'=>$bbincidence->description, 'hfacility'=>Auth::user()->facility->name,
 						'district'=>Auth::user()->facility->district->name),
 						 function($message){
         			$message->to(explode(',','justusashaba@gmail.com,kasuled@gmail.com,agnesnakakawa@gmail.com'))->subject('[UG BLIS] Major Incident Notification');
@@ -203,7 +215,7 @@ class BbincidenceController extends \BaseController {
 
 				$majorincidents='';
 				$incidentpriorities='';
-				foreach ($bbincidence->bbnature as $option){		
+				foreach ($bbincidence->bbnature as $option){
 					if($option->priority=='Major'){
 					$incidentpriorities = $incidentpriorities.'Major';
 					$majorincidents = $majorincidents.$option->name.'; ';
@@ -213,22 +225,22 @@ class BbincidenceController extends \BaseController {
 			/*	if(strpos($incidentpriorities, 'Major') !== false){
 					Mail::send('bbincidence.bbmajornotice', array('majorincidents'=>$majorincidents,
 						'serial'=>$bbincidenceSerialNo,'entrant'=>Auth::user()->name,
-						'description'=>$bbincidence->description, 'hfacility'=>Auth::user()->facility->name, 
+						'description'=>$bbincidence->description, 'hfacility'=>Auth::user()->facility->name,
 						'district'=>Auth::user()->facility->district->name),
 						 function($message){
         			$message->to(explode(',','justusashaba@gmail.com'))->subject('[UG BLIS] Major Incident Notification');
     				});
 				}*/
-				
+
 			$url = Session::get('SOURCE_URL');
 			return Redirect::to($url)
 			->with('message', 'Successfully created BB Incidence with ID '.$bbincidenceSerialNo);
 			}catch(QueryException $e){
 				echo $e;
 				Log::error($e);
-				
+
 			}
-			
+
 			// redirect
 		}
 	}
@@ -246,16 +258,17 @@ class BbincidenceController extends \BaseController {
 
 		$firstInsertedId = DB::table('unhls_bbincidences')->min('id');
 		$lastInsertedId = DB::table('unhls_bbincidences')->max('id');
-		
+
 		$id>=$lastInsertedId ? $nextbbincidence=$lastInsertedId : $nextbbincidence = $id+1;
 		$id<=$firstInsertedId ? $previousbbincidence=$firstInsertedId : $previousbbincidence = $id-1;
 
 		//dd($bbincidence);
-		
+
 		//Show the view and pass the $bbincidence to it
-		return View::make('bbincidence.show')->with('bbincidence', $bbincidence)->with('nextbbincidence', $nextbbincidence)
+		$content = View::make('bbincidence.show')->with('bbincidence', $bbincidence)->with('nextbbincidence', $nextbbincidence)
 		->with('previousbbincidence', $previousbbincidence);
-		
+
+		return PDF::loadHTML($content)->stream('bbincidenceReport.pdf');
 	}
 
 	/**
@@ -275,7 +288,7 @@ class BbincidenceController extends \BaseController {
 
 		$firstInsertedId = DB::table('unhls_bbincidences')->min('id');
 		$lastInsertedId = DB::table('unhls_bbincidences')->max('id');
-		
+
 		$id>=$lastInsertedId ? $nextbbincidence=$lastInsertedId : $nextbbincidence = $id+1;
 		$id<=$firstInsertedId ? $previousbbincidence=$firstInsertedId : $previousbbincidence = $id-1;
 
@@ -310,13 +323,13 @@ class BbincidenceController extends \BaseController {
 
 			$personnel_dob = Input::get('personnel_dob');
 			$personnel_age = Input::get('personnel_age');
-			
+
 			//converting Age to DOB
 			if (($personnel_dob=='' or $personnel_dob=='0000-00-00') and $personnel_age!=''){
 				$dob_year = date('Y')-$personnel_age;
 				$personnel_dob = $dob_year.'-06-01';
 			}
-			
+
 			$bbincidence->occurrence_date = Input::get('occurrence_date');
 			$bbincidence->occurrence_time = Input::get('occurrence_time');
 			$bbincidence->firstaid = Input::get('firstaid');
@@ -344,11 +357,11 @@ class BbincidenceController extends \BaseController {
 			$bbincidence->officer_lname = Input::get('officer_lname');
 			$bbincidence->officer_cadre = Input::get('officer_cadre');
 			$bbincidence->officer_telephone = Input::get('officer_telephone');
-			
+
 			$bbincidence->updatedby = Auth::user()->id;
 			$bbincidence->save();
 
-			
+
 			DB::table('unhls_bbincidences_nature')->where('bbincidence_id', '=', $bbincidence->id)->delete();
 			if (isset($occurrences)){
 			foreach ($occurrences as $occurrence){
@@ -422,7 +435,7 @@ class BbincidenceController extends \BaseController {
         return Bbincidence::facility_filterbydate(Input::get('text'))->take(Config::get('kblis.limit-items'))->get()->toJson();
 	}
 
-	
+
 /*	public function clinical()
 	{
 		$searchterm = Input::get('searchterm');
@@ -431,14 +444,14 @@ class BbincidenceController extends \BaseController {
 		$user_facility = Auth::user()->facility_id;
 
 		//->where('facility_id', '=', Auth::user()->facility_id)
-		
+
 		if($datefrom != ''){
 			$bbincidences = Bbincidence::facility_filterbydate($datefrom,$dateto)->orderBy('id','DESC')->paginate(Config::get('kblis.page-items'))->appends(Input::except('_token'));
 		}
 		else{
 			$bbincidences = Bbincidence::facility_search($searchterm)->orderBy('id','DESC')->paginate(Config::get('kblis.page-items'))->appends(Input::except('_token'));
 		}
-	
+
 		if (count($bbincidences) == 0) {
 		 	Session::flash('message', trans('messages.no-match'));
 		 }
@@ -447,7 +460,7 @@ class BbincidenceController extends \BaseController {
 		$bbcount=count($bbincidences);
 
 		return View::make('bbincidence.clinical')->with('bbincidences', $bbincidences)->withInput(Input::all())->with ($bbcount);
-		
+
 	} */
 
 	public function clinicaledit($id)
@@ -461,7 +474,7 @@ class BbincidenceController extends \BaseController {
 
 		$firstInsertedId = DB::table('unhls_bbincidences')->min('id');
 		$lastInsertedId = DB::table('unhls_bbincidences')->max('id');
-		
+
 		$id>=$lastInsertedId ? $nextbbincidence=$lastInsertedId : $nextbbincidence = $id+1;
 		$id<=$firstInsertedId ? $previousbbincidence=$firstInsertedId : $previousbbincidence = $id-1;
 
@@ -474,7 +487,7 @@ class BbincidenceController extends \BaseController {
 	public function clinicalupdate($id){
 		//
 		$rules = array(
-		
+
 		);
 		$validator = Validator::make(Input::all(), $rules);
 
@@ -493,7 +506,7 @@ class BbincidenceController extends \BaseController {
 			$bbincidence->mo_lname = Input::get('mo_lname');
 			$bbincidence->mo_designation = Input::get('mo_designation');
 			$bbincidence->mo_telephone = Input::get('mo_telephone');
-			
+
 			$bbincidence->save();
 
 			// redirect
@@ -515,7 +528,7 @@ class BbincidenceController extends \BaseController {
 
 		$firstInsertedId = DB::table('unhls_bbincidences')->min('id');
 		$lastInsertedId = DB::table('unhls_bbincidences')->max('id');
-		
+
 		$id>=$lastInsertedId ? $nextbbincidence=$lastInsertedId : $nextbbincidence = $id+1;
 		$id<=$firstInsertedId ? $previousbbincidence=$firstInsertedId : $previousbbincidence = $id-1;
 
@@ -528,7 +541,7 @@ class BbincidenceController extends \BaseController {
 	public function analysisupdate($id){
 		//
 		$rules = array(
-		
+
 		);
 		$validator = Validator::make(Input::all(), $rules);
 
@@ -550,7 +563,7 @@ class BbincidenceController extends \BaseController {
 			$bbincidence->bo_lname = Input::get('bo_lname');
 			$bbincidence->bo_designation = Input::get('bo_designation');
 			$bbincidence->bo_telephone = Input::get('bo_telephone');
-			
+
 			$bbincidence->save();
 
 			DB::table('unhls_bbincidences_cause')->where('bbincidence_id', '=', $bbincidence->id)->delete();
@@ -589,7 +602,7 @@ class BbincidenceController extends \BaseController {
 
 		$firstInsertedId = DB::table('unhls_bbincidences')->min('id');
 		$lastInsertedId = DB::table('unhls_bbincidences')->max('id');
-		
+
 		$id>=$lastInsertedId ? $nextbbincidence=$lastInsertedId : $nextbbincidence = $id+1;
 		$id<=$firstInsertedId ? $previousbbincidence=$firstInsertedId : $previousbbincidence = $id-1;
 
@@ -601,7 +614,7 @@ class BbincidenceController extends \BaseController {
 	public function responseupdate($id){
 		//
 		$rules = array(
-		
+
 		);
 		$validator = Validator::make(Input::all(), $rules);
 
@@ -619,7 +632,7 @@ class BbincidenceController extends \BaseController {
 			$bbincidence->brm_lname = Input::get('brm_lname');
 			$bbincidence->brm_designation = Input::get('brm_designation');
 			$bbincidence->brm_telephone = Input::get('brm_telephone');
-			
+
 			$bbincidence->save();
 
 			// redirect
@@ -646,7 +659,7 @@ class BbincidenceController extends \BaseController {
 
       /*  $bbincidentnaturecount = DB::table('unhls_bbnatures')->where('class','=','Mechanical')->select('priority','class','name', DB::raw('count(*) as total'))->join('unhls_bbincidences_nature','unhls_bbincidences_nature.nature_id','=','unhls_bbnatures.id')
 					->groupBy('priority','class','name')
-             		->get();         */     
+             		->get();         */
 
 		$countbbincidentreferralstatus = Bbincidence::select('referral_status', DB::raw('count(referral_status) as total'))
 					->groupBy('referral_status')
@@ -657,7 +670,7 @@ class BbincidenceController extends \BaseController {
 			->with('causes', $causes)
 			->with('actions', $actions)
 			->with('countbbincidentreferralstatus', $countbbincidentreferralstatus);
-		
+
 	}
 
 }

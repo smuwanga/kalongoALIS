@@ -17,15 +17,19 @@
     <form class="form-horizontal">
       <fieldset>
  
-    <div class="form-group">
-      <label for="select" class="col-lg-2 control-label">Tracer item</label>
-      <div class="col-lg-10">
-        <select class="form-control" id="select">
-          <option>Select item</option>
-          <option>Sysmex Lysing Reagents </option>          
-        </select>
-      </div>
-    </div>
+                 <div class="form-group">
+                                {{  Form::label('commodity_id', 'Item', array('class'=>'control-label')) }}
+                                  <div class="col-md-4">
+                                        {{ Form::select('commodity_id', array('' => 'Select item') +Commodity::lists('name','id'), [], array('class' => 'form-control', 'id' => 'commodity_id', 'required'=>'required')) }}  
+                                      
+                                        @if ($errors->has('commodity_id'))
+                                            <span class="text-danger">
+                                                <strong>{{ $errors->first('commodity_id') }}</strong>
+                                            </span>
+                                        @endif
+
+                                  </div>
+                  </div>  
 
 
           <div class="form-group">
@@ -45,13 +49,13 @@
   
   <div class="col-md-12">
     <p class="bg-primary col-sm-3">
-                  <span class="label"><strong>Item code: AMP</strong></span>
+                  <span class="label"><strong>Item code: <span id="item_code"></span></strong></span>
                 </p>  
                 <p class="bg-primary col-sm-7">
-                  <span class="label"><strong>Item description: Ampicillin</strong></span>
+                  <span class="label"><strong>Item description: <span id="item_description"></span></strong></span>
                 </p>  
                 <p class="bg-primary col-sm-2">
-                  <span class="label"><strong>Pack size: 50</strong></span>
+                  <span class="label"><strong>Pack size: <span id="item_pack"></span></strong></span>
                 </p>
       <div class="panel panel-default">
 
@@ -59,7 +63,7 @@
                   
                   
             <div class="table-responsive">
-              <table class="table table-condensed table-striped search-table">
+              <table class="table table-condensed table-striped" id="stockbook">
 
                   <thead>
                     <tr>
@@ -69,21 +73,10 @@
                       <th class="text-right">Days out of stock</th>
                       <th class="text-right">Losses & Adjustments</th>
                       <th class="text-right">Balance on Hand</th>
-                      <th class="text-right">AMC</th>
-                      <th class="text-right">Quantity to order</th>            
+          
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>              
-                      <td>June 2016</td>
-                      <td class="text-right">10</td>
-                      <td class="text-right">9016</td>
-                      <td class="text-right">20</td>
-                      <td class="text-right">10</td>
-                      <td class="text-right text-danger">10</td>
-                      <td class="text-right">3</td>
-                      <td class="text-right">2</td>
-                    </tr>
 
                   </tbody>
               </table>
@@ -102,11 +95,45 @@
 
 <script type="text/javascript">
   $(document).ready(function($){
+
    $('#btn_get_stock_book').click(function(e){
 
-      $("#stockcard_table").removeClass("hidden").addClass("visible");
+            var data = {
+                id: $("#commodity_id").val()
+            };
 
+        $.ajax({
+            type: 'GET',
+            url: '/stockbook/'+$("#commodity_id").val()+'/fetch',
+            data: data
+        }).done(function(response) {
+
+                $("#stockbook tbody").empty();
+
+                $("#item_code").text(response.commodity.item_code);
+                $("#item_description").text(response.commodity.description);
+
+                if(response.results.length>0)
+                {
+
+                     $.each(response.results,function( index, value ) {
+
+                      $("#stockbook tbody").append("<tr><td class='text-left'>"+value.month+" "+value.year+"</td><td class='text-right'>"+value.stock_in+"</td><td class='text-right'>"+value.stock_out+"</td><td class='text-right'>0</td><td class='text-right'>"+value.adjustment+"</td><td class='text-right'>"+value.balance+"</td></tr>");
+                      
+                     });                  
+                }
+            
+
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            //TODO handle fails on note post backs.
+            console.log(textStatus + ' : ' + errorThrown);
+        });
+
+
+      $("#stockcard_table").removeClass("hidden").addClass("visible");
   });
+
+
 });
 </script>
 @stop

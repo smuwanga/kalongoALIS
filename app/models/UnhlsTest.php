@@ -175,7 +175,7 @@ class UnhlsTest extends Eloquent
 	 */
 	public function isCompleted()
 	{
-		if($this->test_status_id == UnhlsTest::COMPLETED)
+		if($this->test_status_id == UnhlsTest::COMPLETED || $this->test_status_id == UnhlsTest::VERIFIED)
 			return true;
 		else 
 			return false;
@@ -239,9 +239,10 @@ class UnhlsTest extends Eloquent
 	 */
 	public function getTurnaroundTime()
 	{
-		$startTime = new DateTime($this->time_started);
+		// use time time the specimen was received
+		$timeReceived = new DateTime($this->specimen->time_accepted);
 		$endTime = new DateTime($this->time_completed);
-		$interval = $startTime->diff($endTime);
+		$interval = $timeReceived->diff($endTime);
 
 		$turnaroundTime = ($interval->days * 24 * 3600) + ($interval->h * 3600) + ($interval->i * 60) + ($interval->s);
 		return $turnaroundTime;
@@ -818,7 +819,7 @@ class UnhlsTest extends Eloquent
 		return $tests;
 	}
 
-/**
+   /**
 	* Search for verified test meeting the given criteria
 	*
 	* @param String $searchString
@@ -1036,16 +1037,49 @@ class UnhlsTest extends Eloquent
 	/**
 	 * Isolated Organism relationship
 	 */
-	public function cultureObservations()
-    {
-        return $this->hasMany('CultureObservation', 'test_id');
-    }
-
-	/**
-	 * Isolated Organism relationship
-	 */
 	public function isolatedOrganisms()
     {
         return $this->hasMany('IsolatedOrganism', 'test_id');
     }
+
+    /**
+     * gram stain relationship
+     */
+    public function gramStainResults()
+    {
+      return $this->hasMany('GramStainResult','test_id','id');
+    }
+
+    /**
+     * Result Interpretation of HIV measures - Screening, Determine and Unigold
+     */
+    //TODO, make this more robust/flexible...this is short term fix
+    public function interpreteHIVResults(){
+    	$result = '';
+    	if($this->testType->name == 'HIV'){
+    		$measures = array();
+    		$measuresResult = $this->testResults;
+    		foreach($measuresResult as $measureResult){
+    			$measures[] = $measureResult;
+    			
+    		}
+    		$screening = $measures['0']['result'];
+    		$determine = $measures['1']['result'];
+    		$unigold = $measures['2']['result'];
+
+    		if($screening == 'Non-Reactive' && $unigold='Non-Reactive'){
+    			$result ='Negative';
+
+    		}
+    		elseif($determine=='Reactive' || $unigold =='Reactive') {
+    			$result = 'Positive';
+
+    		}
+
+    		// return $result;
+    	}
+    	return $result;
+
+    }
+
 }

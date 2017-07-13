@@ -52,9 +52,16 @@ class UnhlsPatient extends Eloquent
 			case 'YY':
 				$age = $interval->y ." years ";break;
 			default:
-				$age = ($interval->y > 0)?$interval->y ." years ":"";
-				// todo: stop this from showing except for babies under 1 year
-				// $age .= ($interval->m > 0)?$interval->m ." months":"";
+				if($interval->y == 0){
+					$age = $interval->format('%a days');
+				}
+				elseif($interval->y > 0 && $interval->y <= 2){
+					$age = $interval->format('%m') + 12 * $interval->format('%y')." months";
+				}
+				else{
+					$age=$interval->y." years ";
+				}
+				
 				break;
 		}
 

@@ -1,164 +1,224 @@
-<html>
-<head>
-{{ HTML::style('css/bootstrap.min.css') }}
-{{ HTML::style('css/bootstrap-theme.min.css') }}
 <style type="text/css">
-	#report_content table, #report_content th, #report_content td {
-	   /*border: 1px solid black;*/
-	   font-size:12px;
-	}
-	#report_content p{
-		font-size:12px;
+	 table {
+	 	padding: 2px;
 	 }
 </style>
-</head>
-<body>
-		@if($error!='')
-		<!-- if there are search errors, they will show here -->
-			<div class="alert alert-info">{{ $error }}</div>
+<br>
+<br>
+<b>{{trans('messages.patient-report').': '.date('d-m-Y')}}</b>
+<br>
+<table style="border-bottom: 1px solid #cecfd5;">
+	<tr>
+		<td colspan="1"><strong>{{ trans('messages.patient-id')}}</strong></td>
+		<td colspan="1">{{ $patient->patient_number}}</td>
+		<td colspan="1"><strong>{{ trans('messages.patient-name')}}</strong></td>
+		@if(Entrust::can('view_names'))
+			<td colspan="2">{{ $patient->name }}</td>
 		@else
-
-		<div id="report_content">
-		@include("reportHeader")
-		<strong>
-			<p>
-				{{trans('messages.patient-report').' - '.date('d-m-Y')}}
-			</p>
-		</strong>
-		<table class="table table-bordered">
-			<tbody>
-				<tr>
-					<th>{{ trans('messages.patient-name')}}</th>
-					@if(Entrust::can('view_names'))
-						<td>{{ $patient->name }}</td>
-					@else
-						<td>N/A</td>
-					@endif
-					<th>{{ trans('messages.gender')}}</th>
-					<td>{{ $patient->getGender(false) }}</td>
-				</tr>
-				<tr>
-					<th>{{ trans('messages.patient-id')}}</th>
-					<td>{{ $patient->patient_number}}</td>
-					<th>{{ trans('messages.age')}}</th>
-					<td>{{ $patient->getAge()}}</td>
-				</tr>
-			</tbody>
-		</table>
-		<table class="table table-bordered">
-			<tbody>
-				<tr>
-					<th colspan="7">Lab Reception</th>
-				</tr>
-				<tr>
-					<th>Specimen Type</th>
-					<th>{{ Lang::choice('messages.test', 2)}}</th>
-					<th>{{ trans('messages.date-ordered') }}</th>
-					<th>{{ Lang::choice('messages.test-category', 2)}}</th>
-					<th>{{ trans('messages.specimen-status')}}</th>
-					<th>{{ trans('messages.collected-by')."/".trans('messages.rejected-by')}}</th>
-					<th>{{ trans('messages.date-checked')}}</th>
-				</tr>
-				@forelse($tests as $test)
-						<tr>
-							<td>{{ $test->specimen->specimenType->name }}</td>
-							<td>{{ $test->testType->name }}</td>
-							<td>{{ $test->isExternal()?$test->external()->request_date:$test->time_created }}</td>
-							<td>{{ $test->testType->testCategory->name }}</td>
-							@if($test->specimen->specimen_status_id == UnhlsSpecimen::NOT_COLLECTED)
-								<td>{{trans('messages.specimen-not-collected')}}</td>
-								<td></td>
-								<td></td>
-							@elseif($test->specimen->specimen_status_id == UnhlsSpecimen::ACCEPTED)
-								<td>{{trans('messages.specimen-accepted')}}</td>
-								<td>{{$test->specimen->acceptedBy->name}}</td>
-								<td>{{$test->specimen->time_accepted}}</td>
-							@elseif($test->test_status_id == UnhlsTest::REJECTED)
-								<td>{{trans('messages.specimen-rejected')}}</td>
-								<td>{{$test->specimen->rejectedBy->name}}</td>
-								<td>{{$test->specimen->time_rejected}}</td>
-							@endif
-						</tr>
-				@empty
-					<tr>
-						<td colspan="7">{{trans("messages.no-records-found")}}</td>
-					</tr>
-				@endforelse
-
-			</tbody>
-		</table>
-		<table class="table table-bordered">
-			<tbody>
-				<tr>
-					<th colspan="8">{{trans('messages.test-results')}}</th>
-				</tr>
-				<tr>
-					<th>{{Lang::choice('messages.test-type', 1)}}</th>
-					<th>{{trans('messages.test-results-values')}}</th>
-					<th>{{trans('messages.test-remarks')}}</th>
-					<th>{{trans('messages.tested-by')}}</th>
-					<th>{{trans('messages.results-entry-date')}}</th>
-					<th>{{trans('messages.date-tested')}}</th>
-<!-- 					<th>{{trans('messages.verified-by')}}</th>
-					<th>{{trans('messages.date-verified')}}</th>
- -->				</tr>
-				@forelse($tests as $test)
-						<tr>
-							<td>{{ $test->testType->name }}</td>
-							<td>
-								@foreach($test->testResults as $result)
-									<p>
-										{{ Measure::find($result->measure_id)->name }}: {{ $result->result }}
-										{{ Measure::getRange($test->visit->patient, $result->measure_id) }}
-										{{ Measure::find($result->measure_id)->unit }}
-									</p>
-								@endforeach</td>
-							<td>{{ $test->interpretation == '' ? 'N/A' : $test->interpretation }}</td>
-							<td>{{ $test->testedBy->name}}</td>
-							<td>{{ $test->testResults->count() ? $test->testResults->last()->time_entered : '' }}</td>
-							<td>{{ $test->time_completed }}</td>
-<!-- 							<td>{{ $test->verifiedBy->name or trans('messages.verification-pending')}}</td>
-							<td>{{ $test->time_verified }}</td>
- -->						</tr>
-				@empty
-					<tr>
-						<td colspan="8">{{trans("messages.no-records-found")}}</td>
-					</tr>
-				@endforelse
-			</tbody>
-		</table>
-		</div>
+			<td colspan="1">N/A</td>
 		@endif
-		<hr>
-		<table class="table table-bordered"  width="100%" style="font-size:12px;">
-			<tbody>
+		<td colspan="1"><strong>{{ trans('messages.gender')}} & {{ trans('messages.age')}}</strong></td>
+		<td colspan="1">{{ $patient->getGender(false) }} | {{ $patient->getAge()}}</td>
+	</tr>
+</table>
+<br>
+<br>
+<table style="border-bottom: 1px solid #cecfd5;">
+		<tr>
+			<th colspan="6">Lab Reception</th>
+		</tr>
+</table>
+<table style="border-bottom: 1px solid #cecfd5;">
+		<tr>
+			<td colspan="2"><b>Specimen Type</b></td>
+			<td colspan="2"><b>Received By</b></td>
+			<td colspan="2"><b>Date Received</b></td>
+			<td colspan="2"><b>{{ trans('messages.specimen-status')}}</b></td>
+			<td colspan="3"><b>{{ Lang::choice('messages.test-category', 2)}}</b></td>
+			<td colspan="2"><b>Tests Requested</b></td>
+		</tr>
+</table>
+<table style="border-bottom: 1px solid #cecfd5;">
+		@forelse($tests as $test)
 				<tr>
-					<td>
-						<strong>{{ Lang::choice('messages.name', 1).":" }}</strong>
-						{{ trans('messages.signature-holder') }}
-					</td>
-					<td>
-						<strong>{{ Lang::choice('messages.name', 1).":" }}</strong>
-						{{ trans('messages.signature-holder') }}
-					</td>
+					<td colspan="2">{{ $test->specimen->specimenType->name }}</td>
+					@if($test->specimen->specimen_status_id == UnhlsSpecimen::NOT_COLLECTED)
+						<td colspan="2"></td>
+						<td colspan="2"></td>
+						<td colspan="2">{{trans('messages.specimen-not-collected')}}</td>
+					@elseif($test->specimen->specimen_status_id == UnhlsSpecimen::ACCEPTED)
+						<td colspan="2">{{$test->specimen->acceptedBy->name}}</td>
+						<td colspan="2">{{substr($test->specimen->time_accepted, 0, -8)}}</td>
+						<td colspan="2">{{trans('messages.specimen-accepted')}}</td>
+					@elseif($test->test_status_id == UnhlsTest::REJECTED)
+						<td colspan="2">{{$test->specimen->rejectedBy->name}}</td>
+						<td colspan="2">{{substr($test->specimen->time_rejected, 0, -8)}}</td>
+						<td colspan="2">{{trans('messages.specimen-rejected')}}</td>
+					@endif
+					<td colspan="3">{{ $test->testType->testCategory->name }}</td>
+					<td colspan="2">{{ $test->testType->name }}</td>
 				</tr>
-				<tr>
-					<td>
-						<strong>Organization</strong>
-						{{ trans('messages.signature-holder') }}
-					</td>
-					<td>
-						<strong>Organization</strong>
-						{{ trans('messages.signature-holder') }}
-					</td>
-				</tr>
-				<tr>
-					<td><u><strong>Requesting Clinician</strong></u></td>
-					<td><u><strong>{{ trans('messages.lab-manager') }}</strong></u></td>
-				</tr>
-			</tbody>
-		</table>
+		@empty
+			<tr>
+				<td colspan="6">{{trans("messages.no-records-found")}}</td>
+			</tr>
+		@endforelse
+</table>
 
-</div>
-</body>
-</html>
+<br>
+<br>
+<table  style="border-bottom: 1px solid #cecfd5;">
+	<tr>
+		<th colspan="6">{{trans('messages.test-results')}}</th>
+	</tr>
+</table>
+<table  style="border-bottom: 1px solid #cecfd5;">
+	<tr>
+		<td colspan="1"><b>{{Lang::choice('messages.test-type', 1)}}</b></td>
+		<td colspan="3"><b>{{trans('messages.test-results-values')}}</b></td>
+		<td colspan="1"><b>Date Entered</b></td>
+		<td colspan="1"><b>{{trans('messages.tested-by')}}</b></td>
+		<td colspan="1"><b>{{trans('messages.verified-by')}}</b></td>
+	</tr>
+</table>
+@forelse($tests as $test)
+	@if(!$test->testType->isCulture() && ($test->isCompleted() || $test->isVerified()))
+	<table  style="border-bottom: 1px solid #cecfd5;">
+		<tr>
+			<td colspan="1">{{ $test->testType->name }}</td>
+			<td colspan="3">
+				@foreach($test->testResults as $result)
+						@if($test->testType->measures->count() > 1)
+							{{ Measure::find($result->measure_id)->name }}:
+						@endif
+						{{ $result->result }}
+						{{ Measure::getRange($test->visit->patient, $result->measure_id) }}
+						{{ Measure::find($result->measure_id)->unit }}
+					<br>
+				@endforeach
+				@if($test->testType->name == 'HIV')
+					<b>Interpretaion:</b>{{$test->interpreteHIVResults()}}
+				@else
+					<b>Comments:</b> {{ $test->interpretation == '' ? 'N/A' : $test->interpretation }}
+				@endif
+			</td>
+			<td colspan="1">{{ substr($test->time_completed, 0, -8) }}</td>
+			<td colspan="1">{{ $test->isCompleted()?$test->testedBy->name:'Pending'}}</td>
+			<td colspan="1">{{ $test->isVerified()?$test->verifiedBy->name:'Pending'}}</td>
+		</tr>
+	</table>
+	@elseif($test->testType->isCulture())
+        <!-- Culture and Sensitivity analysis -->
+        @if(count($test->isolated_organisms)>0)<!-- if there are any isolated organisms -->
+        <table style="border-bottom: 1px solid #cecfd5;">
+            <tr>
+              <td colspan="3"></td>
+            </tr>
+            <tr>
+              <td colspan="3">Antimicrobial Susceptibility Testing(AST)</td>
+            </tr>
+            <tr>
+                <th><b>Organism(s)</b></th>
+                <th><b>Antibiotic(s)</b></th>
+                <th><b>Result(s)</b></th>
+            </tr>
+        </table>
+        @foreach($test->isolated_organisms as $isolated_organism)
+        <table style="border-bottom: 1px solid #cecfd5;">
+          <tr>
+            <td rowspan="{{$isolated_organism->drug_susceptibilities->count()}}" class="organism">{{$isolated_organism->organism->name}}</td>
+              <?php $i = 1; ?>
+            @if($isolated_organism->drug_susceptibilities->count() == 0)
+              </tr>
+            @else
+              @foreach($isolated_organism->drug_susceptibilities as $drug_susceptibility)
+                @if ($i > 1)
+                <tr>
+                @endif
+                <?php $i++; ?>
+                <td class="antibiotic">{{$drug_susceptibility->drug->name}}</td>
+                <td class="result">{{$drug_susceptibility->drug_susceptibility_measure->symbol}}</td>
+              </tr>
+              @endforeach
+            @endif
+        </table>
+        @endforeach
+
+        @foreach($test->isolated_organisms as $isolated_organism)
+        <table style="border-bottom: 1px solid #cecfd5;">
+          <tr>
+            <td rowspan="{{$isolated_organism->drug_susceptibilities->count()}}" class="organism">{{$isolated_organism->organism->name}}</td>
+              <?php $i = 1; ?>
+            @if($isolated_organism->drug_susceptibilities->count() == 0)
+              </tr>
+            @else
+              @foreach($isolated_organism->drug_susceptibilities as $drug_susceptibility)
+                <td class="antibiotic">{{$drug_susceptibility->drug->name}}</td>
+                <td class="result">{{$drug_susceptibility->drug_susceptibility_measure->symbol}}</td>
+              </tr>
+              @endforeach
+            @endif
+        </table>
+        @endforeach
+
+        <table style="border-bottom: 1px solid #cecfd5;">
+            <tr>
+              <td>Comment(s)</td>
+              <td colspan="2">
+              {{$test->interpretation}}
+              </td>
+            </tr>
+        </table>
+
+        </hr>
+        <table style="border-bottom: 1px solid #cecfd5;">
+            <tr>
+              <td><b>Analysis Performed by:</b></td>
+              <td>{{ $test->isCompleted()?$test->testedBy->name:'Pending' }}</td>
+              <td><b>Verified by:</b></td>
+              <td>{{ $test->isVerified()?$test->verifiedBy->name:'Pending' }}</td>
+            </tr>
+        </table>
+
+        <table style="border-bottom: 1px solid #cecfd5;">
+            <tr>
+               <td colspan="2">Result Guide</td>
+               <td colspan="4" style="text-align:left;">S-Sensitive | R-Resistant | I-Intermediate</td>
+            </tr>
+        </table>
+        @else<!-- if there are no isolated organisms -->
+            @if($test->culture_observation)<!-- if there are comments -->
+            <table>
+                  <tr>
+                    <td>{{ $test->culture_observation->observation }}</td>
+                  </tr>
+            </table>
+            @endif<!--./ if there are comments -->
+        @endif<!--./ if there are no isolated organisms -->
+	@endif
+@empty
+<table  style="border-bottom: 1px solid #cecfd5;">
+	<tr>
+		<td colspan="6">{{trans("messages.no-records-found")}}</td>
+	</tr>
+</table>
+@endforelse
+
+<br>
+<table>
+	<tr><td colspan="2"></td></tr>
+	<tr>
+		<td>
+			<strong>{{ Lang::choice('messages.name', 1).":" }}</strong>
+			{{ trans('messages.signature-holder') }}
+		</td>
+		<td>
+			<strong>{{ Lang::choice('messages.name', 1).":" }}</strong>
+			{{ trans('messages.signature-holder') }}
+		</td>
+	</tr>
+	<tr>
+		<td><u><strong>Requesting Clinician</strong></u></td>
+		<td><u><strong>{{ trans('messages.lab-manager') }}</strong></u></td>
+	</tr>
+</table>
