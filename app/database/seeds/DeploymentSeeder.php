@@ -353,7 +353,7 @@ class DeploymentSeeder extends DatabaseSeeder
           array("reason" => "Improper transport media"),
           array("reason" => "Sample type unacceptable for required test"),
           array("reason" => "Other"),
-          
+
         );
         foreach ($rejection_reasons_array as $rejection_reason)
         {
@@ -365,10 +365,8 @@ class DeploymentSeeder extends DatabaseSeeder
         /* Permissions table */
         $permissions = array(
 
-          array("name" => "register_incident", "display_name" => "Can Register BB Incidences"),
-          array("name" => "summary_log", "display_name" => "Can view BB summary log"),
-          array("name" => "facility_report", "display_name" => "Can create faility BB report"),
-          
+          array("name" => "manage_incidents", "display_name" => "Can Manage Biorisk & Biosecurity Incidences"),
+
             array("name" => "view_names", "display_name" => "Can view patient names"),
             array("name" => "manage_patients", "display_name" => "Can add patients"),
 

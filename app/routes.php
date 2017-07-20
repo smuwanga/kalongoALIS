@@ -16,7 +16,7 @@ Route::group(array("before" => "guest"), function()
     |-----------------------------------------
     | API route
     |-----------------------------------------
-    | Proposed route for the BLIS api, we will receive api calls 
+    | Proposed route for the BLIS api, we will receive api calls
     | from other systems from this route.
     */
     Route::post('/api/receiver', array(
@@ -36,7 +36,7 @@ Route::group(array("before" => "guest"), function()
         "as" => "user.login",
         "uses" => "UserController@loginAction"
     ));
-    
+
 });
 /* Routes accessible AFTER logging in */
 Route::group(array("before" => "auth"), function()
@@ -57,7 +57,7 @@ Route::group(array("before" => "auth"), function()
             "uses" => "UserController@delete"
         ));
     });
-    
+
     Route::any("/logout", array(
         "as"   => "user.logout",
         "uses" => "UserController@logoutAction"
@@ -67,7 +67,7 @@ Route::group(array("before" => "auth"), function()
         "uses" => "UserController@updateOwnPassword"
         ));
 	Route::resource('bbincidence', 'BbincidenceController'); /* Added by Justus */
-    
+
     //Unhls patient routes start here
     Route::resource('unhls_patient', 'UnhlsPatientController');
     Route::get("/unhls_patient/{id}/delete", array(
@@ -91,13 +91,13 @@ Route::group(array("before" => "auth"), function()
             "uses" => "SpecimenTypeController@delete"
         ));
         Route::resource('testcategory', 'TestCategoryController');
-        
+
         Route::get("/testcategory/{id}/delete", array(
             "as"   => "testcategory.delete",
             "uses" => "TestCategoryController@delete"
         ));
         Route::resource('measure', 'MeasureController');
-    
+
         Route::get("/measure/{id}/delete", array(
             "as"   => "measure.delete",
             "uses" => "MeasureController@delete"
@@ -113,13 +113,13 @@ Route::group(array("before" => "auth"), function()
             "uses" => "RejectionReasonController@delete"
         ));
         Route::resource('drug', 'DrugController');
-        
+
         Route::get("/drug/{id}/delete", array(
             "as"   => "drug.delete",
             "uses" => "DrugController@delete"
         ));
         Route::resource('organism', 'OrganismController');
-        
+
         Route::get("/organism/{id}/delete", array(
             "as"   => "organism.delete",
             "uses" => "OrganismController@delete"
@@ -339,26 +339,26 @@ Route::group(array("before" => "auth"), function()
             "uses" => "BlisClientController@properties"
         ));
     });
-    
+
     //  Check if able to manage reports
     Route::group(array("before" => "checkPerms:view_reports"), function()
     {
         Route::resource('reports', 'ReportController');
-		
+
 		Route::any("/patientreport", array(
             "as"   => "reports.patient.index",
             "uses" => "ReportController@loadPatients"
         ));
         Route::any("/patientreport/{id}", array(
-            "as" => "reports.patient.report", 
+            "as" => "reports.patient.report",
             "uses" => "ReportController@viewPatientReport"
         ));
         Route::any("/patientreport/{id}/{visit}/{testId?}", array(
-            "as" => "reports.patient.report", 
+            "as" => "reports.patient.report",
             "uses" => "ReportController@viewPatientReport"
         ));
         Route::any("/visitreport/{id}", array(
-            "as" => "reports.visit.report", 
+            "as" => "reports.visit.report",
             "uses" => "ReportController@viewVisitReport"
         ));
         Route::any("/dailylog", array(
@@ -389,7 +389,7 @@ Route::group(array("before" => "auth"), function()
             "as"   => "reports.aggregate.infection",
             "uses" => "ReportController@infectionReport"
         ));
-        
+
         Route::any("/userstatistics", array(
             "as"   => "reports.aggregate.userStatistics",
             "uses" => "ReportController@userStatistics"
@@ -404,7 +404,7 @@ Route::group(array("before" => "auth"), function()
             "as"   => "reports.aggregate.cd4",
             "uses" => "ReportController@cd4"
         ));
-        
+
         Route::get("/qualitycontrol", array(
             "as"   => "reports.qualityControl",
             "uses" => "ReportController@qualityControl"
@@ -450,7 +450,7 @@ Route::group(array("before" => "auth"), function()
             "as" => "control.resultsEdit",
             "uses" => "ControlController@resultsEdit"
         ));
-    
+
         Route::get("controlresults/{controlId}/resultsList", array(
             "as" => "control.resultsList",
             "uses" => "ControlController@resultsList"
@@ -467,7 +467,7 @@ Route::group(array("before" => "auth"), function()
             'uses' => 'ControlController@resultsUpdate'
         ));
     });
-    
+
     Route::group(array("before" => "checkPerms:request_topup"), function()
     {
         //top-ups
@@ -507,7 +507,7 @@ Route::group(array("before" => "auth"), function()
         ));
         //Suppliers
         Route::resource('supplier', 'SupplierController');
-        
+
         Route::get("/supplier/{id}/delete", array(
             "as"   => "supplier.delete",
             "uses" => "SupplierController@delete"
@@ -522,7 +522,7 @@ Route::group(array("before" => "auth"), function()
         Route::post("/stockcard/index", array(
             "as"   => "stockcard.index",
             "uses" => "StockCardController@index"
-        ));        
+        ));
         Route::post("/stockcard/create", array(
             "as"   => "stockcard.create",
             "uses" => "StockCardController@create"
@@ -535,13 +535,13 @@ Route::group(array("before" => "auth"), function()
             "as"   => "stockcard.delete",
             "uses" => "StockCardController@delete"
         ));
-        Route::resource('stockcard', 'StockCardController');   
+        Route::resource('stockcard', 'StockCardController');
 
         //Stock requisition form
         Route::post("/stockrequisition/index", array(
             "as"   => "stockrequisition.index",
             "uses" => "StockRequisitionController@index"
-        ));        
+        ));
         Route::post("/stockrequisition/create", array(
             "as"   => "stockrequisition.create",
             "uses" => "StockRequisitionController@create"
@@ -549,7 +549,7 @@ Route::group(array("before" => "auth"), function()
         Route::post("/stockrequisition/store", array(
             "as"   => "stockrequisition.store",
             "uses" => "StockRequisitionController@store"
-        ));        
+        ));
         Route::get("/stockrequisition/{id}/delete", array(
             "as"   => "stockrequisition.delete",
             "uses" => "StockRequisitionController@delete"
@@ -561,7 +561,7 @@ Route::group(array("before" => "auth"), function()
        Route::post("/equipmentsupplier/index", array(
             "as"   => "equipmentsupplier.index",
             "uses" => "EquipmentSupplierController@index"
-        ));        
+        ));
         Route::post("/equipmentsupplier/create", array(
             "as"   => "equipmentsupplier.create",
             "uses" => "EquipmentSupplierController@create"
@@ -569,19 +569,19 @@ Route::group(array("before" => "auth"), function()
         Route::post("/equipmentsupplier/store", array(
             "as"   => "equipmentsupplier.store",
             "uses" => "EquipmentSupplierController@store"
-        ));        
+        ));
         Route::get("/equipmentsupplier/{id}/delete", array(
             "as"   => "equipmentsupplier.delete",
             "uses" => "EquipmentSupplierController@delete"
         ));
         Route::resource('equipmentsupplier', 'EquipmentSupplierController');
- 
+
 
         //Equipment inventory
        Route::post("/equipmentinventory/index", array(
             "as"   => "equipmentinventory.index",
             "uses" => "EquipmentInventoryController@index"
-        ));        
+        ));
         Route::post("/equipmentinventory/create", array(
             "as"   => "equipmentinventory.create",
             "uses" => "EquipmentInventoryController@create"
@@ -589,7 +589,7 @@ Route::group(array("before" => "auth"), function()
         Route::post("/equipmentinventory/store", array(
             "as"   => "equipmentinventory.store",
             "uses" => "EquipmentInventoryController@store"
-        ));        
+        ));
         Route::get("/equipmentinventory/{id}/delete", array(
             "as"   => "equipmentinventory.delete",
             "uses" => "EquipmentInventoryController@delete"
@@ -600,7 +600,7 @@ Route::group(array("before" => "auth"), function()
        Route::post("/equipmentmaintenance/index", array(
             "as"   => "equipmentmaintenance.index",
             "uses" => "EquipmentMaintenanceController@index"
-        ));        
+        ));
         Route::post("/equipmentmaintenance/create", array(
             "as"   => "equipmentmaintenance.create",
             "uses" => "EquipmentMaintenanceController@create"
@@ -608,7 +608,7 @@ Route::group(array("before" => "auth"), function()
         Route::post("/equipmentmaintenance/store", array(
             "as"   => "equipmentmaintenance.store",
             "uses" => "EquipmentMaintenanceController@store"
-        ));        
+        ));
         Route::get("/equipmentmaintenance/{id}/delete", array(
             "as"   => "equipmentmaintenance.delete",
             "uses" => "EquipmentMaintenanceController@delete"
@@ -620,7 +620,7 @@ Route::group(array("before" => "auth"), function()
        Route::post("/equipmentbreakdown/index", array(
             "as"   => "equipmentbreakdown.index",
             "uses" => "EquipmentBreakdownController@index"
-        ));        
+        ));
         Route::post("/equipmentbreakdown/create", array(
             "as"   => "equipmentbreakdown.create",
             "uses" => "EquipmentBreakdownController@create"
@@ -628,7 +628,7 @@ Route::group(array("before" => "auth"), function()
         Route::post("/equipmentbreakdown/store", array(
             "as"   => "equipmentbreakdown.store",
             "uses" => "EquipmentBreakdownController@store"
-        ));        
+        ));
         Route::get("/equipmentbreakdown/{id}/delete", array(
             "as"   => "equipmentbreakdown.delete",
             "uses" => "EquipmentBreakdownController@delete"
@@ -636,8 +636,8 @@ Route::group(array("before" => "auth"), function()
         Route::resource('equipmentbreakdown', 'EquipmentBreakdownController');
 
 
-        //API controller        
-        Route::resource('apite', 'ApiController');       
+        //API controller
+        Route::resource('apite', 'ApiController');
         Route::post("/apite/facility", array(
             "as"   => "apite.facility",
             "uses" => "ApiController@facility"
@@ -646,48 +646,57 @@ Route::group(array("before" => "auth"), function()
         //Route::get('api/facility-by-district/{districtId}', 'ApiController@getFacilityListByDistrict');
 
     });
-	//BB Incidents
-	Route::resource('bbincidence', 'BbincidenceController');
-    
-	Route::get("/bbincidence/clinical/clinical", array(
-        "as"   => "bbincidence.clinical",
-        "uses" => "BbincidenceController@clinical"
-    ));
-	
-	Route::get("/bbincidence/{id}/clinicaledit", array(
-        "as"   => "bbincidence.clinicaledit",
-        "uses" => "BbincidenceController@clinicaledit"
-    ));
+	//Check if user can manage BB Incidents
+  Route::group(array("before" => "checkPerms:manage_incidents"), function()
+  {
+      Route::resource("bbincidence", "BbincidenceController");
+      Route::get("/bbincidence/{id}/delete", array(
+          "as"   => "bbincidence.delete",
+          "uses" => "BbincidenceController@delete"
+      ));
+      Route::resource('bbincidence', 'BbincidenceController');
 
-    Route::any("/bbincidence/{id}/clinicalupdate", array(
-        "as"   => "bbincidence.clinicalupdate",
-        "uses" => "BbincidenceController@clinicalupdate"
-    ));
+    	Route::get("/bbincidence/clinical/clinical", array(
+            "as"   => "bbincidence.clinical",
+            "uses" => "BbincidenceController@clinical"
+        ));
 
-    Route::any("/bbincidence/bbfacilityreport/bbfacilityreport", array(
-        "as"   => "bbincidence.bbfacilityreport",
-        "uses" => "BbincidenceController@bbfacilityreport"
-    ));
+    	Route::get("/bbincidence/{id}/clinicaledit", array(
+            "as"   => "bbincidence.clinicaledit",
+            "uses" => "BbincidenceController@clinicaledit"
+        ));
 
-    Route::get("/bbincidence/{id}/analysisedit", array(
-        "as"   => "bbincidence.analysisedit",
-        "uses" => "BbincidenceController@analysisedit"
-    ));
+        Route::any("/bbincidence/{id}/clinicalupdate", array(
+            "as"   => "bbincidence.clinicalupdate",
+            "uses" => "BbincidenceController@clinicalupdate"
+        ));
 
-    Route::any("/bbincidence/{id}/analysisupdate", array(
-        "as"   => "bbincidence.analysisupdate",
-        "uses" => "BbincidenceController@analysisupdate"
-    ));
+        Route::any("/bbincidence/bbfacilityreport/bbfacilityreport", array(
+            "as"   => "bbincidence.bbfacilityreport",
+            "uses" => "BbincidenceController@bbfacilityreport"
+        ));
 
-    Route::get("/bbincidence/{id}/responseedit", array(
-        "as"   => "bbincidence.responseedit",
-        "uses" => "BbincidenceController@responseedit"
-    ));
+        Route::get("/bbincidence/{id}/analysisedit", array(
+            "as"   => "bbincidence.analysisedit",
+            "uses" => "BbincidenceController@analysisedit"
+        ));
 
-    Route::any("/bbincidence/{id}/responseupdate", array(
-        "as"   => "bbincidence.responseupdate",
-        "uses" => "BbincidenceController@responseupdate"
-    ));
+        Route::any("/bbincidence/{id}/analysisupdate", array(
+            "as"   => "bbincidence.analysisupdate",
+            "uses" => "BbincidenceController@analysisupdate"
+        ));
+
+        Route::get("/bbincidence/{id}/responseedit", array(
+            "as"   => "bbincidence.responseedit",
+            "uses" => "BbincidenceController@responseedit"
+        ));
+
+        Route::any("/bbincidence/{id}/responseupdate", array(
+            "as"   => "bbincidence.responseupdate",
+            "uses" => "BbincidenceController@responseupdate"
+        ));
+
+  });
 
     //Bike Management
     Route::resource('bike', 'BikeController');
@@ -742,7 +751,7 @@ Route::group(array("before" => "auth"), function()
         "as"   => "event.eventfilter",
         "uses" => "EventController@eventfilter"
     ));
-	
+
 	 Route::resource('unhls_els', 'UnhlsElsController');
 
     Route::get("/equipmentbreakdown/{id}/restore", array(
