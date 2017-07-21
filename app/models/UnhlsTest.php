@@ -473,7 +473,8 @@ class UnhlsTest extends Eloquent
 					{
 						$q->where(function($q) use ($searchString){
 							$q->where('name', 'like', '%' . $searchString . '%')
-							  ->orWhere('patient_number', 'like', '%' . $searchString . '%');
+							  ->orWhere('patient_number', 'like', '%' . $searchString . '%')
+							  ->orWhere('ulin', 'like', '%' . $searchString . '%');
 						});
 					}
 				});
