@@ -757,8 +757,10 @@ $(function(){
      $("#visit_type").on('change', function() {
         if(this.value === "0" || this.value === "null") {
             $("#bed_no").prop("disabled", true);
+            $("#ward_id").prop("disabled", true);
         } else{
             $("#bed_no").prop("disabled", false);
+            $("#ward_id").prop("disabled", false);
         }
     });
 
