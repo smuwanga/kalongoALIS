@@ -122,7 +122,7 @@ class BbincidenceController extends \BaseController {
 			//converting Age to DOB
 			if ($personnel_dob=='' && $personnel_age!=''){
 				$dob_year = date('Y')-$personnel_age;
-				$personnel_dob = $dob_year.'-06-01';
+				$personnel_dob = $dob_year.'-01-01';
 			}
 
 
