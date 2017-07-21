@@ -161,7 +161,7 @@ class Measure extends Eloquent
 					return null;
 				}
 			}
-			return "(".$lowerUpper->range_lower." - ".$lowerUpper->range_upper.")";
+			return "(".substr($lowerUpper->range_lower, 0, -2)." - ".substr($lowerUpper->range_upper, 0, -2).")";
 		}
 		return null;
 	}

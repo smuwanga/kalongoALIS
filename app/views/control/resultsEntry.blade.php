@@ -50,7 +50,7 @@
                                     {{ Form::select("m_".$controlMeasure->id, array(null => '') +$controlMeasure->controlMeasureRanges->lists('alphanumeric', 'alphanumeric'),
                                     Input::old('instrument'),
                                         array('class' => 'form-control result-interpretation-trigger',
-                                        'data-url' => URL::route('test.resultinterpretation'),
+                                        'data-url' => URL::route('unhls_test.resultinterpretation'),
                                         'data-measureid' => $controlMeasure->id
                                         )) 
                                     }}
