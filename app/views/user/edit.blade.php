@@ -47,7 +47,8 @@
 										<div class="col-md-8">
 											<div class="form-group">
 												{{ Form::label('username', trans('messages.username')) }}
-												<p class="form-control-static">{{$user->username}}</p>
+												<!-- <p class="form-control-static">{{$user->username}}</p> -->
+												{{ Form::text('username', $user->username, ['class' => 'form-control']) }}
 											</div>
 											<div class="form-group">
 												{{ Form::label('full_name', trans('messages.full-name')) }}
