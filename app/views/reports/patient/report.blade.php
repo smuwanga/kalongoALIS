@@ -5,8 +5,21 @@
 </style>
 <br>
 <br>
-<b>{{trans('messages.patient-report').': '.date('d-m-Y')}}</b>
-<br>
+<table style="padding: 2px">
+	<tr>
+		<td colspan="2"><b>Lab No: </b>{{ $patient->ulin }}</td>
+		<td colspan="1"><b>Report No: </b>
+			@if(isset($tests))
+				@if(!is_null($tests->first()))
+					{{ $tests->first()->visit->id }}
+				@endif
+			@endif
+		</td>
+		<td colspan="1"><b>OPD/IPD No: </b>
+			{{ $patient->patient_number }}
+		</td>
+	</tr>
+</table>
 <table style="border-bottom: 1px solid #cecfd5;">
 	<tr>
 		<td colspan="2"><strong>{{ trans('messages.patient-name')}}</strong></td>

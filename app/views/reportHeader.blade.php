@@ -16,8 +16,8 @@
             </tr>
             <tr>
                 <td colspan="12" style="text-align:center;"><b>
-                    {{ strtoupper(Config::get('constants.FACILITY_NAME')) }},<br>
-                    {{Config::get('kblis.address')}}</b>
+                    {{ strtoupper(Config::get('constants.FACILITY_NAME')) }}<br>
+                    {{Config::get('kblis.address-info')}}</b>
                     {{ trans('messages.laboratory-report')}}
                 </td>
             </tr>
