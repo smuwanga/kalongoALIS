@@ -29,7 +29,13 @@
 		<td colspan="2">
 		@if(isset($tests))
 			@if(!is_null($tests->first()))
-			{{ is_null($tests->first()->visit->ward) ? '':$tests->first()->visit->ward->name }}
+				@if(is_null($tests->first()->visit->ward))
+					@if($tests->first()->visit->visit_type == 'Out-patient')
+						{{ 'OPD' }}
+					@endif
+				@else
+					{{ $tests->first()->visit->ward->name }}
+				@endif
 			@endif
 		@endif
 		</td>
