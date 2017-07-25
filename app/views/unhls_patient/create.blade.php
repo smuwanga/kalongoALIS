@@ -29,8 +29,8 @@
 				</div>
 				<div class="form-group">
 					{{ Form::label('ulin', trans('messages.ulin'), array('class' => 'required')) }}
-					{{ Form::text('ulin', $ulin,
-						array('class' => 'form-control', 'readonly' =>'true')) }}
+					{{ Form::text('ulin', Input::old('ulin'),
+						array('class' => 'form-control')) }}
 				</div>
 				<div class="form-group">
 					{{ Form::label('nin', trans('messages.national-id')) }}
