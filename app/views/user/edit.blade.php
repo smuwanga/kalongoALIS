@@ -12,7 +12,7 @@
 			<span class="glyphicon glyphicon-edit"></span>
 			{{trans('messages.edit-user-details')}}
 		</div>
-		<div class="panel-body 
+		<div class="panel-body
 			{{(Auth::id() == $user->id || !Entrust::hasRole(Role::getAdminRole()->name)) ? 'user-profile': ''}}">
 			@if($errors->all())
 				<div class="alert alert-danger">
@@ -38,7 +38,7 @@
 						<div class="tab-content">
 							<div class="tab-pane fade in active" id="edit-profile">
 								{{ Form::model($user, array(
-									'route' => array('user.update', $user->id), 
+									'route' => array('user.update', $user->id),
 									'method' => 'PUT', 'role' => 'form', 'files' => true,
 									'id' => 'form-edit-user'
 								 )) }}
@@ -51,18 +51,18 @@
 											</div>
 											<div class="form-group">
 												{{ Form::label('full_name', trans('messages.full-name')) }}
-												{{ Form::text('full_name', $user->name, ["placeholder" => "Jay Siku",
+												{{ Form::text('full_name', $user->name, ["placeholder" => "",
 													'class' => 'form-control']) }}
 											</div>
 											<div class="form-group">
 												{{ Form::label('email', trans('messages.email-address')) }}
-												{{ Form::email('email', Input::old('email'), 
-													["placeholder" => "j.siku@ilabafrica.ac.ke",
+												{{ Form::email('email', Input::old('email'),
+													["placeholder" => "",
 													'class' => 'form-control']) }}
 											</div>
 											<div class="form-group">
 												{{ Form::label('designation', trans('messages.designation')) }}
-												{{ Form::text('designation', Input::old('designation'), 
+												{{ Form::text('designation', Input::old('designation'),
 													["placeholder" => "Lab Technologist", 'class' => 'form-control'])}}
 											</div>
 							                <div class="form-group">
@@ -75,16 +75,16 @@
 											@if(Auth::id() != $user->id && Entrust::hasRole(Role::getAdminRole()->name))
 												<!-- For the administrator to reset other users' passwords -->
 								                <div class="form-group">
-								                	<label for="reset-password"><a class="reset-password" 
+								                	<label for="reset-password"><a class="reset-password"
 								                		href="javascript:void(0)">{{trans('messages.reset-password')}}
 								                		</label></a>
-													{{ Form::password('reset-password', 
+													{{ Form::password('reset-password',
 														['class' => 'form-control reset-password hidden']) }}
 								                </div>
 							                @endif
 							                <div class="form-group actions-row">
 												{{ Form::button('<span class="glyphicon glyphicon-save"></span> '.
-													trans('messages.update'), 
+													trans('messages.update'),
 													['class' => 'btn btn-primary', 'onclick' => 'submit()']) }}
 											</div>
 							            </div>
@@ -96,7 +96,7 @@
 								                </div>
 								                <div class="form-group">
 								                	<img class="img-responsive img-thumbnail user-image"
-								                		src="{{ $user->image }}" 
+								                		src="{{ $user->image }}"
 								                		alt="{{trans('messages.image-alternative')}}"></img>
 								                </div>
 											</div>

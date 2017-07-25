@@ -3,15 +3,15 @@
 use Illuminate\Support\MessageBag;
 
 /**
- *Contains functions for managing users 
+ *Contains functions for managing users
  *
  */
 class UserController extends Controller {
-    
+
     //Function for user authentication logic
     public function loginAction(){
 
-        if (Input::server("REQUEST_METHOD") == "POST") 
+        if (Input::server("REQUEST_METHOD") == "POST")
         {
             $validator = Validator::make(Input::all(), array(
                 "username" => "required|min:4",
@@ -46,7 +46,7 @@ class UserController extends Controller {
     public function homeAction(){
         return View::make("user.home");
     }
-	
+
 	public function dashboard(){
         return View::make("user.dashboard");
     }
@@ -89,7 +89,7 @@ class UserController extends Controller {
             'username' => 'alpha_num|required|unique:users,username|min:4',
             'password' => 'confirmed|required|min:6',
             'full_name' => 'required',
-            'email' => 'required|email'
+            //'email' => 'required|email'
         );
         $validator = Validator::make(Input::all(), $rules);
 
@@ -134,7 +134,7 @@ class UserController extends Controller {
                 return Redirect::route('user.index')
                     ->with('message', trans('messages.failure-creating-user'));
             }
-            
+
             // redirect
         }
     }
@@ -216,7 +216,7 @@ class UserController extends Controller {
                     Log::error($e);
                 }
             }
-            
+
             //Resetting passwords - by the administrator
             if (Input::get('reset-password')) {
                 $user->password = Hash::make(Input::get('reset-password'));
@@ -226,7 +226,7 @@ class UserController extends Controller {
 
             // redirect
             $url = Session::get('SOURCE_URL');
-            
+
             return Redirect::to($url)->with('message', trans('messages.user-profile-edit-success')) ->with('activeuser', $user ->id);
         }
     }
@@ -267,7 +267,7 @@ class UserController extends Controller {
 
         // redirect
         $url = Session::get('SOURCE_URL');
-            
+
         return Redirect::to($url)->with('message', trans('messages.user-profile-edit-success'));
     }
 
@@ -297,7 +297,7 @@ class UserController extends Controller {
 
         // redirect
         $url = Session::get('SOURCE_URL');
-            
+
         return Redirect::to($url)->with('message', trans('messages.success-deleting-user'));
     }
 }
