@@ -120,15 +120,15 @@
 							<!--{{trans('messages.edit')}}-->
 						</a>
 						<a class="btn btn-sm btn-info" href="{{ URL::route('bbincidence.clinicaledit', array($bbincidence->id)) }}" >
-							<span class="glyphicon glyphicon-edit"></span>
+							<span class="glyphicon glyphicon-list-alt"></span>
 							Clinical Intervention
 						</a>
 						<a class="btn btn-sm btn-info" href="{{ URL::route('bbincidence.analysisedit', array($bbincidence->id)) }}" >
-							<span class="glyphicon glyphicon-edit"></span>
+							<span class="glyphicon glyphicon-th-list"></span>
 							Incident Analysis
 						</a>
 						<a class="btn btn-sm btn-warning" href="{{ URL::route('bbincidence.responseedit', array($bbincidence->id)) }}" >
-							<span class="glyphicon glyphicon-edit"></span>
+							<span class="glyphicon glyphicon-th"></span>
 							Emergency Incident Response
 						</a>
 

@@ -14,7 +14,7 @@
 		</div>
 		<div class="panel-body">
 		<!-- if there are creation errors, they will show here -->
-			
+
 			@if($errors->all())
 				<div class="alert alert-danger">
 					{{ HTML::ul($errors->all()) }}
@@ -59,7 +59,7 @@
                     {{ Form::file("image") }}
                 </div>
 				<div class="form-group actions-row">
-					{{ Form::button('<span class="glyphicon glyphicon-save"></span> '.trans('messages.save'), 
+					{{ Form::button('<span class="glyphicon glyphicon-save"></span> '.trans('messages.save'),
 						['class' => 'btn btn-primary', 'onclick' => 'submit()']
 					) }}
 				</div>
