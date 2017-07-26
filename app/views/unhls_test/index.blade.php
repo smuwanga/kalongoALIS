@@ -84,7 +84,7 @@
                     <tr>
                         <th>{{trans('messages.date-ordered')}}</th>
                         <th>{{trans('messages.patient-number')}}</th>
-                        <th>{{'ULIN'}}</th>
+                        <th>Lab Number</th>
                         <th>{{trans('messages.visit-number')}}</th>
                         <th class="col-md-2">{{trans('messages.patient-name')}}</th>
                         <th class="col-md-1">{{trans('messages.specimen-id')}}</th>
