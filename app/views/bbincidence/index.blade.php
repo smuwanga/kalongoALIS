@@ -70,7 +70,7 @@
 			<thead>
 				<tr>
 					<th>#</th>
-					<th>ID No</th>
+					<th>BB incident No.</th>
 					<th>Date / Time</th>
 					<th>Description</th>
 					<!--<th>Victim Details</th>-->

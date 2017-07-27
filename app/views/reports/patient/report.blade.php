@@ -7,16 +7,18 @@
 <br>
 <table style="padding: 2px">
 	<tr>
-		<td colspan="2"><b>Lab No: </b>{{ $patient->ulin }}</td>
-		<td colspan="1"><b>Report No: </b>
+		<td colspan="1">
+			<b>Lab No: </b>{{ $patient->ulin }}
+		</td>
+		<td colspan="1">
+			<b>OPD/IPD No: </b> {{ $patient->patient_number }}
+		</td>
+		<td colspan="1" style="text-align: right;"><b>Report No: </b>
 			@if(isset($tests))
 				@if(!is_null($tests->first()))
 					{{ $tests->first()->visit->id }}
 				@endif
 			@endif
-		</td>
-		<td colspan="1"><b>OPD/IPD No: </b>
-			{{ $patient->patient_number }}
 		</td>
 	</tr>
 </table>
@@ -32,14 +34,12 @@
 		<td colspan="1">{{ $patient->getGender(false) }}</td>
 		<td colspan="1"><strong>{{ trans('messages.age')}}</strong></td>
 		<td colspan="1">{{ $patient->getAge()}}</td>
-		<td colspan="2"><strong>{{ trans('messages.patient-id')}}</strong></td>
-		<td colspan="1">{{ $patient->patient_number}}</td>
 	</tr>
 </table>
 <table style="border-bottom: 1px solid #cecfd5;">
 	<tr>
 		<td colspan="2"><strong>Unit</strong></td>
-		<td colspan="2">
+		<td colspan="3">
 		@if(isset($tests))
 			@if(!is_null($tests->first()))
 				@if(is_null($tests->first()->visit->ward))
@@ -52,10 +52,8 @@
 			@endif
 		@endif
 		</td>
-		<td colspan="1"></td>
-		<!-- <td colspan="1"></td> -->
-		<td colspan="3"><strong>Requesting Officer</strong></td>
-		<td colspan="4">
+		<td colspan="2"><strong>Requesting Officer</strong></td>
+		<td colspan="2">
 		@if(isset($tests))
 			{{ is_null($tests->first()) ? '':$tests->first()->requested_by }}
 		@endif
