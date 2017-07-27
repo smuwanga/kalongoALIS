@@ -60,9 +60,9 @@ class UnhlsSpecimen extends Eloquent
 	/**
 	 * Test relationship
 	 */
-	public function test()
+	public function tests()
     {
-        return $this->hasOne('UnhlsTest', 'specimen_id');
+        return $this->hasMany('UnhlsTest', 'specimen_id');
     }
 
     /**
