@@ -10,11 +10,54 @@
         <div class="alert alert-info">{{ trans(Session::get('message')) }}</div>
     @endif
 
+    <div class='container-fluid'>
+        {{ Form::open(array('route' => array('labrequest.index'))) }}
+            <div class='row'>
+                <div class='col-md-3'>
+                    <div class='col-md-2'>
+                        {{ Form::label('date_from', trans('messages.from')) }}
+                    </div>
+                    <div class='col-md-10'>
+                        {{ Form::text('date_from', Input::get('date_from'),
+                            array('class' => 'form-control standard-datepicker')) }}
+                    </div>
+                </div>
+                <div class='col-md-3'>
+                    <div class='col-md-2'>
+                        {{ Form::label('date_to', trans('messages.to')) }}
+                    </div>
+                    <div class='col-md-10'>
+                        {{ Form::text('date_to', Input::get('date_to'),
+                            array('class' => 'form-control standard-datepicker')) }}
+                    </div>
+                </div>
+                <div class='col-md-3'>
+                    <div class='col-md-5'>
+                        {{ Form::label('visit_status', trans('messages.visit-status')) }}
+                    </div>
+                    <div class='col-md-7'>
+                        {{ Form::select('visit_status', $visitStatus,
+                            Input::get('visit_status'), array('class' => 'form-control')) }}
+                    </div>
+                </div>
+                <div class='col-md-2'>
+                        {{ Form::label('search', trans('messages.search'), array('class' => 'sr-only')) }}
+                        {{ Form::text('search', Input::get('search'),
+                            array('class' => 'form-control', 'placeholder' => 'Search')) }}
+                </div>
+                <div class='col-md-1'>
+                        {{ Form::submit(trans('messages.search'), array('class'=>'btn btn-primary')) }}
+                </div>
+            </div>
+        {{ Form::close() }}
+    </div>
+
+    <br>
     <div class="panel panel-primary tests-log">
         <div class="panel-heading ">
             <div class="container-fluid">
                 <div class="row less-gutter">
-                    <span class="glyphicon glyphicon-filter"></span>Lab Requests
+                    <span class="glyphicon glyphicon-filter"></span>{{ trans($visitStatus[Input::get('visit_status')]) }}
                 </div>
             </div>
         </div>
@@ -22,9 +65,10 @@
             <table class="table table-striped table-hover table-condensed">
                 <thead>
                     <tr>
-                        <th>{{trans('messages.visit-number')}}</th>
+                        <th>Date</th>
+                        <!-- <th>{{trans('messages.visit-number')}}</th> -->
                         <th>{{trans('messages.patient-number')}}</th>
-                        <th>{{'ULIN'}}</th>
+                        <th>{{trans('messages.ulin')}}</th>
                         <th>{{trans('messages.patient-name')}}</th>
                         <th>{{trans('messages.visit-type')}}</th>
                         <th>{{trans('messages.test-request-status')}}</th>
@@ -35,10 +79,15 @@
                 @foreach($visits as $key => $visit)
                     <tr>
                         <td>
+                            {{ $visit->created_at }}</td>
+                        <!--visit date -->
+                        <!-- <td>
                             {{ empty($visit->visit_number)?
                                 $visit->id:
                                 $visit->visit_number
-                            }}</td><!--Visit Number -->
+                            }}
+                        </td> -->
+                        <!--Visit Number -->
                         <td>{{ empty($visit->patient->external_patient_number)?
                                 $visit->patient->patient_number:
                                 $visit->patient->external_patient_number
@@ -49,14 +98,28 @@
                         <td>{{ $visit->visit_type }}</td> <!--Visit Type -->
                         <td>
 
-                        @if(Auth::user()->can('request_test'))
+                        @if(Auth::user()->can('request_test'))<!-- for physician -->
+                        <a class="btn btn-sm btn-warning" href="javascript:void(0)"
+                            data-toggle="modal" data-target="#new-test-modal-unhls">
+                            <span class="glyphicon glyphicon-plus-sign"></span>
+                            Make Tests Request
+                        </a>
+                        @endif
+
+                        <!-- can request for tests --><!-- for phlebotomist -->
                         <a class="btn btn-sm btn-info" href="javascript:void(0)"
                             data-toggle="modal" data-target="#new-test-modal-unhls">
                             <span class="glyphicon glyphicon-plus-sign"></span>
-                            Add Test
+                            Recieve Specimen
                         </a>
-                        @endif
-                        
+
+<!--
+                         <a class="btn btn-sm btn-info" href="javascript:void(0)"
+                            data-toggle="modal" data-target="#new-test-modal-unhls">
+                            <span class="glyphicon glyphicon-plus-sign"></span>
+                            Reject Specimen
+                        </a>
+ -->
                         <!-- show the testtype (uses the show method found at GET /labrequest/{id} -->
                         <a class="btn btn-sm btn-success" href="{{ URL::to("labrequest/" . $visit->id) }}">
                             <span class="glyphicon glyphicon-eye-open"></span>
@@ -70,7 +133,7 @@
                         </a>
                         <!-- delete this testtype (uses the delete method found at GET /labrequest/{id}/delete -->
                         <button class="btn btn-sm btn-danger delete-item-link"
-                            data-toggle="modal" data-target=".confirm-delete-modal" 
+                            data-toggle="modal" data-target=".confirm-delete-modal"
                             data-id='{{ URL::to("labrequest/" . $visit->id . "/delete") }}'>
                             <span class="glyphicon glyphicon-trash"></span>
                             {{trans('messages.delete')}}
@@ -83,29 +146,30 @@
                         <td class='test-status'>
                             <!-- Test Statuses -->
                             <div class="container-fluid">
-                            
+                          
                                 <div class="row">
 
                                     <div class="col-md-12">
                                     </div>
                                 </div>
-    
+  
                                 <div class="row">
                                     <div class="col-md-12">
                                         <!-- Specimen statuses -->
                                         </div>
                                     </div>
                                 </div>
+                            </div>
                         </td>
                     </tr>
                 @endforeach
                 </tbody>
             </table>
-            
+          
             {{ $visits->links() }}
         {{ Session::put('SOURCE_URL', URL::full()) }}
         {{ Session::put('TESTS_FILTER_INPUT', Input::except('_token')); }}
-        
+      
         </div>
     </div>
 
@@ -121,7 +185,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <span class='label label-default'>
-                        {{trans('messages.specimen-not-collected-label')}}</span>                
+                        {{trans('messages.specimen-not-collected-label')}}</span>              
                 </div>
             </div>
         </div>
@@ -202,7 +266,7 @@
         </a>
     </div> <!-- /. referral-button -->
     <!-- Barcode begins -->
-    
+  
     <div id="count" style='display:none;'>0</div>
     <div id ="barcodeList" style="display:none;"></div>
 

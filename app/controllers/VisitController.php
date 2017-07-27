@@ -77,29 +77,76 @@ if technologist
 	completed tests
 	veriffied tests
 
-
-
 list namin for the different users
 
 on registering a patient auto generate a visit, and tell the plebotomist
-
 
 the search should work depending on permissions of the fellow
 - a drop down of where he is working and say you don't have access rights for this page please contact A-LIS focal person
 
 */
+		$fromRedirect = Session::pull('fromRedirect');
 
-// todo: unless searched
-		$visits = UnhlsVisit::orderBy('id', 'desc');
+		if($fromRedirect){
+			$input = Session::get('TESTS_FILTER_INPUT');
+		}else{
+			$input = Input::except('_token');
+		}
 
+		$searchString = isset($input['search'])?$input['search']:'';
+		$visitStatusId = isset($input['visit_status'])?$input['visit_status']:'';
+		$dateFrom = isset($input['date_from'])?$input['date_from']:date('Y-m-d');
+		$dateTo = isset($input['date_to'])?$input['date_to']:date('Y-m-d');
+
+		// todays date overriding any input, put according to role of user
+		// $dateFrom = date('Y-m-d');
+		// $dateFrom = date('2017-07-04');
+		// $dateFrom = date('2017-07-10 00:00:00');
+		// Log::info($dateFrom);
+		// $dateTo = date('Y-m-d');
+/*
+		reset visit status depending on permssions
+		even for what is returned to the interface
+		$visitStatusId = isset($input['visit_status'])?$input['visit_status']:'';
+		if (condition) {
+			$input['visit_status'] = etc
+		}
+*/
+		// Search Conditions
+		if($searchString||$visitStatusId||$dateFrom||$dateTo){
+
+			$visits = UnhlsVisit::search($searchString, $visitStatusId, $dateFrom, $dateTo);
+
+			if (count($visits) == 0) {
+				Session::flash('message', trans('messages.empty-search'));
+			}
+		}
+		else
+		{
+		// List all the active visits
+			$visits = UnhlsVisit::orderBy('created_at', 'ASC');
+		}
+
+		// Create Visit Statuses array. Include a first entry for ALL
+		$statuses = array('all')+VisitStatus::all()->lists('name','id');
+
+		foreach ($statuses as $key => $value) {
+			$statuses[$key] = trans("messages.$value");
+		}
+
+		// Pagination
 		// $visits = $visits->paginate(Config::get('kblis.page-items'))->appends($input);
 		$visits = $visits->paginate(Config::get('kblis.page-items'));
 
-		return View::make('visit.index')->with('visits', $visits);
+		//	Barcode
+		$barcode = Barcode::first();
 
-
-
-
+		// Load the view and pass it the visits
+		return View::make('visit.index')
+					->with('visits', $visits)
+					->with('visitStatus', $statuses)
+					->with('barcode', $barcode)
+					->withInput($input);
 	}
 
 

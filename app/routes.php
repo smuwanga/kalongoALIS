@@ -160,7 +160,11 @@ Route::group(array("before" => "auth"), function()
         "as"   => "unhls_test.create",
         "uses" => "UnhlsTestController@create"
     ));
-    Route::resource('labrequest', 'VisitController');
+    Route::any("/labrequest", array(
+        "as"   => "labrequest.index",
+        "uses" => "VisitController@index"
+    ));
+    // Route::resource('labrequest', 'VisitController');
     Route::post("/unhls_test/savenewtest", array(
         "before" => "checkPerms:request_test",
         "as"   => "unhls_test.saveNewTest",

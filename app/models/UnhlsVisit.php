@@ -11,6 +11,12 @@ class UnhlsVisit extends Eloquent
 
 	public $timestamps = true;
 
+
+	const TEST_REQUEST_PENDING = 1;
+	const TEST_REQUEST_MADE = 2;
+	const SAMPLES_COLLECTED = 3;
+	const TESTS_COMPLETED = 4;
+
 	/**
 	 * Test relationship
 	 */
@@ -62,43 +68,54 @@ class UnhlsVisit extends Eloquent
 	 */
 	public static function search($searchString = '', $visitStatusId = 0, $dateFrom = NULL, $dateTo = NULL)
 	{
+// $searchString = 'ABOKE';
+// Log::info($searchString);
 		$visits = UnhlsVisit::with('patient')->where(function($q) use ($searchString){
 
-			$q->whereHas('patient', function($q)  use ($searchString)
-			{
+			$q->whereHas('patient', function($q)  use ($searchString){
 				$q->where(function($q) use ($searchString){
-					$q->where('external_patient_number', '=', $searchString )
-					  ->orWhere('patient_number', '=', $searchString )
+					$q->where('external_patient_number', 'like', '%' . $searchString . '%')
+					  ->orWhere('patient_number', 'like', '%' . $searchString . '%')
 					  ->orWhere('name', 'like', '%' . $searchString . '%')
 					  ->orWhere('ulin', 'like', '%' . $searchString . '%');
 				});
-			})
+			});
+		});
+
+		/*
+		Problematic this right now
 		})->where(function($q) use ($searchString){
 			$q->where('visit_number', '=', $searchString )//Search by visit number
 			->orWhere('id', '=', $searchString);
 		});
-
+		*/
+// Log::info($visitStatusId);
 		if ($visitStatusId > 0) {
+			// $visits = UnhlsVisit::where(function($q) use ($visitStatusId)
 			$visits = $visits->where(function($q) use ($visitStatusId)
 			{
-			    $q->where('visit_status_id','=', $visitStatusId);
+				$q->where('visit_status_id','=', $visitStatusId);
 			});
 		}
 
+// Log::info($dateFrom);
+// Log::info($dateTo);
 		//  put default to get content for today
 		if ($dateFrom||$dateTo) {
+// Log::info('in the date search');
+			// $visits = UnhlsVisit::where(function($q) use ($dateFrom, $dateTo)
 			$visits = $visits->where(function($q) use ($dateFrom, $dateTo)
 			{
-				if($dateFrom)$q->where('time_created', '>=', $dateFrom);
+				if($dateFrom)$q->where('created_at', '>=', $dateFrom);
 
 				if($dateTo){
 					$dateTo = $dateTo . ' 23:59:59';
-					$q->where('time_created', '<=', $dateTo);
+					$q->where('created_at', '<=', $dateTo);
 				}
 			});
 		}
 
-		$visits = $visits->orderBy('time_created', 'ASC');
+		$visits = $visits->orderBy('created_at', 'ASC');
 
 		return $visits;
 	}

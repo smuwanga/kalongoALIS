@@ -119,7 +119,7 @@ return array(
     'view-patients' => 'View Existing Patients', //Unhls entry
     'residence-village' => 'Village of Residence', //Unhls entry
     'sex' => 'Sex', //Unhls prefers this to Gender
-    'ulin' => 'Unique Lab Identification Number', //Unhls entry
+    'ulin' => 'Lab No',
     'workplace-village' => 'Village of Workplace', //Unhls entry
     
     /** 
@@ -303,6 +303,15 @@ return array(
     'zone-size' =>  'Zone size (mm)',
     'interp'    =>  'Interpretation (S, I, R)',
     'set-to-completed' =>  'Set to Completed',
+
+    /**
+     *  Visits
+     */
+    'visit-status' => 'Status',
+    'test-request-pending' => 'New Visits',
+    'test-request-made' => 'Lab Requests',
+    'samples-collected' => 'Pending Requests',
+    'tests-completed' => 'Lab Reports',
 
     /**
      *  Tests

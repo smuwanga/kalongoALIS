@@ -24,21 +24,23 @@
 </table>
 <table style="border-bottom: 1px solid #cecfd5;">
 	<tr>
-		<td colspan="2"><strong>{{ trans('messages.patient-name')}}</strong></td>
+		<td colspan="3"><strong>{{ trans('messages.patient-name')}}</strong></td>
 		@if(Entrust::can('view_names'))
-			<td colspan="3">{{ $patient->name }}</td>
+			<td colspan="6">{{ $patient->name }}</td>
 		@else
-			<td colspan="3">N/A</td>
+			<td colspan="6">N/A</td>
 		@endif
-		<td colspan="1"><strong>{{ trans('messages.gender')}}</strong></td>
-		<td colspan="1">{{ $patient->getGender(false) }}</td>
-		<td colspan="1"><strong>{{ trans('messages.age')}}</strong></td>
-		<td colspan="1">{{ $patient->getAge()}}</td>
+		<td colspan="2"><strong>{{ trans('messages.gender')}}</strong></td>
+		<td colspan="2">{{ $patient->getGender(false) }}</td>
+		<td colspan="2"><strong>{{ trans('messages.age')}}</strong></td>
+		<td colspan="2">{{ $patient->getAge()}}</td>
+		<td colspan="2"><strong>Address</strong></td>
+		<td colspan="2">{{ $patient->village_residence}}</td>
 	</tr>
 </table>
 <table style="border-bottom: 1px solid #cecfd5;">
 	<tr>
-		<td colspan="2"><strong>Unit</strong></td>
+		<td colspan="3"><strong>Unit</strong></td>
 		<td colspan="3">
 		@if(isset($tests))
 			@if(!is_null($tests->first()))
@@ -52,7 +54,13 @@
 			@endif
 		@endif
 		</td>
-		<td colspan="2"><strong>Requesting Officer</strong></td>
+		<td colspan="3"><strong>Requesting Officer</strong></td>
+		<td colspan="2">
+		@if(isset($tests))
+			{{ is_null($tests->first()) ? '':$tests->first()->requested_by }}
+		@endif
+		</td>
+		<td colspan="2"><strong>Contact</strong></td>
 		<td colspan="2">
 		@if(isset($tests))
 			{{ is_null($tests->first()) ? '':$tests->first()->requested_by }}
@@ -64,15 +72,16 @@
 <br>
 <table style="border-bottom: 1px solid #cecfd5;">
 		<tr>
-			<th colspan="6">Lab Reception</th>
+			<th colspan="6"><b>Lab Reception</b></th>
 		</tr>
 </table>
 <table style="border-bottom: 1px solid #cecfd5;">
 		<tr>
 			<td colspan="2"><b>Specimen Type</b></td>
 			<td colspan="2"><b>Received By</b></td>
+			<td colspan="2"><b>Date Collected</b></td>
 			<td colspan="2"><b>Date Received</b></td>
-			<td colspan="2"><b>{{ trans('messages.specimen-status')}}</b></td>
+			<!-- <td colspan="2"><b>{{ trans('messages.specimen-status')}}</b></td> -->
 			<td colspan="3"><b>{{ Lang::choice('messages.test-category', 2)}}</b></td>
 			<td colspan="2"><b>Tests Requested</b></td>
 		</tr>
@@ -84,15 +93,18 @@
 					@if($test->specimen->specimen_status_id == UnhlsSpecimen::NOT_COLLECTED)
 						<td colspan="2"></td>
 						<td colspan="2"></td>
-						<td colspan="2">{{trans('messages.specimen-not-collected')}}</td>
+						<td colspan="2"></td>
+						<!-- <td colspan="2">{{trans('messages.specimen-not-collected')}}</td> -->
 					@elseif($test->specimen->specimen_status_id == UnhlsSpecimen::ACCEPTED)
 						<td colspan="2">{{$test->specimen->acceptedBy->name}}</td>
+						<td colspan="2">{{$test->specimen->time_collected}}</td>
 						<td colspan="2">{{$test->specimen->time_accepted}}</td>
-						<td colspan="2">{{trans('messages.specimen-accepted')}}</td>
+						<!-- <td colspan="2">{{trans('messages.specimen-accepted')}}</td> -->
 					@elseif($test->test_status_id == UnhlsTest::REJECTED)
 						<td colspan="2">{{$test->specimen->rejectedBy->name}}</td>
+						<td colspan="2">{{$test->specimen->time_collected}}</td>
 						<td colspan="2">{{$test->specimen->time_rejected}}</td>
-						<td colspan="2">{{trans('messages.specimen-rejected')}}</td>
+						<!-- <td colspan="2">{{trans('messages.specimen-rejected')}}</td> -->
 					@endif
 					<td colspan="3">{{ $test->testType->testCategory->name }}</td>
 					<td colspan="2">{{ $test->testType->name }}</td>
@@ -108,7 +120,7 @@
 <br>
 <table  style="border-bottom: 1px solid #cecfd5;">
 	<tr>
-		<th colspan="6">{{trans('messages.test-results')}}</th>
+		<th colspan="6"><b>{{trans('messages.test-results')}}</b></th>
 	</tr>
 </table>
 <table  style="border-bottom: 1px solid #cecfd5;">
@@ -116,7 +128,7 @@
 		<td colspan="2"><b>{{Lang::choice('messages.test-type', 1)}}</b></td>
 		<td colspan="8"><b>{{trans('messages.test-results-values')}}</b></td>
 		<td colspan="2"><b>{{trans('messages.tested-by')}}</b></td>
-		<td colspan="2"><b>Results Entry Date</b></td>
+		<td colspan="2"><b>Report Date</b></td>
 	</tr>
 </table>
 @forelse($tests as $test)
@@ -156,7 +168,7 @@
 				@else
 					<tr>
 						<td colspan="4">
-							<b>Comments:</b> {{ $test->interpretation == '' ? 'N/A' : $test->interpretation }}
+							<b>Comments/Interpretation:</b> {{ $test->interpretation == '' ? 'N/A' : $test->interpretation }}
 						</td>
 					</tr>
 				@endif
@@ -247,14 +259,16 @@
 @endforelse
 
 <hr>
-
 <table>
-	<tr><td></td></tr>
+	<tr><td></td><td></td></tr>
 	<tr>
 		<td>
-			<strong>Approved By : </strong>
+			<strong>Reviewed By : </strong>
+			{{ trans('messages.signature-holder') }}
+		</td>
+		<td style="text-align: right">
+			<strong>Authorised By : </strong>
 			{{ trans('messages.signature-holder') }}
 		</td>
 	</tr>
-	<!-- <tr><td><u><strong></strong></u></td></tr> -->
 </table>
