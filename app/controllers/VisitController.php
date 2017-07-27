@@ -10,7 +10,85 @@ class VisitController extends \BaseController {
 	public function index()
 	{
 
-// todo: by default only show the complete
+/*
+- receptionist will just create the visit(request) which will appear on the doctor's queue
+- doctor
+
+on the side bar show...
+patient queue
+
+new users
+
+receptionist(creates new patient, creates new visit, can delete visit)
+clinician(makes requests on new visits, using a list generated from test menu complete with lab sections, can delete tests if no specimen attached to it yet)
+phlebotomist(accepts specimens on the new visit, can delete specimens)
+technologist(can enter results, can edit results)
+
+
+lists without considering, user
+
+new visits - for doctor, first of the day listed first
+new (visits) requests - (with specimen not recieved)for phlebotomist, first of the day listed first, action = send to clinician
+new (visits) requests - (with specimen recieved) for technologist, first of the day listed first
+new (tests pending) requests - (with specimen recieved) for technologist, first of the day listed first
+new (tests started) requests - first of the day listed first
+new (tests completed) requests - first of the day listed first
+new (tests verified) requests - first of the day listed first
+
+	patients
+
+
+visit
+if receptionist
+	view new visits of the day
+	create new visits of the day
+if clinician
+	view new visits of the day
+	create new tests of the day
+if phlebotomist
+	view new visits of the day with test requests
+	create new specimens
+if technologist
+	view new visits with test requests and specimens
+
+
+visit to have new statuses
+request_pending
+request_made
+sample_collected
+report_ready
+
+
+the phlebotomist will recieved the specimen and attach it to test of that patient that has no specimen
+
+if receptionist
+	new visits
+if clinician
+	new visits
+if phlebotomist
+	new requests
+if technologist
+	Lab Requests
+	Lab Reports
+
+	all tests
+	pending tests
+	started tests
+	completed tests
+	veriffied tests
+
+
+
+list namin for the different users
+
+on registering a patient auto generate a visit, and tell the plebotomist
+
+
+the search should work depending on permissions of the fellow
+- a drop down of where he is working and say you don't have access rights for this page please contact A-LIS focal person
+
+*/
+
 // todo: unless searched
 		$visits = UnhlsVisit::orderBy('id', 'desc');
 
@@ -18,6 +96,10 @@ class VisitController extends \BaseController {
 		$visits = $visits->paginate(Config::get('kblis.page-items'));
 
 		return View::make('visit.index')->with('visits', $visits);
+
+
+
+
 	}
 
 
