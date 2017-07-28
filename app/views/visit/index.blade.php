@@ -11,7 +11,7 @@
     @endif
 
     <div class='container-fluid'>
-        {{ Form::open(array('route' => array('labrequest.index'))) }}
+        {{ Form::open(array('route' => array('visit.index'))) }}
             <div class='row'>
                 <div class='col-md-3'>
                     <div class='col-md-2'>
@@ -57,7 +57,7 @@
         <div class="panel-heading ">
             <div class="container-fluid">
                 <div class="row less-gutter">
-                    <span class="glyphicon glyphicon-filter"></span>{{ trans($visitStatus[Input::get('visit_status')]) }}
+                    <span class="glyphicon glyphicon-filter"></span>
                 </div>
             </div>
         </div>
@@ -98,49 +98,46 @@
                         <td>{{ $visit->visit_type }}</td> <!--Visit Type -->
                         <td>
 
-                        @if(Auth::user()->can('request_test'))<!-- for physician -->
-                        <a class="btn btn-sm btn-warning" href="javascript:void(0)"
+                        @if(Auth::user()->can('request_test'))<!-- for clinician -->
+                        <a class="btn btn-sm btn-warning" href="URL::route('labrequest.create',[$visit->id])"
                             data-toggle="modal" data-target="#new-test-modal-unhls">
                             <span class="glyphicon glyphicon-plus-sign"></span>
                             Make Tests Request
                         </a>
                         @endif
-
                         <!-- can request for tests --><!-- for phlebotomist -->
-                        <a class="btn btn-sm btn-info" href="javascript:void(0)"
+                        <a class="btn btn-sm btn-info" href="URL::route('receivespecimen.create',[$visit->id])"
                             data-toggle="modal" data-target="#new-test-modal-unhls">
                             <span class="glyphicon glyphicon-plus-sign"></span>
                             Recieve Specimen
                         </a>
-
-<!--
-                         <a class="btn btn-sm btn-info" href="javascript:void(0)"
-                            data-toggle="modal" data-target="#new-test-modal-unhls">
-                            <span class="glyphicon glyphicon-plus-sign"></span>
-                            Reject Specimen
-                        </a>
- -->
-                        <!-- show the testtype (uses the show method found at GET /labrequest/{id} -->
-                        <a class="btn btn-sm btn-success" href="{{ URL::to("labrequest/" . $visit->id) }}">
+                        <!-- for all but with control on content -->
+                        <a class="btn btn-sm btn-success" href="{{ URL::route('visit.show',[$visit->id]) }}">
                             <span class="glyphicon glyphicon-eye-open"></span>
                             {{trans('messages.view')}}
                         </a>
-
-                        <!-- edit this testtype (uses the edit method found at GET /labrequest/{id}/edit -->
-                        <a class="btn btn-sm btn-info" href="{{ URL::to("labrequest/" . $visit->id . "/edit") }}" >
+                        <!-- for receptionist -->
+                        <a class="btn btn-sm btn-info" href="{{ URL::route('appointment.edit',[$visit->id]) }}" >
                             <span class="glyphicon glyphicon-edit"></span>
                             {{trans('messages.edit')}}
+                        </a>
+                        <!-- can request for tests --><!-- for phlebotomist -->
+                        <a class="btn btn-sm btn-info" href="{{ URL::route('receivespecimen.edit',[$visit->id]) }}" >
+                            <span class="glyphicon glyphicon-edit"></span>
+                            Edit Specimen
+                        </a>
+                        <!-- for clinician -->
+                        <a class="btn btn-sm btn-info" href="{{ URL::route('labrequest.edit',[$visit->id]) }}" >
+                            <span class="glyphicon glyphicon-edit"></span>
+                            Edit Tests Request
                         </a>
                         <!-- delete this testtype (uses the delete method found at GET /labrequest/{id}/delete -->
                         <button class="btn btn-sm btn-danger delete-item-link"
                             data-toggle="modal" data-target=".confirm-delete-modal"
-                            data-id='{{ URL::to("labrequest/" . $visit->id . "/delete") }}'>
+                            data-id="{{ URL::route('appointment.destroy',[$visit->id])}}">
                             <span class="glyphicon glyphicon-trash"></span>
                             {{trans('messages.delete')}}
                         </button>
-
-
-
                         </td><!-- ACTION BUTTONS -->
 
                         <td class='test-status'>

@@ -14,7 +14,7 @@ class UnhlsTest extends Eloquent
 	/**
 	 * Test status constants
 	 */
-	const NOT_RECEIVED = 1;
+	const SPECIMEN_NOT_RECEIVED = 1;
 	const PENDING = 2;
 	const STARTED = 3;
 	const COMPLETED = 4;
@@ -130,13 +130,13 @@ class UnhlsTest extends Eloquent
 	}
 
 	/**
-	 * Helper function: check if the Test status is NOT_RECEIVED
+	 * Helper function: check if the Test status is SPECIMEN_NOT_RECEIVED
 	 *
 	 * @return boolean
 	 */
 	public function isNotReceived()
 	{
-		if($this->test_status_id == UnhlsTest::NOT_RECEIVED)
+		if($this->test_status_id == UnhlsTest::SPECIMEN_NOT_RECEIVED)
 			return true;
 		else 
 			return false;

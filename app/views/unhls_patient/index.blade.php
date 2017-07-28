@@ -13,9 +13,8 @@
 			{{ Form::open(array('route' => array('unhls_patient.index'), 'class'=>'form-inline',
 				'role'=>'form', 'method'=>'GET')) }}
 				<div class="form-group">
-
-				    {{ Form::label('search', "search", array('class' => 'sr-only')) }}
-		            {{ Form::text('search', Input::get('search'), array('class' => 'form-control test-search')) }}
+					{{ Form::label('search', "search", array('class' => 'sr-only')) }}
+					{{ Form::text('search', Input::get('search'), array('class' => 'form-control test-search')) }}
 				</div>
 				<div class="form-group">
 					{{ Form::button("<span class='glyphicon glyphicon-search'></span> ".trans('messages.search'), 
@@ -26,7 +25,7 @@
 	</div>
 </div>
 
-	<br>
+<br>
 
 @if (Session::has('message'))
 	<div class="alert alert-info">{{ trans(Session::get('message')) }}</div>
@@ -71,6 +70,15 @@
 					<td>{{ $patient->village_residence }}</td>
 					<td>{{ $patient->village_workplace  }}</td>
 					<td>
+
+						<!-- can create visit -->
+						<a class="btn btn-sm btn-primary" 
+							href="{{ URL::route('visit.create', array('patient_id' => $patient->id)) }}">
+							<span class="glyphicon glyphicon-plus-sign"></span>
+							Make Appointment
+						</a>
+						<!-- can create visit -->
+
 						@if(Auth::user()->can('request_test'))
 						<a class="btn btn-sm btn-info" 
 							href="{{ URL::route('unhls_test.create', array('patient_id' => $patient->id)) }}">

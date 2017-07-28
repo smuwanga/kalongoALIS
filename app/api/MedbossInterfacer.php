@@ -71,7 +71,7 @@ class MedbossInterfacer implements InterfacerInterface {
             // We'll save the Specimen in a transaction a little bit below
             $test = new Test();
             $test->test_type_id = $testTypeId;
-            $test->test_status_id = Test::NOT_RECEIVED;
+            $test->test_status_id = Test::SPECIMEN_NOT_RECEIVED;
             $test->created_by = User::EXTERNAL_SYSTEM_USER; //Created by external system 0
             $test->requested_by = $labRequest->DoctorRequesting;
             $test->external_id = $labRequest->RequestID;

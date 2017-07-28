@@ -42,6 +42,24 @@ class SeedUpdater extends Command {
         VisitStatus::create(["name" => "test-request-made"]);
         VisitStatus::create(["name" => "samples-collected"]);
         VisitStatus::create(["name" => "tests-completed"]);
+/*
+physicians, receptionist and phlebotomist
+
+add roles
+clinician
+phlebotomist
+
+add permissions
+create visit
+request tests
+receive specimen
+
+assign permissions accordingly
+receptionist - create visit
+clinicians - request tests
+phlebotomist - receive specimen
+
+*/
     }
 
     /**

@@ -538,10 +538,10 @@ class TestDataSeeder extends DatabaseSeeder
                 "visit_id" => $visits[rand(0,count($visits)-1)]->id,
                 "test_type_id" => $testTypeBS->id,//BS for MPS
                 "specimen_id" => $this->createSpecimen(
-                        UnhlsTest::NOT_RECEIVED, UnhlsSpecimen::NOT_COLLECTED,
+                        UnhlsTest::SPECIMEN_NOT_RECEIVED, UnhlsSpecimen::NOT_COLLECTED,
                         SpecimenType::all()->last()->id,
                         $users[rand(0, count($users)-1)]->id),
-                "test_status_id" => UnhlsTest::NOT_RECEIVED,
+                "test_status_id" => UnhlsTest::SPECIMEN_NOT_RECEIVED,
                 "requested_by" => "Dr. Abou Meyang",
                 "created_by" => $users[rand(0, count($users)-1)]->id,
             )

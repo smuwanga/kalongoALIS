@@ -100,7 +100,7 @@ the search should work depending on permissions of the fellow
 
 		// todays date overriding any input, put according to role of user
 		// $dateFrom = date('Y-m-d');
-		// $dateFrom = date('2017-07-04');
+$dateFrom = date('2017-07-04');
 		// $dateFrom = date('2017-07-10 00:00:00');
 		// Log::info($dateFrom);
 		// $dateTo = date('Y-m-d');
@@ -149,6 +149,17 @@ the search should work depending on permissions of the fellow
 					->withInput($input);
 	}
 
+/*
+new functions functions
+create visit
+store visit
+requestTest
+requestTestStore
+receiveSpecimen
+receiveSpecimenStore
+show visit
+- list tests
+*/
 
 	/**
 	 * Show the form for creating a new resource.
@@ -183,7 +194,7 @@ the search should work depending on permissions of the fellow
 		$patient = UnhlsPatient::find($patientID);
 
 		//Load Test Create View
-		return View::make('visit.create')
+		return View::make('visit.appointment.create')
 					->with('collectionDate', $collectionDate)
 					->with('receptionDate', $receptionDate)
 					->with('specimenType', $specimenTypes)
@@ -283,7 +294,7 @@ the search should work depending on permissions of the fellow
 	 */
 	public function show($id)
 	{
-		//
+		// list all information on the visit and permission to access them
 	}
 
 
@@ -418,5 +429,236 @@ the search should work depending on permissions of the fellow
 	public function destroy($id)
 	{
 		//
+	}
+
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return Response
+	 */
+	public function requestTestCreate($visitID)
+	{
+		//Create a Lab categories Array
+		$categories = ['Select Lab Section']+TestCategory::lists('name', 'id');
+
+		$visit = UnhlsVisit::find($visitID);
+
+		//Load Test Create View
+		return View::make('visit.request.create')
+					->with('visit', $visit)
+					->with('testCategory', $categories)
+					->with('ward', $wards);
+	}
+
+
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @return Response
+	 */
+	public function requestTestStore($visitId)
+	{
+		//Create New Test
+		$rules = array(
+			// 'visit_type' => 'required',
+			'physician' => 'required',
+			'testtypes' => 'required',
+		);
+		$validator = Validator::make(Input::all(), $rules);
+
+		// process the login
+		if ($validator->fails()) {
+			return Redirect::route('visit.create', 
+				array(Input::get('patient_id')))->withInput()->withErrors($validator);
+		} else {
+
+			// $visitType = ['Out-patient','In-patient'];
+			$activeTest = array();
+
+			/*
+			 * - Create a visit
+			 * - Fields required: visit_type, patient_id
+			 */
+			$visit = UnhlsVisit::find($visitId);
+			// $visit->patient_id = Input::get('patient_id');
+			// $visit->visit_type = $visitType[Input::get('visit_type')];
+			// $visit->ward_id = Input::get('ward_id');
+			// $visit->bed_no = Input::get('bed_no');
+			$visit->status_id = Visit::TEST_REQUEST_MADE;
+			$visit->save();
+
+			$therapy = new Therapy;
+			$therapy->patient_id = Input::get('patient_id');
+			$therapy->visit_id = $visit->id;
+			$therapy->previous_therapy = Input::get('previous_therapy');
+			$therapy->current_therapy = Input::get('current_therapy');
+			$therapy->clinical_notes = Input::get('clinical_notes');
+			$therapy->clinician = Input::get('clinician');
+			$therapy->contact = Input::get('contact');
+			$therapy->save();
+
+			/*
+			 * - Create tests requested
+			 * - Fields required: visit_id, test_type_id, specimen_id, test_status_id, created_by, requested_by
+			 */
+            $testLists = Input::get('test_list');
+            if(is_array($testLists)){
+                foreach ($testLists as $testList) {
+                    // Create Specimen - specimen_type_id, accepted_by, referred_from, referred_to
+                    /*
+                    $specimen = new UnhlsSpecimen;
+                    $specimen->specimen_type_id = $testList['specimen_type_id'];
+                    $specimen->accepted_by = Auth::user()->id;
+                    $specimen->time_collected = Input::get('collection_date');
+                    $specimen->time_accepted = Input::get('reception_date');
+                    $specimen->save();
+                    */
+                    foreach ($testList['test_type_id'] as $id) {
+                        $testTypeID = (int)$id;
+
+                        $test = new UnhlsTest;
+                        $test->visit_id = $visit->id;
+                        $test->test_type_id = $testTypeID;
+                        // $test->specimen_id = $specimen->id;
+                        $test->test_status_id = UnhlsTest::SPECIMEN_NOT_RECEIVED;
+                        $test->created_by = Auth::user()->id;
+                        $test->requested_by = Input::get('clinician');
+                        $test->save();
+
+                        // $activeTest[] = $test->id;
+                    }
+                }
+            }
+
+			$url = Session::get('SOURCE_URL');
+			// todo: return the relevant sauccess message, also make the clinician able to view with relevant details
+			return Redirect::to($url)->with('message', 'messages.success-creating-test');
+					// ->with('activeTest', $activeTest);
+		}
+
+	}
+
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return Response
+	 */
+	public function receiveSpecimenCreate($visitID)
+	{
+		// if ($visitID == 0) {
+			// $visitID = Input::get('patient_id');
+		// }
+		$visit = UnhlsVisit::find($visitID);
+		//Create a Lab categories Array
+		$categories = ['Select Lab Section']+TestCategory::lists('name', 'id');
+		// $wards = ['Select Sample Origin']+Ward::lists('name', 'id');
+
+		// sample collection default details
+		$now = new DateTime();
+		$collectionDate = $now->format('Y-m-d H:i');
+		$receptionDate = $now->format('Y-m-d H:i');
+
+/*		$fromRedirect = Session::pull('TEST_CATEGORY');
+
+		if($fromRedirect){
+			$input = Session::get('TEST_CATEGORY');
+		}else{
+			$input = Input::except('_token');
+		}*/
+
+		$specimenTypes = ['select Specimen Type']+SpecimenType::lists('name', 'id');
+
+		// $patient = UnhlsPatient::find($patientID);
+
+		//Load Test Create View
+		return View::make('visit.specimen.create')
+					->with('collectionDate', $collectionDate)
+					->with('receptionDate', $receptionDate)
+					->with('specimenTypes', $specimenTypes)
+					->with('visit', $visit);
+					// ->with('patient', $patient)
+					// ->with('testCategory', $categories)
+					// ->with('ward', $wards);
+	}
+
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @return Response
+	 */
+	public function receiveSpecimenStore($visitID)
+	{
+		//Create New Test
+		$rules = array(
+			'collection_date' => 'required',
+			'reception_date' => 'required',
+			// 'testtypes' => 'required',
+		);
+		$validator = Validator::make(Input::all(), $rules);
+
+		// process the login
+		if ($validator->fails()) {
+			return Redirect::route('visit.create', 
+				array(Input::get('patient_id')))->withInput()->withErrors($validator);
+		} else {
+
+			/*$visitType = ['Out-patient','In-patient'];
+			$activeTest = array();*/
+
+			/*
+			 * - Create a visit
+			 * - Fields required: visit_type, patient_id
+			 */
+			$visit = UnhlsVisit::find($visitID);
+			/*$visit->patient_id = Input::get('patient_id');
+			$visit->visit_type = $visitType[Input::get('visit_type')];
+			$visit->ward_id = Input::get('ward_id');
+			$visit->bed_no = Input::get('bed_no');
+			$visit->save();*/
+
+			/*$therapy = new Therapy;
+			$therapy->patient_id = Input::get('patient_id');
+			$therapy->visit_id = $visit->id;
+			$therapy->previous_therapy = Input::get('previous_therapy');
+			$therapy->current_therapy = Input::get('current_therapy');
+			$therapy->save();*/
+
+			/*
+			 * - Create tests requested
+			 * - Fields required: visit_id, test_type_id, specimen_id, test_status_id, created_by, requested_by
+			 */
+            $testLists = Input::get('test_list');
+            if(is_array($testLists)){
+                foreach ($testLists as $testList) {
+                    // Create Specimen - specimen_type_id, accepted_by, referred_from, referred_to
+                    $specimen = new UnhlsSpecimen;
+                    $specimen->specimen_type_id = $testList['specimen_type_id'];
+                    $specimen->accepted_by = Auth::user()->id;
+                    $specimen->time_collected = Input::get('collection_date');
+                    $specimen->time_accepted = Input::get('reception_date');
+                    $specimen->save();
+                    foreach ($testList['test_id'] as $id) {
+                        $testID = (int)$id;
+
+                        $test = UnhlsTest::find($testID);
+                        // $test->visit_id = $visit->id;
+                        // $test->test_type_id = $testTypeID;
+                        $test->specimen_id = $specimen->id;
+                        $test->test_status_id = UnhlsTest::PENDING;
+                        // $test->created_by = Auth::user()->id;
+                        // $test->requested_by = Input::get('physician');
+                        $test->save();
+
+                        // $activeTest[] = $test->id;
+                    }
+                }
+            }
+
+			$url = Session::get('SOURCE_URL');
+			
+			return Redirect::to($url)->with('message', 'messages.success-creating-test');
+					// ->with('activeTest', $activeTest);
+		}
+
 	}
 }

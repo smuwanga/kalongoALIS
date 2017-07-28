@@ -160,10 +160,70 @@ Route::group(array("before" => "auth"), function()
         "as"   => "unhls_test.create",
         "uses" => "UnhlsTestController@create"
     ));
-    Route::any("/labrequest", array(
-        "as"   => "labrequest.index",
+    /*Visit Management*/
+    Route::any("/visit", array(
+        "as"   => "visit.index",
         "uses" => "VisitController@index"
     ));
+    Route::get("/visit/show", array(
+        "as"   => "visit.show",
+        "uses" => "VisitController@show"
+    ));
+    Route::get("/appointment/create", array(
+        "as"   => "appointment.create",
+        "uses" => "VisitController@create"
+    ));
+    Route::post("/appointment/store", array(
+        "as"   => "appointment.store",
+        "uses" => "VisitController@store"
+    ));
+    Route::get("/appointment/edit", array(
+        "as"   => "appointment.edit",
+        "uses" => "VisitController@edit"
+    ));
+    Route::any("/appointment/update", array(
+        "as"   => "appointment.update",
+        "uses" => "VisitController@update"
+    ));
+    Route::get("/appointment/destroy", array(
+        "as"   => "appointment.destroy",
+        "uses" => "VisitController@destroy"
+    ));
+
+    Route::get("/labrequest/create", array(
+        "as"   => "labrequest.create",
+        "uses" => "VisitController@requestTestCreate"
+    ));
+    Route::post("/labrequest/store", array(
+        "as"   => "labrequest.store",
+        "uses" => "VisitController@requestTestStore"
+    ));
+    Route::get("/labrequest/edit", array(
+        "as"   => "labrequest.edit",
+        "uses" => "VisitController@requestTestEdit"
+    ));
+    Route::put("/labrequest/update", array(
+        "as"   => "labrequest.update",
+        "uses" => "VisitController@requestTestUpdate"
+    ));
+
+    Route::get("/receivespecimen/create", array(
+        "as"   => "receivespecimen.create",
+        "uses" => "VisitController@receiveSpecimenCreate"
+    ));
+    Route::post("/receivespecimen/store", array(
+        "as"   => "receivespecimen.store",
+        "uses" => "VisitController@receiveSpecimenStore"
+    ));
+    Route::get("/receivespecimen/edit", array(
+        "as"   => "receivespecimen.edit",
+        "uses" => "VisitController@receiveSpecimenEdit"
+    ));
+    Route::put("/receivespecimen/update", array(
+        "as"   => "receivespecimen.update",
+        "uses" => "VisitController@receiveSpecimenUpdate"
+    ));
+
     // Route::resource('labrequest', 'VisitController');
     Route::post("/unhls_test/savenewtest", array(
         "before" => "checkPerms:request_test",

@@ -57,7 +57,7 @@ class ReportController extends \BaseController {
 		}
 		//	Begin filters - include/exclude pending tests
 		if($pending){
-			$tests=$tests->where('unhls_tests.test_status_id', '!=', UnhlsTest::NOT_RECEIVED);
+			$tests=$tests->where('unhls_tests.test_status_id', '!=', UnhlsTest::SPECIMEN_NOT_RECEIVED);
 		}
 		else{
 			$tests = $tests->whereIn('unhls_tests.test_status_id', [UnhlsTest::COMPLETED, UnhlsTest::VERIFIED]);
@@ -299,7 +299,7 @@ class ReportController extends \BaseController {
 		//Begin test records
 		else
 		{
-			$tests = UnhlsTest::whereNotIn('test_status_id', [UnhlsTest::NOT_RECEIVED]);
+			$tests = UnhlsTest::whereNotIn('test_status_id', [UnhlsTest::SPECIMEN_NOT_RECEIVED]);
 			
 			/*Filter by test category*/
 			if($testCategory&&!$testType){
