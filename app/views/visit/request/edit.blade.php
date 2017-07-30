@@ -5,7 +5,8 @@
 		<ol class="breadcrumb">
 		  <li><a href="{{{URL::route('user.home')}}}">{{trans('messages.home')}}</a></li>
 		  <li>
-		  	<a href="{{ URL::route('unhls_test.index') }}">{{ Lang::choice('messages.test',2) }}</a>
+		  	<a href="{{ URL::route('visit.index') }}">Visits</a>
+		  	<!-- <a href="{{ URL::route('unhls_test.index') }}">{{ Lang::choice('messages.test',2) }}</a> -->
 		  </li>
 		  <li class="active">{{trans('messages.new-test')}}</li>
 		</ol>
@@ -14,14 +15,7 @@
 		<div class="panel-heading ">
             <div class="container-fluid">
                 <div class="row less-gutter">
-                    <div class="col-md-11">
-						<span class="glyphicon glyphicon-adjust"></span>{{trans('messages.new-test')}}
-                    </div>
-                    <div class="col-md-1">
-                        <a class="btn btn-sm btn-primary pull-right" href="#" onclick="window.history.back();return false;"
-                            alt="{{trans('messages.back')}}" title="{{trans('messages.back')}}">
-                            <span class="glyphicon glyphicon-backward"></span></a>
-                    </div>
+					<span class="glyphicon glyphicon-adjust"></span>{{trans('messages.new-test')}}
                 </div>
             </div>
 		</div>
@@ -32,7 +26,7 @@
 					{{ HTML::ul($errors->all()) }}
 				</div>
 			@endif
-			{{ Form::open(array('route' => 'unhls_test.saveNewTest', 'id' => 'form-new-test')) }}
+			{{ Form::open(array('route' => ['labrequest.edit', $visit->id], 'id' => 'form-new-test')) }}
 			<input type="hidden" name="_token" value="{{ Session::token() }}"><!--to be removed function for csrf_token -->
 				<div class="container-fluid">
 					<div class="row">
@@ -42,12 +36,16 @@
 									<h3 class="panel-title">{{trans("messages.patient-details")}}</h3>
 								</div>
 								<div class="panel-body inline-display-details">
-									<span><strong>{{trans("messages.patient-number")}}</strong> {{ $patient->patient_number }}</span>
-							<!--		<span><strong>{{ trans('messages.nin') }}</strong> {{ $patient->nin }}</span> -->
-									<span><strong>{{ Lang::choice('messages.name',1) }}</strong> {{ $patient->name }}</span>
-									<span><strong>{{trans("messages.age")}}</strong> {{ $patient->getAge() }}</span>
+									<span><strong>{{trans("messages.patient-number")}}</strong> {{ $visit->patient->patient_number }}</span>
+									<span><strong>{{ Lang::choice('messages.name',1) }}</strong> {{ $visit->patient->name }}</span>
+									<span><strong>{{trans("messages.age")}}</strong> {{ $visit->patient->getAge() }}</span>
 									<span><strong>{{trans("messages.gender")}}</strong>
-										{{ $patient->gender==0?trans("messages.male"):trans("messages.female") }}</span>
+										{{ $visit->patient->gender==0?trans("messages.male"):trans("messages.female") }}</span>
+									<span><strong>Visit Type</strong> {{ $visit->visit_type }}</span>
+									@if($visit->visit_type == 'In-patient')
+										<span><strong>Ward</strong> {{ $visit->ward->name }}</span>
+									@endif
+									<span><strong>Bed No</strong> {{ $visit->bed_no }}</span>
 								</div>
 							</div>
 							<div class="form-group">

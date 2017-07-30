@@ -5,7 +5,8 @@
 		<ol class="breadcrumb">
 		  <li><a href="{{{URL::route('user.home')}}}">{{trans('messages.home')}}</a></li>
 		  <li>
-		  	<a href="{{ URL::route('unhls_test.index') }}">{{ Lang::choice('messages.test',2) }}</a>
+		  	<a href="{{ URL::route('visit.index') }}">Visits</a>
+		  	<!-- <a href="{{ URL::route('unhls_test.index') }}">{{ Lang::choice('messages.test',2) }}</a> -->
 		  </li>
 		  <li class="active">{{trans('messages.new-test')}}</li>
 		</ol>
@@ -17,11 +18,6 @@
                     <div class="col-md-11">
 						<span class="glyphicon glyphicon-adjust"></span>{{trans('messages.new-test')}}
                     </div>
-                    <div class="col-md-1">
-                        <a class="btn btn-sm btn-primary pull-right" href="#" onclick="window.history.back();return false;"
-                            alt="{{trans('messages.back')}}" title="{{trans('messages.back')}}">
-                            <span class="glyphicon glyphicon-backward"></span></a>
-                    </div>
                 </div>
             </div>
 		</div>
@@ -32,7 +28,7 @@
 					{{ HTML::ul($errors->all()) }}
 				</div>
 			@endif
-			{{ Form::open(array('route' => 'unhls_test.saveNewTest', 'id' => 'form-new-test')) }}
+			{{ Form::open(array('route' => ['appointment.edit',$visit->id], 'id' => 'form-new-test')) }}
 			<input type="hidden" name="_token" value="{{ Session::token() }}"><!--to be removed function for csrf_token -->
 				<div class="container-fluid">
 					<div class="row">
@@ -72,100 +68,6 @@
 												{{ Form::label('bed_no','Bed No:', array('text-align' => 'right')) }}
 												{{ Form::text('bed_no', Input::old('bed_no'), array('class' => 'form-control')) }}
 										</div>
-										<div class="form-group">
-											{{ Form::label('clinical_notes','Clinical Notes') }}
-											{{ Form::textarea('clinical_notes', Input::old('clinical_notes'), array('class' => 'form-control')) }}
-										</div>
-									</div>
-									<div class="col-md-6">
-										<div class="form-group">
-											{{ Form::label('previous_therapy','Previous Therapy') }}
-											{{ Form::text('previous_therapy', Input::old('previous_therapy'), array('class' => 'form-control')) }}
-										</div>
-										<div class="form-group">
-											{{ Form::label('current_therapy','Current Therapy', array('text-align' => 'right')) }}
-											{{ Form::text('current_therapy', Input::old('current_therapy'), array('class' => 'form-control')) }}
-										</div>
-										<div class="form-group">
-											{{ Form::label('physician', 'Test Requested By') }}
-											{{Form::text('physician', Auth::user()->name, array('class' => 'form-control'))}}
-										</div>
-									</div>
-									<div class="col-md-6">
-										<div class="form-group">
-											{{ Form::label('cadre', 'Cadre') }}
-											{{Form::text('cadre', Auth::user()->designation, array('class' => 'form-control'))}}
-										</div>
-										<div class="form-group">
-											{{ Form::label('phone_contact', 'Phone Contact') }}
-											{{Form::text('phone_contact', Input::old('phone_contact'), array('class' => 'form-control'))}}
-										</div>
-										<div class="form-group">
-											{{ Form::label('email', 'E-mail') }}
-											{{Form::email('email', Auth::user()->email, array('class' => 'form-control'))}}
-										</div>
-									</div>
-									<div class="form-pane panel panel-default">
-										<div class="col-md-6">
-											<div class="form-group">
-												{{Form::label('specimen_type', 'Sample Type')}}
-												{{ Form::select('specimen_type', $specimenType,
-												Input::get('specimenType'),
-												['class' => 'form-control specimen-type']) }}
-											</div>
-											<div class="form-group">
-												<label for="collection_date">Time of Sample Collection</label>
-												<input class="form-control"
-													data-format="YYYY-MM-DD HH:mm"
-													data-template="DD / MM / YYYY HH : mm"
-													name="collection_date"
-													type="text"
-													id="collection-date"
-													value="{{$collectionDate}}">
-											</div>
-											<div class="form-group">
-												<label for="reception_date">Time Sample was Received in Lab</label>
-												<input class="form-control"
-													data-format="YYYY-MM-DD HH:mm"
-													data-template="DD / MM / YYYY HH : mm"
-													name="reception_date"
-													type="text"
-													id="reception-date"
-													value="{{$receptionDate}}">
-											</div>
-											<div class="form-group">
-										        {{Form::label('test_type_category', 'Lab Section')}}
-										    	{{ Form::select('test_type_category', $testCategory,
-										        Input::get('testCategory'),
-										        ['class' => 'form-control test-type-category']) }}
-											</div>
-										</div>
-										<div class="col-md-6 test-type-list">
-										</div>
-							            <div class="col-md-12">
-								            <a class="btn btn-default add-test-to-list"
-								            	href="javascript:void(0);"
-								                data-measure-id="0"
-								                data-new-measure-id="">
-								            <span class="glyphicon glyphicon-plus-sign"></span>Add Test to List</a>
-							            </div>
-									</div>
-									<div class="form-pane panel panel-default test-list-panel">
-							            <div class="col-md-12">
-								            <div class="col-md-11">
-								                <div class="col-md-4">
-													<b>Specimen</b>
-								                </div>
-								                <div class="col-md-4">
-													<b>Lab Section</b>
-								                </div>
-								                <div class="col-md-4">
-													<b>Test</b>
-								                </div>
-								            </div>
-								            <div class="col-md-1">
-								            </div>
-							            </div>
 									</div>
 									</div>
 								</div>
@@ -181,24 +83,4 @@
 			{{ Form::close() }}
 		</div>
 	</div>
-
-<div class="hidden test-list-loader">
-    <div class="col-md-12 new-test-list-row">
-        <div class="col-md-11">
-            <div class="col-md-4 specimen-name">
-            </div>
-            <div class="col-md-4 test-type-category-name">
-            </div>
-            <div class="col-md-4 test-type-name">
-                <input class="specimen-type-id" type="hidden">
-                <input class="test-type-id" type="hidden">
-            </div>
-        </div>
-        <div class="col-md-1">
-			<!-- todo: not functional, needs a fix before uncommenting -->
-            <!-- <button class="col-md-12 delete-test-from-list close" aria-hidden="true" type="button"
-                title="{{trans('messages.delete')}}">×</button> -->
-        </div>
-    </div><!-- Test List Item -->
-</div><!-- Test List Item Loader-->
 @stop

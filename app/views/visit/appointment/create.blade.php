@@ -5,7 +5,8 @@
 		<ol class="breadcrumb">
 		  <li><a href="{{{URL::route('user.home')}}}">{{trans('messages.home')}}</a></li>
 		  <li>
-		  	<a href="{{ URL::route('unhls_test.index') }}">{{ Lang::choice('messages.test',2) }}</a>
+		  	<a href="{{ URL::route('visit.index') }}">Visits</a>
+		  	<!-- <a href="{{ URL::route('unhls_test.index') }}">{{ Lang::choice('messages.test',2) }}</a> -->
 		  </li>
 		  <li class="active">{{trans('messages.new-test')}}</li>
 		</ol>
@@ -14,14 +15,7 @@
 		<div class="panel-heading ">
             <div class="container-fluid">
                 <div class="row less-gutter">
-                    <div class="col-md-11">
-						<span class="glyphicon glyphicon-adjust"></span>{{trans('messages.new-test')}}
-                    </div>
-                    <div class="col-md-1">
-                        <a class="btn btn-sm btn-primary pull-right" href="#" onclick="window.history.back();return false;"
-                            alt="{{trans('messages.back')}}" title="{{trans('messages.back')}}">
-                            <span class="glyphicon glyphicon-backward"></span></a>
-                    </div>
+					<span class="glyphicon glyphicon-adjust"></span>{{trans('messages.new-test')}}
                 </div>
             </div>
 		</div>
@@ -32,7 +26,7 @@
 					{{ HTML::ul($errors->all()) }}
 				</div>
 			@endif
-			{{ Form::open(array('route' => 'unhls_test.saveNewTest', 'id' => 'form-new-test')) }}
+			{{ Form::open(array('route' => 'appointment.create', 'id' => 'form-new-test')) }}
 			<input type="hidden" name="_token" value="{{ Session::token() }}"><!--to be removed function for csrf_token -->
 				<div class="container-fluid">
 					<div class="row">

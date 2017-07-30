@@ -84,6 +84,16 @@ on registering a patient auto generate a visit, and tell the plebotomist
 the search should work depending on permissions of the fellow
 - a drop down of where he is working and say you don't have access rights for this page please contact A-LIS focal person
 
+for
+function requestTestCreate
+function requestTestStore
+function receiveSpecimenCreate
+function receiveSpecimenStore
+
+use the same functions for create and edit, just determine whether it's the first time of a subsequent
+
+but first make creation truly funtional
+
 */
 		$fromRedirect = Session::pull('fromRedirect');
 
@@ -148,18 +158,6 @@ $dateFrom = date('2017-07-04');
 					->with('barcode', $barcode)
 					->withInput($input);
 	}
-
-/*
-new functions functions
-create visit
-store visit
-requestTest
-requestTestStore
-receiveSpecimen
-receiveSpecimenStore
-show visit
-- list tests
-*/
 
 	/**
 	 * Show the form for creating a new resource.
@@ -294,7 +292,10 @@ show visit
 	 */
 	public function show($id)
 	{
-		// list all information on the visit and permission to access them
+		// list tests in the view... perhaps with results for the clinician
+		$visit = UnhlsVisit::find($id);
+		return View::make('visit.show')
+					->with('visit', $visit);
 	}
 
 
@@ -446,8 +447,7 @@ show visit
 		//Load Test Create View
 		return View::make('visit.request.create')
 					->with('visit', $visit)
-					->with('testCategory', $categories)
-					->with('ward', $wards);
+					->with('testCategory', $categories);
 	}
 
 

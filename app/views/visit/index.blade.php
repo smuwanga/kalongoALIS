@@ -97,47 +97,49 @@
                             '.$visit->patient->getAge('Y'). ')'}}</td> <!--Patient Name -->
                         <td>{{ $visit->visit_type }}</td> <!--Visit Type -->
                         <td>
-
-                        @if(Auth::user()->can('request_test'))<!-- for clinician -->
-                        <a class="btn btn-sm btn-warning" href="URL::route('labrequest.create',[$visit->id])"
-                            data-toggle="modal" data-target="#new-test-modal-unhls">
-                            <span class="glyphicon glyphicon-plus-sign"></span>
-                            Make Tests Request
-                        </a>
-                        @endif
-                        <!-- can request for tests --><!-- for phlebotomist -->
-                        <a class="btn btn-sm btn-info" href="URL::route('receivespecimen.create',[$visit->id])"
-                            data-toggle="modal" data-target="#new-test-modal-unhls">
-                            <span class="glyphicon glyphicon-plus-sign"></span>
-                            Recieve Specimen
-                        </a>
-                        <!-- for all but with control on content -->
-                        <a class="btn btn-sm btn-success" href="{{ URL::route('visit.show',[$visit->id]) }}">
-                            <span class="glyphicon glyphicon-eye-open"></span>
-                            {{trans('messages.view')}}
-                        </a>
-                        <!-- for receptionist -->
-                        <a class="btn btn-sm btn-info" href="{{ URL::route('appointment.edit',[$visit->id]) }}" >
-                            <span class="glyphicon glyphicon-edit"></span>
-                            {{trans('messages.edit')}}
-                        </a>
-                        <!-- can request for tests --><!-- for phlebotomist -->
-                        <a class="btn btn-sm btn-info" href="{{ URL::route('receivespecimen.edit',[$visit->id]) }}" >
-                            <span class="glyphicon glyphicon-edit"></span>
-                            Edit Specimen
-                        </a>
-                        <!-- for clinician -->
-                        <a class="btn btn-sm btn-info" href="{{ URL::route('labrequest.edit',[$visit->id]) }}" >
-                            <span class="glyphicon glyphicon-edit"></span>
-                            Edit Tests Request
-                        </a>
-                        <!-- delete this testtype (uses the delete method found at GET /labrequest/{id}/delete -->
-                        <button class="btn btn-sm btn-danger delete-item-link"
-                            data-toggle="modal" data-target=".confirm-delete-modal"
-                            data-id="{{ URL::route('appointment.destroy',[$visit->id])}}">
-                            <span class="glyphicon glyphicon-trash"></span>
-                            {{trans('messages.delete')}}
-                        </button>
+                            @if(Auth::user()->can('request_test'))<!-- for clinician -->
+                                @if($visit->status_id == UnhlsVisit::TEST_REQUEST_PENDING)
+                                <a class="btn btn-sm btn-warning" href="{{ URL::route('labrequest.create',[$visit->id]) }}">
+                                    <span class="glyphicon glyphicon-plus-sign"></span>
+                                    Make Tests Request
+                                </a>
+                                @else
+                                <a class="btn btn-sm btn-info" href="{{ URL::route('labrequest.create',[$visit->id]) }}" >
+                                    <span class="glyphicon glyphicon-edit"></span>
+                                    Edit Tests Request
+                                </a>
+                                @endif
+                            @endif
+                            @if(Auth::user()->can('accept_test_specimen'))<!-- for phlebotomist -->
+                                @if($visit->status_id == UnhlsVisit::TEST_REQUEST_MADE)
+                                <a class="btn btn-sm btn-info" href="{{ URL::route('receivespecimen.create',[$visit->id]) }}">
+                                    <span class="glyphicon glyphicon-plus-sign"></span>
+                                    Recieve Specimen
+                                </a>
+                                @else
+                                <a class="btn btn-sm btn-info" href="{{ URL::route('receivespecimen.create',[$visit->id]) }}" >
+                                    <span class="glyphicon glyphicon-edit"></span>
+                                    Edit Specimen
+                                </a>
+                                @endif
+                            @endif
+                            @if(Auth::user()->can('manage_appointments'))
+                                <a class="btn btn-sm btn-info" href="{{ URL::route('appointment.edit',[$visit->id]) }}" >
+                                    <span class="glyphicon glyphicon-edit"></span>
+                                    Edit Appointment
+                                </a>
+                                <button class="btn btn-sm btn-danger delete-item-link"
+                                    data-toggle="modal" data-target=".confirm-delete-modal"
+                                    data-id="{{ URL::route('appointment.destroy',[$visit->id])}}">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                    Delete Appointment
+                                </button>
+                            @endif
+                            <!-- restrictions are in the view -->
+                            <a class="btn btn-sm btn-success" href="{{ URL::route('visit.show',[$visit->id]) }}">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                {{trans('messages.view')}}
+                            </a>
                         </td><!-- ACTION BUTTONS -->
 
                         <td class='test-status'>
@@ -169,104 +171,6 @@
       
         </div>
     </div>
-
-    <!-- OTHER UI COMPONENTS -->
-    <div class="hidden pending-test-not-collected-specimen">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <span class='label label-info'>
-                        {{trans('messages.pending')}}</span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <span class='label label-default'>
-                        {{trans('messages.specimen-not-collected-label')}}</span>              
-                </div>
-            </div>
-        </div>
-    </div> <!-- /. pending-test-not-collected-specimen -->
-
-    <div class="hidden pending-test-accepted-specimen">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <span class='label label-info'>
-                        {{trans('messages.pending')}}</span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <span class='label label-success'>
-                        {{trans('messages.specimen-accepted-label')}}</span>
-                </div>
-            </div>
-        </div>
-    </div> <!-- /. pending-test-accepted-specimen -->
-
-    <div class="hidden started-test-accepted-specimen">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <span class='label label-warning'>
-                        {{trans('messages.started')}}</span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <span class='label label-success'>
-                        {{trans('messages.specimen-accepted-label')}}</span>
-                </div>
-            </div>
-        </div>
-    </div> <!-- /. started-test-accepted-specimen -->
-
-    <div class=" hidden collect-specimen-button">
-        <a class="btn btn-sm btn-info collect-specimen" href="javascript:void(0)"
-            title="{{trans('messages.collect-specimen-title')}}"
-            data-url="{{ URL::route('unhls_test.collectSpecimen')}}">
-            <span class="glyphicon glyphicon-ambulance"></span>
-            {{trans('messages.collect-specimen')}}
-        </a>
-    </div><!-- /. colllect-specimen button -->
-
-    <div class="hidden accept-button">
-        <a class="btn btn-sm btn-info accept-specimen" href="javascript:void(0)"
-            title="{{trans('messages.accept-specimen-title')}}"
-            data-url="{{ URL::route('unhls_test.acceptSpecimen') }}">
-            <span class="glyphicon glyphicon-thumbs-up"></span>
-            {{trans('messages.accept-specimen')}}
-        </a>
-    </div> <!-- /. accept-button -->
-
-    <div class="hidden reject-start-buttons">
-        <a class="btn btn-sm btn-danger reject-specimen" href="#" title="{{trans('messages.reject-title')}}">
-            <span class="glyphicon glyphicon-thumbs-down"></span>
-            {{trans('messages.reject')}}</a>
-        <a class="btn btn-sm btn-warning start-test" href="javascript:void(0)"
-            data-url="{{ URL::route('unhls_test.start') }}" title="{{trans('messages.start-test-title')}}">
-            <span class="glyphicon glyphicon-play"></span>
-            {{trans('messages.start-test')}}</a>
-    </div> <!-- /. reject-start-buttons -->
-
-    <div class="hidden enter-result-buttons">
-        <a class="btn btn-sm btn-info enter-result">
-            <span class="glyphicon glyphicon-pencil"></span>
-            {{trans('messages.enter-results')}}</a>
-    </div> <!-- /. enter-result-buttons -->
-
-    <div class="hidden start-refer-button">
-        <a class="btn btn-sm btn-info refer-button" href="#">
-            <span class="glyphicon glyphicon-edit"></span>
-            {{trans('messages.refer-sample')}}
-        </a>
-    </div> <!-- /. referral-button -->
-    <!-- Barcode begins -->
-  
-    <div id="count" style='display:none;'>0</div>
-    <div id ="barcodeList" style="display:none;"></div>
-
     <!-- jQuery barcode script -->
     <script type="text/javascript" src="{{ asset('js/barcode.js') }} "></script>
 @stop

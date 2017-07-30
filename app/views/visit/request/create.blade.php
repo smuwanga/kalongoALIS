@@ -5,7 +5,7 @@
 		<ol class="breadcrumb">
 		  <li><a href="{{{URL::route('user.home')}}}">{{trans('messages.home')}}</a></li>
 		  <li>
-		  	<a href="{{ URL::route('unhls_test.index') }}">{{ Lang::choice('messages.test',2) }}</a>
+		  	<a href="{{ URL::route('visit.index') }}">Visits</a>
 		  </li>
 		  <li class="active">{{trans('messages.new-test')}}</li>
 		</ol>
@@ -14,14 +14,7 @@
 		<div class="panel-heading ">
             <div class="container-fluid">
                 <div class="row less-gutter">
-                    <div class="col-md-11">
-						<span class="glyphicon glyphicon-adjust"></span>{{trans('messages.new-test')}}
-                    </div>
-                    <div class="col-md-1">
-                        <a class="btn btn-sm btn-primary pull-right" href="#" onclick="window.history.back();return false;"
-                            alt="{{trans('messages.back')}}" title="{{trans('messages.back')}}">
-                            <span class="glyphicon glyphicon-backward"></span></a>
-                    </div>
+					<span class="glyphicon glyphicon-adjust"></span>{{trans('messages.new-test')}}
                 </div>
             </div>
 		</div>
@@ -32,7 +25,7 @@
 					{{ HTML::ul($errors->all()) }}
 				</div>
 			@endif
-			{{ Form::open(array('route' => 'unhls_test.saveNewTest', 'id' => 'form-new-test')) }}
+			{{ Form::open(array('route' => ['labrequest.store', $visit->id], 'id' => 'form-new-test')) }}
 			<input type="hidden" name="_token" value="{{ Session::token() }}"><!--to be removed function for csrf_token -->
 				<div class="container-fluid">
 					<div class="row">
@@ -42,12 +35,16 @@
 									<h3 class="panel-title">{{trans("messages.patient-details")}}</h3>
 								</div>
 								<div class="panel-body inline-display-details">
-									<span><strong>{{trans("messages.patient-number")}}</strong> {{ $patient->patient_number }}</span>
-							<!--		<span><strong>{{ trans('messages.nin') }}</strong> {{ $patient->nin }}</span> -->
-									<span><strong>{{ Lang::choice('messages.name',1) }}</strong> {{ $patient->name }}</span>
-									<span><strong>{{trans("messages.age")}}</strong> {{ $patient->getAge() }}</span>
+									<span><strong>{{trans("messages.patient-number")}}</strong> {{ $visit->patient->patient_number }}</span>
+									<span><strong>{{ Lang::choice('messages.name',1) }}</strong> {{ $visit->patient->name }}</span>
+									<span><strong>{{trans("messages.age")}}</strong> {{ $visit->patient->getAge() }}</span>
 									<span><strong>{{trans("messages.gender")}}</strong>
-										{{ $patient->gender==0?trans("messages.male"):trans("messages.female") }}</span>
+										{{ $visit->patient->gender==0?trans("messages.male"):trans("messages.female") }}</span>
+									<span><strong>Visit Type</strong> {{ $visit->visit_type }}</span>
+									@if($visit->visit_type == 'In-patient')
+										<span><strong>Ward</strong> {{ $visit->ward->name }}</span>
+									@endif
+									<span><strong>Bed No</strong> {{ $visit->bed_no }}</span>
 								</div>
 							</div>
 							<div class="form-group">
@@ -57,21 +54,6 @@
 								</div>
 									<div class="panel-body inline-display-details">
 									<div class="col-md-12">
-										<div class="form-group">
-											{{ Form::hidden('patient_id', $patient->id) }}
-											{{ Form::label('visit_type', trans("messages.visit-type")) }}
-											{{ Form::select('visit_type', [' ' => '--- Select visit type ---','0' => trans("messages.out-patient"),'1' => trans("messages.in-patient")], null,
-												 array('class' => 'form-control')) }}
-										</div>
-										<div class="form-group">
-											{{ Form::label('ward_id','Ward/Clinic/Health Unit') }}
-											{{ Form::select('ward_id', $ward, Input::get('ward_id'),
-											array('class' => 'form-control')) }}
-										</div>
-										<div class="form-group">
-												{{ Form::label('bed_no','Bed No:', array('text-align' => 'right')) }}
-												{{ Form::text('bed_no', Input::old('bed_no'), array('class' => 'form-control')) }}
-										</div>
 										<div class="form-group">
 											{{ Form::label('clinical_notes','Clinical Notes') }}
 											{{ Form::textarea('clinical_notes', Input::old('clinical_notes'), array('class' => 'form-control')) }}
@@ -107,32 +89,6 @@
 									</div>
 									<div class="form-pane panel panel-default">
 										<div class="col-md-6">
-											<div class="form-group">
-												{{Form::label('specimen_type', 'Sample Type')}}
-												{{ Form::select('specimen_type', $specimenType,
-												Input::get('specimenType'),
-												['class' => 'form-control specimen-type']) }}
-											</div>
-											<div class="form-group">
-												<label for="collection_date">Time of Sample Collection</label>
-												<input class="form-control"
-													data-format="YYYY-MM-DD HH:mm"
-													data-template="DD / MM / YYYY HH : mm"
-													name="collection_date"
-													type="text"
-													id="collection-date"
-													value="{{$collectionDate}}">
-											</div>
-											<div class="form-group">
-												<label for="reception_date">Time Sample was Received in Lab</label>
-												<input class="form-control"
-													data-format="YYYY-MM-DD HH:mm"
-													data-template="DD / MM / YYYY HH : mm"
-													name="reception_date"
-													type="text"
-													id="reception-date"
-													value="{{$receptionDate}}">
-											</div>
 											<div class="form-group">
 										        {{Form::label('test_type_category', 'Lab Section')}}
 										    	{{ Form::select('test_type_category', $testCategory,

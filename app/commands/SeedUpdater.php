@@ -38,28 +38,22 @@ class SeedUpdater extends Command {
     public function fire()
     {
         Eloquent::unguard();
+         
         VisitStatus::create(["name" => "test-request-pending"]);
         VisitStatus::create(["name" => "test-request-made"]);
         VisitStatus::create(["name" => "samples-collected"]);
         VisitStatus::create(["name" => "tests-completed"]);
-/*
-physicians, receptionist and phlebotomist
+        
+        /* Permissions table */
+        $permissions = array(
+            array("name" => "manage_appointments", "display_name" => "Can manage appointments with Clinician"),
+            array("name" => "make_labrequests", "display_name" => "Can make lab requests"),
+        );
 
-add roles
-clinician
-phlebotomist
-
-add permissions
-create visit
-request tests
-receive specimen
-
-assign permissions accordingly
-receptionist - create visit
-clinicians - request tests
-phlebotomist - receive specimen
-
-*/
+        $superadmin = Role::find(1);
+        foreach ($permissions as $permission) {
+            $superadmin->attachPermission(Permission::create($permission));
+        }
     }
 
     /**

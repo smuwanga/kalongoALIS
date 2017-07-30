@@ -14,7 +14,7 @@ class UnhlsVisit extends Eloquent
 
 	const TEST_REQUEST_PENDING = 1;
 	const TEST_REQUEST_MADE = 2;
-	const SAMPLES_COLLECTED = 3;
+	const SPECIMEN_RECEIVED = 3;
 	const TESTS_COMPLETED = 4;
 
 	/**

@@ -165,61 +165,61 @@ Route::group(array("before" => "auth"), function()
         "as"   => "visit.index",
         "uses" => "VisitController@index"
     ));
-    Route::get("/visit/show", array(
+    Route::get("/visit/show/{visit_id}", array(
         "as"   => "visit.show",
         "uses" => "VisitController@show"
     ));
-    Route::get("/appointment/create", array(
+    Route::get("/appointment/create/{visit_id}", array(
         "as"   => "appointment.create",
         "uses" => "VisitController@create"
     ));
-    Route::post("/appointment/store", array(
+    Route::post("/appointment/store/{visit_id}", array(
         "as"   => "appointment.store",
         "uses" => "VisitController@store"
     ));
-    Route::get("/appointment/edit", array(
+    Route::get("/appointment/edit/{visit_id}", array(
         "as"   => "appointment.edit",
         "uses" => "VisitController@edit"
     ));
-    Route::any("/appointment/update", array(
+    Route::any("/appointment/update/{visit_id}", array(
         "as"   => "appointment.update",
         "uses" => "VisitController@update"
     ));
-    Route::get("/appointment/destroy", array(
+    Route::get("/appointment/destroy/{visit_id}", array(
         "as"   => "appointment.destroy",
         "uses" => "VisitController@destroy"
     ));
 
-    Route::get("/labrequest/create", array(
+    Route::get("/labrequest/create/{visit_id}", array(
         "as"   => "labrequest.create",
         "uses" => "VisitController@requestTestCreate"
     ));
-    Route::post("/labrequest/store", array(
+    Route::post("/labrequest/store/{visit_id}", array(
         "as"   => "labrequest.store",
         "uses" => "VisitController@requestTestStore"
     ));
-    Route::get("/labrequest/edit", array(
+    Route::get("/labrequest/edit/{visit_id}", array(
         "as"   => "labrequest.edit",
         "uses" => "VisitController@requestTestEdit"
     ));
-    Route::put("/labrequest/update", array(
+    Route::put("/labrequest/update/{visit_id}", array(
         "as"   => "labrequest.update",
         "uses" => "VisitController@requestTestUpdate"
     ));
 
-    Route::get("/receivespecimen/create", array(
+    Route::get("/receivespecimen/create/{visit_id}", array(
         "as"   => "receivespecimen.create",
         "uses" => "VisitController@receiveSpecimenCreate"
     ));
-    Route::post("/receivespecimen/store", array(
+    Route::post("/receivespecimen/store/{visit_id}", array(
         "as"   => "receivespecimen.store",
         "uses" => "VisitController@receiveSpecimenStore"
     ));
-    Route::get("/receivespecimen/edit", array(
+    Route::get("/receivespecimen/edit/{visit_id}", array(
         "as"   => "receivespecimen.edit",
         "uses" => "VisitController@receiveSpecimenEdit"
     ));
-    Route::put("/receivespecimen/update", array(
+    Route::put("/receivespecimen/update/{visit_id}", array(
         "as"   => "receivespecimen.update",
         "uses" => "VisitController@receiveSpecimenUpdate"
     ));

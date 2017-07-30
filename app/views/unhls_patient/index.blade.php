@@ -73,7 +73,7 @@
 
 						<!-- can create visit -->
 						<a class="btn btn-sm btn-primary" 
-							href="{{ URL::route('visit.create', array('patient_id' => $patient->id)) }}">
+							href="{{ URL::route('appointment.create', array('patient_id' => $patient->id)) }}">
 							<span class="glyphicon glyphicon-plus-sign"></span>
 							Make Appointment
 						</a>

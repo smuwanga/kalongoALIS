@@ -3,6 +3,7 @@
     <div>
         <ol class="breadcrumb">
           <li><a href="{{{URL::route('user.home')}}}">{{trans('messages.home')}}</a></li>
+            <a href="{{ URL::route('visit.index') }}">Visits</a>
           <li class="active">{{ Lang::choice('messages.test',2) }}</li>
         </ol>
     </div>
