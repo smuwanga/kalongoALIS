@@ -192,7 +192,7 @@ $dateFrom = date('2017-07-04');
 		$patient = UnhlsPatient::find($patientID);
 
 		//Load Test Create View
-		return View::make('visit.appointment.create')
+		return View::make('visit.create')
 					->with('collectionDate', $collectionDate)
 					->with('receptionDate', $receptionDate)
 					->with('specimenType', $specimenTypes)
@@ -326,14 +326,14 @@ $dateFrom = date('2017-07-04');
 
 		$specimenTypes = ['select Specimen Type']+SpecimenType::lists('name', 'id');
 
-		$patient = UnhlsPatient::find($patientID);
+		$visit = UnhlsVisit::find($id);
 
 		//Load Test Create View
-		return View::make('visit.create')
+		return View::make('visit.edit')
 					->with('collectionDate', $collectionDate)
 					->with('receptionDate', $receptionDate)
 					->with('specimenType', $specimenTypes)
-					->with('patient', $patient)
+					->with('visit', $visit)
 					->with('testCategory', $categories)
 					->with('ward', $wards);
 	}
@@ -445,7 +445,7 @@ $dateFrom = date('2017-07-04');
 		$visit = UnhlsVisit::find($visitID);
 
 		//Load Test Create View
-		return View::make('visit.request.create')
+		return View::make('visit.create')
 					->with('visit', $visit)
 					->with('testCategory', $categories);
 	}
@@ -571,7 +571,7 @@ $dateFrom = date('2017-07-04');
 		// $patient = UnhlsPatient::find($patientID);
 
 		//Load Test Create View
-		return View::make('visit.specimen.create')
+		return View::make('visit.create')
 					->with('collectionDate', $collectionDate)
 					->with('receptionDate', $receptionDate)
 					->with('specimenTypes', $specimenTypes)

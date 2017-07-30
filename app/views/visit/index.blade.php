@@ -97,40 +97,24 @@
                             '.$visit->patient->getAge('Y'). ')'}}</td> <!--Patient Name -->
                         <td>{{ $visit->visit_type }}</td> <!--Visit Type -->
                         <td>
-                            @if(Auth::user()->can('request_test'))<!-- for clinician -->
-                                @if($visit->status_id == UnhlsVisit::TEST_REQUEST_PENDING)
-                                <a class="btn btn-sm btn-warning" href="{{ URL::route('labrequest.create',[$visit->id]) }}">
-                                    <span class="glyphicon glyphicon-plus-sign"></span>
+                            <a class="btn btn-sm btn-info" href="{{ URL::route('visit.edit',[$visit->id]) }}" >
+                                <span class="glyphicon glyphicon-edit"></span>
+                                @if(!$visit->hasRequests() && Auth::user()->can('request_test'))<!-- for clinician -->
                                     Make Tests Request
-                                </a>
-                                @else
-                                <a class="btn btn-sm btn-info" href="{{ URL::route('labrequest.create',[$visit->id]) }}" >
-                                    <span class="glyphicon glyphicon-edit"></span>
+                                @elseif($visit->hasRequests() && Auth::user()->can('request_test'))<!-- for clinician -->
                                     Edit Tests Request
-                                </a>
-                                @endif
-                            @endif
-                            @if(Auth::user()->can('accept_test_specimen'))<!-- for phlebotomist -->
-                                @if($visit->status_id == UnhlsVisit::TEST_REQUEST_MADE)
-                                <a class="btn btn-sm btn-info" href="{{ URL::route('receivespecimen.create',[$visit->id]) }}">
-                                    <span class="glyphicon glyphicon-plus-sign"></span>
+                                @elseif(!$visit->hasSpecimensReceived() && Auth::user()->can('accept_test_specimen'))<!-- for phlebotomist -->
                                     Recieve Specimen
-                                </a>
-                                @else
-                                <a class="btn btn-sm btn-info" href="{{ URL::route('receivespecimen.create',[$visit->id]) }}" >
-                                    <span class="glyphicon glyphicon-edit"></span>
+                                @elseif($visit->hasSpecimensReceived() && Auth::user()->can('accept_test_specimen'))<!-- for phlebotomist -->
                                     Edit Specimen
-                                </a>
-                                @endif
-                            @endif
-                            @if(Auth::user()->can('manage_appointments'))
-                                <a class="btn btn-sm btn-info" href="{{ URL::route('appointment.edit',[$visit->id]) }}" >
-                                    <span class="glyphicon glyphicon-edit"></span>
+                                @elseif(Auth::user()->can('manage_appointments'))<!-- for receptionist -->
                                     Edit Appointment
-                                </a>
+                                @endif
+                            </a>
+                            @if(Auth::user()->can('manage_appointments'))
                                 <button class="btn btn-sm btn-danger delete-item-link"
                                     data-toggle="modal" data-target=".confirm-delete-modal"
-                                    data-id="{{ URL::route('appointment.destroy',[$visit->id])}}">
+                                    data-id="{{ URL::route('visit.destroy',[$visit->id])}}">
                                     <span class="glyphicon glyphicon-trash"></span>
                                     Delete Appointment
                                 </button>

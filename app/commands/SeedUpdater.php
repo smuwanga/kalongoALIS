@@ -39,9 +39,9 @@ class SeedUpdater extends Command {
     {
         Eloquent::unguard();
          
-        VisitStatus::create(["name" => "test-request-pending"]);
+        VisitStatus::create(["name" => "appointment-made"]);
         VisitStatus::create(["name" => "test-request-made"]);
-        VisitStatus::create(["name" => "samples-collected"]);
+        VisitStatus::create(["name" => "specimen_received"]);
         VisitStatus::create(["name" => "tests-completed"]);
         
         /* Permissions table */

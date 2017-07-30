@@ -12,7 +12,7 @@ class UnhlsVisit extends Eloquent
 	public $timestamps = true;
 
 
-	const TEST_REQUEST_PENDING = 1;
+	const APPOINTMENT_MADE = 1;
 	const TEST_REQUEST_MADE = 2;
 	const SPECIMEN_RECEIVED = 3;
 	const TESTS_COMPLETED = 4;
@@ -57,6 +57,24 @@ class UnhlsVisit extends Eloquent
 		return $this->belongsTo('UnhlsSpecimen', 'visit_id');
 	}
 
+	public function hasRequests()
+	{
+		if ($this->status_id == UnhlsVisit::TEST_REQUEST_MADE || $this->status_id == UnhlsVisit::SPECIMEN_RECEIVED || $this->status_id == UnhlsVisit::TESTS_COMPLETED) {
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public function hasSpecimensReceived()
+	{
+		if ($this->status_id == UnhlsVisit::SPECIMEN_RECEIVED || $this->status_id == UnhlsVisit::TESTS_COMPLETED) {
+			return true;
+		}else{
+			return false;
+		}
+	}
+
 	/**
 	 * Search for visits meeting the given criteria
 	 *
@@ -68,8 +86,6 @@ class UnhlsVisit extends Eloquent
 	 */
 	public static function search($searchString = '', $visitStatusId = 0, $dateFrom = NULL, $dateTo = NULL)
 	{
-// $searchString = 'ABOKE';
-// Log::info($searchString);
 		$visits = UnhlsVisit::with('patient')->where(function($q) use ($searchString){
 
 			$q->whereHas('patient', function($q)  use ($searchString){
@@ -81,29 +97,14 @@ class UnhlsVisit extends Eloquent
 				});
 			});
 		});
-
-		/*
-		Problematic this right now
-		})->where(function($q) use ($searchString){
-			$q->where('visit_number', '=', $searchString )//Search by visit number
-			->orWhere('id', '=', $searchString);
-		});
-		*/
-// Log::info($visitStatusId);
 		if ($visitStatusId > 0) {
-			// $visits = UnhlsVisit::where(function($q) use ($visitStatusId)
 			$visits = $visits->where(function($q) use ($visitStatusId)
 			{
 				$q->where('visit_status_id','=', $visitStatusId);
 			});
 		}
-
-// Log::info($dateFrom);
-// Log::info($dateTo);
 		//  put default to get content for today
 		if ($dateFrom||$dateTo) {
-// Log::info('in the date search');
-			// $visits = UnhlsVisit::where(function($q) use ($dateFrom, $dateTo)
 			$visits = $visits->where(function($q) use ($dateFrom, $dateTo)
 			{
 				if($dateFrom)$q->where('created_at', '>=', $dateFrom);
