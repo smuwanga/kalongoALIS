@@ -132,9 +132,7 @@
 				@endforeach
 				@if($test->testType->name == 'HIV')
 					<tr>
-						<td>
-							<b>Interpretaion:</b>{{$test->interpreteHIVResults()}}
-						</td>
+						<td><b>Interpretation:</b></td> <td>{{$test->interpreteHIVResults()}}</td>
 					</tr>
 				@else
 					<tr>
