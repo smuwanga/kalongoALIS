@@ -49,7 +49,7 @@
                                     {{ Form::label("m_".$controlMeasure->id , $controlMeasure->name) }}
                                     {{ Form::select("m_".$controlMeasure->id, array(null => '') +$controlMeasure->controlMeasureRanges->lists('alphanumeric', 'alphanumeric'), $ans,
                                         array('class' => 'form-control result-interpretation-trigger',
-                                        'data-url' => URL::route('test.resultinterpretation'),
+                                        'data-url' => URL::route('unhls_test.resultinterpretation'),
                                         'data-measureid' => $controlMeasure->id
                                         )) 
                                     }}

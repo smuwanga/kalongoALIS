@@ -12,7 +12,8 @@
 											<div class="stat_ico color_a"><i class="ion-ios-people"></i></div>
 											<div class="stat_content">
 												@if(UnhlsVisit::count() > 0)
-												<span class="stat_count">{{UnhlsVisit::count()}} ({{UnhlsVisit::where('visit_type', '=', 'Out-patient')->count()*100/UnhlsVisit::count()}}% - OPD)</span>
+												<span class="stat_count">{{UnhlsVisit::whereMonth('created_at', '=', Carbon::today()->month)->count()}} 
+													({{UnhlsVisit::where('visit_type', '=', 'Out-patient')->whereMonth('created_at', '=', Carbon::today()->month)->count()*100/UnhlsVisit::count()}}% - OPD)</span>
 												@endif
 												<span class="stat_name">Number of patients</span>
 											</div>
@@ -21,7 +22,7 @@
 										<div class="stat_box">
 											<div class="stat_ico color_a"><i class="ion-clipboard"></i></div>
 											<div class="stat_content">
-												<span class="stat_count">{{UnhlsTest::where('test_status_id','=', 4)->count()}}</span>
+												<span class="stat_count">{{UnhlsTest::where('time_completed','!=', 'NULL')->whereMonth('time_created', '=', Carbon::today()->month )->count()}}</span>
 												<span class="stat_name">Tests done</span>
 											</div>
 											
@@ -30,7 +31,8 @@
 											<div class="stat_ico color_a"><i class="ion-forward"></i></div>
 											<div class="stat_content">
 												@if(UnhlsTest::where('test_status_id','=', 4)->count() > 0)
-												<span class="stat_count">{{round(Referral::count()/UnhlsTest::where('test_status_id','=', 4)->count()/100, 2)}}%</span>
+												<span class="stat_count">{{round(Referral::whereMonth('created_at', '=', Carbon::today()->month)->count()/
+													UnhlsTest::where('test_status_id','=', 4)->whereMonth('time_created', '=', Carbon::today()->month)->count()/100, 2)}}%</span>
 												@endif
 												<span class="stat_name">Tests referred</span>
 											</div>
@@ -70,7 +72,7 @@
 										<div class="stat_box">
 											<div class="stat_ico color_c"><i class="ion-ios-people"></i></div>
 											<div class="stat_content">
-												<span class="stat_count">{{UnhlsSpecimen::count()}}</span>
+												<span class="stat_count">{{UnhlsSpecimen::whereMonth('time_collected', '=', Carbon::today()->month)->count()}}</span>
 												<span class="stat_name">Samples collected</span>
 											</div>
 										</div>
@@ -78,7 +80,8 @@
 											<div class="stat_ico color_c"><i class="ion-ios-close"></i></div>
 											<div class="stat_content">
 												@if(UnhlsSpecimen::count() > 0)
-												<span class="stat_count">{{round(UnhlsSpecimen::where('specimen_status_id', '=',3)->count()*100/UnhlsSpecimen::count(), 2)}} % </span>
+												<span class="stat_count">{{round(UnhlsSpecimen::where('specimen_status_id', '=',3)->whereMonth('time_collected', '=', Carbon::today()->month)->count()*100/
+													UnhlsSpecimen::whereMonth('time_collected', '=', Carbon::today()->month)->count(), 2)}} % </span>
 												@endif
 												<span class="stat_name">Samples rejected</span>
 											</div>
@@ -87,7 +90,8 @@
 											<div class="stat_ico color_c"><i class="ion-ios-checkmark"></i></div>
 											<div class="stat_content">
 												@if(UnhlsSpecimen::count() > 0)
-												<span class="stat_count">{{round(UnhlsSpecimen::where('specimen_status_id', '=', 2)->count()*100/UnhlsSpecimen::count(), 2)}} %</span>
+												<span class="stat_count">{{round(UnhlsSpecimen::whereMonth('time_collected', '=', Carbon::today()->month)->where('specimen_status_id', '=', 2)->count()*100/
+													UnhlsSpecimen::whereMonth('time_collected', '=', Carbon::today()->month)->count(), 2)}} %</span>
 												@endif
 												<span class="stat_name">Samples accepted</span>
 											</div>

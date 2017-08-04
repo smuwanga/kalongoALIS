@@ -106,7 +106,7 @@
                                 $test->visit->patient->patient_number:
                                 $test->visit->patient->external_patient_number
                             }}</td> <!--Patient Number -->
-                        <td>{{'ULIN No:'}}</td> <!--unhls terminology -->
+                        <td>{{$test->visit->patient->ulin}}</td> <!--unhls terminology -->
                         <td>
                             {{ empty($test->visit->visit_number)?
                                 $test->visit->id:

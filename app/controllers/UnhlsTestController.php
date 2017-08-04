@@ -459,7 +459,6 @@ class UnhlsTestController extends \BaseController {
 		//Create New Test
 		$rules = array(
 			'visit_type' => 'required',
-			'physician' => 'required',
 			'testtypes' => 'required',
 		);
 		$validator = Validator::make(Input::all(), $rules);

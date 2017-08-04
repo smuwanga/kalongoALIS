@@ -462,17 +462,12 @@ class UnhlsTest extends Eloquent
 			{
 				$q->whereHas('patient', function($q)  use ($searchString)
 				{
-					if(is_numeric($searchString))
-					{
-						$q->where(function($q) use ($searchString){
-							$q->where('external_patient_number', '=', $searchString )
-							  ->orWhere('patient_number', '=', $searchString );
-						});
-					}
-					else
-					{
-						$q->where('name', 'like', '%' . $searchString . '%');
-					}
+					$q->where(function($q) use ($searchString){
+						$q->where('external_patient_number', '=', $searchString )
+						  ->orWhere('patient_number', '=', $searchString )
+						  ->orWhere('name', 'like', '%' . $searchString . '%')
+						  ->orWhere('ulin', 'like', '%' . $searchString . '%');
+					});
 				});
 			})
 			->orWhereHas('testType', function($q) use ($searchString)

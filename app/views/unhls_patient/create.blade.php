@@ -24,7 +24,7 @@
 			{{ Form::open(array('url' => 'unhls_patient', 'id' => 'form-create-patient')) }}
 				<div class="form-group">
 					{{ Form::label('patient_number', trans('messages.patient-number')) }}
-					{{ Form::text('patient_number', $lastInsertId,
+					{{ Form::text('patient_number', Input::old('patient_number'),
 						array('class' => 'form-control')) }}
 				</div>
 				<div class="form-group">
@@ -60,7 +60,7 @@
 					<span class="input-tag">{{trans('messages.female')}}</span></div>
 				</div>
 				<div class="form-group">
-					{{ Form::label('village_residence', trans('messages.residence-village'), array('class'=>'required')) }}
+					{{ Form::label('village_residence', trans('messages.residence-village')) }}
 					{{ Form::text('village_residence', Input::old('village_residence'), array('class' => 'form-control')) }}
 				</div>
 				<div class="form-group">

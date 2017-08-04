@@ -14,10 +14,18 @@ class UnhlsVisit extends Eloquent
 	/**
 	 * Test relationship
 	 */
-    public function tests()
-    {
-        return $this->hasMany('UnhlsTest', 'visit_id');
-    }
+	public function tests()
+	{
+		return $this->hasMany('UnhlsTest', 'visit_id');
+	}
+
+	/**
+	 * Test relationship
+	 */
+	public function ward()
+	{
+		return $this->belongsTo('Ward', 'ward_id');
+	}
 
 	/**
 	 * Patient relationship

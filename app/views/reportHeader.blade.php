@@ -1,5 +1,9 @@
 @section ("reportHeader")
-<style type="text/css"></style>
+<style type="text/css">
+     table {
+        padding: 2px;
+     }
+</style>
     <table style="text-align:center;" >
         <thead>
             <tr>
@@ -11,9 +15,9 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="12" style="text-align:center;"><strong>
+                <td colspan="12" style="text-align:center;"><b>
                     {{ strtoupper(Config::get('constants.FACILITY_NAME')) }},<br>
-                    {{Config::get('kblis.organization')}}</strong><br>
+                    {{Config::get('kblis.address')}}</b>
                     {{ trans('messages.laboratory-report')}}
                 </td>
             </tr>
