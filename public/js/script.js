@@ -601,6 +601,25 @@ $(function(){
     });
 
     /**
+     *Fetch tests for selected Lab category when requesting
+     */
+    $('.lab-section').on('change', function() {
+        // todo: this code is almost the same as below, make a reusable one
+        var testTypeCategoryId = $('.lab-section').val();
+        $.ajax({
+            type: 'POST',
+            url: "/visit/testlist",
+            data: {
+                test_category_id: testTypeCategoryId
+            },
+            success: function(testTypes){
+                $('.test-type-list').empty();
+                $('.test-type-list').append(testTypes);
+            }
+        });
+    });
+
+    /**
      *Create List of tests in the test request page
      */
     var lastNewSpecimenId = 0;

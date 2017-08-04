@@ -153,7 +153,7 @@ return array(
     'specimen-number' => 'ID',
     'specimen-number-title' => 'Specimen ID',
     'specimen-not-collected' => 'Not Collected',
-    'specimen-not-collected-label' => 'Specimen Not Collected',
+    'specimen-not-received-label' => 'Specimen Not Received',
     'specimen-rejected' => 'Rejected',
     'specimen-rejected-at-analysis' => 'Specimen Rejected at Analysis',
     'specimen-rejected-label' => 'Specimen Rejected',

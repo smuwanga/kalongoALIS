@@ -47,7 +47,8 @@ class SeedUpdater extends Command {
         /* Permissions table */
         $permissions = array(
             array("name" => "manage_appointments", "display_name" => "Can manage appointments with Clinician"),
-            array("name" => "make_labrequests", "display_name" => "Can make lab requests"),
+            array("name" => "make_labrequests", "display_name" => "Can make lab requests(Only for Clinicians)"),
+            array("name" => "manage_visits", "display_name" => "Can manage visit content"),
         );
 
         $superadmin = Role::find(1);

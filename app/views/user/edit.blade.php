@@ -62,6 +62,10 @@
 													'class' => 'form-control']) }}
 											</div>
 											<div class="form-group">
+												{{ Form::label('phone_contact', 'Phone Contact') }}
+												{{ Form::text('phone_contact', Input::old('phone_contact'), ['class' => 'form-control']) }}
+											</div>
+											<div class="form-group">
 												{{ Form::label('designation', trans('messages.designation')) }}
 												{{ Form::text('designation', Input::old('designation'),
 													["placeholder" => "Lab Technologist", 'class' => 'form-control'])}}

@@ -30,7 +30,12 @@ class UnhlsTestController extends \BaseController {
 
 		$searchString = isset($input['search'])?$input['search']:'';
 		$testStatusId = isset($input['test_status'])?$input['test_status']:'';
-		$dateFrom = isset($input['date_from'])?$input['date_from']:'';
+		if (isset($input['date_from'])) {
+			$dateFrom = $input['date_from'];
+		}else{
+			$dateFrom = date('Y-m-d');
+			$input['date_from'] = date('Y-m-d');
+		}
 		$dateTo = isset($input['date_to'])?$input['date_to']:'';
 
 		// Search Conditions
@@ -66,6 +71,8 @@ class UnhlsTestController extends \BaseController {
 					->with('testSet', $tests)
 					->with('testStatus', $statuses)
 					->with('barcode', $barcode)
+					->with('dateFrom', $dateFrom)
+					->with('dateTo', $dateTo)
 					->withInput($input);
 	}
 
@@ -940,23 +947,12 @@ class UnhlsTestController extends \BaseController {
 	}
 
 	/**
-	 * Culture worksheet for Test
 	 *
 	 * @param
 	 * @return
 	 */
-	public function culture()
+	public function delete($id)
 	{
-		$test = UnhlsTest::find(Input::get('testID'));
-		$test->test_status_id = UnhlsTest::VERIFIED;
-		$test->time_verified = date('Y-m-d H:i:s');
-		$test->verified_by = Auth::user()->id;
-		$test->save();
-
-		//Fire of entry verified event
-		Event::fire('unhls_test.verified', array($testID));
-
-		return View::make('unhls_test.viewDetails')->with('test', $test);
+		//
 	}
-
 }

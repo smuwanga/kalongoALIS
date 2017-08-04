@@ -3,7 +3,7 @@
     <div>
         <ol class="breadcrumb">
           <li><a href="{{{URL::route('user.home')}}}">{{trans('messages.home')}}</a></li>
-          <li class="active">Lab Requests</li>
+          <li class="active">Visits</li>
         </ol>
     </div>
     @if (Session::has('message'))
@@ -18,7 +18,7 @@
                         {{ Form::label('date_from', trans('messages.from')) }}
                     </div>
                     <div class='col-md-10'>
-                        {{ Form::text('date_from', Input::get('date_from'),
+                        {{ Form::text('date_from', $dateFrom,
                             array('class' => 'form-control standard-datepicker')) }}
                     </div>
                 </div>
@@ -27,19 +27,21 @@
                         {{ Form::label('date_to', trans('messages.to')) }}
                     </div>
                     <div class='col-md-10'>
-                        {{ Form::text('date_to', Input::get('date_to'),
+                        {{ Form::text('date_to', $dateTo,
                             array('class' => 'form-control standard-datepicker')) }}
                     </div>
                 </div>
                 <div class='col-md-3'>
-                    <div class='col-md-5'>
-                        {{ Form::label('visit_status', trans('messages.visit-status')) }}
-                    </div>
-                    <div class='col-md-7'>
-                        {{ Form::select('visit_status', $visitStatus,
-                            Input::get('visit_status'), array('class' => 'form-control')) }}
-                    </div>
-                </div>
+                    @if(Auth::user()->can('manage_visits'))
+                         <div class='col-md-5'>
+                            {{ Form::label('visit_status', trans('messages.visit-status')) }}
+                        </div>
+                        <div class='col-md-7'>
+                            {{ Form::select('visit_status', $visitStatus,
+                                Input::get('visit_status'), array('class' => 'form-control')) }}
+                        </div>
+                    @endif
+                 </div>
                 <div class='col-md-2'>
                         {{ Form::label('search', trans('messages.search'), array('class' => 'sr-only')) }}
                         {{ Form::text('search', Input::get('search'),
@@ -72,7 +74,7 @@
                         <th>{{trans('messages.patient-name')}}</th>
                         <th>{{trans('messages.visit-type')}}</th>
                         <th>{{trans('messages.test-request-status')}}</th>
-                        <th>Request Status</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -97,21 +99,17 @@
                             '.$visit->patient->getAge('Y'). ')'}}</td> <!--Patient Name -->
                         <td>{{ $visit->visit_type }}</td> <!--Visit Type -->
                         <td>
+                            @if($visit->isAppointment() && Auth::user()->can('make_labrequests'))<!-- for clinician -->
                             <a class="btn btn-sm btn-info" href="{{ URL::route('visit.edit',[$visit->id]) }}" >
-                                <span class="glyphicon glyphicon-edit"></span>
-                                @if(!$visit->hasRequests() && Auth::user()->can('request_test'))<!-- for clinician -->
-                                    Make Tests Request
-                                @elseif($visit->hasRequests() && Auth::user()->can('request_test'))<!-- for clinician -->
-                                    Edit Tests Request
-                                @elseif(!$visit->hasSpecimensReceived() && Auth::user()->can('accept_test_specimen'))<!-- for phlebotomist -->
-                                    Recieve Specimen
-                                @elseif($visit->hasSpecimensReceived() && Auth::user()->can('accept_test_specimen'))<!-- for phlebotomist -->
-                                    Edit Specimen
-                                @elseif(Auth::user()->can('manage_appointments'))<!-- for receptionist -->
-                                    Edit Appointment
-                                @endif
+                                <span class="glyphicon glyphicon-edit"></span>Make Tests Request
                             </a>
-                            @if(Auth::user()->can('manage_appointments'))
+                            @endif
+                            @if($visit->isRequest() && Auth::user()->can('accept_test_specimen'))<!-- for phlebotomist -->
+                            <a class="btn btn-sm btn-info" href="{{ URL::route('visit.edit',[$visit->id]) }}" >
+                                <span class="glyphicon glyphicon-edit"></span>Recieve Specimen
+                            </a>
+                            @endif
+                            @if(Auth::user()->can('manage_appointments') && $visit->isAppointment())
                                 <button class="btn btn-sm btn-danger delete-item-link"
                                     data-toggle="modal" data-target=".confirm-delete-modal"
                                     data-id="{{ URL::route('visit.destroy',[$visit->id])}}">
@@ -125,24 +123,19 @@
                                 {{trans('messages.view')}}
                             </a>
                         </td><!-- ACTION BUTTONS -->
+                            <td class='test-status'>
+                            <!-- Visit Statuses -->
 
-                        <td class='test-status'>
-                            <!-- Test Statuses -->
-                            <div class="container-fluid">
-                          
-                                <div class="row">
+                            @if($visit->isAppointment())
+                                <span class='label label-success'>Clinician Appointment Made</span>
+                            @elseif($visit->isRequest())
+                                <span class='label label-info'>Test Requests Made</span>
+                            @elseif($visit->hasSpecimenReceived())
+                                <span class='label label-warning'>Specimen(s) Received</span>
+                            @elseif($visit->hasBeenCompleted())
+                                <span class='label label-primary'>Tests Completed</span>
+                            @endif
 
-                                    <div class="col-md-12">
-                                    </div>
-                                </div>
-  
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <!-- Specimen statuses -->
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </td>
                     </tr>
                 @endforeach

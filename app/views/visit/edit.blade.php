@@ -14,7 +14,12 @@
 		<div class="panel-heading ">
 			<div class="container-fluid">
 				<div class="row less-gutter">
-					<span class="glyphicon glyphicon-adjust"></span>{{trans('messages.new-test')}}
+					<span class="glyphicon glyphicon-adjust"></span>
+					@if(Auth::user()->can('request_test'))
+					{{trans('messages.new-test')}}
+					@else
+					Reveive Specimen
+					@endif
 				</div>
 			</div>
 		</div>
@@ -25,7 +30,7 @@
 					{{ HTML::ul($errors->all()) }}
 				</div>
 			@endif
-			{{ Form::open(array('route' => 'unhls_test.saveNewTest', 'id' => 'form-new-test')) }}
+			{{ Form::open(array('route' => ['visit.update', $visit->id], 'id' => 'form-new-test')) }}
 			<input type="hidden" name="_token" value="{{ Session::token() }}"><!--to be removed function for csrf_token -->
 				<div class="container-fluid">
 					<div class="row">
@@ -41,7 +46,6 @@
 									<span><strong>{{trans("messages.gender")}}</strong>
 										{{ $visit->patient->gender==0?trans("messages.male"):trans("messages.female") }}</span>
 									<span><strong>Visit Type</strong> {{ $visit->visit_type }}</span>
-									<!-- if appointment has been made i.e if visit exists -->
 									@if($visit->visit_type == 'In-patient')
 										<span><strong>Ward</strong> {{ $visit->ward->name }}</span>
 										<span><strong>Bed No</strong> {{ $visit->bed_no }}</span>
@@ -56,14 +60,15 @@
 								</div>
 									<div class="panel-body inline-display-details">
 										<!-- for clinician -->
-									@if(Auth::user()->can('request_test'))
-										<div class="col-md-12">
+									@if(Auth::user()->can('request_test') && $visit->isAppointment()) 
+										<div class="col-md-6">
 											<div class="form-group">
 												{{ Form::label('clinical_notes','Clinical Notes') }}
 												{{ Form::textarea('clinical_notes', Input::old('clinical_notes'), array('class' => 'form-control')) }}
 											</div>
 										</div>
 										<div class="col-md-6">
+											<!-- 
 											<div class="form-group">
 												{{ Form::label('previous_therapy','Previous Therapy') }}
 												{{ Form::text('previous_therapy', Input::old('previous_therapy'), array('class' => 'form-control')) }}
@@ -72,19 +77,18 @@
 												{{ Form::label('current_therapy','Current Therapy', array('text-align' => 'right')) }}
 												{{ Form::text('current_therapy', Input::old('current_therapy'), array('class' => 'form-control')) }}
 											</div>
+											 -->
 											<div class="form-group">
 												{{ Form::label('physician', 'Test Requested By') }}
-												{{Form::text('physician', Input::old('physician'), array('class' => 'form-control'))}}
+												{{Form::text('physician', Auth::user()->name, array('class' => 'form-control'))}}
 											</div>
-										</div>
-										<div class="col-md-6">
 											<div class="form-group">
 												{{ Form::label('cadre', 'Cadre') }}
-												{{Form::text('cadre', Input::old('physician'), array('class' => 'form-control'))}}
+												{{Form::text('cadre', Auth::user()->designation, array('class' => 'form-control'))}}
 											</div>
 											<div class="form-group">
 												{{ Form::label('phone_contact', 'Phone Contact') }}
-												{{Form::text('phone_contact', Input::old('phone_contact'), array('class' => 'form-control'))}}
+												{{Form::text('phone_contact', Auth::user()->phone_contact, array('class' => 'form-control'))}}
 											</div>
 											<div class="form-group">
 												{{ Form::label('email', 'E-mail') }}
@@ -96,11 +100,11 @@
 										<div class="form-pane panel panel-default">
 											<div class="col-md-6">
 											<!-- show auto selected lab section and tests -->
-\												<div class="form-group">
+											<div class="form-group">
 													{{Form::label('test_type_category', 'Lab Section')}}
 													{{ Form::select('test_type_category', $testCategory,
 													Input::get('testCategory'),
-													['class' => 'form-control test-type-category']) }}
+													['class' => 'form-control lab-section test-type-category']) }}
 												</div>
 											</div>
 											<div class="col-md-6 test-type-list">
@@ -116,9 +120,6 @@
 										<div class="form-pane panel panel-default test-list-panel">
 											<div class=" test-list col-md-12">
 											<!-- being removed and added at phlebotomy -->
-													<div class="col-md-4">
-														<b>Specimen</b>
-													</div>
  													<div class="col-md-4">
 														<b>Lab Section</b>
 													</div>
@@ -128,40 +129,14 @@
 													</div>
 											</div>
 										</div>
+										@endif
 										<!-- for clinician -->
-									@endif
-										<!-- might have to use else here to make sure one can only do one ot the other not both -->
-<!-- 
-hasRequests
-hasSpecimensReceived
- -->
-@if($visit->hasRequests())
-@endif
-@if($visit->hasSpecimensReceived())
-@endif
-
-
-
-<!-- 
-should be able to select a specimen type
-select the tests for which it's going to be used and save
-to get a view of what it is, take them to the show view after that so that they can details of the specimen complete with the auto-generated specimen id
-
-click on specimen type be listed relevant test types and click the ones to be used
-
-generated a table in the preocess of specimen and associated tests...
-
- -->
-
-										@if(Auth::user()->can('accept_test_specimen'))
-
+										@if(Auth::user()->can('accept_test_specimen') && $visit->hasRequests())
 										<!-- for phlebotomist -->
 										<div class="form-pane panel panel-default">
 											<div class="col-md-6">
-											<!-- show auto selected lab section and tests -->
-												{{$visit}}
 												<div class="form-group">
-													{{Form::label('specimen_type', 'Sample Type')}}
+													{{Form::label('specimen_type', 'Specimen Type')}}
 													{{ Form::select('specimen_type', $specimenType,
 													Input::get('specimenType'),
 													['class' => 'form-control specimen-type']) }}
@@ -186,48 +161,39 @@ generated a table in the preocess of specimen and associated tests...
 														id="reception-date"
 														value="{{$receptionDate}}">
 												</div>
-
-<!--
-should be auto filled from,
-getting data from the list that doctors use
--->
-												<div class="form-group">
-													{{Form::label('test_type_category', 'Lab Section')}}
-													{{ Form::select('test_type_category', $testCategory,
-													Input::get('testCategory'),
-													['class' => 'form-control test-type-category']) }}
+											</div>
+											<div class="col-md-6">
+												{{Form::label('test-list', 'Select the Relevant Test')}}
+												<div class="form-pane panel panel-default">
+													<div class="container-fluid">
+													<?php $testsWithoutSpecimen = 0; ?>
+														@foreach($visit->tests as $key=>$test)
+														@if(!$test->hasSpecimen())
+														<?php $testsWithoutSpecimen++; ?>
+														<div class="col-md-4">
+															<label  class="checkbox">
+																<input class="test-type id-{{$test->id}}"
+																	type="checkbox"
+																	data-test-type-name="{{$test->testType->name}}"
+																	name="tests[]"
+																	value="{{ $test->id}}"/>{{$test->testType->name}}
+															</label>
+														</div>
+														@endif
+														@endforeach
+														{{ Form::hidden('testsWithoutSpecimen', $testsWithoutSpecimen) }}
+													</div>
 												</div>
-											</div>
-											<div class="col-md-6 test-type-list">
-											</div>
-											<div class="col-md-12">
-												<a class="btn btn-default add-test-to-list"
-													href="javascript:void(0);"
-													data-measure-id="0"
-													data-new-measure-id="">
-												<span class="glyphicon glyphicon-plus-sign"></span>Add Test to List</a>
 											</div>
 										</div>
 										<!-- for phlebotomist -->
-
-										<div class="form-pane panel panel-default test-list-panel">
-											<div class=" test-list col-md-12">
- 													<div class="col-md-4">
-														<b>Lab Section</b>
-													</div>
-													<div class="col-md-4">
-														<div class="col-md-11"><b>Test</b></div>
-														<div class="col-md-1"></div>
-													</div>
-											</div>
-										</div>
 										@endif
 									</div>
 								</div>
 							</div> <!--div that closes the panel div for clinical and sample information -->
 
 								<div class="form-group actions-row">
-								{{ Form::button("<span class='glyphicon glyphicon-save'></span> ".trans('messages.save-test'),
+								{{ Form::button("<span class='glyphicon glyphicon-save'></span> ".trans('messages.save'),
 									['class' => 'btn btn-primary', 'onclick' => 'submit()', 'alt' => 'save_new_test']) }}
 								</div>
 						</div>
@@ -239,10 +205,6 @@ getting data from the list that doctors use
 
 <div class="hidden test-list-loader">
 	<div class="col-md-12 new-test-list-row">
-<!-- 
-		<div class="col-md-4 specimen-name">
-		</div>
- -->
 		<div class="col-md-4 test-type-category-name">
 		</div>
 		<div class="col-md-4">

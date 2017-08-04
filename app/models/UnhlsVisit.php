@@ -57,18 +57,48 @@ class UnhlsVisit extends Eloquent
 		return $this->belongsTo('UnhlsSpecimen', 'visit_id');
 	}
 
-	public function hasRequests()
+	public function isAppointment()
 	{
-		if ($this->status_id == UnhlsVisit::TEST_REQUEST_MADE || $this->status_id == UnhlsVisit::SPECIMEN_RECEIVED || $this->status_id == UnhlsVisit::TESTS_COMPLETED) {
+		if ($this->visit_status_id == UnhlsVisit::APPOINTMENT_MADE) {
 			return true;
 		}else{
 			return false;
 		}
 	}
 
-	public function hasSpecimensReceived()
+	public function isRequest()
 	{
-		if ($this->status_id == UnhlsVisit::SPECIMEN_RECEIVED || $this->status_id == UnhlsVisit::TESTS_COMPLETED) {
+		if ($this->visit_status_id == UnhlsVisit::TEST_REQUEST_MADE) {
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public function hasSpecimenReceived()
+	{
+		if ($this->visit_status_id == UnhlsVisit::SPECIMEN_RECEIVED) {
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public function hasRequests()
+	{
+		if ($this->visit_status_id == UnhlsVisit::TEST_REQUEST_MADE ||
+			$this->visit_status_id == UnhlsVisit::SPECIMEN_RECEIVED ||
+			$this->visit_status_id == UnhlsVisit::TESTS_COMPLETED) {
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+
+	public function hasBeenCompleted()
+	{
+		if ($this->visit_status_id == UnhlsVisit::TESTS_COMPLETED) {
 			return true;
 		}else{
 			return false;

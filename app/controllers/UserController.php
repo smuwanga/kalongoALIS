@@ -104,6 +104,7 @@ class UserController extends Controller {
             $user->username = Input::get('username');
             $user->name = Input::get('full_name');
             $user->gender = Input::get('gender');
+            $user->phone_contact = Input::get('phone_contact');
             $user->designation = Input::get('designation');
             $user->email = Input::get('email');
             $user->password = Hash::make(Input::get('password'));
@@ -179,7 +180,7 @@ class UserController extends Controller {
     {
         //
         $rules = array(
-            'username' => 'alpha_num|required|unique:users,username|min:4',
+            'username' => 'alpha_num|required:users,username|min:4',
             'full_name' => 'required',
             'image' => 'image|max:500'
         );
@@ -201,6 +202,7 @@ class UserController extends Controller {
             $user->username = Input::get('username');
             $user->name = Input::get('full_name');
             $user->gender = Input::get('gender');
+            $user->phone_contact = Input::get('phone_contact');
             $user->designation = Input::get('designation');
             $user->email = Input::get('email');
 

@@ -173,9 +173,13 @@ Route::group(array("before" => "auth"), function()
         "as"   => "visit.create",
         "uses" => "VisitController@create"
     ));
-    Route::post("/visit/update/{visit_id}", array(
-        "as"   => "appointment.store",
+    Route::post("/visit/store", array(
+        "as"   => "visit.store",
         "uses" => "VisitController@store"
+    ));
+    Route::post("/visit/update/{visit_id}", array(
+        "as"   => "visit.update",
+        "uses" => "VisitController@update"
     ));
     Route::get("/visit/edit/{visit_id}", array(
         "as"   => "visit.edit",
@@ -185,6 +189,15 @@ Route::group(array("before" => "auth"), function()
         "as"   => "visit.destroy",
         "uses" => "VisitController@destroy"
     ));
+    Route::post("/visit/testlist", array(
+        "as"   => "visit.testList",
+        "uses" => "VisitController@testList"
+    ));
+    Route::get("/visit/addtest/{visit_id}", array(
+        "as"   => "visit.addtest",
+        "uses" => "VisitController@getAddTest"
+    ));
+
 
     // Route::resource('labrequest', 'VisitController');
     Route::post("/unhls_test/savenewtest", array(
@@ -275,12 +288,14 @@ Route::group(array("before" => "auth"), function()
     Route::get("unhls_test/verified", array(
         "as" => "unhls_test.verified",
         "uses" => "UnhlsTestController@verified"));
-    //Test viewDetails start
     Route::get("/unhls_test/{test}/viewdetails", array(
         "as"   => "unhls_test.viewDetails",
         "uses" => "UnhlsTestController@viewDetails"
     ));
-    //Test viewDetail ends
+    Route::get("/unhls_test/{test}/delete", array(
+        "as"   => "unhls_test.delete",
+        "uses" => "UnhlsTestController@delete"
+    ));
     Route::any("/test/{test}/verify", array(
         "before" => "checkPerms:verify_test_results",
         "as"   => "test.verify",

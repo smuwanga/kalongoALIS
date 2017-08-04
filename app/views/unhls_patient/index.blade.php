@@ -71,16 +71,16 @@
 					<td>{{ $patient->village_workplace  }}</td>
 					<td>
 
+						@if(Auth::user()->can('manage_appointments'))
 						<!-- can create visit -->
 						<a class="btn btn-sm btn-primary" 
-							href="{{ URL::route('appointment.create', array('patient_id' => $patient->id)) }}">
+							href="{{ URL::route('visit.create', array('patient_id' => $patient->id)) }}">
 							<span class="glyphicon glyphicon-plus-sign"></span>
 							Make Appointment
 						</a>
 						<!-- can create visit -->
-
-						@if(Auth::user()->can('request_test'))
-						<a class="btn btn-sm btn-info" 
+						@elseif(Auth::user()->can('request_test'))
+						<a class="btn btn-sm btn-info"
 							href="{{ URL::route('unhls_test.create', array('patient_id' => $patient->id)) }}">
 							<span class="glyphicon glyphicon-edit"></span>
 							{{ trans('messages.new-test') }}
