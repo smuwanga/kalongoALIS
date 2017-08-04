@@ -649,10 +649,15 @@ Route::group(array("before" => "auth"), function()
 	//Check if user can manage BB Incidents
   Route::group(array("before" => "checkPerms:manage_incidents"), function()
   {
-      Route::resource("bbincidence", "BbincidenceController");
+      Route::resource('bbincidence', 'BbincidenceController');
       Route::get("/bbincidence/{id}/delete", array(
           "as"   => "bbincidence.delete",
           "uses" => "BbincidenceController@delete"
+      ));
+      Route::resource("bbincidence", "BbincidenceController");
+      Route::any("/bbincidence", array(
+          "as"   => "bbincidence.index",
+          "uses" => "BbincidenceController@index"
       ));
       Route::resource('bbincidence', 'BbincidenceController');
 
