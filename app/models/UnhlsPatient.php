@@ -104,7 +104,30 @@ class UnhlsPatient extends Eloquent
 	*/
 	public function getFacilityCode()
 	{
-		$facilityCode ==\Config::get('constants.FACILITY_CODE');
+		$facilityCode =\Config::get('constants.FACILITY_CODE');
+		return $facilityCode;
 	
 	}
+
+	/**
+    * Get patients Unique Identification Number (ULIN)
+    *
+    * @return string
+    */
+    public function getUlin(){
+    	$facilityCode ='';
+    	$facilityCode = $this->getFacilityCode();
+    	$registrationDate = strtotime($this->created_at);
+    	$yearMonth = date('ym', $registrationDate);
+    	$autoNum = DB::table('uuids')->max('id')+1;
+        $name = preg_split("/\s+/", $this->name);
+        $initials = null;
+        $ulin ='';
+
+    	foreach ($name as $n){
+    		$initials .= $n[0];
+
+    	}
+    	return $facilityCode.'/'.$yearMonth.'/'.$autoNum.'/'.$initials;
+    }
 }

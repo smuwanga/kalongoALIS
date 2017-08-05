@@ -35,9 +35,7 @@ class UnhlsPatientController extends \BaseController {
 	public function create()
 	{
 		//Create Patient
-		$lastInsertId = DB::table('unhls_patients')->max('id')+1;
-		$ulin = $this->generateUniqueLabID();
-		return View::make('unhls_patient.create')->with('lastInsertId', $lastInsertId)->with('ulin',$ulin);
+		return View::make('unhls_patient.create');
 	}
 
 		/**
@@ -51,7 +49,6 @@ class UnhlsPatientController extends \BaseController {
 		$rules = array(
 
 			'patient_number' => 'required|unique:unhls_patients,patient_number',
-			'ulin'			=> 'required',
 			'name'       => 'required',
 			'gender' => 'required',
 			'dob' => 'required' ,
@@ -65,7 +62,6 @@ class UnhlsPatientController extends \BaseController {
 			// store
 			$patient = new UnhlsPatient;
 			$patient->patient_number = Input::get('patient_number');
-			$patient->ulin =Input::get('ulin');
 			$patient->nin = Input::get('nin');
 			$patient->name = Input::get('name');
 			$patient->gender = Input::get('gender');
@@ -80,9 +76,14 @@ class UnhlsPatientController extends \BaseController {
 
 			try{
 				$patient->save();
+				
+				$patient->ulin = $patient->getUlin();
+				$patient->save();
+				$uuid = new UuidGenerator; 
+				$uuid->save();
 			$url = Session::get('SOURCE_URL');
 			return Redirect::to($url)
-			->with('message', 'Successfully created patient!');
+			->with('message', 'Successfully created patient with ULIN:  '.$patient->ulin.'!');
 			}catch(QueryException $e){
 				Log::error($e);
 				echo $e->getMessage();
@@ -213,21 +214,23 @@ class UnhlsPatientController extends \BaseController {
 	 *
 	 * @return string of current age concatenated with incremental Number.
 	 */
-	Private function generateUniqueLabID(){
+	// Private function generateUniqueLabID(){
 
-		//Get Year, Month and day of today. If Jan O1 then reset last insert ID to 1 to start a new cycle of IDs
-		$year = date('Y');
-		$month = date('m');
-		$day = date('d');
+	// 	//Get Year, Month and day of today. If Jan O1 then reset last insert ID to 1 to start a new cycle of IDs
+	// 	$year = date('Y');
+	// 	$month = date('m');
+	// 	$day = date('d');
 
-		if($month == '01' && $day == '01'){
-			$lastInsertId = 1;
-		}
-		$lastInsertId = DB::table('unhls_patients')->max('id')+1;
-		$fcode = \Config::get('constants.FACILITY_CODE');
-		$num = $year.str_pad($lastInsertId, 6, '0', STR_PAD_LEFT);
-		return $fcode.'-'.$num;
-	}
+	// 	if($month == '01' && $day == '01'){
+	// 		$lastInsertId = 1;
+	// 	}
+	// 	else{
+	// 		$lastInsertId = DB::table('unhls_patients')->max('id')+1;
+	// 	}
+	// 	$fcode = \Config::get('constants.FACILITY_CODE');
+	// 	$num = $year.str_pad($lastInsertId, 6, '0', STR_PAD_LEFT);
+	// 	return $fcode.'-'.$num;
+	// }
 
 
 }
