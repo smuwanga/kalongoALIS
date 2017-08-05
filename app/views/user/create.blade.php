@@ -14,7 +14,7 @@
 		</div>
 		<div class="panel-body">
 		<!-- if there are creation errors, they will show here -->
-			
+
 			@if($errors->all())
 				<div class="alert alert-danger">
 					{{ HTML::ul($errors->all()) }}
@@ -25,7 +25,7 @@
 
 				<div class="form-group">
 					{{ Form::label('username', trans('messages.username')) }}
-					{{ Form::text('username', Input::old('username'), ["placeholder" => "jsiku",
+					{{ Form::text('username', Input::old('username'), ["placeholder" => "",
 						'class' => 'form-control']) }}
 				</div>
 				<div class="form-group">
@@ -38,17 +38,17 @@
 				</div>
 				<div class="form-group">
 					{{ Form::label('full_name', trans('messages.full-name')) }}
-					{{ Form::text('full_name', Input::old('full_name'), ["placeholder" => "Jay Siku", 
+					{{ Form::text('full_name', Input::old('full_name'), ["placeholder" => "",
 						'class' => 'form-control']) }}
 				</div>
 				<div class="form-group">
 					{{ Form::label('email', trans('messages.email-address')) }}
-					{{ Form::email('email', Input::old('email'), ["placeholder" => "j.siku@ilabafrica.ac.ke", 
+					{{ Form::email('email', Input::old('email'), ["placeholder" => "Enter your email",
 						'class' => 'form-control']) }}
 				</div>
 				<div class="form-group">
 					{{ Form::label('designation', trans('messages.designation')) }}
-					{{ Form::text('designation', Input::old('designation'), ["placeholder" => "Lab Technologist", 
+					{{ Form::text('designation', Input::old('designation'), ["placeholder" => "Lab Technologist",
 						'class' => 'form-control']) }}
 				</div>
                 <div class="form-group">
@@ -63,7 +63,7 @@
                     {{ Form::file("image") }}
                 </div>
 				<div class="form-group actions-row">
-					{{ Form::button('<span class="glyphicon glyphicon-save"></span> '.trans('messages.save'), 
+					{{ Form::button('<span class="glyphicon glyphicon-save"></span> '.trans('messages.save'),
 						['class' => 'btn btn-primary', 'onclick' => 'submit()']
 					) }}
 				</div>
