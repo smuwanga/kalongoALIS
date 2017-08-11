@@ -47,7 +47,11 @@
 										{{ $visit->patient->gender==0?trans("messages.male"):trans("messages.female") }}</span>
 									<span><strong>Visit Type</strong> {{ $visit->visit_type }}</span>
 									@if($visit->visit_type == 'In-patient')
-										<span><strong>Ward</strong> {{ $visit->ward->name }}</span>
+										<span><strong>Ward</strong>
+										@if(!is_null($visit->ward))
+											{{ $visit->ward->name }}
+										@endif
+										</span>
 										<span><strong>Bed No</strong> {{ $visit->bed_no }}</span>
 									@endif
 								</div>

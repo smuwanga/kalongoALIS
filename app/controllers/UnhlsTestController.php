@@ -96,7 +96,12 @@ class UnhlsTestController extends \BaseController {
 
 		$searchString = isset($input['search'])?$input['search']:'';
 		$testStatusId = '4';
-		$dateFrom = isset($input['date_from'])?$input['date_from']:'';
+		if (isset($input['date_from'])) {
+			$dateFrom = $input['date_from'];
+		}else{
+			$dateFrom = date('Y-m-d');
+			$input['date_from'] = date('Y-m-d');
+		}
 		$dateTo = isset($input['date_to'])?$input['date_to']:'';
 		$tests = UnhlsTest::CompletedTests();
 
@@ -131,6 +136,8 @@ class UnhlsTestController extends \BaseController {
 		return View::make('unhls_test.index')
 					->with('testSet', $tests)
 					->with('testStatus', $statuses)
+					->with('dateFrom', $dateFrom)
+					->with('dateTo', $dateTo)
 					->with('barcode', $barcode)
 					->withInput($input);
 
@@ -157,7 +164,12 @@ class UnhlsTestController extends \BaseController {
 
 		$searchString = isset($input['search'])?$input['search']:'';
 		$testStatusId = '2';
-		$dateFrom = isset($input['date_from'])?$input['date_from']:'';
+		if (isset($input['date_from'])) {
+			$dateFrom = $input['date_from'];
+		}else{
+			$dateFrom = date('Y-m-d');
+			$input['date_from'] = date('Y-m-d');
+		}
 		$dateTo = isset($input['date_to'])?$input['date_to']:'';
 
 				// Search Conditions
@@ -191,6 +203,8 @@ class UnhlsTestController extends \BaseController {
 		return View::make('unhls_test.index')
 					->with('testSet', $tests)
 					->with('testStatus', $statuses)
+					->with('dateFrom', $dateFrom)
+					->with('dateTo', $dateTo)
 					->with('barcode', $barcode)
 					->withInput($input);
 
@@ -217,7 +231,12 @@ class UnhlsTestController extends \BaseController {
 
 		$searchString = isset($input['search'])?$input['search']:'';
 		$testStatusId = '3';
-		$dateFrom = isset($input['date_from'])?$input['date_from']:'';
+		if (isset($input['date_from'])) {
+			$dateFrom = $input['date_from'];
+		}else{
+			$dateFrom = date('Y-m-d');
+			$input['date_from'] = date('Y-m-d');
+		}
 		$dateTo = isset($input['date_to'])?$input['date_to']:'';
 
 				// Search Conditions
@@ -251,6 +270,8 @@ class UnhlsTestController extends \BaseController {
 		return View::make('unhls_test.index')
 					->with('testSet', $tests)
 					->with('testStatus', $statuses)
+					->with('dateFrom', $dateFrom)
+					->with('dateTo', $dateTo)
 					->with('barcode', $barcode)
 					->withInput($input);
 
@@ -277,7 +298,12 @@ class UnhlsTestController extends \BaseController {
 
 		$searchString = isset($input['search'])?$input['search']:'';
 		$testStatusId = '1';
-		$dateFrom = isset($input['date_from'])?$input['date_from']:'';
+		if (isset($input['date_from'])) {
+			$dateFrom = $input['date_from'];
+		}else{
+			$dateFrom = date('Y-m-d');
+			$input['date_from'] = date('Y-m-d');
+		}
 		$dateTo = isset($input['date_to'])?$input['date_to']:'';
 
 				// Search Conditions
@@ -311,6 +337,8 @@ class UnhlsTestController extends \BaseController {
 		return View::make('unhls_test.index')
 					->with('testSet', $tests)
 					->with('testStatus', $statuses)
+					->with('dateFrom', $dateFrom)
+					->with('dateTo', $dateTo)
 					->with('barcode', $barcode)
 					->withInput($input);
 
@@ -338,7 +366,12 @@ class UnhlsTestController extends \BaseController {
 
 		$searchString = isset($input['search'])?$input['search']:'';
 		$testStatusId = '5';
-		$dateFrom = isset($input['date_from'])?$input['date_from']:'';
+		if (isset($input['date_from'])) {
+			$dateFrom = $input['date_from'];
+		}else{
+			$dateFrom = date('Y-m-d');
+			$input['date_from'] = date('Y-m-d');
+		}
 		$dateTo = isset($input['date_to'])?$input['date_to']:'';
 
 				// Search Conditions
@@ -373,6 +406,8 @@ class UnhlsTestController extends \BaseController {
 					->with('testSet', $tests)
 					->with('testStatus', $statuses)
 					->with('barcode', $barcode)
+					->with('dateFrom', $dateFrom)
+					->with('dateTo', $dateTo)
 					->withInput($input);
 
 	}
