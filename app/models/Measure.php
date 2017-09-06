@@ -57,6 +57,11 @@ class Measure extends Eloquent
 
 		try {
 			$measurerange = MeasureRange::where('measure_id', '=', $result['measureid']);
+			// there is a miscalculation here!!! what happens when the measure range gender is both male and female : 2
+			// also the measure value does not have to necessarily lie within it's proper reference range
+			// to identify it's reference range what is required is to match the age_min, age_max and gender against each other
+			// then after the high the low the normal can be determined
+
 			if ($measure->isNumeric()) {
 				$birthDate = new DateTime($result['birthdate']);
 				$now = new DateTime();
@@ -250,4 +255,9 @@ class Measure extends Eloquent
 			return null;
 		}
 	}
+
+    public function measureNameMapping()
+    {
+        return $this->hasOne('MeasureNameMapping');
+    }
 }

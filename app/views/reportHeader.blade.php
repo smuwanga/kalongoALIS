@@ -11,7 +11,7 @@
             </tr>
             <tr>
                 <td colspan="12" style="text-align:center;">
-                    {{ HTML::image(Config::get('kblis.organization-logo'),  Config::get('kblis.country') . trans('messages.court-of-arms'), array('width' => '90px')) }}
+                    {{ @HTML::image(Config::get('kblis.organization-logo'),  Config::get('kblis.country') . trans('messages.court-of-arms'), array('width' => '90px')) }}
                 </td>
             </tr>
             <tr>

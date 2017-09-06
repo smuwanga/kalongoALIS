@@ -291,7 +291,6 @@ $(function(){
 
         // fetch relevant list of antibiotics for organism
         organismAntibioticsUrl = $(e.relatedTarget).data('antibiotics-url');
-        see = $(e.relatedTarget).data('zone-diameter');
         var antibiotics;
         $.ajax({
             type: 'GET',
@@ -1257,7 +1256,11 @@ $(function(){
 
 	function UIComponents(){
 		/* Datepicker */
-		$( '.standard-datepicker').datepicker({ dateFormat: "yy-mm-dd" });
+        $( '.standard-datepicker').datepicker({ dateFormat: "yy-mm-dd" });
+		$( '.month-datepicker').datepicker({
+            maxDate: 0,
+            dateFormat: "yy-mm",
+        });
 	}
 
 	function editUserProfile()

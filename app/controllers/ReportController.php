@@ -42,7 +42,7 @@ class ReportController extends \BaseController {
 		$visitId = Input::get('visit_id');
 		//	Check checkbox if checked and assign the 'checked' value
 		if (Input::get('tests') === '1') {
-		    $pending='checked';
+			$pending='checked';
 		}
 		//	Query to get tests of a particular patient
 		if (($visit || $visitId) && $id && $testId){
@@ -93,8 +93,8 @@ class ReportController extends \BaseController {
 			$date = date("Ymdhi");
 			$fileName = "blispatient_".$id."_".$date.".doc";
 			$headers = array(
-			    "Content-type"=>"text/html",
-			    "Content-Disposition"=>"attachment;Filename=".$fileName
+				"Content-type"=>"text/html",
+				"Content-Disposition"=>"attachment;Filename=".$fileName
 			);
 			$content = View::make('reports.patient.export')
 							->with('patient', $patient)
@@ -103,7 +103,7 @@ class ReportController extends \BaseController {
 							->with('to', $to)
 							->with('visit', $visit)
 							->with('accredited', $accredited);
-	    	return Response::make($content,200, $headers);
+			return Response::make($content,200, $headers);
 		}
 		else{
 			// return View::make('reports.patient.report')
@@ -154,11 +154,11 @@ class ReportController extends \BaseController {
 	*	Function to return test types of a particular test category to fill test types dropdown
 	*/
 	public function reportsDropdown(){
-        $input = Input::get('option');
-        $testCategory = TestCategory::find($input);
-        $testTypes = $testCategory->testTypes();
-        return Response::make($testTypes->get(['id','name']));
-    }
+		$input = Input::get('option');
+		$testCategory = TestCategory::find($input);
+		$testTypes = $testCategory->testTypes();
+		return Response::make($testTypes->get(['id','name']));
+	}
 
 	//	Begin Daily Log-Patient report functions
 	/**
@@ -174,7 +174,7 @@ class ReportController extends \BaseController {
 		$accredited = array();
 		//	Check radiobutton for pending/all tests is checked and assign the 'true' value
 		if (Input::get('tests') === '1') {
-		    $pending='true';
+			$pending='true';
 		}
 		$date = date('Y-m-d');
 		if(!$to){
@@ -213,14 +213,14 @@ class ReportController extends \BaseController {
 				$date = date("Ymdhi");
 				$fileName = "daily_visits_log_".$date.".doc";
 				$headers = array(
-				    "Content-type"=>"text/html",
-				    "Content-Disposition"=>"attachment;Filename=".$fileName
+					"Content-type"=>"text/html",
+					"Content-Disposition"=>"attachment;Filename=".$fileName
 				);
 				$content = View::make('reports.daily.exportPatientLog')
 								->with('visits', $visits)
 								->with('accredited', $accredited)
 								->withInput(Input::all());
-		    	return Response::make($content,200, $headers);
+				return Response::make($content,200, $headers);
 			}
 			else{
 				return View::make('reports.daily.patient')
@@ -272,8 +272,8 @@ class ReportController extends \BaseController {
 				$date = date("Ymdhi");
 				$fileName = "daily_rejected_specimen_".$date.".doc";
 				$headers = array(
-				    "Content-type"=>"text/html",
-				    "Content-Disposition"=>"attachment;Filename=".$fileName
+					"Content-type"=>"text/html",
+					"Content-Disposition"=>"attachment;Filename=".$fileName
 				);
 				$content = View::make('reports.daily.exportSpecimenLog')
 								->with('specimens', $specimens)
@@ -281,7 +281,7 @@ class ReportController extends \BaseController {
 								->with('testType', $testType)
 								->with('accredited', $accredited)
 								->withInput(Input::all());
-		    	return Response::make($content,200, $headers);
+				return Response::make($content,200, $headers);
 			}
 			else
 			{
@@ -341,8 +341,8 @@ class ReportController extends \BaseController {
 				$date = date("Ymdhi");
 				$fileName = "daily_test_records_".$date.".doc";
 				$headers = array(
-				    "Content-type"=>"text/html",
-				    "Content-Disposition"=>"attachment;Filename=".$fileName
+					"Content-type"=>"text/html",
+					"Content-Disposition"=>"attachment;Filename=".$fileName
 				);
 				$content = View::make('reports.daily.exportTestLog')
 								->with('tests', $tests)
@@ -351,7 +351,7 @@ class ReportController extends \BaseController {
 								->with('pendingOrAll', $pendingOrAll)
 								->with('accredited', $accredited)
 								->withInput(Input::all());
-		    	return Response::make($content,200, $headers);
+				return Response::make($content,200, $headers);
 			}
 			else
 			{
@@ -467,84 +467,84 @@ class ReportController extends \BaseController {
 		}
 
 		$options = '{
-		    "chart": {
-		        "type": "spline"
-		    },
-		    "title": {
-		        "text":"'.trans('messages.positivity-rates').'"
-		    },
-		    "subtitle": {
-		        "text":'; 
-		        if($from==$to)
-		        	$options.='"'.trans('messages.for-the-year').' '.date('Y').'"';
-		        else
-		        	$options.='"'.trans('messages.from').' '.$from.' '.trans('messages.to').' '.$to.'"';
-		    $options.='},
-		    "credits": {
-		        "enabled": false
-		    },
-		    "navigation": {
-		        "buttonOptions": {
-		            "align": "right"
-		        }
-		    },
-		    "series": [';
-		    	$counts = count($testTypes);
+			"chart": {
+				"type": "spline"
+			},
+			"title": {
+				"text":"'.trans('messages.positivity-rates').'"
+			},
+			"subtitle": {
+				"text":';
+				if($from==$to)
+					$options.='"'.trans('messages.for-the-year').' '.date('Y').'"';
+				else
+					$options.='"'.trans('messages.from').' '.$from.' '.trans('messages.to').' '.$to.'"';
+			$options.='},
+			"credits": {
+				"enabled": false
+			},
+			"navigation": {
+				"buttonOptions": {
+					"align": "right"
+				}
+			},
+			"series": [';
+				$counts = count($testTypes);
 
-			    	foreach ($testTypes as $testType) {
-		        		$options.= '{
-		        			"name": "'.$testType->name.'","data": [';
-		        				$counter = count($months);
-		            			foreach ($months as $month) {
-		            			$data = $testType->getPrevalenceCount($month->annum, $month->months);
-		            				if($data->isEmpty()){
-		            					$options.= '0.00';
-		            					if($counter==1)
-			            					$options.='';
-			            				else
-			            					$options.=',';
-		            				}
-		            				else{
-		            					foreach ($data as $datum) {
-				            				$options.= $datum->rate;
+					foreach ($testTypes as $testType) {
+						$options.= '{
+							"name": "'.$testType->name.'","data": [';
+								$counter = count($months);
+								foreach ($months as $month) {
+								$data = $testType->getPrevalenceCount($month->annum, $month->months);
+									if($data->isEmpty()){
+										$options.= '0.00';
+										if($counter==1)
+											$options.='';
+										else
+											$options.=',';
+									}
+									else{
+										foreach ($data as $datum) {
+											$options.= $datum->rate;
 
-				            				if($counter==1)
-				            					$options.='';
-				            				else
-				            					$options.=',';
-					            		}
-		            				}
-		            			$counter--;
-				    		}
-				    		$options.=']';
-				    	if($counts==1)
+											if($counter==1)
+												$options.='';
+											else
+												$options.=',';
+										}
+									}
+								$counter--;
+							}
+							$options.=']';
+						if($counts==1)
 							$options.='}';
 						else
 							$options.='},';
 						$counts--;
 					}
 			$options.='],
-		    "xAxis": {
-		        "categories": [';
-		        $count = count($months);
-	            	foreach ($months as $month) {
-	    				$options.= '"'.$month->label." ".$month->annum;
-	    				if($count==1)
-	    					$options.='" ';
-	    				else
-	    					$options.='" ,';
-	    				$count--;
-	    			}
-	            $options.=']
-		    },
-		    "yAxis": {
-		        "title": {
-		            "text": "'.trans('messages.prevalence-rates-label').'"
-		        },
-	            "min": "0",
-	            "max": "100"
-		    },
-		    "exporting": {
+			"xAxis": {
+				"categories": [';
+				$count = count($months);
+					foreach ($months as $month) {
+						$options.= '"'.$month->label." ".$month->annum;
+						if($count==1)
+							$options.='" ';
+						else
+							$options.='" ,';
+						$count--;
+					}
+				$options.=']
+			},
+			"yAxis": {
+				"title": {
+					"text": "'.trans('messages.prevalence-rates-label').'"
+				},
+				"min": "0",
+				"max": "100"
+			},
+			"exporting": {
 				"buttons":{
 					"contextButtons": {
 						"symbol": "url(../../../i/button_download.png)",
@@ -1133,8 +1133,8 @@ class ReportController extends \BaseController {
 		if(Input::has('word')){
 			$fileName = "surveillance_".$date.".doc";
 			$headers = array(
-			    "Content-type"=>"text/html",
-			    "Content-Disposition"=>"attachment;Filename=".$fileName
+				"Content-type"=>"text/html",
+				"Content-Disposition"=>"attachment;Filename=".$fileName
 			);
 			$content = View::make('reports.surveillance.exportSurveillance')
 							->with('surveillance', $surveillance)
@@ -1158,14 +1158,14 @@ class ReportController extends \BaseController {
 	 */
 	public function surveillanceConfig(){
 		
-        $allSurveillanceIds = array();
+		$allSurveillanceIds = array();
 		
 		//edit or leave surveillance entries as is
 		if (Input::get('surveillance')) {
 			$diseases = Input::get('surveillance');
 
 			foreach ($diseases as $id => $disease) {
-                $allSurveillanceIds[] = $id;
+				$allSurveillanceIds[] = $id;
 				$surveillance = ReportDisease::find($id);
 				$surveillance->test_type_id = $disease['test-type'];
 				$surveillance->disease_id = $disease['disease'];
@@ -1182,28 +1182,28 @@ class ReportController extends \BaseController {
 				$surveillance->test_type_id = $disease['test-type'];
 				$surveillance->disease_id = $disease['disease'];
 				$surveillance->save();
-                $allSurveillanceIds[] = $surveillance->id;
+				$allSurveillanceIds[] = $surveillance->id;
 				
 			}
 		}
 
-        //check if action is from a form submission
-        if (Input::get('from-form')) {
-	     	// Delete any pre-existing surveillance entries
-	     	//that were not captured in any of the above save loops
-	        $allSurveillances = ReportDisease::all(array('id'));
+		//check if action is from a form submission
+		if (Input::get('from-form')) {
+			// Delete any pre-existing surveillance entries
+			//that were not captured in any of the above save loops
+			$allSurveillances = ReportDisease::all(array('id'));
 
-	        $deleteSurveillances = array();
+			$deleteSurveillances = array();
 
-	        //Identify survillance entries to be deleted by Ids
-	        foreach ($allSurveillances as $key => $value) {
-	            if (!in_array($value->id, $allSurveillanceIds)) {
-	                $deleteSurveillances[] = $value->id;
-	            }
-	        }
-	        //Delete Surveillance entry if any
-	        if(count($deleteSurveillances)>0)ReportDisease::destroy($deleteSurveillances);
-        }
+			//Identify survillance entries to be deleted by Ids
+			foreach ($allSurveillances as $key => $value) {
+				if (!in_array($value->id, $allSurveillanceIds)) {
+					$deleteSurveillances[] = $value->id;
+				}
+			}
+			//Delete Surveillance entry if any
+			if(count($deleteSurveillances)>0)ReportDisease::destroy($deleteSurveillances);
+		}
 
 		$diseaseTests = ReportDisease::all();
 
@@ -1462,7 +1462,7 @@ class ReportController extends \BaseController {
 				$measures = TestTypeMeasure::where('test_type_id', $rfts)->orderBy('measure_id', 'DESC')->get();
 				$table.='<tr>
 						<td>Totals</td>';
-	        		foreach ($sex as $gender) {
+					foreach ($sex as $gender) {
 						$table.='<td>'.$this->getGroupedTestCounts($rft, [$gender], null, $from, $toPlusOne).'</td>';
 					}
 					$table.='<td>'.$this->getGroupedTestCounts($rft, null, null, $from, $toPlusOne).'</td>';
@@ -1511,7 +1511,7 @@ class ReportController extends \BaseController {
 				$measures = TestTypeMeasure::where('test_type_id', $lfts)->orderBy('measure_id', 'DESC')->get();
 				$table.='<tr>
 						<td>Totals</td>';
-		        		foreach ($sex as $gender) {
+						foreach ($sex as $gender) {
 							$table.='<td>'.$this->getGroupedTestCounts($lft, [$gender], null, $from, $toPlusOne).'</td>';
 						}
 						$table.='<td>'.$this->getGroupedTestCounts($lft, null, null, $from, $toPlusOne).'</td>';
@@ -1663,7 +1663,7 @@ class ReportController extends \BaseController {
 				$bioCsf = TestType::find($csf);
 				$table.='<tr>
 					<td>Totals</td>';
-	        		foreach ($sex as $gender) {
+					foreach ($sex as $gender) {
 						$table.='<td>'.$this->getGroupedTestCounts($bioCsf, [$gender], null, $from, $toPlusOne).'</td>';
 					}
 					$table.='<td>'.$this->getGroupedTestCounts($bioCsf, null, null, $from, $toPlusOne).'</td>';
@@ -1771,7 +1771,7 @@ class ReportController extends \BaseController {
 				$tft = TestType::find($tfts);
 				$table.='<tr>
 					<td>Totals</td>';
-	        		foreach ($sex as $gender) {
+					foreach ($sex as $gender) {
 						$table.='<td>'.$this->getGroupedTestCounts($tft, [$gender], null, $from, $toPlusOne).'</td>';
 					}
 					$table.='<td>'.$this->getGroupedTestCounts($tft, null, null, $from, $toPlusOne).'</td>';
@@ -3013,11 +3013,11 @@ class ReportController extends \BaseController {
 			$date = date("Ymdhi");
 			$fileName = "MOH706_".$date.".xls";
 			$headers = array(
-			    "Content-type"=>"text/html",
-			    "Content-Disposition"=>"attachment;Filename=".$fileName
+				"Content-type"=>"text/html",
+				"Content-Disposition"=>"attachment;Filename=".$fileName
 			);
 			$content = $table;
-	    	return Response::make($content,200, $headers);
+			return Response::make($content,200, $headers);
 		}
 		else{
 			//return View::make('reports.moh.706');
@@ -3048,14 +3048,14 @@ class ReportController extends \BaseController {
 				return Redirect::route('reportconfig.disease')->withErrors($validator);
 			} else {
 
-		        $allDiseaseIds = array();
+				$allDiseaseIds = array();
 				
 				//edit or leave disease entries as is
 				if (Input::get('diseases')) {
 					$diseases = Input::get('diseases');
 
 					foreach ($diseases as $id => $disease) {
-		                $allDiseaseIds[] = $id;
+						$allDiseaseIds[] = $id;
 						$diseases = Disease::find($id);
 						$diseases->name = $disease['disease'];
 						$diseases->save();
@@ -3070,37 +3070,37 @@ class ReportController extends \BaseController {
 						$diseases = new Disease;
 						$diseases->name = $disease['disease'];
 						$diseases->save();
-		                $allDiseaseIds[] = $diseases->id;
+						$allDiseaseIds[] = $diseases->id;
 					}
 				}
 
-		        //check if action is from a form submission
-		        if (Input::get('from-form')) {
-			     	// Delete any pre-existing disease entries
-			     	//that were not captured in any of the above save loops
-			        $allDiseases = Disease::all(array('id'));
+				//check if action is from a form submission
+				if (Input::get('from-form')) {
+					// Delete any pre-existing disease entries
+					//that were not captured in any of the above save loops
+					$allDiseases = Disease::all(array('id'));
 
-			        $deleteDiseases = array();
+					$deleteDiseases = array();
 
-			        //Identify disease entries to be deleted by Ids
-			        foreach ($allDiseases as $key => $value) {
-			            if (!in_array($value->id, $allDiseaseIds)) {
+					//Identify disease entries to be deleted by Ids
+					foreach ($allDiseases as $key => $value) {
+						if (!in_array($value->id, $allDiseaseIds)) {
 
 							//Allow delete if not in use
 							$inUseByReports = Disease::find($value->id)->reportDiseases->toArray();
 							if (empty($inUseByReports)) {
-							    
-							    // The disease is not in use
-			                	$deleteDiseases[] = $value->id;
-							}
-			            }
-			        }
-			        //Delete disease entry if any
-			        if(count($deleteDiseases)>0){
 
-			        	Disease::destroy($deleteDiseases);
-			        }
-		        }
+								// The disease is not in use
+								$deleteDiseases[] = $value->id;
+							}
+						}
+					}
+					//Delete disease entry if any
+					if(count($deleteDiseases)>0){
+
+						Disease::destroy($deleteDiseases);
+					}
+				}
 			}
 		}
 		$diseases = Disease::all();
@@ -3212,37 +3212,37 @@ class ReportController extends \BaseController {
 		return json_encode($response);
 	}
 
-    /**
-     * This user-land implementation follows the implementation quite strictly;
-     * it does not attempt to improve the code or algorithm in any way. It will
-     * raise a warning if you have fewer than 2 values in your array, just like
-     * the extension does (although as an E_USER_WARNING, not E_WARNING).
-     * 
-     * @param array $a 
-     * @param bool $sample [optional] Defaults to false
-     * @return float|bool The standard deviation or false on error.
-     */
-    function stat_standard_deviation(array $a, $sample = false) {
-        $n = count($a);
-        if ($n === 0) {
-            trigger_error("The array has zero elements", E_USER_WARNING);
-            return false;
-        }
-        if ($sample && $n === 1) {
-            trigger_error("The array has only 1 element", E_USER_WARNING);
-            return false;
-        }
-        $mean = array_sum($a) / $n;
-        $carry = 0.0;
-        foreach ($a as $val) {
-            $d = ((double) $val) - $mean;
-            $carry += $d * $d;
-        };
-        if ($sample) {
-           --$n;
-        }
-        return sqrt($carry / $n);
-    }
+	/**
+	 * This user-land implementation follows the implementation quite strictly;
+	 * it does not attempt to improve the code or algorithm in any way. It will
+	 * raise a warning if you have fewer than 2 values in your array, just like
+	 * the extension does (although as an E_USER_WARNING, not E_WARNING).
+	 *
+	 * @param array $a
+	 * @param bool $sample [optional] Defaults to false
+	 * @return float|bool The standard deviation or false on error.
+	 */
+	function stat_standard_deviation(array $a, $sample = false) {
+		$n = count($a);
+		if ($n === 0) {
+			trigger_error("The array has zero elements", E_USER_WARNING);
+			return false;
+		}
+		if ($sample && $n === 1) {
+			trigger_error("The array has only 1 element", E_USER_WARNING);
+			return false;
+		}
+		$mean = array_sum($a) / $n;
+		$carry = 0.0;
+		foreach ($a as $val) {
+			$d = ((double) $val) - $mean;
+			$carry += $d * $d;
+		};
+		if ($sample) {
+		   --$n;
+		}
+		return sqrt($carry / $n);
+	}
 
 	/**
 	 * Display data after applying the filters on the report uses patient ID
@@ -3285,8 +3285,8 @@ class ReportController extends \BaseController {
 			$date = date("Ymdhi");
 			$fileName = "cd4_report_".$date.".doc";
 			$headers = array(
-			    "Content-type"=>"text/html",
-			    "Content-Disposition"=>"attachment;Filename=".$fileName
+				"Content-type"=>"text/html",
+				"Content-Disposition"=>"attachment;Filename=".$fileName
 			);
 			$content = View::make('reports.cd4.export')
 				->with('columns', $columns)
@@ -3295,7 +3295,7 @@ class ReportController extends \BaseController {
 				->with('test', $test)
 				->with('counts', $counts)
 				->withInput(Input::all());
-	    	return Response::make($content,200, $headers);
+			return Response::make($content,200, $headers);
 		}
 		else
 		{
@@ -3308,17 +3308,200 @@ class ReportController extends \BaseController {
 				->withInput(Input::all());
 		}
 	}
-    /**
-    *	Function to check for accredited test types
-    *
-    */
-    public function accredited($tests)
-    {
-    	$accredited = array();
+	/**
+	*	Function to check for accredited test types
+	*
+	*/
+	public function accredited($tests)
+	{
+		$accredited = array();
 		foreach ($tests as $test) {
 			if($test->testType->isAccredited())
 				array_push($accredited, $test->id);
 		}
 		return $accredited;
-    }
+	}
+
+	/**
+	*	Function to check for accredited test types
+	*
+	*/
+	public function hmis105($month = '')
+	{
+		$month = ($month == '') ? date('Y-m') : $month ;
+		$testTypes = TestType::all();
+		$testTypeCountArray = [];
+
+		foreach ($testTypes as $testType) {
+			if ($testType->testNameMapping != '') {
+				$testSystemName = $testType->testNameMapping->system_name;
+				$test_type_id = $testType->id;
+
+				if ($testSystemName == 'malaria_microscopy')  {
+					$totalUnderFive  = DailyTestTypeCount::where('date', 'like', '%'.$month.'%')->where('gender',UnhlsPatient::BOTH)
+						->where('age_upper_limit','<',5)->where('age_lower_limit','=',0)->where('test_type_id',$test_type_id);
+					$testTypeCountArray[$testSystemName]['total']['under_5'] = $totalUnderFive->sum('all');
+
+					$totalAboveFive  = DailyTestTypeCount::where('date', 'like', '%'.$month.'%')->where('gender',UnhlsPatient::BOTH)
+						->where('age_upper_limit','>=',100)->where('age_lower_limit','>=',5)->where('test_type_id',$test_type_id);
+					$testTypeCountArray[$testSystemName]['total']['above_5'] = $totalAboveFive->sum('all');
+
+					$positiveUnderFive  = DailyAlphanumericCount::where(function($q) use ($test_type_id, $month){
+						$q->whereHas('dailyTestTypeCount', function($q)  use ($test_type_id, $month){
+							$q->where(function($q) use ($test_type_id, $month){
+								$q->where('date', 'like', '%'.$month.'%')->where('gender',UnhlsPatient::BOTH)
+									->where('age_upper_limit','<',5)->where('age_lower_limit','=',0)
+									->where('test_type_id',$test_type_id);
+							});
+						});
+					})->whereIn('measure_range_id',[2,3,4]);
+					$testTypeCountArray[$testSystemName]['positive']['under_5'] = $positiveUnderFive->sum('count');
+
+					$totalAboveFive  = DailyAlphanumericCount::where(function($q) use ($test_type_id, $month){
+						$q->whereHas('dailyTestTypeCount', function($q)  use ($test_type_id, $month){
+							$q->where(function($q) use ($test_type_id, $month){
+								$q->where('date', 'like', '%'.$month.'%')->where('gender',UnhlsPatient::BOTH)
+									->where('age_upper_limit','>=',100)->where('age_lower_limit','=',5)
+									->where('test_type_id',$test_type_id);
+							});
+						});
+					})->whereIn('measure_range_id',[2,3,4]);
+					$testTypeCountArray[$testSystemName]['positive']['above_5'] = $totalAboveFive->sum('count');
+
+				}elseif ($testSystemName == 'malaria_rdts') {
+					$totalUnderFive  = DailyTestTypeCount::where('date', 'like', '%'.$month.'%')->where('gender',UnhlsPatient::BOTH)
+						->where('age_upper_limit','<',5)->where('age_lower_limit','=',0)->where('test_type_id',$test_type_id);
+					$testTypeCountArray[$testSystemName]['total']['under_5'] = $totalUnderFive->sum('all');
+
+					$totalAboveFive  = DailyTestTypeCount::where('date', 'like', '%'.$month.'%')->where('gender',UnhlsPatient::BOTH)
+						->where('age_upper_limit','>=',100)->where('age_lower_limit','>=',5)->where('test_type_id',$test_type_id);
+					$testTypeCountArray[$testSystemName]['total']['above_5'] = $totalAboveFive->sum('all');
+
+					$positiveUnderFive  = DailyAlphanumericCount::where(function($q) use ($test_type_id, $month){
+						$q->whereHas('dailyTestTypeCount', function($q)  use ($test_type_id, $month){
+							$q->where(function($q) use ($test_type_id, $month){
+								$q->where('date', 'like', '%'.$month.'%')->where('gender',UnhlsPatient::BOTH)
+									->where('age_upper_limit','<',5)->where('age_lower_limit','=',0)
+									->where('test_type_id',$test_type_id);
+							});
+						});
+					})->where('measure_range_id',1);
+					$testTypeCountArray[$testSystemName]['positive']['under_5'] = $positiveUnderFive->sum('count');
+
+					$totalAboveFive  = DailyAlphanumericCount::where(function($q) use ($test_type_id, $month){
+						$q->whereHas('dailyTestTypeCount', function($q)  use ($test_type_id, $month){
+							$q->where(function($q) use ($test_type_id, $month){
+								$q->where('date', 'like', '%'.$month.'%')->where('gender',UnhlsPatient::BOTH)
+									->where('age_upper_limit','>=',100)->where('age_lower_limit','=',5)
+									->where('test_type_id',$test_type_id);
+							});
+						});
+					})->where('measure_range_id',1);
+					$testTypeCountArray[$testSystemName]['positive']['above_5'] = $totalAboveFive->sum('count');
+
+				}elseif ($testSystemName == 'hiv') {
+					$testTypeCount  = DailyTestTypeCount::with(
+						'dailyHIVCount','dailyAlphanumericCount')
+						->where('date', 'like', '%'.$month.'%')->where('gender',UnhlsPatient::BOTH)
+						->where('age_upper_limit','>=',100)->where('age_lower_limit','=',0)
+						->where('test_type_id',$test_type_id)->where('test_type_id',$test_type_id);
+					$testTypeCountArray[$testSystemName]['total'] = $testTypeCount->sum('all');
+					// $testTypeCountArray[$testSystemName]['determine'] = $testTypeCount->sum('');
+					// $testTypeCountArray[$testSystemName]['start_pak'] = $testTypeCount->sum('');
+					// $testTypeCountArray[$testSystemName]['unigold'] = $testTypeCount->sum('');
+
+				}elseif ($testSystemName == 'gram') {
+					$testTypeCount  = DailyTestTypeCount::with(
+						'dailyHIVCount','dailyAlphanumericCount')
+						->where('date', 'like', '%'.$month.'%')->where('gender',UnhlsPatient::BOTH)
+						->where('age_upper_limit','>=',100)->where('age_lower_limit','=',0)
+						->where('test_type_id',$test_type_id)->where('test_type_id',$test_type_id);
+					$testTypeCountArray[$testSystemName]['total'] = $testTypeCount->sum('all');
+					// $testTypeCountArray[$testSystemName]['positive'] = $testTypeCount->sum('');
+
+				}elseif ($testSystemName == 'routine_culture_sensitivty') {
+					$testTypeCount  = DailyTestTypeCount::with(
+						'dailyHIVCount','dailyAlphanumericCount')
+						->where('date', 'like', '%'.$month.'%')->where('gender',UnhlsPatient::BOTH)
+						->where('age_upper_limit','>=',100)->where('age_lower_limit','=',0)
+						->where('test_type_id',$test_type_id)->where('test_type_id',$test_type_id);
+					$testTypeCountArray[$testSystemName]['total'] = $testTypeCount->sum('all');
+					// $testTypeCountArray[$testSystemName]['positive'] = $testTypeCount->sum('');
+
+				}elseif ($testType->hasNumericMeasures()) {
+					foreach ($testType->measures as $measure) {
+
+						if ($measure->measureNameMapping != '' && $measure->measureNameMapping->system_name == 'hgb') {
+							// less than 8
+							$testTypeCount  = DailyNumericRangeCount::with('dailyTestTypeCount')
+								->where('date', 'like', '%'.$month.'%')->where('measure_id',$measure->id)
+								->where('result','hbg_less_8')
+								->where(function($q) use ($test_type_id){
+									$q->whereHas('dailyTestTypeCount', function($q)  use ($test_type_id){
+										$q->where('gender',2)->where('age_upper_limit','>=',100)->where('age_lower_limit','=',0);
+									});
+								});
+
+							$testTypeCountArray[$testSystemName][$measureSystemName]['hbg_less_8'] = $testTypeCount->sum('count');
+
+							// greater or equal 8
+							$testTypeCount  = DailyNumericRangeCount::with('dailyTestTypeCount')
+								->where('date', 'like', '%'.$month.'%')->where('measure_id',$measure->id)
+								->where('result','hbg_equal_8')
+								->where(function($q) use ($test_type_id){
+									$q->whereHas('dailyTestTypeCount', function($q)  use ($test_type_id){
+										$q->where('gender',2)->where('age_upper_limit','>=',100)->where('age_lower_limit','=',0);
+									});
+								});
+
+							$testTypeCountArray[$testSystemName][$measureSystemName]['hbg_equal_8'] = $testTypeCount->sum('count');
+						}else{
+							$measureSystemName = ($measure->measureNameMapping!='')?$measure->measureNameMapping->system_name:'';
+
+							$testTypeCount  = DailyNumericRangeCount::with('dailyTestTypeCount')
+								->where('date', 'like', '%'.$month.'%')->where('measure_id',$measure->id)
+								->where(function($q) use ($test_type_id){
+									$q->whereHas('dailyTestTypeCount', function($q)  use ($test_type_id){
+										$q->where('gender',2)->where('age_upper_limit','>=',100)->where('age_lower_limit','=',0);
+									});
+								});
+
+							$testTypeCountArray[$testSystemName][$measureSystemName]['total'] = $testTypeCount->sum('count');
+						}
+					}
+
+				}elseif ($testType->hasAlphanumericMeasures()) {
+					$testTypeCount  = DailyTestTypeCount::with(
+						'dailyHIVCount','dailyAlphanumericCount')
+						->where('date', 'like', '%'.$month.'%')->where('gender',UnhlsPatient::BOTH)
+						->where('age_upper_limit','>=',100)->where('age_lower_limit','=',0)
+						->where('test_type_id',$test_type_id)->where('test_type_id',$test_type_id);
+
+					$testTypeCountArray[$testSystemName]['total'] = $testTypeCount->sum('all');
+
+				}else{
+					$testTypeCount  = DailyTestTypeCount::with(
+						'dailyHIVCount','dailyAlphanumericCount')
+						->where('date', 'like', '%'.$month.'%')->where('gender',UnhlsPatient::BOTH)
+						->where('age_upper_limit','>=',100)->where('age_lower_limit','=',0)
+						->where('test_type_id',$test_type_id)->where('test_type_id',$test_type_id);
+
+					$testTypeCountArray[$testSystemName]['total'] = $testTypeCount->sum('all');
+				}
+			}
+		}
+
+		return View::make('reports.hmis.105')
+			->with('month', $month)
+			->with('testTypeCountArray', $testTypeCountArray);
+	}
+
+	/**
+	*	Function to check for accredited test types
+	*
+	*/
+	public function counts()
+	{
+		// todo:content above should guide!
+	}
 }

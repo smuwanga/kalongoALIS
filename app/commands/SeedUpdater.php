@@ -1235,6 +1235,7 @@ class SeedUpdater extends Command {
         echo "bulk zone diameters seeded!\n";
         DB::enableQueryLog();
 
+        GramStainRange::create(["name" => "No organism seen"]);
         GramStainRange::create(["name" => "Gram positive cocci in singles"]);
         GramStainRange::create(["name" => "Gram positive cocci in chains"]);
         GramStainRange::create(["name" => "Gram positive cocci in clusters"]);

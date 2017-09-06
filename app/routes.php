@@ -129,6 +129,30 @@ Route::group(array("before" => "auth"), function()
     {
         Route::resource('instrument', 'InstrumentController');
         Route::resource('ward', 'WardController');
+        Route::resource('testnamemapping', 'TestNameMappingController');
+
+        Route::get("/measurenamemapping/create/{test_type_id}", array(
+            "as"   => "measurenamemapping.create",
+            "uses" => "MeasureNameMappingController@create"
+        ));
+        Route::get("/measurenamemapping/{id}/edit", array(
+            "as"   => "measurenamemapping.edit",
+            "uses" => "MeasureNameMappingController@edit"
+        ));
+        Route::get("/measurenamemapping/{id}/delete", array(
+            "as"   => "measurenamemapping.delete",
+            "uses" => "MeasureNameMappingController@delete"
+        ));
+        Route::post("/measurenamemapping/store", array(
+            "as"   => "measurenamemapping.store",
+            "uses" => "MeasureNameMappingController@store"
+        ));
+        Route::put("/measurenamemapping/{id}", array(
+            "as"   => "measurenamemapping.update",
+            "uses" => "MeasureNameMappingController@update"
+        ));
+
+        // Route::resource('measurenamemapping', 'MeasureNameMappingController');
         Route::get("/instrument/{id}/delete", array(
             "as"   => "instrument.delete",
             "uses" => "InstrumentController@delete"
@@ -338,6 +362,14 @@ Route::group(array("before" => "auth"), function()
             "as"   => "blisclient.properties",
             "uses" => "BlisClientController@properties"
         ));
+        Route::any("/reportconfig/dailyreport", array(
+            "as"   => "reportconfig.dailyreport",
+            "uses" => "DailyReportController@index"
+        ));
+        Route::any("/reportconfig/{date}/store", array(
+            "as"   => "reportconfig.store",
+            "uses" => "DailyReportController@store"
+        ));
     });
 
     //  Check if able to manage reports
@@ -381,6 +413,11 @@ Route::group(array("before" => "auth"), function()
             "as"   => "reports.aggregate.counts",
             "uses" => "ReportController@countReports"
         ));
+// new implementation
+        Route::any("/aggregate/counts", array(
+            "as"   => "reports.counts",
+            "uses" => "ReportController@counts"
+        ));
         Route::any("/tat", array(
             "as"   => "reports.aggregate.tat",
             "uses" => "ReportController@turnaroundTime"
@@ -398,6 +435,10 @@ Route::group(array("before" => "auth"), function()
         Route::any("/moh706", array(
             "as"   => "reports.aggregate.moh706",
             "uses" => "ReportController@moh706"
+        ));
+        Route::any("/hmis105/{month?}", array(
+            "as"   => "reports.aggregate.hmis105",
+            "uses" => "ReportController@hmis105"
         ));
 
         Route::any("/cd4", array(

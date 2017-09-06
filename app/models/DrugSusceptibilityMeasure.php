@@ -8,7 +8,7 @@ class DrugSusceptibilityMeasure extends Eloquent
 	 *
 	 * @var string
 	 */
-	// todo: change name of this from Drug susceptibilit to ZoneDiameterInterpretaion zone_diameter_interpretaion
+	// todo: change name of this from Drug susceptibility measures to drug susceptibility measures
 	protected $table = 'drug_susceptibility_measures';
 	public $timestamps = false;
 }

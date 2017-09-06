@@ -34,4 +34,12 @@ class MeasureRange extends Eloquent
 	{
 	  return $this->belongsTo('Measure');
 	}
+
+	/**
+	 * Measure relationship
+	 */
+	public function resultInterpretation()
+	{
+	  return $this->belongsTo('ResultInterpretation');
+	}
 }

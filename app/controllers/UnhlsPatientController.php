@@ -47,8 +47,6 @@ class UnhlsPatientController extends \BaseController {
 	{
 		//
 		$rules = array(
-
-			'patient_number' => 'required|unique:unhls_patients,patient_number',
 			'name'       => 'required',
 			'gender' => 'required',
 			'dob' => 'required' ,

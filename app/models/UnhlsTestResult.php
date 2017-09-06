@@ -21,10 +21,10 @@ class UnhlsTestResult extends Eloquent
 	 */
 	public function test()
 	{
-		return $this->belongsTo('UnhlsTest', 'id');
+		return $this->belongsTo('UnhlsTest', 'test_id');
 	}
 	/*
-	*	Counts for microbiology - count organisms per specimen type
+	* Counts for microbiology - count organisms per specimen type
 	*
 	*/
 	public static function microCounts($result, $specimen, $from, $to){
