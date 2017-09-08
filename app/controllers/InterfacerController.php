@@ -89,6 +89,42 @@ class InterfacerController extends \BaseController{
         return Response::json(array('Success'));
     }
 
+    public function saveTestResultsFromInstrument()
+    {
+        //todo: add proper authentication of some kind, perhaps in the routes
+        $username = Request::query('username');
+        $password = Request::query('password');
+        $specimenId = Request::query('specimen_id');
+        $testTypeId = Request::query('test_type_id');
+        $measureId = Request::query('measure_id');
+        $result = Request::query('result');
+
+        //save results
+        try {
+            $test = UnhlsTest::where('test_type_id', $testTypeId)
+                ->where('specimen_id', $specimenId)->first();
+
+            $testResult = UnhlsTestResult::firstOrNew(['test_id' => $test->id, 'measure_id' => $measureId]);
+            $testResult->result = $result;
+            $testResult->save();
+
+            if ($test->test_status_id == UnhlsTest::PENDING || $test->test_status_id == UnhlsTest::STARTED) {
+                $test = UnhlsTest::find($test->id);
+                $test->test_status_id = UnhlsTest::COMPLETED;
+                $test->tested_by = 1;
+                if($test->test_status_id == UnhlsTest::PENDING){
+                    $test->time_started = date('Y-m-d H:i:s');
+                }
+                $test->time_completed = date('Y-m-d H:i:s');
+                $test->save();
+            }
+
+        }catch(\QueryException $qe){
+            return $qe;
+        }
+        return Response::make();
+    }
+
     /**
     * Get test, specimen, measure info related to a test
     * @param key For authentication
