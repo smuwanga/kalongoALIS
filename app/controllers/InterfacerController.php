@@ -94,6 +94,7 @@ class InterfacerController extends \BaseController{
         //todo: add proper authentication of some kind, perhaps in the routes
         $username = Request::query('username');
         $password = Request::query('password');
+
         $specimenId = Request::query('specimen_id');
         $testTypeId = Request::query('test_type_id');
         $measureId = Request::query('measure_id');
@@ -158,6 +159,42 @@ class InterfacerController extends \BaseController{
                               ->orWhere('test_status_id', UnhlsTest::STARTED);
                     })
                 ->where('test_type_id', $testType->id)
+                ->where('time_created', '>', $dateFrom)
+                ->where('time_created', '<', $dateTo)
+                ->get();
+        }
+        //Search by ID
+        //$tests = Specimen::where('visit_id', $testFilter);
+        return Response::json($tests, '200');
+    }
+
+    public function getTestRequestsForInstrument()
+    {
+        //Auth
+
+        /*$authKey = Input::get('key');
+        if(!$this->authenticate($authKey)){
+            return Response::json(array('error' => 'Authentication failed'), '403');
+        }*/
+
+        //Validate params
+        $testType = Input::get('testtype');
+        $dateFrom = Input::get('datefrom');
+        $dateTo = Input::get('dateto');
+
+        if( empty($testType))
+        {
+            return Response::json(array('error' => 'No Test Type provided'), '404');
+        }
+        //Search by name / Date
+        $testType = TestType::where('name', $testType)->first();
+
+        if( !empty($testType) ){
+            $tests = UnhlsTest::with('visit.patient', 'testType.measures')
+                ->where(function($query){
+                        $query->where('test_status_id', UnhlsTest::PENDING)
+                              ->orWhere('test_status_id', UnhlsTest::STARTED);
+                })->where('test_type_id', $testType->id)
                 ->where('time_created', '>', $dateFrom)
                 ->where('time_created', '<', $dateTo)
                 ->get();
