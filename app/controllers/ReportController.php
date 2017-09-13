@@ -3354,7 +3354,7 @@ class ReportController extends \BaseController {
 									->where('test_type_id',$test_type_id);
 							});
 						});
-					})->whereIn('measure_range_id',[2,3,4]);
+					})->whereIn('measure_range_id',[8,9,10]);
 					$testTypeCountArray[$testSystemName]['positive']['under_5'] = $positiveUnderFive->sum('count');
 
 					$totalAboveFive  = DailyAlphanumericCount::where(function($q) use ($test_type_id, $month){
@@ -3365,7 +3365,7 @@ class ReportController extends \BaseController {
 									->where('test_type_id',$test_type_id);
 							});
 						});
-					})->whereIn('measure_range_id',[2,3,4]);
+					})->whereIn('measure_range_id',[8,9,10]);
 					$testTypeCountArray[$testSystemName]['positive']['above_5'] = $totalAboveFive->sum('count');
 
 				}elseif ($testSystemName == 'malaria_rdts') {
@@ -3385,7 +3385,7 @@ class ReportController extends \BaseController {
 									->where('test_type_id',$test_type_id);
 							});
 						});
-					})->where('measure_range_id',1);
+					})->where('measure_range_id',244);
 					$testTypeCountArray[$testSystemName]['positive']['under_5'] = $positiveUnderFive->sum('count');
 
 					$totalAboveFive  = DailyAlphanumericCount::where(function($q) use ($test_type_id, $month){
@@ -3458,15 +3458,18 @@ class ReportController extends \BaseController {
 						}else{
 							$measureSystemName = ($measure->measureNameMapping!='')?$measure->measureNameMapping->system_name:'';
 
-							$testTypeCount  = DailyNumericRangeCount::with('dailyTestTypeCount')
+							/*$testTypeCount  = DailyNumericRangeCount::with('dailyTestTypeCount')
 								->where('date', 'like', '%'.$month.'%')->where('measure_id',$measure->id)
 								->where(function($q) use ($test_type_id){
 									$q->whereHas('dailyTestTypeCount', function($q)  use ($test_type_id){
 										$q->where('gender',2)->where('age_upper_limit','>=',100)->where('age_lower_limit','=',0);
 									});
-								});
-
-							$testTypeCountArray[$testSystemName][$measureSystemName]['total'] = $testTypeCount->sum('count');
+								});*/
+							// $testTypeCountArray[$testSystemName][$measureSystemName]['total'] = $testTypeCount->sum('count');
+					// todo: undo this quick fix
+					$testTypeCount  = DailyTestTypeCount::where('date', 'like', '%'.$month.'%')->where('gender',UnhlsPatient::BOTH)
+						->where('age_upper_limit','>=',100)->where('age_lower_limit','=',0)->where('test_type_id',$test_type_id);
+					$testTypeCountArray[$testSystemName][$measureSystemName]['total'] = $testTypeCount->sum('all');
 						}
 					}
 

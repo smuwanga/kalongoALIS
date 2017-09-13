@@ -701,7 +701,6 @@ class DailyReporter extends Command {
                                         }
 
                                         // put condition up tomake sure the mapping guy is funtional before doing funny things
-
                                         if ($measure->measureNameMapping != '' &&
                                             $measure->measureNameMapping->testSystemName == 'hbg' &&
                                             $gender == 2 &&
