@@ -89,6 +89,26 @@ class InterfacerController extends \BaseController{
         return Response::json(array('Success'));
     }
 
+    public function fetchRequests()
+    {
+        //todo: add proper authentication of some kind, perhaps in the routes
+        $username = Request::query('username');
+        $password = Request::query('password');
+
+        $testTypeId = Request::query('test_type_id');
+
+        // $datefrom = date('Y-m-d');
+        $datefrom = date('2017-07-14');
+        $dateto = date('Y-m-d');
+        // get all pending/started CBC requests today
+        // provides specimen id which is used as patient id on the other side
+        $tests = UnhlsTest::with('visit', 'visit.patient')
+            ->where('test_type_id', $testTypeId)
+            ->where('time_created', 'like', '%'.$datefrom.'%')
+            ->whereIn('test_status_id', [UnhlsTest::PENDING, UnhlsTest::STARTED]);
+        return $tests->get()->toJson();
+    }
+
     public function saveTestResultsFromInstrument()
     {
         //todo: add proper authentication of some kind, perhaps in the routes
@@ -99,7 +119,7 @@ class InterfacerController extends \BaseController{
         $testTypeId = Request::query('test_type_id');
         $measureId = Request::query('measure_id');
         $result = Request::query('result');
-
+Log::info(Request::all());
         //save results
         try {
             $test = UnhlsTest::where('test_type_id', $testTypeId)
@@ -168,6 +188,7 @@ class InterfacerController extends \BaseController{
         return Response::json($tests, '200');
     }
 
+    // astm baised
     public function getTestRequestsForInstrument()
     {
         //Auth
@@ -178,33 +199,71 @@ class InterfacerController extends \BaseController{
         }*/
 
         //Validate params
-        $testType = Input::get('testtype');
-        $dateFrom = Input::get('datefrom');
-        $dateTo = Input::get('dateto');
+        $username = Request::query('username');
+        $password = Request::query('password');
 
-        if( empty($testType))
+        $testTypeId = Request::query('test_type_id');
+        $dateFrom = Request::query('date_from');
+        $dateTo = Request::query('date_to');
+
+
+
+
+
+// put default option edit this incase the sent is empty
+$dateFrom = date('2017-07-14');
+$dateTo = date('Y-m-d');
+
+
+        $genderSymbol = [0 => 'M', 1 => 'F', 2 => 'U'];
+        $visitTypeSymbol = ['Out-patient' => 'opd', 'In-patient' => 'ipd'];
+        $testArray = [];
+
+        if( empty($testTypeId))
         {
             return Response::json(array('error' => 'No Test Type provided'), '404');
         }
         //Search by name / Date
-        $testType = TestType::where('name', $testType)->first();
+        $testType = TestType::find($testTypeId);
 
         if( !empty($testType) ){
-            $tests = UnhlsTest::with('visit.patient', 'testType.measures')
-                ->where(function($query){
-                        $query->where('test_status_id', UnhlsTest::PENDING)
-                              ->orWhere('test_status_id', UnhlsTest::STARTED);
+            $tests = UnhlsTest::with(
+                'visit.patient', 'testType',
+                'specimen', 'specimen.specimenType')->where(function($query){
+                    $query->where('test_status_id', UnhlsTest::PENDING)
+                      ->orWhere('test_status_id', UnhlsTest::STARTED);
                 })->where('test_type_id', $testType->id)
                 ->where('time_created', '>', $dateFrom)
                 ->where('time_created', '<', $dateTo)
                 ->get();
+
+            $i = 0;
+            foreach ($tests as $test) {
+                $testArray[$i]['specimen_id'] = $test->specimen_id;
+                $testArray[$i]['specimen_type_name'] = $test->specimen->specimenType->name;
+                $testArray[$i]['specimen_type_id'] = $test->specimen->specimen_type_id;
+                $testArray[$i]['time_collected'] = preg_replace(['/-/','/ /','/:/'], ['','',''], $test->specimen->time_collected);
+                $testArray[$i]['time_accepted'] = preg_replace(['/-/','/ /','/:/'], ['','',''], $test->specimen->time_accepted);
+                $testArray[$i]['patient_id'] = $test->visit->patient_id;
+                $testArray[$i]['patient_name'] = $test->visit->patient->name;
+                // prepare astm dob from here... just proposing, perhaps when the machine is identified with the request
+                $testArray[$i]['dob'] = $test->visit->patient->dob;
+                // todo: make gender m or f
+                $testArray[$i]['gender'] = $genderSymbol[$test->visit->patient->gender];
+                $testArray[$i]['test_type_id'] = $test->test_type_id;
+                $testArray[$i]['test_type_name'] = $test->testType->name;
+                $testArray[$i]['doctor'] = $test->requested_by;
+                // todo: make admission_status ipd or opd
+                $testArray[$i]['admission_status'] = $visitTypeSymbol[$test->visit->visit_type];
+                $i++;
+            }
         }
-        //Search by ID
-        //$tests = Specimen::where('visit_id', $testFilter);
-        return Response::json($tests, '200');
+        Log::info(json_encode($testArray));
+        // return Response::json($testArray, '200');
+        return Response::make(json_encode($testArray), '200');
     }
 
-    /**
+    /*
     * Get measure info related to a test
     * @param key For authentication
     * @param testId testID to get the measure info for

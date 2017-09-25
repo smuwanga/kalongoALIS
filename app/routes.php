@@ -36,6 +36,9 @@ Route::group(array("before" => "guest"), function()
     Route::get('/api/saveresults/{query?}', array(
         "uses" => "InterfacerController@saveTestResultsFromInstrument"
     ));
+    Route::get('/api/fetchrequests/{query?}', array(
+        "uses" => "InterfacerController@getTestRequestsForInstrument"
+    ));
     Route::any('/', array(
         "as" => "user.login",
         "uses" => "UserController@loginAction"
