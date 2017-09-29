@@ -115,11 +115,22 @@ class UnhlsPatient extends Eloquent
     * @return string
     */
     public function getUlin(){
+		$lastPatientRegistration = UnhlsPatient::orderBy('id','DESC')->first()->created_at;
+		$monthOfLastEntry = date('m',strtotime($lastPatientRegistration));
+		$monthNow = date('m');
+
+		if ($monthOfLastEntry != $monthNow) {
+			Artisan::call('reset:ulin');
+		}
+
     	$facilityCode ='';
     	$facilityCode = $this->getFacilityCode();
     	$registrationDate = strtotime($this->created_at);
     	$yearMonth = date('ym', $registrationDate);
+    	$year = date('y', $registrationDate);
+    	$month = date('m', $registrationDate);
     	$autoNum = DB::table('uuids')->max('id')+1;
+        /*
         $name = preg_split("/\s+/", $this->name);
         $initials = null;
         $ulin ='';
@@ -127,7 +138,9 @@ class UnhlsPatient extends Eloquent
     	foreach ($name as $n){
     		$initials .= $n[0];
 
-    	}
-    	return $facilityCode.'/'.$yearMonth.'/'.$autoNum.'/'.$initials;
+		}
+		return $facilityCode.'/'.$yearMonth.'/'.$autoNum.'/'.$initials;
+		*/
+    	return $autoNum.'/'.$month.'/'.$year;
     }
 }
