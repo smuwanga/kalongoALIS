@@ -422,15 +422,27 @@ class TestType extends Eloquent
 	}
 
 	public function isCulture(){
-		return ($this->testNameMapping->system_name == 'culture_sensitivity') ? true : false ;
+		if ($this->testNameMapping != '') {
+			return ($this->testNameMapping->system_name == 'culture_sensitivity') ? true : false ;
+		}else{
+			return false;
+		}
 	}
 
 	public function isGramStain(){
-		return ($this->testNameMapping->system_name == 'gram_stain') ? true : false ;
+		if ($this->testNameMapping != '') {
+			return ($this->testNameMapping->system_name == 'gram_stain') ? true : false ;
+		}else{
+			return false;
+		}
 	}
 
 	public function isHIV(){
-		return ($this->testNameMapping->system_name == 'hiv') ? true : false ;
+		if ($this->testNameMapping != '') {
+			return ($this->testNameMapping->system_name == 'hiv') ? true : false ;
+		}else{
+			return false;
+		}
 	}
 
     public function testNameMapping()

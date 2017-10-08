@@ -109,6 +109,7 @@ class InterfacerController extends \BaseController{
         return $tests->get()->toJson();
     }
 
+    // sysmex xs 1000i using this
     public function saveTestResultsFromInstrument()
     {
         //todo: add proper authentication of some kind, perhaps in the routes
@@ -188,7 +189,7 @@ Log::info(Request::all());
         return Response::json($tests, '200');
     }
 
-    // astm baised
+    // astm baised // sysmex 1000i wont use this for now
     public function getTestRequestsForInstrument()
     {
         //Auth
