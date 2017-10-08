@@ -116,15 +116,26 @@ class InterfacerController extends \BaseController{
         $username = Request::query('username');
         $password = Request::query('password');
 
-        $specimenId = Request::query('specimen_id');
+        $ulin = Request::query('patient_id');
         $testTypeId = Request::query('test_type_id');
         $measureId = Request::query('measure_id');
         $result = Request::query('result');
-Log::info(Request::all());
+
         //save results
         try {
-            $test = UnhlsTest::where('test_type_id', $testTypeId)
-                ->where('specimen_id', $specimenId)->first();
+            $patientId = UnhlsPatient::where('ulin', 'like', '%' . $ulin . '%')->orderBy('id','DESC')->first()->id;
+
+            $test = UnhlsTest::with('visit','visit.patient')
+                ->where('test_type_id', $testTypeId)
+                ->where(function($q) use ($patientId){
+                    $q->whereHas('visit', function($q) use ($patientId){
+                        $q->whereHas('patient', function($q)  use ($patientId){
+                            $q->where(function($q) use ($patientId){
+                                $q->where('id', $patientId);
+                            });
+                        });
+                    });
+            })->orderBy('id','DESC')->first();
 
             $testResult = UnhlsTestResult::firstOrNew(['test_id' => $test->id, 'measure_id' => $measureId]);
             $testResult->result = $result;
@@ -212,6 +223,7 @@ Log::info(Request::all());
 
 
 // put default option edit this incase the sent is empty
+// pick the last pending or started
 $dateFrom = date('2017-07-14');
 $dateTo = date('Y-m-d');
 
