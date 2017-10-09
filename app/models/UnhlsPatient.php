@@ -47,6 +47,10 @@ class UnhlsPatient extends Eloquent
 		$age = "";
 
 		switch ($format) {
+			case 'ref_range_Y':
+				$seconds = ($interval->days * 24 * 3600) + ($interval->h * 3600) + ($interval->i * 60) + ($interval->s);
+				$age = $seconds/(365*24*60*60);
+				break;
 			case 'Y':
 				$age = $interval->y;break;
 			case 'YY':
