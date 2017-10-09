@@ -130,7 +130,6 @@ class UnhlsPatientController extends \BaseController {
 	{
 		//
 		$rules = array(
-			'patient_number' => 'required',
 			'name'       => 'required',
 			'gender' => 'required',
 			'dob' => 'required'
