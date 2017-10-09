@@ -685,6 +685,10 @@ class DailyReporter extends Command {
                                             $measureRange = MeasureRange::where('measure_id', '=', $measure_id)
                                                 ->where('age_min', '<=', $age)->where('age_max', '>=', $age)
                                                 ->where('gender', '=', UnhlsPatient::BOTH)->first();
+                                            if (is_null($measureRange)) {
+                                                echo "--age [{$age}] is outside the reference ranges\n";
+                                                continue;
+                                            }
                                         }else{
                                             $measureRange = $rangeValidity->first();
                                         }
