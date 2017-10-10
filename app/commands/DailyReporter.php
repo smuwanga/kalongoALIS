@@ -509,58 +509,71 @@ class DailyReporter extends Command {
                         }else {
                             if ($testType->isHIV()) {
                                 echo "HIV\n";
-                                $results = ["Positive","Negative"];
-                                foreach ($results as $result) {
-                                    $purposes = ['pmtct' => 'PMTCT', 'hct' => 'HCT', 'smc' => 'SMC', 'qc' => 'Quality Control', 'clinical_diagnosis' => 'Clinical Diagnosis'];
-                                    foreach ($purposes as $purpose) {
+                                $purposes = ['pmtct' => 'PMTCT', 'hct' => 'HCT', 'smc' => 'SMC', 'qc' => 'Quality Control', 'clinical_diagnosis' => 'Clinical Diagnosis'];
+                                foreach ($purposes as $purpose) {
 
-                                    $tests = UnhlsTest::with(
-                                        'testResults', 'visit',
-                                        'visit.patient', 'testType',
-                                        'testType.measures',
-                                        'testType.measures.measureRanges',
-                                        'specimen');
-                                    // report only completed tests
-                                    $tests = $tests->where(function($q) use ($testCompleted, $testVerified){
-                                        $q->whereIn('test_status_id', [$testCompleted, $testVerified]);
-                                    });
-                                    // report only tests from yesterday
-                                    $tests = $tests->where(function($q) use ($reportDate){
-                                        $q->where('time_completed', 'like', '%' . $reportDate . '%');
-                                    });
+                                    foreach ($testType->measures as $measure) {
+                                        $measure_id = $measure->id;
+                                        if ($measure->isAlphanumeric()) {
+                                            echo "--[{$measure->name}] - (Alphanumeric)\n";
+                                            foreach ($measure->measureRanges as $measureRange) {
 
-                                    $tests = $tests->where(function($q) use ($test_type_id, $purpose){
-                                        $q->where('test_type_id', $test_type_id)
-                                            ->where('purpose', $purpose);
-                                    });
-
-                                    $tests = $tests->where(function($q) use ($dobStart, $dobEnd, $gender){
-                                        $q->whereHas('visit', function($q) use ($dobStart, $dobEnd, $gender){
-                                            $q->whereHas('patient', function($q)  use ($dobStart, $dobEnd, $gender){
-                                                $q->where(function($q) use ($dobStart, $dobEnd, $gender){
-                                                    // 2 is for both
-                                                    if ($gender == 2) {
-                                                        $q->whereBetween('dob', [$dobStart, $dobEnd]);
-                                                    }else {
-                                                        $q->whereBetween('dob', [$dobStart, $dobEnd])
-                                                            ->where('gender', $gender);
-                                                    }
+                                                $tests = UnhlsTest::with(
+                                                    'testResults', 'visit',
+                                                    'visit.patient', 'testType',
+                                                    'testType.measures',
+                                                    'testType.measures.measureRanges');
+                                                // report only completed tests
+                                                $tests = $tests->where(function($q) use ($testCompleted, $testVerified){
+                                                    $q->whereIn('test_status_id', [$testCompleted, $testVerified]);
                                                 });
-                                            });
-                                        });
-                                    });
+                                                // report only tests from yesterday
+                                                $tests = $tests->where(function($q) use ($reportDate){
+                                                    $q->where('time_completed', 'like', '%' . $reportDate . '%');
+                                                });
 
-                                    $tests = $tests->where(function($q) use ($result){
-                                        $q->where('interpretation', $result);
-                                    });
-                                        if ($tests->count()>0) {
-                                            $dailyHIVCount = new DailyHIVCount;
-                                            $dailyHIVCount->date = $reportDate;
-                                            $dailyHIVCount->daily_test_type_count_id = $dailyTestTypeCount->id;
-                                            $dailyHIVCount->result = $result;// Positive or Negative
-                                            $dailyHIVCount->purpose = $purpose;
-                                            $dailyHIVCount->count = $tests->count();
-                                            $dailyHIVCount->save();
+                                                // report per purpose
+                                                $tests = $tests->where(function($q) use ($test_type_id, $purpose){
+                                                    $q->where('test_type_id', $test_type_id)
+                                                        ->where('purpose', $purpose);
+                                                });
+
+                                                $tests = $tests->where(function($q) use ($dobStart, $dobEnd, $gender){
+                                                    $q->whereHas('visit', function($q) use ($dobStart, $dobEnd, $gender){
+                                                        $q->whereHas('patient', function($q)  use ($dobStart, $dobEnd, $gender){
+                                                            $q->where(function($q) use ($dobStart, $dobEnd, $gender){
+                                                                // 2 is for both
+                                                                if ($gender == 2) {
+                                                                    $q->whereBetween('dob', [$dobStart, $dobEnd]);
+                                                                }else {
+                                                                    $q->whereBetween('dob', [$dobStart, $dobEnd])
+                                                                        ->where('gender', $gender);
+                                                                }
+                                                            });
+                                                        });
+                                                    });
+                                                });
+
+                                                $alphanumericRange = $measureRange->alphanumeric;
+                                                $tests = $tests->where(function($q) use ($measure_id, $alphanumericRange){
+                                                    $q->whereHas('testResults', function($q) use ($measure_id, $alphanumericRange){
+                                                        $q->where('measure_id', $measure_id)->where('result', $alphanumericRange);
+                                                    });
+                                                });
+                                                $testCount = $tests->count();
+                                                echo "---[{$testCount}] are [{$measureRange->alphanumeric}]\n";
+                                                // if such results exist
+                                                if ($testCount>0) {
+                                                    $dailyHIVCount = new DailyHIVCount;
+                                                    $dailyHIVCount->date = $reportDate;
+                                                    $dailyHIVCount->daily_test_type_count_id = $dailyTestTypeCount->id;
+                                                    $dailyHIVCount->purpose = $purpose;
+                                                    $dailyHIVCount->measure_id = $measure_id;
+                                                    $dailyHIVCount->measure_range_id = $measureRange->id;
+                                                    $dailyHIVCount->count = $tests->count();
+                                                    $dailyHIVCount->save();
+                                                }
+                                            }
                                         }
                                     }
                                 }
