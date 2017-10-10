@@ -28,6 +28,7 @@ class VisitController extends \BaseController {
 		}elseif (Auth::user()->can('make_labrequests')) {
 			$visitStatusId = UnhlsVisit::APPOINTMENT_MADE;
 		}else{
+			// for the guy in the lab with no permission to manage visits
 			$visitStatusId = UnhlsVisit::TEST_REQUEST_MADE;
 		}
 		$dateFrom = isset($input['date_from'])?$input['date_from']:date('Y-m-d');
@@ -35,7 +36,6 @@ class VisitController extends \BaseController {
 
 		// Search Conditions
 		if($searchString||$visitStatusId||$dateFrom||$dateTo){
-
 			$visits = UnhlsVisit::search($searchString, $visitStatusId, $dateFrom, $dateTo);
 
 			if (count($visits) == 0) {
@@ -44,7 +44,7 @@ class VisitController extends \BaseController {
 		}
 		else
 		{
-		// List all the active visits
+			// List all the active visits
 			$visits = UnhlsVisit::orderBy('created_at', 'ASC');
 		}
 
@@ -56,7 +56,7 @@ class VisitController extends \BaseController {
 		}
 
 		// Pagination
-		$visits = $visits->paginate(Config::get('kblis.page-items'));
+		$visits = $visits->paginate(Config::get('kblis.page-items'))->appends($input);
 
 
 		// Load the view and pass it the visits

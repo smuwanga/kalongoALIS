@@ -308,9 +308,9 @@ return array(
      *  Visits
      */
     'visit-status' => 'Status',
-    'test-request-pending' => 'New Visits',
+    'appointment-made' => 'New Visits',
     'test-request-made' => 'Lab Requests',
-    'samples-collected' => 'Pending Requests',
+    'specimen_received' => 'Pending Requests',
     'tests-completed' => 'Lab Reports',
 
     /**
