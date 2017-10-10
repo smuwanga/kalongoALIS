@@ -45,7 +45,7 @@
 					<input type="text" name="dob" id="dob" class="form-control input-sm" size="11">
 				</div>
 				<div class="form-group">
-					<label class='required' for="age">Age</label>
+					<label for="age">Age</label>
 					<input type="text" name="age" id="age" class="form-control input-sm" size="11">
 					<select name="age_units" id="id_age_units" class="form-control input-sm">
 						<option value="Y">Years</option>
