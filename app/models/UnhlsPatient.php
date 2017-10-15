@@ -130,17 +130,6 @@ class UnhlsPatient extends Eloquent
     	$year = date('y', $registrationDate);
     	$month = date('m', $registrationDate);
     	$autoNum = DB::table('uuids')->max('id')+1;
-        /*
-        $name = preg_split("/\s+/", $this->name);
-        $initials = null;
-        $ulin ='';
-
-    	foreach ($name as $n){
-    		$initials .= $n[0];
-
-		}
-		return $facilityCode.'/'.$yearMonth.'/'.$autoNum.'/'.$initials;
-		*/
     	return $autoNum.'/'.$month.'/'.$year;
     }
 }
