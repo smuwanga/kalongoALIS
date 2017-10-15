@@ -121,12 +121,25 @@ class UnhlsPatient extends Eloquent
     public function getUlin(){
 
 		$format = AdhocConfig::where('name','ULIN')->first()->getULINFormat();
+		$facilityCode ='';
+		$facilityCode = $this->getFacilityCode();
+		$registrationDate = strtotime($this->created_at);
+
 		if ($format == 'Jinja_SOP') {
-			return '';
+			$lastPatientRegistration = UnhlsPatient::orderBy('id','DESC')->first()->created_at;
+			$monthOfLastEntry = date('m',strtotime($lastPatientRegistration));
+			$monthNow = date('m');
+
+			if ($monthOfLastEntry != $monthNow) {
+				Artisan::call('reset:ulin');
+			}
+
+			$year = date('y', $registrationDate);
+			$month = date('m', $registrationDate);
+			$autoNum = DB::table('uuids')->max('id')+1;
+			return $autoNum.'/'.$month.'/'.$year;
+
 		}else{
-			$facilityCode ='';
-			$facilityCode = $this->getFacilityCode();
-			$registrationDate = strtotime($this->created_at);
 			$yearMonth = date('ym', $registrationDate);
 			$autoNum = DB::table('uuids')->max('id')+1;
 			$name = preg_split("/\s+/", $this->name);
