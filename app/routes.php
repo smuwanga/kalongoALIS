@@ -137,6 +137,7 @@ Route::group(array("before" => "auth"), function()
         Route::resource('instrument', 'InstrumentController');
         Route::resource('ward', 'WardController');
         Route::resource('testnamemapping', 'TestNameMappingController');
+        Route::resource('adhocconfig', 'AdhocConfigController');
 
         Route::get("/measurenamemapping/create/{test_type_id}", array(
             "as"   => "measurenamemapping.create",

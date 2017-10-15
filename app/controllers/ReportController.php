@@ -89,42 +89,28 @@ class ReportController extends \BaseController {
 			else
 				continue;
 		}
-		if(Input::has('word')){
-			$date = date("Ymdhi");
-			$fileName = "blispatient_".$id."_".$date.".doc";
-			$headers = array(
-				"Content-type"=>"text/html",
-				"Content-Disposition"=>"attachment;Filename=".$fileName
-			);
-			$content = View::make('reports.patient.export')
-							->with('patient', $patient)
-							->with('tests', $tests)
-							->with('from', $from)
-							->with('to', $to)
-							->with('visit', $visit)
-							->with('accredited', $accredited);
-			return Response::make($content,200, $headers);
-		}
-		else{
-			// return View::make('reports.patient.report')
-			$content = View::make('reports.patient.report')
-						->with('patient', $patient)
-						->with('tests', $tests)
-						->with('pending', $pending)
-						->with('error', $error)
-						->with('visit', $visit)
-						->with('accredited', $accredited)
-						->with('verified', $verified)
-						->withInput(Input::all());
-			$pdf = new Mypdf;
-			$pdf->SetAutoPageBreak(TRUE, 15);
-			$pdf->AddPage();
-			$pdf->SetFont('times','','11');
-			$pdf->writeHTML($content, 'true', 'false', 'false', 'false', '');
 
-			return $pdf->output('report.pdf');
+		// adhoc config decision
+		$template = AdhocConfig::where('name','Report')->first()->getReportTemplate();
 
-		}
+		$content = View::make($template)
+			->with('patient', $patient)
+			->with('tests', $tests)
+			->with('pending', $pending)
+			->with('error', $error)
+			->with('visit', $visit)
+			->with('accredited', $accredited)
+			->with('verified', $verified)
+			->withInput(Input::all());
+
+		$pdf = new Mypdf;
+		$pdf->SetAutoPageBreak(TRUE, 15);
+		$pdf->AddPage();
+		$pdf->SetFont('times','','11');
+		$pdf->writeHTML($content, 'true', 'false', 'false', 'false', '');
+
+		return $pdf->output('report.pdf');
+
 	}
 
 	/**

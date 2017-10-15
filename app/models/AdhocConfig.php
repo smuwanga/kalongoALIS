@@ -1,0 +1,64 @@
+<?php
+
+class AdhocConfig extends Eloquent
+{
+	/**
+	 * The database table used by the model.
+	 *
+	 * @var string
+	 */
+	protected $table = 'adhoc_configs';
+
+	protected $fillable = ['name', 'option'];
+
+    public $timestamps = false;
+
+	public static $constants = [
+		'Report' => [
+			'Standard' => 1,
+			'Jinja_SLMPTA' => 2,
+			'Kayunga_ISO' => 3,
+		],
+		'ULIN' => [
+			'Standard' => 1,
+			'Jinja_SOP' => 2,
+		],
+		// if clinician will use the system
+		'Clinician_UI' => [
+			'Yes' => 1,
+			'No' => 2,
+		],
+	];
+
+	public function getReportTemplate()
+	{
+		switch ($this->option) {
+			case $this->constants['Report']['Jinja_SLMPTA']:
+				$template = 'reports.patient.jinja_slmpta';
+				break;
+
+			case $this->constants['Report']['Kayunga_ISO']:
+				$template = 'reports.patient.kayunga_iso';
+				break;
+			
+			default:
+				$template = 'reports.patient.standard';
+				break;
+		}
+		return $template;
+	}
+
+	public function getULINFormat()
+	{
+		switch ($this->option) {
+			case $this->constants['ULIN']['Jinja_SOP']:
+				$format = 'Jinja_SOP';
+				break;
+
+			default:
+				$format = 'Standard';
+				break;
+		}
+		return $format;
+	}
+}
