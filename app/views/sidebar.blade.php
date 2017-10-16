@@ -142,7 +142,7 @@
 					</div>
 				</li>
 				<li>
-					<a href="{{ URL::route('visit.index') }}"><span class="ion-person"></span><span class="nav_title">Patient Queue</span>
+					<a href="{{ URL::route('visit.index') }}"><span class="ion-person"></span><span class="nav_title">Visits</span>
 					</a>
 				</li>
 				<li class="nav_trigger">
