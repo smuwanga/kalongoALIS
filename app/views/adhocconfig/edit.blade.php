@@ -30,7 +30,7 @@
 				</div>
 				<div class="form-group">
 					{{ Form::label('option', 'Option') }}
-	                <select class="form-control" id="option">
+	                <select class="form-control" id="option" name="option">
 	                    @foreach ($constants[$adhocConfig->name] as $key => $constant)
 	                        <option value="{{$constant}}"
 	                        {{($adhocConfig->option == $constant) ? 'selected="selected"' : '' }}>{{$key}}</option>

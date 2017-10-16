@@ -33,11 +33,11 @@ class AdhocConfig extends Eloquent
 	public function getReportTemplate()
 	{
 		switch ($this->option) {
-			case $this->constants['Report']['Jinja_SLMPTA']:
+			case AdhocConfig::$constants['Report']['Jinja_SLMPTA']:
 				$template = 'reports.patient.jinja_slmpta';
 				break;
 
-			case $this->constants['Report']['Kayunga_ISO']:
+			case AdhocConfig::$constants['Report']['Kayunga_ISO']:
 				$template = 'reports.patient.kayunga_iso';
 				break;
 			
@@ -51,7 +51,7 @@ class AdhocConfig extends Eloquent
 	public function getULINFormat()
 	{
 		switch ($this->option) {
-			case $this->constants['ULIN']['Jinja_SOP']:
+			case AdhocConfig::$constants['ULIN']['Jinja_SOP']:
 				$format = 'Jinja_SOP';
 				break;
 
