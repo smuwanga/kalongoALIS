@@ -9,9 +9,9 @@ class VisitController extends \BaseController {
 	 */
 	public function index()
 	{
-// the phlebotomist will recieved the specimen and attach it to test of that patient that has no specimen
+		// the phlebotomist will recieved the specimen and attach it to test of that patient that has no specimen
 
-// on registering a patient auto generate a visit?
+		// on registering a patient auto generate a visit?
 
 		$fromRedirect = Session::pull('fromRedirect');
 
@@ -36,6 +36,11 @@ class VisitController extends \BaseController {
 
 		// Search Conditions
 		if($searchString||$visitStatusId||$dateFrom||$dateTo){
+			if ($searchString != '') {
+				$dateFrom = '';
+				$dateTo = '';
+			}
+
 			$visits = UnhlsVisit::search($searchString, $visitStatusId, $dateFrom, $dateTo);
 
 			if (count($visits) == 0) {

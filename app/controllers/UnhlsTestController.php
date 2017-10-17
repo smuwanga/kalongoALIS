@@ -40,16 +40,20 @@ class UnhlsTestController extends \BaseController {
 
 		// Search Conditions
 		if($searchString||$testStatusId||$dateFrom||$dateTo){
+			if ($searchString != '') {
+				$dateFrom = '';
+				$dateTo = '';
+			}
 
 			$tests = UnhlsTest::search($searchString, $testStatusId, $dateFrom, $dateTo);
 
 			if (count($tests) == 0) {
-			 	Session::flash('message', trans('messages.empty-search'));
+				Session::flash('message', trans('messages.empty-search'));
 			}
 		}
 		else
 		{
-		// List all the active tests
+			// List all the active tests
 			$tests = UnhlsTest::orderBy('time_created', 'ASC');
 		}
 
