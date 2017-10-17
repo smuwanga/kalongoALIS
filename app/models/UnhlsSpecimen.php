@@ -10,20 +10,16 @@ class UnhlsSpecimen extends Eloquent
 	protected $table = 'specimens';
 
 	public $timestamps = false;
-
 	/**
 	 * Specimen status constants
 	 */
 	const NOT_COLLECTED = 1;
 	const ACCEPTED = 2;
 	const REJECTED = 3;
+	// change constant to REFERRED_OUT
 	const REFERRED = 4;
-	/**
-	 * Enabling soft deletes for specimen details.
-	 *
-	 * @var boolean
-	 */
-	// protected $softDelete = true;//it wants deleted at fills,
+	// todo: this is also accepted find a non conflicting way of dealing with it!!!
+	const REFERRED_IN = 5;
 
 	/**
 	 * Test Phase relationship
@@ -52,9 +48,17 @@ class UnhlsSpecimen extends Eloquent
 	/**
 	 * Rejected specimen relationship
 	 */
-	public function rejectedSpecimen()
+	public function preAnalyticSpecimenRejections()
 	{
-		return $this->belongsTo('PreAnalyticSpecimenRejection', 'specimen_id');
+		return $this->hasOne('PreAnalyticSpecimenRejection', 'specimen_id');
+	}
+
+	/**
+	 * Rejected specimen relationship
+	 */
+	public function analyticSpecimenRejections()
+	{
+		return $this->hasOne('AnalyticSpecimenRejection', 'specimen_id');
 	}
 
 	/**

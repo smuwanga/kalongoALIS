@@ -47,7 +47,7 @@
 			<thead>
 				<tr>
 					<th>{{trans('messages.patient-number')}}</th>
-					<th>Lab Number</th>
+					<th>Lab ID</th>
 					<th>{{Lang::choice('messages.name',1)}}</th>
 					<th>{{trans('messages.gender')}}</th>
 					<th>{{trans('messages.age')}}</th>

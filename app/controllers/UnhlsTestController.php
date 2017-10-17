@@ -760,9 +760,9 @@ class UnhlsTestController extends \BaseController {
 	{
 		$test = UnhlsTest::find($testID);
 		// if the test being carried out requires a culture worksheet
-		if ($test->testType->name == 'Culture and Sensitivity') {
+		if ($test->testType->isCulture()) {
 			return Redirect::route('culture.edit', [$test->id]);
-		}elseif ($test->testType->name == 'Gram Staining') {
+		}elseif ($test->testType->isGramStain()) {
 			return Redirect::route('gramstain.edit', [$test->id]);
 		}else{
 			return View::make('unhls_test.enterResults')->with('test', $test);
@@ -800,10 +800,8 @@ class UnhlsTestController extends \BaseController {
 	{
 		$test = UnhlsTest::find($testID);
 		$test->test_status_id = UnhlsTest::COMPLETED;
-		$test->interpretation = Input::get('interpretation');
 		$test->tested_by = Auth::user()->id;
 		$test->time_completed = date('Y-m-d H:i:s');
-		$test->save();
 
 		if ($test->testType->name == 'Gram Staining') {
 			$results = '';
@@ -832,6 +830,12 @@ class UnhlsTestController extends \BaseController {
 				$testResult->save();
 			}
 		}
+		if ($test->isHIV()) {
+			$test->interpretation = $test->interpreteHIVResults();
+		}else{
+			$test->interpretation = Input::get('interpretation');
+		}
+		$test->save();
 
 		//Fire of entry saved/edited event
 		Event::fire('test.saved', array($testID));

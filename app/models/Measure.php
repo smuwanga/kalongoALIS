@@ -57,6 +57,11 @@ class Measure extends Eloquent
 
 		try {
 			$measurerange = MeasureRange::where('measure_id', '=', $result['measureid']);
+			// there is a miscalculation here!!! what happens when the measure range gender is both male and female : 2
+			// also the measure value does not have to necessarily lie within it's proper reference range
+			// to identify it's reference range what is required is to match the age_min, age_max and gender against each other
+			// then after the high the low the normal can be determined
+
 			if ($measure->isNumeric()) {
 				$birthDate = new DateTime($result['birthdate']);
 				$now = new DateTime();
@@ -144,26 +149,25 @@ class Measure extends Eloquent
 	 */
 	public static function getRange($patient, $measureId)
 	{
-		$age = $patient->getAge('Y');
-		$measureRange = MeasureRange::where('measure_id', '=', $measureId)
-									->where('age_min', '<=',  $age)
-									->where('age_max', '>=', $age);
-		if(count($measureRange->get()) >= 1){
-			if(count($measureRange->get()) == 1){
-				$lowerUpper = $measureRange->first();
-			}
-			else if(count($measureRange->get()) > 1){
-				$measureRange = $measureRange->where('gender', '=', $patient->gender);
-				if(count($measureRange->get()) == 1){
-					$lowerUpper = $measureRange->first();
-				}
-				else {
-					return null;
-				}
-			}
-			return "(".substr($lowerUpper->range_lower, 0, -2)." - ".substr($lowerUpper->range_upper, 0, -2).")";
-		}
-		return null;
+		$age = $patient->getAge('ref_range_Y');
+		// if for particular gender is zero, check for both genders
+        $rangeValidity = MeasureRange::where('measure_id', '=', $measureId)
+            ->where('age_min', '<=', $age)->where('age_max', '>=', $age)
+            ->where('gender', '=', $patient->gender);
+        $measureRange = new stdClass();
+
+        if ($rangeValidity->count()==0) {
+            $measureRange = MeasureRange::where('measure_id', '=', $measureId)
+                ->where('age_min', '<=', $age)->where('age_max', '>=', $age)
+                ->where('gender', '=', UnhlsPatient::BOTH)->first();
+            if (is_null($measureRange)) {
+                // age is outside the provided reference ranges
+                return null;
+            }
+        }else{
+            $measureRange = $rangeValidity->first();
+        }
+		return "(".substr($measureRange->range_lower, 0, -2)." - ".substr($measureRange->range_upper, 0, -2).")";
 	}
 	/**
 	 *  Get test result count for the given measure and parameters
@@ -250,4 +254,9 @@ class Measure extends Eloquent
 			return null;
 		}
 	}
+
+    public function measureNameMapping()
+    {
+        return $this->hasOne('MeasureNameMapping');
+    }
 }

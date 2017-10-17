@@ -47,6 +47,10 @@ class UnhlsPatient extends Eloquent
 		$age = "";
 
 		switch ($format) {
+			case 'ref_range_Y':
+				$seconds = ($interval->days * 24 * 3600) + ($interval->h * 3600) + ($interval->i * 60) + ($interval->s);
+				$age = $seconds/(365*24*60*60);
+				break;
 			case 'Y':
 				$age = $interval->y;break;
 			case 'YY':
@@ -104,7 +108,48 @@ class UnhlsPatient extends Eloquent
 	*/
 	public function getFacilityCode()
 	{
-		$facilityCode ==\Config::get('constants.FACILITY_CODE');
+		$facilityCode =\Config::get('constants.FACILITY_CODE');
+		return $facilityCode;
 	
 	}
+
+	/**
+    * Get patients Unique Identification Number (ULIN)
+    *
+    * @return string
+    */
+    public function getUlin(){
+
+		$format = AdhocConfig::where('name','ULIN')->first()->getULINFormat();
+		$facilityCode ='';
+		$facilityCode = $this->getFacilityCode();
+		$registrationDate = strtotime($this->created_at);
+
+		if ($format == 'Jinja_SOP') {
+			$lastPatientRegistration = UnhlsPatient::orderBy('id','DESC')->first()->created_at;
+			$monthOfLastEntry = date('m',strtotime($lastPatientRegistration));
+			$monthNow = date('m');
+
+			if ($monthOfLastEntry != $monthNow) {
+				Artisan::call('reset:ulin');
+			}
+
+			$year = date('y', $registrationDate);
+			$month = date('m', $registrationDate);
+			$autoNum = DB::table('uuids')->max('id')+1;
+			return $autoNum.'/'.$month.'/'.$year;
+
+		}else{
+			$yearMonth = date('ym', $registrationDate);
+			$autoNum = DB::table('uuids')->max('id')+1;
+			$name = preg_split("/\s+/", $this->name);
+			$initials = null;
+
+			foreach ($name as $n){
+				$initials .= $n[0];
+
+			}
+			return $facilityCode.'/'.$yearMonth.'/'.$autoNum.'/'.$initials;
+		}
+    }
 }

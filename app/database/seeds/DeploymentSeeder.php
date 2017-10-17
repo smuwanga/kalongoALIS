@@ -365,7 +365,7 @@ class DeploymentSeeder extends DatabaseSeeder
         /* Permissions table */
         $permissions = array(
 
-          array("name" => "manage_incidents", "display_name" => "Can Manage Biorisk & Biosecurity Incidences"),
+          array("name" => "manage_incidents", "display_name" => "Can Manage Biorisk & Biosecurity Incidents"),
 
             array("name" => "view_names", "display_name" => "Can view patient names"),
             array("name" => "manage_patients", "display_name" => "Can add patients"),

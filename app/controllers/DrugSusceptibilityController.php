@@ -34,18 +34,21 @@ class DrugSusceptibilityController extends \BaseController {
 	 */
 	public function store()
 	{
-        $zoneDiameterReferenceRange = ZoneDiameter::where('drug_id', Input::get('drug_id'))
-            ->where('organism_id', Input::get('organism_id'))
-            ->get()
-            ->first();
-        $zoneDiameterInterpretation = $zoneDiameterReferenceRange->getZoneDiameterInterpretation(Input::get('zone_diameter'));
+		$zoneDiameterReferenceRange = ZoneDiameter::where('drug_id', Input::get('drug_id'))
+			->where('organism_id', Input::get('organism_id'))
+			->get()
+			->first();
 
 		$drugSusceptibility = new DrugSusceptibility;
+		if (Input::get('zone_diameter')!= '') {
+			$drugSusceptibility->zone_diameter = Input::get('zone_diameter');
+			$zoneDiameterInterpretation = $zoneDiameterReferenceRange->getZoneDiameterInterpretation(Input::get('zone_diameter'));
+		} else{
+			$zoneDiameterInterpretation = Input::get('drug_susceptibility_measure_id');
+		}
 		$drugSusceptibility->user_id = Auth::user()->id;
 		$drugSusceptibility->isolated_organism_id = Input::get('isolated_organism_id');
 		$drugSusceptibility->drug_id = Input::get('drug_id');
-		$drugSusceptibility->zone_diameter = Input::get('zone_diameter');
-
 		$drugSusceptibility->drug_susceptibility_measure_id = $zoneDiameterInterpretation;
 		$drugSusceptibility->save();
 
@@ -85,16 +88,21 @@ class DrugSusceptibilityController extends \BaseController {
 	 */
 	public function update($id)
 	{
-        $zoneDiameterReferenceRange = ZoneDiameter::where('drug_id', Input::get('drug_id'))
-            ->where('organism_id', Input::get('organism_id'))
-            ->get()
-            ->first();
-        $zoneDiameterInterpretation = $zoneDiameterReferenceRange->getZoneDiameterInterpretation(Input::get('zone_diameter'));
+		$zoneDiameterReferenceRange = ZoneDiameter::where('drug_id', Input::get('drug_id'))
+			->where('organism_id', Input::get('organism_id'))
+			->get()
+			->first();
 		$drugSusceptibility = DrugSusceptibility::find($id);
+        if (Input::get('zone_diameter')!= '') {
+			$zoneDiameterInterpretation = $zoneDiameterReferenceRange->getZoneDiameterInterpretation(Input::get('zone_diameter'));
+			$drugSusceptibility->zone_diameter = Input::get('zone_diameter');
+        } else{
+			$zoneDiameterInterpretation = Input::get('drug_susceptibility_measure_id');
+			$drugSusceptibility->zone_diameter = null;
+        }
 		$drugSusceptibility->user_id = Auth::user()->id;
 		$drugSusceptibility->isolated_organism_id = Input::get('isolated_organism_id');
 		$drugSusceptibility->drug_id = Input::get('drug_id');
-		$drugSusceptibility->zone_diameter = Input::get('zone_diameter');
 		$drugSusceptibility->drug_susceptibility_measure_id = $zoneDiameterInterpretation;
 		$drugSusceptibility->save();
 		return $drugSusceptibility->load(

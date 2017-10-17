@@ -21,6 +21,9 @@ class UnhlsTest extends Eloquent
 	const VERIFIED = 5;
 	// when a specimen is at the analytic stage, it's rejected only for that particular test
 	const REJECTED = 6;
+	// todo: consider how to consider it's pending, completed and verified statuses without confusion
+	const REFERRED_IN = 7;
+	const REFERRED_OUT = 8;
 
 
 	/**
@@ -55,9 +58,9 @@ class UnhlsTest extends Eloquent
 	/**
 	 * Rejected specimen relationship
 	 */
-	public function rejectedSpecimen()
+	public function analyticSpecimenRejections()
 	{
-		return $this->belongsTo('AnalyticSpecimenRejection', 'test_id');
+		return $this->hasOne('AnalyticSpecimenRejection', 'test_id');
 	}
 
 	/**
@@ -540,6 +543,7 @@ class UnhlsTest extends Eloquent
 	* @param String $dateTo
 	* @return Collection 
 	*/
+	// todo: =this should include verified tests
 	public static function completedTests($searchString = '', $testStatusId = 4, $dateFrom = NULL, $dateTo = NULL)
 	{
 
@@ -1073,25 +1077,30 @@ class UnhlsTest extends Eloquent
 			$measuresResult = $this->testResults;
 			foreach($measuresResult as $measureResult){
 				$measures[] = $measureResult;
-				
 			}
-			$screening = $measures['0']['result'];
-			$determine = $measures['1']['result'];
-			$unigold = $measures['2']['result'];
 
-			if($screening == 'Non-Reactive' && $unigold='Non-Reactive'){
+			if($determine=='Non-Reactive' && $statpak =='Non-Reactive'){
 				$result ='Negative';
 
-			}
-			elseif($determine=='Reactive' || $unigold =='Reactive') {
+			}elseif($determine=='Reactive' && $statpak =='Reactive') {
 				$result = 'Positive';
 
+			}elseif($statpak=='Reactive' && $unigold =='Reactive') {
+				$result = 'Positive';
+
+			}elseif($statpak=='Reactive' && $unigold =='Non-Reactive') {
+				$result = 'Negative';
+
+			}elseif($determine == 'Non-Reactive' && $unigold='Non-Reactive') {
+				$result = 'Negative';
+
 			}
+    	}
+    	return $result;
+    }
 
-			// return $result;
-		}
-		return $result;
-
-	}
-
+    public function isHIV()
+    {
+      return ($this->testType->name == 'HIV') ? true : false;
+    }
 }

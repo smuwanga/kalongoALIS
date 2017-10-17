@@ -166,8 +166,8 @@
 									</div>
 									<div class ="form-group hidden hiv-purpose col-md-12">
 										{{Form::label('hiv_purpose', 'Please select the purpose of HIV test', array('class' => 'required'))}}
-										{{Form::select('hiv_purpose',['' => '----Select purpose of H.I.V----', 'pmtct' => 'PMTCT', 'hct' => 'HCT', 'smc' => 'SMC', 'qc' => 'Quality Control'])}}
-									</div> 
+										{{Form::select('hiv_purpose',['' => '----Select purpose of H.I.V----', 'pmtct' => 'PMTCT', 'hct' => 'HCT', 'smc' => 'SMC', 'qc' => 'Quality Control', 'clinical_diagnosis' => 'Clinical Diagnosis'])}}
+									</div>
 									</div>
 								</div>
 							</div> <!--div that closes the panel div for clinical and sample information -->
