@@ -864,6 +864,7 @@ class UnhlsTestController extends \BaseController {
 	 * @param
 	 * @return
 	 */
+	// todo: move editing results to a different controller and here leave editing particular test request?
 	public function edit($testID)
 	{
 		$test = UnhlsTest::find($testID);
@@ -994,8 +995,8 @@ class UnhlsTestController extends \BaseController {
 	 * @param
 	 * @return
 	 */
-	public function delete($id)
+	public function destroy($id)
 	{
-		//
+		// if no results saved, the permitted can delete - [clinician/technologist]
 	}
 }

@@ -7,13 +7,13 @@
 <br>
 <table style="padding: 2px">
 	<tr>
-		<td colspan="1">
+		<td colspan="9">
 			<b>Lab No: </b>{{ $patient->ulin }}
 		</td>
-		<td colspan="1">
+		<td colspan="7">
 			<b>OPD/IPD No: </b> {{ $patient->patient_number }}
 		</td>
-		<td colspan="1" style="text-align: right;"><b>Report No: </b>
+		<td colspan="4"><b>Report No: </b>
 			@if(isset($tests))
 				@if(!is_null($tests->first()))
 					{{ $tests->first()->visit->id }}
@@ -24,15 +24,15 @@
 </table>
 <table style="border-bottom: 1px solid #cecfd5;">
 	<tr>
-		<td colspan="3"><strong>{{ trans('messages.patient-name')}}</strong></td>
+		<td colspan="9"><strong>Patient Name: </strong>
 		@if(Entrust::can('view_names'))
-			<td colspan="6">{{ $patient->name }}</td>
+			{{ $patient->name }}</td>
 		@else
-			<td colspan="6">N/A</td>
+			N/A</td>
 		@endif
 		<td colspan="2"><strong>{{ trans('messages.gender')}}</strong></td>
 		<td colspan="2">{{ $patient->getGender(false) }}</td>
-		<td colspan="2"><strong>{{ trans('messages.age')}}</strong></td>
+		<td colspan="1"><strong>{{ trans('messages.age')}}</strong></td>
 		<td colspan="2">{{ $patient->getAge()}}</td>
 		<td colspan="2"><strong>Address</strong></td>
 		<td colspan="2">{{ $patient->village_residence}}</td>
@@ -40,8 +40,7 @@
 </table>
 <table style="border-bottom: 1px solid #cecfd5;">
 	<tr>
-		<td colspan="3"><strong>Unit</strong></td>
-		<td colspan="3">
+		<td colspan="4"><strong>Unit: </strong>
 		@if(isset($tests))
 			@if(!is_null($tests->first()))
 				@if(is_null($tests->first()->visit->ward))
@@ -54,14 +53,12 @@
 			@endif
 		@endif
 		</td>
-		<td colspan="3"><strong>Requesting Officer</strong></td>
-		<td colspan="2">
+		<td colspan="7"><strong>Requesting Officer: </strong>
 		@if(isset($tests))
 			{{ is_null($tests->first()) ? '':$tests->first()->requested_by }}
 		@endif
 		</td>
-		<td colspan="2"><strong>Contact</strong></td>
-		<td colspan="2">
+		<td colspan="6"><strong>Contact: </strong>
 		@if(isset($tests))
 			{{ is_null($tests->first()) ? '':$tests->first()->requested_by }}
 		@endif

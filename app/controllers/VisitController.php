@@ -62,7 +62,7 @@ class VisitController extends \BaseController {
 
 		// Pagination
 		$visits = $visits->paginate(Config::get('kblis.page-items'))->appends($input);
-
+		$clinicianUI = AdhocConfig::where('name','Clinician_UI')->first()->activateClinicianUI();
 
 		// Load the view and pass it the visits
 		return View::make('visit.index')
@@ -70,6 +70,7 @@ class VisitController extends \BaseController {
 					->with('visitStatus', $statuses)
 					->with('dateFrom', $dateFrom)
 					->with('dateTo', $dateTo)
+					->with('clinicianUI', $clinicianUI)
 					->withInput($input);
 	}
 
@@ -292,7 +293,7 @@ class VisitController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
+		// if no request made, receptionist delete
 	}
 
 	/**

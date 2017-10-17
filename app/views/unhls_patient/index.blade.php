@@ -70,16 +70,17 @@
 					<td>{{ $patient->village_residence }}</td>
 					<td>{{ $patient->village_workplace  }}</td>
 					<td>
-
-						@if(Auth::user()->can('manage_appointments'))
-						<!-- can create visit -->
-						<a class="btn btn-sm btn-primary" 
-							href="{{ URL::route('visit.create', array('patient_id' => $patient->id)) }}">
-							<span class="glyphicon glyphicon-plus-sign"></span>
-							Make Appointment
-						</a>
-						<!-- can create visit -->
+						@if($clinicianUI)
+							@if(Auth::user()->can('manage_appointments'))
+							<!-- can create visit -->
+							<a class="btn btn-sm btn-primary" 
+								href="{{ URL::route('visit.create', array('patient_id' => $patient->id)) }}">
+								<span class="glyphicon glyphicon-plus-sign"></span>
+								Make Appointment
+							</a>
+							@endif
 						@elseif(Auth::user()->can('request_test'))
+						<!-- can create visit -->
 						<a class="btn btn-sm btn-info"
 							href="{{ URL::route('unhls_test.create', array('patient_id' => $patient->id)) }}">
 							<span class="glyphicon glyphicon-edit"></span>

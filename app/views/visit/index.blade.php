@@ -74,7 +74,7 @@
                         <th>{{trans('messages.patient-name')}}</th>
                         <th>{{trans('messages.visit-type')}}</th>
                         <th>{{trans('messages.test-request-status')}}</th>
-                        <th>Status</th>
+                        <!-- <th>Status</th> --><!-- speciemen recieved has an issue there may be several - when someone has registered % -->
                     </tr>
                 </thead>
                 <tbody>
@@ -99,32 +99,34 @@
                             '.$visit->patient->getAge('Y'). ')'}}</td> <!--Patient Name -->
                         <td>{{ $visit->visit_type }}</td> <!--Visit Type -->
                         <td>
-                            @if($visit->isAppointment() && Auth::user()->can('make_labrequests'))<!-- for clinician -->
-                            <a class="btn btn-sm btn-info" href="{{ URL::route('visit.edit',[$visit->id]) }}" >
-                                <span class="glyphicon glyphicon-edit"></span>Make Tests Request
-                            </a>
-                            @endif
-                            @if($visit->isRequest() && Auth::user()->can('accept_test_specimen'))<!-- for phlebotomist -->
-                            <a class="btn btn-sm btn-info" href="{{ URL::route('visit.edit',[$visit->id]) }}" >
-                                <span class="glyphicon glyphicon-edit"></span>Recieve Specimen
-                            </a>
-                            @endif
-                            @if(Auth::user()->can('manage_appointments') && $visit->isAppointment())
-                                <button class="btn btn-sm btn-danger delete-item-link"
-                                    data-toggle="modal" data-target=".confirm-delete-modal"
-                                    data-id="{{ URL::route('visit.destroy',[$visit->id])}}">
-                                    <span class="glyphicon glyphicon-trash"></span>
-                                    Delete Appointment
-                                </button>
+                            @if($clinicianUI)<!-- for clinician -->
+                                @if($visit->isAppointment() && Auth::user()->can('make_labrequests'))<!-- for clinician -->
+                                <a class="btn btn-sm btn-info" href="{{ URL::route('visit.edit',[$visit->id]) }}" >
+                                    <span class="glyphicon glyphicon-edit"></span>Make Tests Request
+                                </a>
+                                @endif
+                                @if($visit->isRequest() && Auth::user()->can('accept_test_specimen'))<!-- for phlebotomist -->
+                                <a class="btn btn-sm btn-info" href="{{ URL::route('visit.edit',[$visit->id]) }}" >
+                                    <span class="glyphicon glyphicon-edit"></span>Recieve Specimen
+                                </a>
+                                @endif
+                                @if(Auth::user()->can('manage_appointments') && $visit->isAppointment())
+                                    <button class="btn btn-sm btn-danger delete-item-link"
+                                        data-toggle="modal" data-target=".confirm-delete-modal"
+                                        data-id="{{ URL::route('visit.destroy',[$visit->id])}}">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                        Delete Appointment
+                                    </button>
+                                @endif
                             @endif
                             <!-- restrictions are in the view -->
                             <a class="btn btn-sm btn-success" href="{{ URL::route('visit.show',[$visit->id]) }}">
                                 <span class="glyphicon glyphicon-eye-open"></span>
-                                {{trans('messages.view')}}
+                                Tests
                             </a>
                         </td><!-- ACTION BUTTONS -->
-                            <td class='test-status'>
-                            <!-- Visit Statuses -->
+                        <!-- Visit Statuses -->
+                        <!-- <td class='test-status'>
 
                             @if($visit->isAppointment())
                                 <span class='label label-success'>Clinician Appointment Made</span>
@@ -136,7 +138,7 @@
                                 <span class='label label-primary'>Tests Completed</span>
                             @endif
 
-                        </td>
+                        </td> -->
                     </tr>
                 @endforeach
                 </tbody>

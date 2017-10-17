@@ -22,9 +22,14 @@ class UnhlsPatientController extends \BaseController {
 		if (count($patients) == 0) {
 		 	Session::flash('message', trans('messages.no-match'));
 		}
+		$clinicianUI = AdhocConfig::where('name','Clinician_UI')->first()->activateClinicianUI();
+
 
 		// Load the view and pass the patients
-		return View::make('unhls_patient.index')->with('patients', $patients)->withInput(Input::all());
+		return View::make('unhls_patient.index')
+				->with('patients', $patients)
+				->with('clinicianUI', $clinicianUI)
+				->withInput(Input::all());
 	}
 
 	/**

@@ -61,4 +61,18 @@ class AdhocConfig extends Eloquent
 		}
 		return $format;
 	}
+
+	public function activateClinicianUI()
+	{
+		switch ($this->option) {
+			case AdhocConfig::$constants['Clinician_UI']['Yes']:
+				$binary = true;
+				break;
+
+			default:
+				$binary = false;
+				break;
+		}
+		return $binary;
+	}
 }
