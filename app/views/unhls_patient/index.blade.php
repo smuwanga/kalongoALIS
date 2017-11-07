@@ -98,6 +98,15 @@
 							<span class="glyphicon glyphicon-edit"></span>
 							{{trans('messages.edit')}}
 						</a>
+						@if(Auth::user()->can('can_delete_patient'))
+						<!-- can delete patient -->
+						<button class="btn btn-sm btn-danger delete-item-link"
+							data-toggle="modal" data-target=".confirm-delete-modal"
+							data-id="{{ URL::route('unhls_patient.delete', array($patient->id)) }}">
+							<span class="glyphicon glyphicon-trash"></span>
+							{{ trans('messages.delete') }}
+						</button>
+						@endif
 					</td>
 				</tr>
 			@endforeach

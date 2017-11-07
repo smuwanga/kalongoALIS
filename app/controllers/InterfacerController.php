@@ -121,10 +121,9 @@ class InterfacerController extends \BaseController{
         $measureId = Request::query('measure_id');
         $result = Request::query('result');
 
-        //save results
-        try {
-            $patientId = UnhlsPatient::where('ulin', 'like', '%' . $ulin . '%')->orderBy('id','DESC')->first()->id;
-
+        $patient = UnhlsPatient::where('ulin', 'like', '%' . $ulin . '%')->orderBy('id','DESC')->first();
+        if (!is_null($patient)) {
+            $patientId = $patient->id;
             $test = UnhlsTest::with('visit','visit.patient')
                 ->where('test_type_id', $testTypeId)
                 ->where(function($q) use ($patientId){
@@ -132,29 +131,36 @@ class InterfacerController extends \BaseController{
                         $q->whereHas('patient', function($q)  use ($patientId){
                             $q->where(function($q) use ($patientId){
                                 $q->where('id', $patientId);
-                            });
                         });
                     });
+                });
             })->orderBy('id','DESC')->first();
 
-            $testResult = UnhlsTestResult::firstOrNew(['test_id' => $test->id, 'measure_id' => $measureId]);
-            $testResult->result = $result;
-            $testResult->save();
-
-            if ($test->test_status_id == UnhlsTest::PENDING || $test->test_status_id == UnhlsTest::STARTED) {
-                $test = UnhlsTest::find($test->id);
-                $test->test_status_id = UnhlsTest::COMPLETED;
-                $test->tested_by = 1;
-                if($test->test_status_id == UnhlsTest::PENDING){
-                    $test->time_started = date('Y-m-d H:i:s');
+            if (!is_null($test)) {
+                $testResult = UnhlsTestResult::firstOrNew(['test_id' => $test->id, 'measure_id' => $measureId]);
+                $testResult->result = $result;
+                $testResult->save();
+                // for only started so that the person doing the job is captured
+                if ($test->test_status_id == UnhlsTest::STARTED) {
+                    $test = UnhlsTest::find($test->id);
+                    $test->test_status_id = UnhlsTest::COMPLETED;
+                    $test->tested_by = 1;
+                    if($test->test_status_id == UnhlsTest::PENDING){
+                        $test->time_started = date('Y-m-d H:i:s');
+                    }
+                    $test->time_completed = date('Y-m-d H:i:s');
+                    $test->save();
                 }
-                $test->time_completed = date('Y-m-d H:i:s');
-                $test->save();
-            }
 
-        }catch(\QueryException $qe){
-            return $qe;
+            }else{
+                // you should have made sure a test exists on LIS, not ma problem
+                return Response::make();
+            }
+        }else{
+            // you should have made sure this patient on LIS, not ma problem
+            return Response::make();
         }
+
         return Response::make();
     }
 

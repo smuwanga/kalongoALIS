@@ -18,14 +18,11 @@
                         Patient Visit
                         @if(Auth::user()->can('request_test'))
                         <div class="panel-btn">
-<!-- todo: tobe made functional -->
-                            <!-- 
                             <a class="btn btn-sm btn-info"
                                 href="{{ URL::route('visit.addtest', [$visit->id]) }}">
                                 <span class="glyphicon glyphicon-plus-sign"></span>
                                 Add New Test
                             </a>
-                             -->
                             <a class="btn btn-sm btn-default" href="{{ URL::to('patientreport/'.$visit->patient->id.'/'.$visit->id ) }}"
                                 target="_blank">
                                 <span class="glyphicon glyphicon-eye-open"></span>
@@ -41,7 +38,7 @@
         <div class="panel-body">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="panel panel-info">  <!-- Patient Details -->
+                    <div class="panel panel-info"><!-- Patient Details -->
                         <div class="panel-heading">
                             <h3 class="panel-title">Patient Details</h3>
                         </div>
@@ -107,18 +104,15 @@
                         </td> <!--Specimen ID if specimen received, show when specimen is shared  -->
                         <td>{{ $test->testType->name }}</td> <!--Test-->
                         <!-- ACTION BUTTONS -->
-<!-- todo: tobe made functional -->
-                        <!--
                         <td>
-                             <a class="btn btn-sm btn-danger"
+                            <a class="btn btn-sm btn-danger"
                                 href="{{ URL::route('unhls_test.delete', $test->id) }}"
                                 id="view-details-{{$test->id}}-link" 
                                 title="Delete Test">
                                 <span class="glyphicon glyphicon-eye-open"></span>
                                 Delete
                             </a>
-                         </td>
-                        -->
+                        </td>
                         <td>
                             @if($test->isNotReceived())
                                 <span class='label label-default'>

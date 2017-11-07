@@ -294,6 +294,20 @@ class VisitController extends \BaseController {
 	public function destroy($id)
 	{
 		// if no request made, receptionist delete
+		$visit = UnhlsVisit::find($id);
+
+		$visitInUse = UnhlsTest::where('visit_id', '=', $id)->first();
+		if (empty($visitInUse)) {
+			// The test is not in use
+			$visit->delete();
+		} else {
+			// The test is in use
+			return Redirect::route('visit.index')
+				->with('message', 'This Visit has requests, not Deleted!');
+		}
+		// redirect
+		return Redirect::route('visit.index')
+			->with('message', 'Visit Successfully Deleted!');
 	}
 
 	/**
@@ -315,6 +329,171 @@ class VisitController extends \BaseController {
 
 	public function getAddTest($id)
 	{
-		//
+		//Create a Lab categories Array
+		$categories = ['Select Lab Section']+TestCategory::lists('name', 'id');
+		// $wards = ['Select Sample Origin']+Ward::lists('name', 'id');
+
+		// sample collection default details
+		$now = new DateTime();
+		$collectionDate = $now->format('Y-m-d H:i');
+		$receptionDate = $now->format('Y-m-d H:i');
+
+		$fromRedirect = Session::pull('TEST_CATEGORY');
+
+		if($fromRedirect){
+			$input = Session::get('TEST_CATEGORY');
+		}else{
+			$input = Input::except('_token');
+		}
+
+		$specimenTypes = ['select Specimen Type']+SpecimenType::lists('name', 'id');
+
+		$visit = UnhlsVisit::find($id);
+		$clinicianUI = AdhocConfig::where('name','Clinician_UI')->first()->activateClinicianUI();
+
+		// if else clinician UI is active, and dude is clinician
+		if ($clinicianUI && Auth::user()->can('make_labrequests')) {
+			$view = 'visit.clinicianAddTest';
+		}else{
+			$view = 'visit.technologistAddTest';
+		}
+
+		//Load Test Create View
+		return View::make($view)
+					->with('collectionDate', $collectionDate)
+					->with('receptionDate', $receptionDate)
+					->with('specimenType', $specimenTypes)
+					->with('visit', $visit)
+					->with('testCategory', $categories);
+					// ->with('ward', $wards);
+
+	}
+
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function clinicianPostAddTest($id)
+	{
+		$rules = array(
+			'physician' => 'required',
+			'test_list' => 'required',
+		);
+
+		$validator = Validator::make(Input::all(), $rules);
+
+		// process the login
+		if ($validator->fails()) {
+			return Redirect::route('visit.addtest', [$id])->withInput()->withErrors($validator);
+		} else {
+			$visit = UnhlsVisit::find($id);
+
+			$therapy = new Therapy;
+			$therapy->patient_id = $visit->patient->id;
+			$therapy->visit_id = $visit->id;
+			$therapy->previous_therapy = Input::get('previous_therapy');
+			$therapy->current_therapy = Input::get('current_therapy');
+			$therapy->clinical_notes = Input::get('clinical_notes');
+			$therapy->clinician = Input::get('clinician');
+			$therapy->contact = Input::get('contact');
+			$therapy->save();
+
+			/*
+			 * - Create tests requested
+			 * - Fields required: visit_id, test_type_id, specimen_id, test_status_id, created_by, requested_by
+			 */
+			$testLists = Input::get('test_list');
+			if(is_array($testLists)){
+				foreach ($testLists as $testList) {
+					foreach ($testList['test_type_id'] as $id) {
+						$testTypeID = (int)$id;
+
+						$test = new UnhlsTest;
+						$test->visit_id = $visit->id;
+						$test->test_type_id = $testTypeID;
+						$test->test_status_id = UnhlsTest::SPECIMEN_NOT_RECEIVED;
+						$test->created_by = Auth::user()->id;
+						$test->requested_by = Input::get('physician');
+						$test->save();
+					}
+				}
+			}
+			$visit->visit_status_id = UnhlsVisit::TEST_REQUEST_MADE;
+			$visit->save();
+
+			return Redirect::route('visit.show', [$test->visit_id])
+				->with('message', 'Test Successfully Added!');
+		}
+	}
+
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function technologistPostAddTest($id)
+	{
+		$rules = array(
+			'test_list' => 'required',
+		);
+
+		$validator = Validator::make(Input::all(), $rules);
+
+		// process the login
+		if ($validator->fails()) {
+			return Redirect::route('visit.addtest', [$id])->withInput()->withErrors($validator);
+		} else {
+			$visit = UnhlsVisit::find($id);
+
+			$therapy = new Therapy;
+			$therapy->patient_id = $visit->patient->id;
+			$therapy->visit_id = $visit->id;
+			$therapy->previous_therapy = Input::get('previous_therapy');
+			$therapy->current_therapy = Input::get('current_therapy');
+			$therapy->clinical_notes = Input::get('clinical_notes');
+			$therapy->clinician = Input::get('clinician');
+			$therapy->contact = Input::get('contact');
+			$therapy->save();
+
+			/*
+			 * - Create tests requested
+			 * - Fields required: visit_id, test_type_id, specimen_id, test_status_id, created_by, requested_by
+			 */
+			$testLists = Input::get('test_list');
+            if(is_array($testLists)){
+                foreach ($testLists as $testList) {
+                    // Create Specimen - specimen_type_id, accepted_by, referred_from, referred_to
+                    $specimen = new UnhlsSpecimen;
+                    $specimen->specimen_type_id = $testList['specimen_type_id'];
+                    $specimen->accepted_by = Auth::user()->id;
+                    $specimen->time_collected = Input::get('collection_date');
+                    $specimen->time_accepted = Input::get('reception_date');
+                    $specimen->save();
+                    foreach ($testList['test_type_id'] as $id) {
+                        $testTypeID = (int)$id;
+
+                        $test = new UnhlsTest;
+                        $test->visit_id = $visit->id;
+                        $test->test_type_id = $testTypeID;
+                        $test->specimen_id = $specimen->id;
+                        $test->test_status_id = UnhlsTest::PENDING;
+                        $test->created_by = Auth::user()->id;
+                        $test->requested_by = Input::get('physician');
+                        $test->purpose = Input::get('hiv_purpose');
+                        $test->save();
+
+                        $activeTest[] = $test->id;
+                    }
+                }
+            }
+			$visit->visit_status_id = UnhlsVisit::TEST_REQUEST_MADE;
+			$visit->save();
+
+			return Redirect::route('visit.show', [$test->visit_id])
+				->with('message', 'Test Successfully Added!');
+		}
 	}
 }

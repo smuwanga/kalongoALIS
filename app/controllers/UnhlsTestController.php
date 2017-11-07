@@ -744,6 +744,7 @@ class UnhlsTestController extends \BaseController {
 	public function start()
 	{
 		$test = UnhlsTest::find(Input::get('id'));
+		$test->tested_by = Auth::user()->id;
 		$test->test_status_id = UnhlsTest::STARTED;
 		$test->time_started = date('Y-m-d H:i:s');
 		$test->save();
@@ -995,8 +996,22 @@ class UnhlsTestController extends \BaseController {
 	 * @param
 	 * @return
 	 */
-	public function destroy($id)
+	public function delete($id)
 	{
 		// if no results saved, the permitted can delete - [clinician/technologist]
+		$test = UnhlsTest::find($id);
+
+		$testInUse = UnhlsTestResult::where('test_id', '=', $id)->first();
+		if (empty($testInUse)) {
+			// The test is not in use
+			$test->delete();
+		} else {
+			// The test is in use
+			return Redirect::route('visit.show', [$test->visit_id])
+				->with('message', 'Test can NOT be Deleted (has results)!');
+		}
+		// redirect
+		return Redirect::route('visit.show', [$test->visit_id])
+			->with('message', 'Test Successfully Deleted!');
 	}
 }

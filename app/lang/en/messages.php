@@ -119,7 +119,7 @@ return array(
     'view-patients' => 'View Existing Patients', //Unhls entry
     'residence-village' => 'Village of Residence', //Unhls entry
     'sex' => 'Sex', //Unhls prefers this to Gender
-    'ulin' => 'Lab No',
+    'ulin' => 'ULIN',
     'workplace-village' => 'Village of Workplace', //Unhls entry
     
     /** 

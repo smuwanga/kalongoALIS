@@ -229,6 +229,14 @@ Route::group(array("before" => "auth"), function()
         "as"   => "visit.addtest",
         "uses" => "VisitController@getAddTest"
     ));
+    Route::post("/visit/clinicianaddtest/{visit_id}", array(
+        "as"   => "visit.clinicianpostaddtest",
+        "uses" => "VisitController@clinicianPostAddTest"
+    ));
+    Route::post("/visit/technologistaddtest/{visit_id}", array(
+        "as"   => "visit.technologistpostaddtest",
+        "uses" => "VisitController@technologistPostAddTest"
+    ));
 
 
     // Route::resource('labrequest', 'VisitController');
