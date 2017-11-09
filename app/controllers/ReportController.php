@@ -3386,15 +3386,46 @@ class ReportController extends \BaseController {
 					$testTypeCountArray[$testSystemName]['positive']['above_5'] = $totalAboveFive->sum('count');
 
 				}elseif ($testSystemName == 'hiv') {
-					$testTypeCount  = DailyTestTypeCount::with(
-						'dailyHIVCount','dailyAlphanumericCount')
-						->where('date', 'like', '%'.$month.'%')->where('gender',UnhlsPatient::BOTH)
-						->where('age_upper_limit','>=',100)->where('age_lower_limit','=',0)
-						->where('test_type_id',$test_type_id)->where('test_type_id',$test_type_id);
-					$testTypeCountArray[$testSystemName]['total'] = $testTypeCount->sum('all');
-					// $testTypeCountArray[$testSystemName]['determine'] = $testTypeCount->sum('');
-					// $testTypeCountArray[$testSystemName]['start_pak'] = $testTypeCount->sum('');
-					// $testTypeCountArray[$testSystemName]['unigold'] = $testTypeCount->sum('');
+
+					// HCT
+					$hctCount  = DailyHIVCount::where('date', 'like', '%'.$month.'%')->where('purpose','HCT');
+					$testTypeCountArray[$testSystemName]['determine']['HCT'] = $hctCount->where('measure_id',1)->sum('count');
+					$testTypeCountArray[$testSystemName]['start_pak']['HCT'] = $hctCount->where('measure_id',2)->sum('count');
+					$testTypeCountArray[$testSystemName]['unigold']['HCT'] = $hctCount->where('measure_id',3)->sum('count');
+
+					// PMTCT
+					$pmtctCount  = DailyHIVCount::where('date', 'like', '%'.$month.'%')->where('purpose','PMTCT');
+					$testTypeCountArray[$testSystemName]['determine']['PMTCT'] = $pmtctCount->where('measure_id',1)->sum('count');
+					$testTypeCountArray[$testSystemName]['start_pak']['PMTCT'] = $pmtctCount->where('measure_id',2)->sum('count');
+					$testTypeCountArray[$testSystemName]['unigold']['PMTCT'] = $pmtctCount->where('measure_id',3)->sum('count');
+
+					// CLINICAL DIAGNOSIS
+					$clinicalDiagnosisCount  = DailyHIVCount::where('date', 'like', '%'.$month.'%')->where('purpose','CLINICAL DIAGNOSIS');
+					$testTypeCountArray[$testSystemName]['determine']['CLINICAL DIAGNOSIS'] = $clinicalDiagnosisCount->where('measure_id',1)->sum('count');
+					$testTypeCountArray[$testSystemName]['start_pak']['CLINICAL DIAGNOSIS'] = $clinicalDiagnosisCount->where('measure_id',2)->sum('count');
+					$testTypeCountArray[$testSystemName]['unigold']['CLINICAL DIAGNOSIS'] = $clinicalDiagnosisCount->where('measure_id',3)->sum('count');
+
+					// QUALITY CONTROL
+					$qualityControlCount  = DailyHIVCount::where('date', 'like', '%'.$month.'%')->where('purpose','QUALITY CONTROL');
+					$testTypeCountArray[$testSystemName]['determine']['QUALITY CONTROL'] = $qualityControlCount->where('measure_id',1)->sum('count');
+					$testTypeCountArray[$testSystemName]['start_pak']['QUALITY CONTROL'] = $qualityControlCount->where('measure_id',2)->sum('count');
+					$testTypeCountArray[$testSystemName]['unigold']['QUALITY CONTROL'] = $qualityControlCount->where('measure_id',3)->sum('count');
+
+					// SMC
+					$smcCount  = DailyHIVCount::where('date', 'like', '%'.$month.'%')->where('purpose','SMC');
+					$testTypeCountArray[$testSystemName]['determine']['SMC'] = $smcCount->where('measure_id',1)->sum('count');
+					$testTypeCountArray[$testSystemName]['start_pak']['SMC'] = $smcCount->where('measure_id',2)->sum('count');
+					$testTypeCountArray[$testSystemName]['unigold']['SMC'] = $smcCount->where('measure_id',3)->sum('count');
+
+					$totalCount  = DailyHIVCount::where('date', 'like', '%'.$month.'%');
+					$testTypeCountArray[$testSystemName]['determine']['total'] = $totalCount->where('measure_id',1)->sum('count');
+					$testTypeCountArray[$testSystemName]['start_pak']['total'] = $totalCount->where('measure_id',2)->sum('count');
+					$testTypeCountArray[$testSystemName]['unigold']['total'] = $totalCount->where('measure_id',3)->sum('count');
+/*
+
+ZN stain
+modified ZN
+*/
 
 				}elseif ($testSystemName == 'gram') {
 					$testTypeCount  = DailyTestTypeCount::with(

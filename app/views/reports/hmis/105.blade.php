@@ -468,30 +468,30 @@
 				</tr>
 				<tr>
 					<td>72. DETERMINE</td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
+					<td>{{(isset($testTypeCountArray['hiv']))?$testTypeCountArray['hiv']['determine']['HCT']:''}}</td>
+					<td>{{(isset($testTypeCountArray['hiv']))?$testTypeCountArray['hiv']['determine']['PMTCT']:''}}</td>
+					<td>{{(isset($testTypeCountArray['hiv']))?$testTypeCountArray['hiv']['determine']['CLINICAL DIAGNOSIS']:''}}</td>
+					<td>{{(isset($testTypeCountArray['hiv']))?$testTypeCountArray['hiv']['determine']['QUALITY CONTROL']:''}}</td>
+					<td>{{(isset($testTypeCountArray['hiv']))?$testTypeCountArray['hiv']['determine']['SMC']:''}}</td>
+					<td>{{(isset($testTypeCountArray['hiv']))?$testTypeCountArray['hiv']['determine']['total']:''}}</td>
 				</tr>
 				<tr>
 					<td>73. STAT PAK</td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
+					<td>{{(isset($testTypeCountArray['hiv']))?$testTypeCountArray['hiv']['start_pak']['HCT']:''}}</td>
+					<td>{{(isset($testTypeCountArray['hiv']))?$testTypeCountArray['hiv']['start_pak']['PMTCT']:''}}</td>
+					<td>{{(isset($testTypeCountArray['hiv']))?$testTypeCountArray['hiv']['start_pak']['CLINICAL DIAGNOSIS']:''}}</td>
+					<td>{{(isset($testTypeCountArray['hiv']))?$testTypeCountArray['hiv']['start_pak']['QUALITY CONTROL']:''}}</td>
+					<td>{{(isset($testTypeCountArray['hiv']))?$testTypeCountArray['hiv']['start_pak']['SMC']:''}}</td>
+					<td>{{(isset($testTypeCountArray['hiv']))?$testTypeCountArray['hiv']['start_pak']['total']:''}}</td>
 				</tr>
 				<tr>
 					<td>74. UNIGOLD</td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
+					<td>{{(isset($testTypeCountArray['hiv']))?$testTypeCountArray['hiv']['unigold']['HCT']:''}}</td>
+					<td>{{(isset($testTypeCountArray['hiv']))?$testTypeCountArray['hiv']['unigold']['PMTCT']:''}}</td>
+					<td>{{(isset($testTypeCountArray['hiv']))?$testTypeCountArray['hiv']['unigold']['CLINICAL DIAGNOSIS']:''}}</td>
+					<td>{{(isset($testTypeCountArray['hiv']))?$testTypeCountArray['hiv']['unigold']['QUALITY CONTROL']:''}}</td>
+					<td>{{(isset($testTypeCountArray['hiv']))?$testTypeCountArray['hiv']['unigold']['SMC']:''}}</td>
+					<td>{{(isset($testTypeCountArray['hiv']))?$testTypeCountArray['hiv']['unigold']['total']:''}}</td>
 				</tr>
 			</table>
 		</div>
