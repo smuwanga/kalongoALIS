@@ -140,7 +140,6 @@ class InterfacerController extends \BaseController{
             // test should exist and person doing it shuld have clicked start
             if (!is_null($test)
                 && ($test->test_status_id == UnhlsTest::STARTED
-                    || $test->test_status_id == UnhlsTest::VERIFIED
                     || $test->test_status_id == UnhlsTest::COMPLETED)) {
                 $testResult = UnhlsTestResult::firstOrNew(['test_id' => $test->id, 'measure_id' => $measureId]);
                 $testResult->result = $result;
