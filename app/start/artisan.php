@@ -13,5 +13,4 @@
 
 Artisan::add(new SeedUpdater);
 Artisan::add(new DailyReporter);
-Artisan::add(new AddReportDB);
 Artisan::add(new ResetUuidGenerator);
