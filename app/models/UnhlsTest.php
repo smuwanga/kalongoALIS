@@ -1079,6 +1079,10 @@ class UnhlsTest extends Eloquent
 				$measures[] = $measureResult;
 			}
 
+			$determine = $measures['0']['result'];
+			$statpak = $measures['1']['result'];
+			$unigold = $measures['2']['result'];
+
 			if($determine=='Non-Reactive' && $statpak =='Non-Reactive'){
 				$result ='Negative';
 
