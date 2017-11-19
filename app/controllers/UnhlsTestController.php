@@ -527,6 +527,8 @@ class UnhlsTestController extends \BaseController {
 			$visit->visit_type = $visitType[Input::get('visit_type')];
 			$visit->ward_id = Input::get('ward_id');
 			$visit->bed_no = Input::get('bed_no');
+			$visit->hospitalized = Input::get('hospitalized');
+			$visit->on_antibiotics = Input::get('on_antibiotics');
 			$visit->save();
 
 			$therapy = new Therapy;

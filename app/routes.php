@@ -520,6 +520,14 @@ Route::group(array("before" => "auth"), function()
             "as"   => "reports.inventory",
             "uses" => "ReportController@stockLevel"
         ));
+        Route::get("/microbiology/search", array(
+            "as"   => "reports.microbiology.search",
+            "uses" => "ReportController@searchMicrobiology"
+        ));
+        Route::post("/microbiology/download", array(
+            "as"   => "reports.microbiology.download",
+            "uses" => "ReportController@downloadMicrobiology"
+        ));
     });
     Route::group(array("before" => "checkPerms:manage_qc"), function()
     {

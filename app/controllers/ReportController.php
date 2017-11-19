@@ -3516,12 +3516,70 @@ modified ZN
 			->with('testTypeCountArray', $testTypeCountArray);
 	}
 
-	/**
-	*	Function to check for accredited test types
-	*
-	*/
-	public function counts()
+	public function searchMicrobiology()
 	{
-		// todo:content above should guide!
+		$dateFrom =  date('Y-m-01');
+		$dateTo = date('Y-m-d');
+
+		// Load the view and pass it the tests
+		return View::make('reports.microbiology')
+					->with('dateFrom', $dateFrom)
+					->with('dateTo', $dateTo);
+	}
+
+	public function downloadMicrobiology()
+	{
+
+		$dateFrom =  Input::get('date_from');
+		$dateTo = Input::get('date_to');
+
+		if(!$dateFrom) $dateFrom = date('Y-m-01');
+		if(!$dateTo) $dateTo = date('Y-m-d');
+
+		$drugs = Drug::all();
+
+		$isolatedOrganisms = IsolatedOrganism::with(
+				'test',
+				'test.visit',
+				'test.visit.patient',
+				'test.specimen',
+				'drugSusceptibilities',
+				'drugSusceptibilities.drug',
+				'organism'
+			)->where(function($q) use ($dateFrom, $dateTo){
+				$dateTo = $dateTo . ' 23:59:59';
+				$q->where('created_at', '>=', $dateFrom);
+				$q->where('created_at', '<=', $dateTo);
+			})->orderBy('created_at', 'DESC')->get();
+		$content = [];
+
+		$i = 1;
+		foreach ($isolatedOrganisms as $isolatedOrganism) {
+			$content[$i]['Patient ID'] = $isolatedOrganism->test->visit->patient->ulin;
+			$content[$i]['Sex'] = $isolatedOrganism->test->visit->patient->getGender();//sex
+			$content[$i]['Age'] = $isolatedOrganism->test->visit->patient->getAge();//age
+			$content[$i]['Hospitalized for more than 2 days (48 hours) at time of specimen collection? '] = ($isolatedOrganism->test->visit->hospitalized == 1) ? 'Yes' : 'No';//48hrs
+			$content[$i]['Specimen Date'] = $isolatedOrganism->test->specimen->time_accepted;//specimen_date
+			$content[$i]['Specimen Type'] = $isolatedOrganism->test->specimen->specimenType->name;//specimen_type
+			$content[$i]['Organism'] = $isolatedOrganism->organism->name;
+
+			// put all antibiotic indexes with empty values
+			foreach ($drugs as $drug) {
+				$content[$i][$drug->name] = '';
+			}
+
+			// update with available values as available
+			foreach ($isolatedOrganism->drugSusceptibilities as $drugSusceptibility) {
+				$content[$i][$drugSusceptibility->drug->name] = $drugSusceptibility->drugSusceptibilityMeasure->symbol;
+			}
+			$i++;
+		}
+
+		$fileName = $dateFrom.' to '.$dateTo;
+		Excel::create($fileName, function($excel) use($content) {
+			$excel->sheet('Sheet1', function($sheet) use($content) {
+				$sheet->fromArray($content);
+			});
+		})->export('xls');
 	}
 }

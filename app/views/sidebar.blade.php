@@ -28,6 +28,12 @@
 										{{trans('messages.daily-log')}}</a>
 									</div>
 								</li>
+								<li>
+									<div><a href="{{ URL::route('reports.microbiology.search')}}">
+										<span class="glyphicon glyphicon-tag"></span>
+										Microbiology Export</a>
+									</div>
+								</li>
 							</ul>
 							<h4 class="panel_heading panel_heading_first">{{trans('messages.aggregate-reports')}}</h4>
 							<ul>
