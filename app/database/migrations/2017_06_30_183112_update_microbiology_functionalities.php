@@ -457,7 +457,10 @@ class UpdateMicrobiologyFunctionalities extends Migration {
         /* Permissions table */
         $permissions = array(
 
-          array("name" => "manage_incidents", "display_name" => "Can Manage Biorisk & Biosecurity Incidents"),
+            array("name" => "manage_incidents", "display_name" => "Can Manage Biorisk & Biosecurity Incidents"),
+            array("name" => "register_incident", "display_name" => "Can Register BB Incidences"),
+            array("name" => "summary_log", "display_name" => "Can view BB summary log"),
+            array("name" => "facility_report", "display_name" => "Can create faility BB report"),
 
             array("name" => "view_names", "display_name" => "Can view patient names"),
             array("name" => "manage_patients", "display_name" => "Can add patients"),
