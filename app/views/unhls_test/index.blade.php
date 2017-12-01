@@ -85,11 +85,12 @@
                         <th>{{trans('messages.date-ordered')}}</th>
                         <th>{{trans('messages.patient-number')}}</th>
                         <th>Lab Number</th>
-                        <th>{{trans('messages.visit-number')}}</th>
+                        <!-- <th>{{trans('messages.visit-number')}}</th> -->
                         <th class="col-md-2">{{trans('messages.patient-name')}}</th>
                         <th class="col-md-1">{{trans('messages.specimen-id')}}</th>
                         <th>{{ Lang::choice('messages.test',1) }}</th>
-                        <th>{{trans('messages.visit-type')}}</th>
+                        <th class="col-md-1">{{trans('messages.visit-type')}}</th>
+                        <th class="col-md-1">Unit</th>
                         <th>{{trans('messages.test-request-status')}}</th>
                         <th class="col-md-3">{{trans('messages.test-status')}}</th>
                     </tr>
@@ -109,16 +110,19 @@
                                 $test->visit->patient->external_patient_number
                             }}</td> <!--Patient Number -->
                         <td>{{$test->visit->patient->ulin}}</td> <!--unhls terminology -->
-                        <td>
+                        <!-- issue: this is confusing people as they may mistake it as ULIN -->
+                        <!-- <td>
                             {{ empty($test->visit->visit_number)?
                                 $test->visit->id:
                                 $test->visit->visit_number
-                            }}</td> <!--Visit Number -->
+                            }}</td> --> 
+                        <!--Visit Number -->
                         <td>{{ $test->visit->patient->name.' ('.($test->visit->patient->getGender(true)).',
                             '.$test->visit->patient->getAge('Y'). ')'}}</td> <!--Patient Name -->
                         <td>{{ $test->getSpecimenId() }}</td> <!--Specimen ID -->
                         <td>{{ $test->testType->name }}</td> <!--Test-->
                         <td>{{ $test->visit->visit_type }}</td> <!--Visit Type -->
+                        <td>{{ is_null($test->visit->ward) ? '':$test->visit->ward->name }}</td> <!--Unit -->
                         <!-- ACTION BUTTONS -->
                         <td>
                             <a class="btn btn-sm btn-success"
