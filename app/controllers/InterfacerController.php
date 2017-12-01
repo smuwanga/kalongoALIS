@@ -149,7 +149,6 @@ class InterfacerController extends \BaseController{
                     $test = UnhlsTest::find($test->id);
                     $test->test_status_id = UnhlsTest::COMPLETED;
                     $test->instrument = $instrument;
-                    $test->tested_by = 1;
                     if($test->test_status_id == UnhlsTest::PENDING){
                         $test->time_started = date('Y-m-d H:i:s');
                     }
