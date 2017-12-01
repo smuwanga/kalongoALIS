@@ -100,6 +100,7 @@ class UnhlsPatient extends Eloquent
 	{
 		return UnhlsPatient::where('patient_number', '=', $searchText)
 						->orWhere('name', 'LIKE', '%'.$searchText.'%')
+						->orWhere('ulin', 'LIKE', '%'.$searchText.'%')
 						->orWhere('external_patient_number', '=', $searchText);
 	}
 	/**
