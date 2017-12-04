@@ -79,8 +79,11 @@ class UnhlsPatientController extends \BaseController {
 
 			try{
 				$patient->save();
-				
-				$patient->ulin = $patient->getUlin();
+				if (Input::get('ulin')!= '') {
+					$patient->ulin = $patient->getUlin();
+				}else{
+					$patient->ulin = Input::get('ulin');
+				}
 				$patient->save();
 				$uuid = new UuidGenerator; 
 				$uuid->save();
