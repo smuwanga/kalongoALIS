@@ -125,7 +125,6 @@ class UnhlsPatient extends Eloquent
 		$facilityCode ='';
 		$facilityCode = $this->getFacilityCode();
 		$registrationDate = strtotime($this->created_at);
-
 		if ($format == 'Jinja_SOP') {
 			$lastPatientRegistration = UnhlsPatient::orderBy('id','DESC')->first()->created_at;
 			$monthOfLastEntry = date('m',strtotime($lastPatientRegistration));
@@ -140,6 +139,29 @@ class UnhlsPatient extends Eloquent
 			$autoNum = DB::table('uuids')->max('id')+1;
 			return $autoNum.'/'.$month.'/'.$year;
 
+		}elseif ($format == 'Mityana_SOP') {
+			$lastPatientRegistration = UnhlsPatient::orderBy('id','DESC')->first()->created_at;
+			$monthOfLastEntry = date('m',strtotime($lastPatientRegistration));
+			$monthNow = date('m');
+
+			if ($monthOfLastEntry != $monthNow) {
+				Artisan::call('reset:ulin');
+			}
+
+			$year = date('y', $registrationDate);
+			$month = date('m', $registrationDate);
+			$autoNum = DB::table('uuids')->max('id')+1;
+
+
+			$name = preg_split("/\s+/", $this->name);
+			$initials = null;
+
+			foreach ($name as $n){
+				$initials .= $n[0];
+
+			}
+			return $initials.'/'.$month.'/'.$autoNum.'/'.$year;
+			// MG/12/220/17
 		}else{
 			$yearMonth = date('ym', $registrationDate);
 			$autoNum = DB::table('uuids')->max('id')+1;
