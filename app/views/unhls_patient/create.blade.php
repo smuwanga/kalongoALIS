@@ -29,8 +29,8 @@
 				</div>
 				<div class="form-group">
 					{{ Form::label('ulin', trans('messages.ulin'), array('class' => 'required')) }}
-					{{ Form::text('ulin', 'Auto generated upon succesfull save!',
-						array('class' => 'form-control', 'readonly' =>'true')) }}
+					{{ Form::text('ulin', '',
+						array('class' => 'form-control', 'readonly' =>'true', 'placeholder' => 'Auto generated upon succesfull save!')) }}
 				</div>
 				<div class="form-group">
 					{{ Form::label('nin', trans('messages.national-id')) }}
