@@ -153,7 +153,7 @@ class UnhlsPatient extends Eloquent
 			$autoNum = DB::table('uuids')->max('id')+1;
 
 
-			$name = preg_split("/\s+/", $this->name);
+			$name = preg_split("/\s+/", trim($this->name));
 			$initials = null;
 
 			foreach ($name as $n){
@@ -165,7 +165,7 @@ class UnhlsPatient extends Eloquent
 		}else{
 			$yearMonth = date('ym', $registrationDate);
 			$autoNum = DB::table('uuids')->max('id')+1;
-			$name = preg_split("/\s+/", $this->name);
+			$name = preg_split("/\s+/", trim($this->name));
 			$initials = null;
 
 			foreach ($name as $n){
