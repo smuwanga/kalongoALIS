@@ -159,6 +159,18 @@ Route::group(array("before" => "auth"), function()
             "as"   => "measurenamemapping.update",
             "uses" => "MeasureNameMappingController@update"
         ));
+        Route::get("/measureranges/{id}/ranges", array(
+            "as"   => "measureranges.getranges",
+            "uses" => "MeasureNameMappingController@getRanges"
+        ));
+        Route::get("/measureranges/{id}/range", array(
+            "as"   => "measureranges.getrange",
+            "uses" => "MeasureNameMappingController@getRange"
+        ));
+        Route::put("/measureranges/{id}/range", array(
+            "as"   => "measureranges.postrange",
+            "uses" => "MeasureNameMappingController@postRange"
+        ));
 
         // Route::resource('measurenamemapping', 'MeasureNameMappingController');
         Route::get("/instrument/{id}/delete", array(

@@ -38,18 +38,20 @@
 					<td>{{ $measureNameMapping->standard_name }}</td>
 					<td>{{ $measureNameMapping->system_name }}</td>
 					<td>
-					<!-- edit this measureNameMapping (uses edit method found at GET /measureNameMapping/{id}/edit -->
 						<a class="btn btn-sm btn-info" href="{{ URL::to("measurenamemapping/" . $measureNameMapping->id . "/edit") }}" >
 							<span class="glyphicon glyphicon-edit"></span>
 							{{ trans('messages.edit') }}
 						</a>
-					<!-- delete this measureNameMapping (uses delete method found at GET /measureNameMapping/{id}/delete -->
 						<button class="btn btn-sm btn-danger delete-item-link"
 							data-toggle="modal" data-target=".confirm-delete-modal"
 							data-id='{{ URL::to("measurenamemapping/" . $measureNameMapping->id . "/delete") }}'>
 							<span class="glyphicon glyphicon-trash"></span>
 							{{ trans('messages.delete') }}
 						</button>
+						<a class="btn btn-sm btn-info" href="{{ URL::to("measureranges/" . $measureNameMapping->measure->id . "/ranges") }}" >
+							<span class="glyphicon glyphicon-eye-open"></span>
+							Measure Ranges
+						</a>
 					</td>
 				</tr>
 			@endforeach

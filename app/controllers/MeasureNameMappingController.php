@@ -134,5 +134,40 @@ class MeasureNameMappingController extends \BaseController {
 			->with('message', 'Successfully Deleted Measure Name Mapping');
 	}
 
+	public function getRanges($id)
+	{
+		$measure = Measure::find($id);
+		return View::make('testnamemapping.measurenamemapping.ranges')
+				->with('measure', $measure);
+	}
+
+	public function getRange($id)
+	{
+		$measureRange = MeasureRange::find($id);
+		$resultInterpretations = ResultInterpretation::orderBy('id','DESC')->lists('name', 'id');
+
+		return View::make('testnamemapping.measurenamemapping.range')
+				->with('resultInterpretations', $resultInterpretations)
+				->with('measureRange', $measureRange);
+	}
+
+
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function postRange($id)
+	{
+		// Update
+		$measureRange = MeasureRange::find($id);
+		$measureRange->result_interpretation_id = Input::get('result_interpretation_id');
+		$measureRange->save();
+		// redirect
+		return Redirect::route('measureranges.getranges', [$measureRange->measure->id])
+		->with('message', 'Successfully Updated Measure Range Interpretation');
+	}
+
 
 }

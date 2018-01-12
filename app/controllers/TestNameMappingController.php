@@ -23,7 +23,7 @@ class TestNameMappingController extends \BaseController {
 	 */
 	public function create()
 	{
-		$testTypes = TestType::lists('name', 'id');
+		$testTypes = TestType::orderBy('name')->lists('name', 'id');
 		return View::make('testnamemapping.create')
 				->with('testTypes', $testTypes);
 	}
@@ -82,7 +82,7 @@ class TestNameMappingController extends \BaseController {
 	public function edit($id)
 	{
 		$testNameMapping = TestNameMapping::find($id);
-		$testTypes = TestType::lists('name', 'id');
+		$testTypes = TestType::orderBy('name')->lists('name', 'id');
 
 		return View::make('testnamemapping.edit')
 				->with('testNameMapping', $testNameMapping)
