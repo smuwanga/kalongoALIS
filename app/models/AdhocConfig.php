@@ -23,6 +23,7 @@ class AdhocConfig extends Eloquent
 			'Standard' => 1,
 			'Jinja_SOP' => 2,
 			'Mityana_SOP' => 3,
+			'Manual' => 4,
 		],
 		// if clinician will use the system
 		'Clinician_UI' => [
@@ -58,6 +59,10 @@ class AdhocConfig extends Eloquent
 
 			case AdhocConfig::$constants['ULIN']['Mityana_SOP']:
 				$format = 'Mityana_SOP';
+				break;
+
+			case AdhocConfig::$constants['ULIN']['Manual']:
+				$format = 'Manual';
 				break;
 
 			default:
