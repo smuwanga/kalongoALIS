@@ -103,7 +103,6 @@ class CreateReportsTables extends Migration {
             $table->integer('daily_test_type_count_id')->unsigned();
             $table->integer('gram_stain_range_id')->unsigned();
             $table->integer('count')->unsigned();// result
-            /*perhaps add it's results here, as a string? or a file for R?*/
 
             $table->foreign('daily_test_type_count_id')->references('id')->on('daily_test_type_counts');
         });

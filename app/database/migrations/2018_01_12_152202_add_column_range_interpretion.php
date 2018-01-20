@@ -16,6 +16,18 @@ class AddColumnRangeInterpretion extends Migration {
 		{
 			$table->integer('result_interpretation_id')->unsigned()->nullable();
 		});
+
+		Schema::create('daily_negative_gram_stains', function(Blueprint $table)
+		{
+			$table->increments('id');
+			$table->integer('gram_stain_range_id')->unsigned();
+		});
+
+		Schema::create('daily_negative_cultures', function(Blueprint $table)
+		{
+			$table->increments('id');
+			$table->integer('organism_id')->unsigned();
+		});
 	}
 
 	/**
@@ -27,5 +39,4 @@ class AddColumnRangeInterpretion extends Migration {
 	{
 		//
 	}
-
 }

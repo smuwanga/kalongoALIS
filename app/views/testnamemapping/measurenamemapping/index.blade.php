@@ -48,10 +48,12 @@
 							<span class="glyphicon glyphicon-trash"></span>
 							{{ trans('messages.delete') }}
 						</button>
+						@if($measureNameMapping->measure!='')
 						<a class="btn btn-sm btn-info" href="{{ URL::to("measureranges/" . $measureNameMapping->measure->id . "/ranges") }}" >
 							<span class="glyphicon glyphicon-eye-open"></span>
 							Measure Ranges
 						</a>
+						@endif
 					</td>
 				</tr>
 			@endforeach

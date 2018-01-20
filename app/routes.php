@@ -172,7 +172,32 @@ Route::group(array("before" => "auth"), function()
             "uses" => "MeasureNameMappingController@postRange"
         ));
 
-        // Route::resource('measurenamemapping', 'MeasureNameMappingController');
+        Route::get("/measureranges/{id}/negativegramstain", array(
+            "as"   => "measureranges.getnegativegramstain",
+            "uses" => "MeasureNameMappingController@getNegativeGramStain"
+        ));
+        Route::post("/measureranges/{id}/negativegramstain", array(
+            "as"   => "measureranges.postnegativegramstain",
+            "uses" => "MeasureNameMappingController@postNegativeGramStain"
+        ));
+        Route::get("/measureranges/{id}/{test_name_mapping_id}/negativegramstaindelete", array(
+            "as"   => "measureranges.deletenegativegramstain",
+            "uses" => "MeasureNameMappingController@deleteNegativeGramStain"
+        ));
+
+        Route::get("/measureranges/{id}/negativeorganism", array(
+            "as"   => "measureranges.getnegativeorganism",
+            "uses" => "MeasureNameMappingController@getNegativeOrganism"
+        ));
+        Route::post("/measureranges/{id}/negativeorganism", array(
+            "as"   => "measureranges.postnegativeorganism",
+            "uses" => "MeasureNameMappingController@postNegativeOrganism"
+        ));
+        Route::get("/measureranges/{id}/{test_name_mapping_id}/negativeorganismdelete", array(
+            "as"   => "measureranges.deletenegativeorganism",
+            "uses" => "MeasureNameMappingController@deleteNegativeOrganism"
+        ));
+
         Route::get("/instrument/{id}/delete", array(
             "as"   => "instrument.delete",
             "uses" => "InstrumentController@delete"

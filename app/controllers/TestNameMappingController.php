@@ -69,7 +69,21 @@ class TestNameMappingController extends \BaseController {
 	public function show($id)
 	{
 		$testNameMapping = TestNameMapping::find($id)->load('measureNameMappings');
-		return View::make('testnamemapping.measurenamemapping.index')->with('testNameMapping',$testNameMapping);
+		// if culture
+		if ($testNameMapping->system_name == 'culture_sensitivity') {
+			$negativeOrganisms = DailyNegativeCulture::all();
+			return View::make('testnamemapping.measurenamemapping.negativeorganisms')
+				->with('negativeOrganisms',$negativeOrganisms)
+				->with('testNameMapping',$testNameMapping);
+		// if gram stain
+		}elseif ($testNameMapping->system_name == 'gram_stain') {
+			$negativeGramStains = DailyNegativeGramStain::all();
+			return View::make('testnamemapping.measurenamemapping.negativegramstains')
+				->with('negativeGramStains',$negativeGramStains)
+				->with('testNameMapping',$testNameMapping);
+		}else {
+			return View::make('testnamemapping.measurenamemapping.index')->with('testNameMapping',$testNameMapping);
+		}
 	}
 
 

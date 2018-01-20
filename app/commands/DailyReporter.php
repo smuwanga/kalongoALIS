@@ -38,7 +38,7 @@ class DailyReporter extends Command {
     {
         Eloquent::unguard();
         // Get the date argument.
-        echo "DAILY REPORT\n";
+        echo "|||||||||||||||||||||||||||||||||||||||||----------------DAILY REPORT----------------------------||||||||||||||||||||||||||||||||||||||||||\n";
         $reportDate = $this->argument('date');
         if ($reportDate == '') {
             $reportDate = (new DateTime('now'))->modify('-1 day')->format('Y-m-d');
@@ -190,7 +190,7 @@ class DailyReporter extends Command {
                 'range' =>'older',
                 'age_lower_limit' =>5,// use 5 =<
                 'age_upper_limit' =>1000,
-                'age_upper_limit_display' =>120,
+                'age_upper_limit_display' =>'120',
             ],
         ];
 
@@ -249,6 +249,33 @@ class DailyReporter extends Command {
             }
 
             foreach ($ageGroups as $ageGroup) {
+
+
+                // if the test type has a system name mapped
+                if ($testType->testNameMapping != '') {
+
+                    // check if it is malaria
+                    if ($testType->testNameMapping->system_name == 'malaria_microscopy' || $testType->testNameMapping->system_name == 'malaria_rdts') {
+
+                        // skip if it's all ages
+                        if ($ageGroup['range'] == 'all') {
+                            continue;
+                        }
+                    // if not malaria run only for all all ages
+                    }else{
+                        if ($ageGroup['range'] != 'all') {
+                            continue;
+                        }
+                    }
+                // if the test type has no system name mapped
+                }else{
+
+                    // run only for all all ages
+                    if ($ageGroup['range'] != 'all') {
+                        continue;
+                    }
+                }
+
                 $ageStart = $ageGroup['age_lower_limit'];
                 $ageEnd = intval($ageGroup['age_upper_limit']*365.25);
 
@@ -260,6 +287,12 @@ class DailyReporter extends Command {
 
                 foreach ($genders as $gender) {
                     /*Grouped Test Type Count*/
+
+                    // note: skip groupings that are not both sexes and because its not required at the moment
+                    if ($gender != UnhlsPatient::BOTH) {
+                        continue;
+                    }
+
                     $tests = UnhlsTest::with(
                         'visit',
                         'testType',
@@ -326,6 +359,7 @@ class DailyReporter extends Command {
                             if ($ageGroup['range']!= 'all' || $gender != UnhlsPatient::BOTH) {
                                 continue;
                             }
+
                             foreach ($organisms as $organism) {
                                 echo $organism->name."\n";
                                 $organism_id = $organism->id;
@@ -413,7 +447,7 @@ class DailyReporter extends Command {
                                                     $q->whereHas('patient', function($q)  use ($dobStart, $dobEnd, $gender){
                                                         $q->where(function($q) use ($dobStart, $dobEnd, $gender){
                                                             // 2 is for both
-                                                            if ($gender == 2) {
+                                                            if ($gender == UnhlsPatient::BOTH) {
                                                                 $q->whereBetween('dob', [$dobStart, $dobEnd]);
                                                             }else {
                                                                 $q->whereBetween('dob', [$dobStart, $dobEnd])
@@ -608,7 +642,7 @@ class DailyReporter extends Command {
                                                 $q->whereHas('patient', function($q)  use ($dobStart, $dobEnd, $gender){
                                                     $q->where(function($q) use ($dobStart, $dobEnd, $gender){
                                                         // 2 is for both
-                                                        if ($gender == 2) {
+                                                        if ($gender == UnhlsPatient::BOTH) {
                                                             $q->whereBetween('dob', [$dobStart, $dobEnd]);
                                                         }else {
                                                             $q->whereBetween('dob', [$dobStart, $dobEnd])
@@ -634,8 +668,6 @@ class DailyReporter extends Command {
                                             $dailyAlphanumericCount->daily_test_type_count_id = $dailyTestTypeCount->id;
                                             $dailyAlphanumericCount->measure_id = $measure_id;
                                             $dailyAlphanumericCount->measure_range_id = $measureRange->id;
-                                            // todo: implementing with mapping...
-                                            // $dailyAlphanumericCount->result_interpretation_id = $measureRange->interpretation->id;
                                             $dailyAlphanumericCount->count = $tests->count();
                                             $dailyAlphanumericCount->save();
                                         }
@@ -644,6 +676,7 @@ class DailyReporter extends Command {
                                     echo "--[{$measure->name}] - (Numeric)\n";
 
                                     $measureRangeCountsArray = [];
+                                    $measureRangeCountsArray[$measure_id]['all'] = 0;
                                     $measureRangeCountsArray[$measure_id]['normal'] = 0;
                                     $measureRangeCountsArray[$measure_id]['low'] = 0;
                                     $measureRangeCountsArray[$measure_id]['high'] =  0;
@@ -662,7 +695,7 @@ class DailyReporter extends Command {
                                             $q->whereHas('visit', function($q) use ($dobStart, $dobEnd, $gender){
                                                 $q->whereHas('patient', function($q)  use ($dobStart, $dobEnd, $gender){
                                                     $q->where(function($q) use ($dobStart, $dobEnd, $gender){
-                                                        if ($gender == 2) {
+                                                        if ($gender == UnhlsPatient::BOTH) {
                                                             $q->whereBetween('dob', [$dobStart, $dobEnd]);
                                                         }else {
                                                             $q->whereBetween('dob', [$dobStart, $dobEnd])
@@ -707,6 +740,7 @@ class DailyReporter extends Command {
                                         }
 
                                         // determine the high, the low and the normal of the results - and count them one by one
+                                        /*
                                         if ($testResult->result >= $measureRange->range_lower && $testResult->result <= $measureRange->range_upper) {
                                             $measureRangeCountsArray[$measure_id]['normal']++;
 
@@ -716,13 +750,15 @@ class DailyReporter extends Command {
                                         }elseif ($testResult->result < $measureRange->range_lower) {
                                             $measureRangeCountsArray[$measure_id]['low']++;
                                         }
+                                        */
+
+                                        $measureRangeCountsArray[$measure_id]['all']++;
 
                                         // put condition up tomake sure the mapping guy is funtional before doing funny things
                                         if ($measure->measureNameMapping != '' &&
-                                            $measure->measureNameMapping->testSystemName == 'hbg' &&
+                                            $measure->measureNameMapping->system_name == 'hgb' &&
                                             $gender == 2 &&
                                             $ageGroup['range'] == 'all') {
-
                                             // hbg_less_8
                                             if($testResult->result<8){
                                                 $measureRangeCountsArray[$measure_id]['hbg_less_8']++;
@@ -735,8 +771,20 @@ class DailyReporter extends Command {
                                         }
                                     }
 
+                                    if ($measureRangeCountsArray[$measure_id]['all']>0) {
+                                        $dailyNumericRangeCount = new DailyNumericRangeCount;
+                                        $dailyNumericRangeCount->date = $reportDate;
+                                        $dailyNumericRangeCount->daily_test_type_count_id = $dailyTestTypeCount->id;
+                                        $dailyNumericRangeCount->measure_id = $measure->id;
+                                        $dailyNumericRangeCount->result = 'all';
+                                        $dailyNumericRangeCount->count = $measureRangeCountsArray[$measure_id]['all'];
+                                        $dailyNumericRangeCount->save();
+                                    }
+
+                                    /*
                                     if ($measureRangeCountsArray[$measure_id]['high']>0) {
                                         echo "---[{$measure->name}] - [{$measureRangeCountsArray[$measure_id]['high']}] are [High] for ages [{$ageGroup['age_lower_limit']}] to [{$ageGroup['age_upper_limit']}] gender [{$genderName[$gender]}]\n";
+                                        // not required and taking too much db space
                                         $dailyNumericRangeCount = new DailyNumericRangeCount;
                                         $dailyNumericRangeCount->date = $reportDate;
                                         $dailyNumericRangeCount->daily_test_type_count_id = $dailyTestTypeCount->id;
@@ -745,8 +793,11 @@ class DailyReporter extends Command {
                                         $dailyNumericRangeCount->count = $measureRangeCountsArray[$measure_id]['high'];
                                         $dailyNumericRangeCount->save();
                                     }
+                                    */
 
+                                    /*
                                     if ($measureRangeCountsArray[$measure_id]['normal']>0) {
+                                        // not required and taking too much db space
                                         echo "---[{$measure->name}] - [{$measureRangeCountsArray[$measure_id]['normal']}] are [Normal] for ages [{$ageGroup['age_lower_limit']}] to [{$ageGroup['age_upper_limit']}] gender [{$genderName[$gender]}]\n";
                                         $dailyNumericRangeCount = new DailyNumericRangeCount;
                                         $dailyNumericRangeCount->date = $reportDate;
@@ -756,8 +807,11 @@ class DailyReporter extends Command {
                                         $dailyNumericRangeCount->count = $measureRangeCountsArray[$measure_id]['normal'];
                                         $dailyNumericRangeCount->save();
                                     }
+                                    */
 
 
+                                    /*
+                                    // not required and taking too much db space
                                     if ($measureRangeCountsArray[$measure_id]['low']>0) {
                                         echo "---[{$measure->name}] - [{$measureRangeCountsArray[$measure_id]['low']}] are [Low] for ages [{$ageGroup['age_lower_limit']}] to [{$ageGroup['age_upper_limit']}] gender [{$genderName[$gender]}]\n";
                                         $dailyNumericRangeCount = new DailyNumericRangeCount;
@@ -768,6 +822,7 @@ class DailyReporter extends Command {
                                         $dailyNumericRangeCount->count = $measureRangeCountsArray[$measure_id]['low'];
                                         $dailyNumericRangeCount->save();
                                     }
+                                    */
 
                                     if ($measureRangeCountsArray[$measure_id]['hbg_less_8']>0) {
                                         echo "---[{$measure->name}] - [{$measureRangeCountsArray[$measure_id]['hbg_less_8']}] are [hbg_less_8] for ages [{$ageGroup['age_lower_limit']}] to [{$ageGroup['age_upper_limit']}] gender [{$genderName[$gender]}]\n";
