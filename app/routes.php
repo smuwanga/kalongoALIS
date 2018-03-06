@@ -78,6 +78,18 @@ Route::group(array("before" => "auth"), function()
         "as"   => "unhls_patient.search",
         "uses" => "UnhlsPatientController@search"
     ));
+
+    //POC routes start here
+    Route::resource('poc', 'PocController');
+    Route::get("/poc/{id}/delete", array(
+        "as"   => "poc.delete",
+        "uses" => "PocController@delete"
+    ));
+    Route::post("/poc/search", array(
+        "as"   => "poc.search",
+        "uses" => "PocController@search"
+    ));
+
     //Unhls patiend routes end
     Route::any("/instrument/getresult", array(
         "as"   => "instrument.getResult",
@@ -155,6 +167,7 @@ Route::group(array("before" => "auth"), function()
         "as"   => "test.receive",
         "uses" => "UnhlsTestController@receive"
     ));
+
     Route::any("/unhls_test/create/{patient?}", array(
         "before" => "checkPerms:request_test",
         "as"   => "unhls_test.create",
