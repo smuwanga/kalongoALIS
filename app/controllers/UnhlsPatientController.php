@@ -220,4 +220,15 @@ class UnhlsPatientController extends \BaseController {
 	{
         return UnhlsPatient::search(Input::get('text'))->take(Config::get('kblis.limit-items'))->get()->toJson();
 	}
+
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return Response
+	 */
+	public function createEid()
+	{
+		//Create Patient
+		return View::make('unhls_patient.eidCreate');
+	}
 }
