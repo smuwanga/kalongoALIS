@@ -28,12 +28,6 @@
 										{{trans('messages.daily-log')}}</a>
 									</div>
 								</li>
-								<li>
-									<div><a href="{{ URL::route('reports.microbiology.search')}}">
-										<span class="glyphicon glyphicon-tag"></span>
-										Microbiology Export</a>
-									</div>
-								</li>
 							</ul>
 							<h4 class="panel_heading panel_heading_first">{{trans('messages.aggregate-reports')}}</h4>
 							<ul>
@@ -123,7 +117,7 @@
 				</li>
 				
 				<li class="nav_trigger">
-					<a href="{{ URL::route('unhls_patient.index') }}"><span class="ion-person"></span><span class="nav_title">Patient Information</span>
+					<a href="#"><span class="ion-person"></span><span class="nav_title">Patient Information</span>
 					</a>
 					<div class="sub_panel" style="left: -220px;">
 						<div class="side_inner ps-ready ps-container" style="height: 620px;">
@@ -133,6 +127,12 @@
 									<div>
 										<a href="{{ URL::route('unhls_patient.create')}}">
 											<span class="glyphicon glyphicon-tag"></span> {{Lang::choice('messages.register-new-patient', 1)}}</a>
+									</div>
+								</li>
+																<li>
+									<div>
+										<a href="{{ URL::route('eid_patient.create') }}">
+											<span class="glyphicon glyphicon-tag"></span> {{"Register EID patient"}}</a>
 									</div>
 								</li>
 								<li>
@@ -146,10 +146,6 @@
 
 						<div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 3px; width: 215px; display: none;"><div class="ps-scrollbar-x" style="left: 0px; width: 0px;"></div></div><div class="ps-scrollbar-y-rail" style="top: 0px; right: 3px; height: 620px; display: none;"><div class="ps-scrollbar-y" style="top: 0px; height: 0px;"></div></div></div>
 					</div>
-				</li>
-				<li>
-					<a href="{{ URL::route('visit.index') }}"><span class="ion-person"></span><span class="nav_title">Visits</span>
-					</a>
 				</li>
 				<li class="nav_trigger">
 					<a href="#">
