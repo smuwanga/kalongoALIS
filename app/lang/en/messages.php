@@ -140,6 +140,7 @@ return array(
     'new-specimen-type' => 'New Specimen Type',
     'reject' => 'Reject',
     'reject-explained-to' => 'Person Talked To',
+    'import-results-title' => 'Import PoC Results',
     'reject-title' => 'Reject Specimen',
     'rejection-reason' => 'Reason',
     'rejection-reason-title' => 'Rejection Reason',

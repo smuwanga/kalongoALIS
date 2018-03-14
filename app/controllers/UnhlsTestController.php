@@ -1026,5 +1026,8 @@ class UnhlsTestController extends \BaseController {
 	public function importPoc()
 	{
 
+		// Load the view and pass it the tests
+		return View::make('unhls_test.importPoCResults');
+
 	}
 }
