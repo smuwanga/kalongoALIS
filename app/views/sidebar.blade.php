@@ -200,10 +200,17 @@
 										</a>
 									</div>
 								</li>
-																<li>
+								<li>
 									<div>
 										<a href="{{URL::route('unhls_test.verified')}}">
 											<span class="glyphicon glyphicon-tag" ></span>{{trans('Verified Tests')}}
+										</a>
+									</div>
+								</li>
+								<li>
+									<div>
+										<a href="{{URL::route('unhls_test.importPoc')}}">
+											<span class="glyphicon glyphicon-tag" ></span>{{trans('Import POC results')}}
 										</a>
 									</div>
 								</li>
