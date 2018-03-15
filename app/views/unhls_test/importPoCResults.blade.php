@@ -31,7 +31,8 @@
 			<div class="panel-body">
 
 					<div class="input-group image-preview">
-						<input placeholder="" type="text" class="form-control image-preview-filename" disabled="disabled">
+						{{ Form::label('filename', 'File name', array('class'=>'control-label hidden')) }}						
+                		{{ Form::text('filename', Input::old('filename'), array('class' => 'form-control image-preview-filename','readonly'=>'readonly')) }}
 						<!-- don't give a name === doesn't send on POST/GET --> 
 						<span class="input-group-btn"> 
 						<!-- image-preview-input -->
@@ -53,18 +54,13 @@
 		{{ Form::close() }}
 		</div>
 	</div>
-@stop
 
-
-@section('page-js-script')
 <script type="text/javascript">
 
-alert("js");
-
 $('.file').change(function(e){
-	alert("file");
-	    var fu1 = document.getElementById("filez");
-        $('.image-preview-filename').text(e.target.files[0].name);
+	
+	    
+        $('#filename').val(e.target.files[0].name);
 });
 
 
