@@ -21,7 +21,6 @@ class CreatePocTables extends Migration {
 			$table->float('age');
 			$table->integer('exp_no');
 			$table->string('caretaker_number');
-			$table->string('admimission_date');
 			$table->string('entry_point');
 			$table->string('mother_name');
 			$table->string('infant_name');
@@ -33,6 +32,7 @@ class CreatePocTables extends Migration {
 			$table->string('pmtct_antenatal');
 			$table->string('pmtct_delivery');
 			$table->string('pmtct_postnatal');
+			$table->date('admission_date');
 			$table->string('sample_id');
 			// $table->string('sample_received_by');
 			// $table->date('sample_received_date');

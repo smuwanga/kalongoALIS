@@ -36,10 +36,12 @@ class PocController extends \BaseController {
 	public function create()
 	{
 		//Create patients
+		$hiv_status = array('0' => 'Positive', '1' => 'Negative', '2' => 'Unknown');
 		$antenatal= array('0'=>'Ante-natal', '1' => 'Delivery', '2' => 'Post-natal');
 
 		return View::make('poc.create')
-				->with('antenatal', $antenatal);
+		->with('hiv_status', $hiv_status)
+		->with('antenatal', $antenatal);
 	}
 
 		/**
