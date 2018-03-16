@@ -105,6 +105,24 @@
 											{{Form::email('email', Auth::user()->email, array('class' => 'form-control', 'placeholder' =>Auth::user()->email))}}
 										</div>
 									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											{{ Form::label('hospitalized', 'Hospitalized for more than 48 hours') }}
+											<div>{{ Form::radio('hospitalized', '1', false) }}
+											<span class="input-tag">Yes</span></div>
+											<div>{{ Form::radio("hospitalized", '0', false) }}
+											<span class="input-tag">No</span></div>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											{{ Form::label('on_antibiotics', 'Has the patient been on antibiotics during the infection') }}
+											<div>{{ Form::radio('on_antibiotics', '1', false) }}
+											<span class="input-tag">Yes</span></div>
+											<div>{{ Form::radio("on_antibiotics", '0', false) }}
+											<span class="input-tag">No</span></div>
+										</div>
+									</div>
 									<div class="form-pane panel panel-default">
 										<div class="col-md-6">
 											<div class="form-group">
@@ -166,8 +184,8 @@
 									</div>
 									<div class ="form-group hidden hiv-purpose col-md-12">
 										{{Form::label('hiv_purpose', 'Please select the purpose of HIV test', array('class' => 'required'))}}
-										{{Form::select('hiv_purpose',['' => '----Select purpose of H.I.V----', 'pmtct' => 'PMTCT', 'hct' => 'HCT', 'smc' => 'SMC', 'qc' => 'Quality Control'])}}
-									</div> 
+										{{Form::select('hiv_purpose',['' => '----Select purpose of H.I.V----', 'pmtct' => 'PMTCT', 'hct' => 'HCT', 'smc' => 'SMC', 'qc' => 'Quality Control', 'clinical_diagnosis' => 'Clinical Diagnosis'])}}
+									</div>
 									</div>
 								</div>
 							</div> <!--div that closes the panel div for clinical and sample information -->

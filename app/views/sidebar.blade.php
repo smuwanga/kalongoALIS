@@ -67,16 +67,16 @@
 										{{trans('messages.user-statistics-report')}}</a>
 									</div>
 								</li>
+								<li>
+									<div><a href="{{ URL::route('reports.aggregate.hmis105')}}">
+										<span class="glyphicon glyphicon-tag"></span>
+										HMIS 105</a>
+									</div>
+								</li>
 <!-- 								<li>
 									<div><a href="{{ URL::route('reports.aggregate.moh706')}}">
 										<span class="glyphicon glyphicon-tag"></span>
 										{{trans('messages.moh-706')}}</a>
-									</div>
-								</li>
-								<li>
-									<div><a href="#">
-										<span class="glyphicon glyphicon-tag"></span>
-										HMIS 105</a>
 									</div>
 								</li>
  								<li>
@@ -127,6 +127,12 @@
 									<div>
 										<a href="{{ URL::route('unhls_patient.create')}}">
 											<span class="glyphicon glyphicon-tag"></span> {{Lang::choice('messages.register-new-patient', 1)}}</a>
+									</div>
+								</li>
+																<li>
+									<div>
+										<a href="{{ URL::route('eid_patient.create') }}">
+											<span class="glyphicon glyphicon-tag"></span> {{"Register EID patient"}}</a>
 									</div>
 								</li>
 								<li>
@@ -194,10 +200,17 @@
 										</a>
 									</div>
 								</li>
-																<li>
+								<li>
 									<div>
 										<a href="{{URL::route('unhls_test.verified')}}">
 											<span class="glyphicon glyphicon-tag" ></span>{{trans('Verified Tests')}}
+										</a>
+									</div>
+								</li>
+								<li>
+									<div>
+										<a href="{{URL::route('unhls_test.importPoc')}}">
+											<span class="glyphicon glyphicon-tag" ></span>{{trans('Import POC results')}}
 										</a>
 									</div>
 								</li>

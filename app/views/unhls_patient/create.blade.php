@@ -29,8 +29,12 @@
 				</div>
 				<div class="form-group">
 					{{ Form::label('ulin', trans('messages.ulin'), array('class' => 'required')) }}
-					{{ Form::text('ulin', 'Auto generated upon succesfull save!',
-						array('class' => 'form-control', 'readonly' =>'true')) }}
+					@if($ulinFormat == 'Manual')
+					{{ Form::text('ulin', Input::old('ulin'),array('class' => 'form-control')) }}
+					@else
+					{{ Form::text('ulin', '',
+						array('class' => 'form-control', 'readonly' =>'true', 'placeholder' => 'Auto generated upon succesfull save!')) }}
+					@endif
 				</div>
 				<div class="form-group">
 					{{ Form::label('nin', trans('messages.national-id')) }}
@@ -45,7 +49,7 @@
 					<input type="text" name="dob" id="dob" class="form-control input-sm" size="11">
 				</div>
 				<div class="form-group">
-					<label class='required' for="age">Age</label>
+					<label for="age">Age</label>
 					<input type="text" name="age" id="age" class="form-control input-sm" size="11">
 					<select name="age_units" id="id_age_units" class="form-control input-sm">
 						<option value="Y">Years</option>

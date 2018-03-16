@@ -13,6 +13,8 @@ class CreatekBLIStables extends Migration {
 	public function up()
 	{
 
+        echo "PATIENCE! this will take a while...\n";
+
         Schema::create('unhls_districts', function($table)
         {
             $table->increments('id');

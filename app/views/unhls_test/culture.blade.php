@@ -358,31 +358,39 @@
                 <h5 class="col-md-12 isolated-organism-input-header"></h5>
                     <div class="drugs">
                         <div class="col-md-12">
-                            <div class="col-md-6">
-                            <!-- <div class="col-md-4"> -->
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     {{ Form::label('drug', 'Antibiotic') }}
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                            <!-- <div class="col-md-4"> -->
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     {{ Form::label('zone_diameter', 'Zone Diameter') }}
                                 </div>
                             </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    {{ Form::label('susceptibility', 'Susceptibility') }}
+                                </div>
+                            </div>
                         </div>
                         <div class="col-md-12">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <select class="form-control drug" >
                                     </select>
                                 </div>
                             </div>
-
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     {{ Form::text('zone_diameter', Input::old('zone_diameter'),
                                         array('class' => 'form-control zone-diameter')) }}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    {{ Form::select('susceptibility', $drugSusceptibilityMeasures,
+                                        Input::old('susceptibility'), array('class' => 'form-control susceptibility')) }}
                                 </div>
                             </div>
                         </div>

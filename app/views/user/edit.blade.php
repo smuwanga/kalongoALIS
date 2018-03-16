@@ -47,7 +47,8 @@
 										<div class="col-md-8">
 											<div class="form-group">
 												{{ Form::label('username', trans('messages.username')) }}
-												<p class="form-control-static">{{$user->username}}</p>
+												<!-- <p class="form-control-static">{{$user->username}}</p> -->
+												{{ Form::text('username', $user->username, ['class' => 'form-control']) }}
 											</div>
 											<div class="form-group">
 												{{ Form::label('full_name', trans('messages.full-name')) }}
@@ -59,6 +60,10 @@
 												{{ Form::email('email', Input::old('email'),
 													["placeholder" => "",
 													'class' => 'form-control']) }}
+											</div>
+											<div class="form-group">
+												{{ Form::label('phone_contact', 'Phone Contact') }}
+												{{ Form::text('phone_contact', Input::old('phone_contact'), ['class' => 'form-control']) }}
 											</div>
 											<div class="form-group">
 												{{ Form::label('designation', trans('messages.designation')) }}

@@ -23,10 +23,12 @@
 								</a>
 							@endif
 							@if(Auth::user()->can('verify_test_results') && Auth::user()->id != $test->tested_by)
-							<a class="btn btn-sm btn-success" href="{{ URL::route('test.verify', array($test->id)) }}">
-								<span class="glyphicon glyphicon-thumbs-up"></span>
-								{{trans('messages.verify')}}
-							</a>
+								@if(!$test->isVerified())
+								<a class="btn btn-sm btn-success" href="{{ URL::route('test.verify', array($test->id)) }}">
+									<span class="glyphicon glyphicon-thumbs-up"></span>
+									{{trans('messages.verify')}}
+								</a>
+								@endif
 							@endif
 						</div>
 						@endif

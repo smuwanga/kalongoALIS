@@ -25,8 +25,7 @@
 
 				<div class="form-group">
 					{{ Form::label('username', trans('messages.username')) }}
-					{{ Form::text('username', Input::old('username'), ["placeholder" => "",
-						'class' => 'form-control']) }}
+					{{ Form::text('username', Input::old('username'), ['class' => 'form-control']) }}
 				</div>
 				<div class="form-group">
 					{{ Form::label('password', Lang::choice('messages.password',1)) }}
@@ -38,18 +37,19 @@
 				</div>
 				<div class="form-group">
 					{{ Form::label('full_name', trans('messages.full-name')) }}
-					{{ Form::text('full_name', Input::old('full_name'), ["placeholder" => "",
-						'class' => 'form-control']) }}
+					{{ Form::text('full_name', Input::old('full_name'), ['class' => 'form-control']) }}
 				</div>
 				<div class="form-group">
 					{{ Form::label('email', trans('messages.email-address')) }}
-					{{ Form::email('email', Input::old('email'), ["placeholder" => "Enter your email",
-						'class' => 'form-control']) }}
+					{{ Form::email('email', Input::old('email'), ['class' => 'form-control']) }}
+				</div>
+				<div class="form-group">
+					{{ Form::label('phone_contact', 'Phone Contact') }}
+					{{ Form::text('phone_contact', Input::old('phone_contact'), ['class' => 'form-control']) }}
 				</div>
 				<div class="form-group">
 					{{ Form::label('designation', trans('messages.designation')) }}
-					{{ Form::text('designation', Input::old('designation'), ["placeholder" => "Lab Technologist",
-						'class' => 'form-control']) }}
+					{{ Form::text('designation', Input::old('designation'), ['class' => 'form-control']) }}
 				</div>
                 <div class="form-group">
                     {{ Form::label('gender', trans('messages.gender')) }}

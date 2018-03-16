@@ -1,4 +1,4 @@
-<?php
+F<?php
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -66,7 +66,7 @@ Route::group(array("before" => "auth"), function()
         "as" => "user.updateOwnPassword",
         "uses" => "UserController@updateOwnPassword"
         ));
-	Route::resource('bbincidence', 'BbincidenceController'); /* Added by Justus */
+    Route::resource('bbincidence', 'BbincidenceController'); /* Added by Justus */
 
     //Unhls patient routes start here
     Route::resource('unhls_patient', 'UnhlsPatientController');
@@ -78,6 +78,7 @@ Route::group(array("before" => "auth"), function()
         "as"   => "unhls_patient.search",
         "uses" => "UnhlsPatientController@search"
     ));
+
 
     //POC routes start here
     Route::resource('poc', 'PocController');
@@ -102,6 +103,13 @@ Route::group(array("before" => "auth"), function()
 
 
     //Unhls patiend routes end
+
+    Route::get("/eid_patient", array(
+        "as" => "eid_patient.create",
+        "uses" => "UnhlsPatientController@createEid"));
+
+    //Unhls patient routes end
+
     Route::any("/instrument/getresult", array(
         "as"   => "instrument.getResult",
         "uses" => "InstrumentController@getTestResult"
@@ -152,6 +160,30 @@ Route::group(array("before" => "auth"), function()
     {
         Route::resource('instrument', 'InstrumentController');
         Route::resource('ward', 'WardController');
+        Route::resource('testnamemapping', 'TestNameMappingController');
+
+        Route::get("/measurenamemapping/create/{test_type_id}", array(
+            "as"   => "measurenamemapping.create",
+            "uses" => "MeasureNameMappingController@create"
+        ));
+        Route::get("/measurenamemapping/{id}/edit", array(
+            "as"   => "measurenamemapping.edit",
+            "uses" => "MeasureNameMappingController@edit"
+        ));
+        Route::get("/measurenamemapping/{id}/delete", array(
+            "as"   => "measurenamemapping.delete",
+            "uses" => "MeasureNameMappingController@delete"
+        ));
+        Route::post("/measurenamemapping/store", array(
+            "as"   => "measurenamemapping.store",
+            "uses" => "MeasureNameMappingController@store"
+        ));
+        Route::put("/measurenamemapping/{id}", array(
+            "as"   => "measurenamemapping.update",
+            "uses" => "MeasureNameMappingController@update"
+        ));
+
+        // Route::resource('measurenamemapping', 'MeasureNameMappingController');
         Route::get("/instrument/{id}/delete", array(
             "as"   => "instrument.delete",
             "uses" => "InstrumentController@delete"
@@ -272,6 +304,9 @@ Route::group(array("before" => "auth"), function()
     Route::get("unhls_test/verified", array(
         "as" => "unhls_test.verified",
         "uses" => "UnhlsTestController@verified"));
+    Route::get("unhls_test/importPoc", array(
+        "as" => "unhls_test.importPoc",
+        "uses" => "UnhlsTestController@importPoc"));
     //Test viewDetails start
     Route::get("/unhls_test/{test}/viewdetails", array(
         "as"   => "unhls_test.viewDetails",
@@ -362,6 +397,14 @@ Route::group(array("before" => "auth"), function()
             "as"   => "blisclient.properties",
             "uses" => "BlisClientController@properties"
         ));
+        Route::any("/reportconfig/dailyreport", array(
+            "as"   => "reportconfig.dailyreport",
+            "uses" => "DailyReportController@index"
+        ));
+        Route::any("/reportconfig/{date}/store", array(
+            "as"   => "reportconfig.store",
+            "uses" => "DailyReportController@store"
+        ));
     });
 
     //  Check if able to manage reports
@@ -369,7 +412,7 @@ Route::group(array("before" => "auth"), function()
     {
         Route::resource('reports', 'ReportController');
 
-		Route::any("/patientreport", array(
+        Route::any("/patientreport", array(
             "as"   => "reports.patient.index",
             "uses" => "ReportController@loadPatients"
         ));
@@ -405,6 +448,11 @@ Route::group(array("before" => "auth"), function()
             "as"   => "reports.aggregate.counts",
             "uses" => "ReportController@countReports"
         ));
+// new implementation
+        Route::any("/aggregate/counts", array(
+            "as"   => "reports.counts",
+            "uses" => "ReportController@counts"
+        ));
         Route::any("/tat", array(
             "as"   => "reports.aggregate.tat",
             "uses" => "ReportController@turnaroundTime"
@@ -422,6 +470,10 @@ Route::group(array("before" => "auth"), function()
         Route::any("/moh706", array(
             "as"   => "reports.aggregate.moh706",
             "uses" => "ReportController@moh706"
+        ));
+        Route::any("/hmis105/{month?}", array(
+            "as"   => "reports.aggregate.hmis105",
+            "uses" => "ReportController@hmis105"
         ));
 
         Route::any("/cd4", array(
@@ -670,7 +722,7 @@ Route::group(array("before" => "auth"), function()
         //Route::get('api/facility-by-district/{districtId}', 'ApiController@getFacilityListByDistrict');
 
     });
-	//Check if user can manage BB Incidents
+    //Check if user can manage BB Incidents
   Route::group(array("before" => "checkPerms:manage_incidents"), function()
   {
       Route::resource('bbincidence', 'BbincidenceController');
@@ -685,12 +737,12 @@ Route::group(array("before" => "auth"), function()
       ));
       Route::resource('bbincidence', 'BbincidenceController');
 
-    	Route::get("/bbincidence/clinical/clinical", array(
+        Route::get("/bbincidence/clinical/clinical", array(
             "as"   => "bbincidence.clinical",
             "uses" => "BbincidenceController@clinical"
         ));
 
-    	Route::get("/bbincidence/{id}/clinicaledit", array(
+        Route::get("/bbincidence/{id}/clinicaledit", array(
             "as"   => "bbincidence.clinicaledit",
             "uses" => "BbincidenceController@clinicaledit"
         ));
@@ -781,7 +833,7 @@ Route::group(array("before" => "auth"), function()
         "uses" => "EventController@eventfilter"
     ));
 
-	 Route::resource('unhls_els', 'UnhlsElsController');
+     Route::resource('unhls_els', 'UnhlsElsController');
 
     Route::get("/equipmentbreakdown/{id}/restore", array(
         "as"   => "equipmentbreakdown.restore",

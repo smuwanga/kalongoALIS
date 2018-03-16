@@ -18,7 +18,7 @@
                         {{ Form::label('date_from', trans('messages.from')) }}
                     </div>
                     <div class='col-md-10'>
-                        {{ Form::text('date_from', Input::get('date_from'), 
+                        {{ Form::text('date_from', $dateFrom, 
                             array('class' => 'form-control standard-datepicker')) }}
                     </div>
                 </div>
@@ -27,7 +27,7 @@
                         {{ Form::label('date_to', trans('messages.to')) }}
                     </div>
                     <div class='col-md-10'>
-                        {{ Form::text('date_to', Input::get('date_to'), 
+                        {{ Form::text('date_to', $dateTo, 
                             array('class' => 'form-control standard-datepicker')) }}
                     </div>
                 </div>
@@ -84,18 +84,21 @@
                     <tr>
                         <th>{{trans('messages.date-ordered')}}</th>
                         <th>{{trans('messages.patient-number')}}</th>
-                        <th>{{'ULIN'}}</th>
-                        <th>{{trans('messages.visit-number')}}</th>
+                        <th>Lab Number</th>
+                        <!-- <th>{{trans('messages.visit-number')}}</th> -->
                         <th class="col-md-2">{{trans('messages.patient-name')}}</th>
                         <th class="col-md-1">{{trans('messages.specimen-id')}}</th>
                         <th>{{ Lang::choice('messages.test',1) }}</th>
-                        <th>{{trans('messages.visit-type')}}</th>
+                        <th class="col-md-1">{{trans('messages.visit-type')}}</th>
+                        <th class="col-md-1">Unit</th>
                         <th>{{trans('messages.test-request-status')}}</th>
                         <th class="col-md-3">{{trans('messages.test-status')}}</th>
                     </tr>
                 </thead>
                 <tbody>
                 @foreach($testSet as $key => $test)
+                    <!-- todo: revise:for now excluding tests without specimens -->
+                    @if(!$test->isNotReceived())
                     <tr 
                         @if(Session::has('activeTest'))
                             {{ in_array($test->id, Session::get('activeTest'))?"class='info'":""}}
@@ -107,16 +110,19 @@
                                 $test->visit->patient->external_patient_number
                             }}</td> <!--Patient Number -->
                         <td>{{$test->visit->patient->ulin}}</td> <!--unhls terminology -->
-                        <td>
+                        <!-- issue: this is confusing people as they may mistake it as ULIN -->
+                        <!-- <td>
                             {{ empty($test->visit->visit_number)?
                                 $test->visit->id:
                                 $test->visit->visit_number
-                            }}</td> <!--Visit Number -->
+                            }}</td> --> 
+                        <!--Visit Number -->
                         <td>{{ $test->visit->patient->name.' ('.($test->visit->patient->getGender(true)).',
                             '.$test->visit->patient->getAge('Y'). ')'}}</td> <!--Patient Name -->
                         <td>{{ $test->getSpecimenId() }}</td> <!--Specimen ID -->
                         <td>{{ $test->testType->name }}</td> <!--Test-->
                         <td>{{ $test->visit->visit_type }}</td> <!--Visit Type -->
+                        <td>{{ is_null($test->visit->ward) ? '':$test->visit->ward->name }}</td> <!--Unit -->
                         <!-- ACTION BUTTONS -->
                         <td>
                             <a class="btn btn-sm btn-success"
@@ -127,13 +133,15 @@
                                 {{trans('messages.view-details')}}
                             </a>
                         @if ($test->isNotReceived()) 
-                            @if(Auth::user()->can('receive_external_test') && $test->isPaid())
+                            @if(Auth::user()->can('accept_test_specimen'))
+                            <!-- todo: udate this to operate as that on the queue, if possible -->
+                                <!-- 
                                 <a class="btn btn-sm btn-default receive-test" href="javascript:void(0)"
-                                    data-test-id="{{$test->id}}" data-specimen-id="{{$test->specimen->id}}"
+                                    data-test-id="{{$test->id}}"
                                     title="{{trans('messages.receive-test-title')}}">
                                     <span class="glyphicon glyphicon-thumbs-up"></span>
                                     {{trans('messages.receive-test')}}
-                                </a>
+                                </a> -->
                             @endif
                         @elseif ($test->specimen->isNotCollected())
                             @if(Auth::user()->can('accept_test_specimen'))
@@ -146,7 +154,7 @@
 
                             @endif
                         @endif
-                        @if ($test->specimen->isAccepted() && !($test->isVerified()))
+                        @if (!$test->isNotReceived() && $test->specimen->isAccepted() && !($test->isVerified()))
                             @if(Auth::user()->can('reject_test_specimen') && !($test->specimen->isReferred()))
                                 @if(!($test->specimenIsRejected()))
                                 <a class="btn btn-sm btn-danger" id="reject-{{$test->id}}-link"
@@ -214,13 +222,9 @@
 
                                     <div class="col-md-12">
                                         @if($test->isNotReceived())
-                                            @if(!$test->isPaid())
-                                                <span class='label label-default'>
-                                                    {{trans('messages.not-paid')}}</span>
-                                            @else
-                                            <span class='label label-default'>
-                                                {{trans('messages.not-received')}}</span>
-                                            @endif
+                                        <!--
+                                        <span class='label label-default'>
+                                            {{trans('messages.not-received')}}</span> -->
                                         @elseif($test->isPending())
                                             <span class='label label-info'>
                                                 {{trans('messages.pending')}}</span>
@@ -235,16 +239,14 @@
                                                 {{trans('messages.verified')}}</span>
                                         @endif
                                     </div>
-    
-                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <!-- Specimen statuses -->
-                                        @if($test->specimen->isNotCollected())
-                                         @if(($test->isPaid()))
+                                        @if($test->isNotReceived())
+                                            
                                             <span class='label label-default'>
-                                                {{trans('messages.specimen-not-collected-label')}}</span>
-                                            @endif
+                                                {{trans('messages.specimen-not-received-label')}}</span>
                                         @elseif($test->specimen->isReferred())
                                             <span class='label label-primary'>
                                                 {{trans('messages.specimen-referred-label') }}
@@ -261,13 +263,15 @@
                                             <span class='label label-success'>
                                                 {{trans('messages.specimen-accepted-label')}}</span>
                                         @endif
-                                        </div></div></div>
+                                    </div>
+                                </div>
+                            </div>
                         </td>
                     </tr>
+                    @endif
                 @endforeach
                 </tbody>
             </table>
-            
             {{ $testSet->links() }}
         {{ Session::put('SOURCE_URL', URL::full()) }}
         {{ Session::put('TESTS_FILTER_INPUT', Input::except('_token')); }}
@@ -362,11 +366,11 @@
             <div class="row">
                 <div class="col-md-12">
                     <span class='label label-default'>
-                        {{trans('messages.specimen-not-collected-label')}}</span>                
+                        {{trans('messages.specimen-not-received-label')}}</span>                
                 </div>
             </div>
         </div>
-    </div> <!-- /. pending-test-not-collected-specimen -->
+    </div> <!-- /. pending-test-not-received-specimen -->
 
     <div class="hidden pending-test-accepted-specimen">
         <div class="container-fluid">

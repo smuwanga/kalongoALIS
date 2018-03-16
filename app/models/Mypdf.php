@@ -5,7 +5,7 @@ class Mypdf extends TCPDF {
 	Public function Header(){
 		if($this->page == 1){
 			$this->writeHTML(View::make('reportHeader'), true, false, true, false, '');
-			$this->SetMargins(PDF_MARGIN_LEFT, 55, PDF_MARGIN_RIGHT);
+			$this->SetMargins(PDF_MARGIN_LEFT, 50, PDF_MARGIN_RIGHT);
 		}else {
 			$this->SetMargins(PDF_MARGIN_LEFT, 15, PDF_MARGIN_RIGHT);
 		}

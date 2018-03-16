@@ -24,14 +24,14 @@
 				<div class="form-group">
 					{{ Form::label('patient_number', trans('messages.patient-number')) }}
 					{{ Form::text('patient_number', Input::old('patient_number'), 
-						array('class' => 'form-control', 'readonly')) }}
+						array('class' => 'form-control')) }}
 				</div>
 				<div class="form-group">
 					{{ Form::label('nin', trans('messages.national-id')) }}
 					{{ Form::text('nin', Input::old('nin'), array('class' => 'form-control')) }}
 				</div>
 				<div class="form-group">
-					{{ Form::label('ulin', trans('messages.ulin')) }}
+					{{ Form::label('ulin', 'Lab No.') }}
 					{{ Form::text('ulin', Input::old('ulin'), array('class' => 'form-control')) }}
 				</div>
 				<div class="form-group">

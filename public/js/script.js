@@ -291,7 +291,6 @@ $(function(){
 
         // fetch relevant list of antibiotics for organism
         organismAntibioticsUrl = $(e.relatedTarget).data('antibiotics-url');
-        see = $(e.relatedTarget).data('zone-diameter');
         var antibiotics;
         $.ajax({
             type: 'GET',
@@ -601,6 +600,25 @@ $(function(){
     });
 
     /**
+     *Fetch tests for selected Lab category when requesting
+     */
+    $('.lab-section').on('change', function() {
+        // todo: this code is almost the same as below, make a reusable one
+        var testTypeCategoryId = $('.lab-section').val();
+        $.ajax({
+            type: 'POST',
+            url: "/visit/testlist",
+            data: {
+                test_category_id: testTypeCategoryId
+            },
+            success: function(testTypes){
+                $('.test-type-list').empty();
+                $('.test-type-list').append(testTypes);
+            }
+        });
+    });
+
+    /**
      *Create List of tests in the test request page
      */
     var lastNewSpecimenId = 0;
@@ -678,19 +696,6 @@ $(function(){
     /**
 	 * formatting date and time text/input fields as dropdown selection
 	 */
-    $(function(){
-        $('#dob').combodate({
-            format: 'YYYY-MM-DD',
-            template: 'D / MMM / YYYY',
-            //min year
-            minYear: '1916',
-            maxYear: new Date().getFullYear()
-        });
-    });
-
-    $(function(){
-        $('#datetime12').combodate();
-    });
 
     /**
      *Convert Age to date and visa viz
@@ -723,9 +728,19 @@ $(function(){
         var dob_s = now_s-age_s;
 
         var dob = new Date(dob_s);
-        dob.setMonth(0, 1);
-        $("#dob").combodate('setValue', dob);
+        if (units=='Y') {
+            dob.setMonth(0, 1);
+        }
+        $("#dob").val(dob.getFullYear() + "-" + ("0"+(dob.getMonth()+1)).slice(-2) + "-" + ("0" + dob.getDate()).slice(-2));
     }
+
+    $('#dob').datepicker({
+        dateFormat: "yy-mm-dd",
+        maxDate: '+0d',
+        yearRange: '1910:2050',
+        changeMonth: true,
+        changeYear: true
+    });
 
     function set_age(){
 
@@ -848,7 +863,7 @@ $(function(){
 			$.each($.parseJSON(data), function (index, obj) {
 				output += "<tr>";
 				output += "<td><input type='radio' value='" + obj.id + "' name='pat_id'></td>";
-				output += "<td>" + obj.patient_number + "</td>";
+				output += "<td>" + obj.ulin + "</td>";
 				output += "<td>" + obj.name + "</td>";
 				output += "</tr>";
 				cnt++;
@@ -1257,7 +1272,11 @@ $(function(){
 
 	function UIComponents(){
 		/* Datepicker */
-		$( '.standard-datepicker').datepicker({ dateFormat: "yy-mm-dd" });
+        $( '.standard-datepicker').datepicker({ dateFormat: "yy-mm-dd" });
+		$( '.month-datepicker').datepicker({
+            maxDate: 0,
+            dateFormat: "yy-mm",
+        });
 	}
 
 	function editUserProfile()

@@ -30,21 +30,30 @@ class UnhlsTestController extends \BaseController {
 
 		$searchString = isset($input['search'])?$input['search']:'';
 		$testStatusId = isset($input['test_status'])?$input['test_status']:'';
-		$dateFrom = isset($input['date_from'])?$input['date_from']:'';
+		if (isset($input['date_from'])) {
+			$dateFrom = $input['date_from'];
+		}else{
+			$dateFrom = date('Y-m-d');
+			$input['date_from'] = date('Y-m-d');
+		}
 		$dateTo = isset($input['date_to'])?$input['date_to']:'';
 
 		// Search Conditions
 		if($searchString||$testStatusId||$dateFrom||$dateTo){
+			if ($searchString != '') {
+				$dateFrom = '';
+				$dateTo = '';
+			}
 
 			$tests = UnhlsTest::search($searchString, $testStatusId, $dateFrom, $dateTo);
 
 			if (count($tests) == 0) {
-			 	Session::flash('message', trans('messages.empty-search'));
+				Session::flash('message', trans('messages.empty-search'));
 			}
 		}
 		else
 		{
-		// List all the active tests
+			// List all the active tests
 			$tests = UnhlsTest::orderBy('time_created', 'ASC');
 		}
 
@@ -66,6 +75,8 @@ class UnhlsTestController extends \BaseController {
 					->with('testSet', $tests)
 					->with('testStatus', $statuses)
 					->with('barcode', $barcode)
+					->with('dateFrom', $dateFrom)
+					->with('dateTo', $dateTo)
 					->withInput($input);
 	}
 
@@ -89,7 +100,12 @@ class UnhlsTestController extends \BaseController {
 
 		$searchString = isset($input['search'])?$input['search']:'';
 		$testStatusId = '4';
-		$dateFrom = isset($input['date_from'])?$input['date_from']:'';
+		if (isset($input['date_from'])) {
+			$dateFrom = $input['date_from'];
+		}else{
+			$dateFrom = date('Y-m-d');
+			$input['date_from'] = date('Y-m-d');
+		}
 		$dateTo = isset($input['date_to'])?$input['date_to']:'';
 		$tests = UnhlsTest::CompletedTests();
 
@@ -124,6 +140,8 @@ class UnhlsTestController extends \BaseController {
 		return View::make('unhls_test.index')
 					->with('testSet', $tests)
 					->with('testStatus', $statuses)
+					->with('dateFrom', $dateFrom)
+					->with('dateTo', $dateTo)
 					->with('barcode', $barcode)
 					->withInput($input);
 
@@ -150,7 +168,12 @@ class UnhlsTestController extends \BaseController {
 
 		$searchString = isset($input['search'])?$input['search']:'';
 		$testStatusId = '2';
-		$dateFrom = isset($input['date_from'])?$input['date_from']:'';
+		if (isset($input['date_from'])) {
+			$dateFrom = $input['date_from'];
+		}else{
+			$dateFrom = date('Y-m-d');
+			$input['date_from'] = date('Y-m-d');
+		}
 		$dateTo = isset($input['date_to'])?$input['date_to']:'';
 
 				// Search Conditions
@@ -184,6 +207,8 @@ class UnhlsTestController extends \BaseController {
 		return View::make('unhls_test.index')
 					->with('testSet', $tests)
 					->with('testStatus', $statuses)
+					->with('dateFrom', $dateFrom)
+					->with('dateTo', $dateTo)
 					->with('barcode', $barcode)
 					->withInput($input);
 
@@ -210,7 +235,12 @@ class UnhlsTestController extends \BaseController {
 
 		$searchString = isset($input['search'])?$input['search']:'';
 		$testStatusId = '3';
-		$dateFrom = isset($input['date_from'])?$input['date_from']:'';
+		if (isset($input['date_from'])) {
+			$dateFrom = $input['date_from'];
+		}else{
+			$dateFrom = date('Y-m-d');
+			$input['date_from'] = date('Y-m-d');
+		}
 		$dateTo = isset($input['date_to'])?$input['date_to']:'';
 
 				// Search Conditions
@@ -244,6 +274,8 @@ class UnhlsTestController extends \BaseController {
 		return View::make('unhls_test.index')
 					->with('testSet', $tests)
 					->with('testStatus', $statuses)
+					->with('dateFrom', $dateFrom)
+					->with('dateTo', $dateTo)
 					->with('barcode', $barcode)
 					->withInput($input);
 
@@ -270,7 +302,12 @@ class UnhlsTestController extends \BaseController {
 
 		$searchString = isset($input['search'])?$input['search']:'';
 		$testStatusId = '1';
-		$dateFrom = isset($input['date_from'])?$input['date_from']:'';
+		if (isset($input['date_from'])) {
+			$dateFrom = $input['date_from'];
+		}else{
+			$dateFrom = date('Y-m-d');
+			$input['date_from'] = date('Y-m-d');
+		}
 		$dateTo = isset($input['date_to'])?$input['date_to']:'';
 
 				// Search Conditions
@@ -304,6 +341,8 @@ class UnhlsTestController extends \BaseController {
 		return View::make('unhls_test.index')
 					->with('testSet', $tests)
 					->with('testStatus', $statuses)
+					->with('dateFrom', $dateFrom)
+					->with('dateTo', $dateTo)
 					->with('barcode', $barcode)
 					->withInput($input);
 
@@ -331,7 +370,12 @@ class UnhlsTestController extends \BaseController {
 
 		$searchString = isset($input['search'])?$input['search']:'';
 		$testStatusId = '5';
-		$dateFrom = isset($input['date_from'])?$input['date_from']:'';
+		if (isset($input['date_from'])) {
+			$dateFrom = $input['date_from'];
+		}else{
+			$dateFrom = date('Y-m-d');
+			$input['date_from'] = date('Y-m-d');
+		}
 		$dateTo = isset($input['date_to'])?$input['date_to']:'';
 
 				// Search Conditions
@@ -366,6 +410,8 @@ class UnhlsTestController extends \BaseController {
 					->with('testSet', $tests)
 					->with('testStatus', $statuses)
 					->with('barcode', $barcode)
+					->with('dateFrom', $dateFrom)
+					->with('dateTo', $dateTo)
 					->withInput($input);
 
 	}
@@ -481,6 +527,8 @@ class UnhlsTestController extends \BaseController {
 			$visit->visit_type = $visitType[Input::get('visit_type')];
 			$visit->ward_id = Input::get('ward_id');
 			$visit->bed_no = Input::get('bed_no');
+			$visit->hospitalized = Input::get('hospitalized');
+			$visit->on_antibiotics = Input::get('on_antibiotics');
 			$visit->save();
 
 			$therapy = new Therapy;
@@ -698,6 +746,7 @@ class UnhlsTestController extends \BaseController {
 	public function start()
 	{
 		$test = UnhlsTest::find(Input::get('id'));
+		$test->tested_by = Auth::user()->id;
 		$test->test_status_id = UnhlsTest::STARTED;
 		$test->time_started = date('Y-m-d H:i:s');
 		$test->save();
@@ -714,9 +763,9 @@ class UnhlsTestController extends \BaseController {
 	{
 		$test = UnhlsTest::find($testID);
 		// if the test being carried out requires a culture worksheet
-		if ($test->testType->name == 'Culture and Sensitivity') {
+		if ($test->testType->isCulture()) {
 			return Redirect::route('culture.edit', [$test->id]);
-		}elseif ($test->testType->name == 'Gram Staining') {
+		}elseif ($test->testType->isGramStain()) {
 			return Redirect::route('gramstain.edit', [$test->id]);
 		}else{
 			return View::make('unhls_test.enterResults')->with('test', $test);
@@ -754,10 +803,8 @@ class UnhlsTestController extends \BaseController {
 	{
 		$test = UnhlsTest::find($testID);
 		$test->test_status_id = UnhlsTest::COMPLETED;
-		$test->interpretation = Input::get('interpretation');
 		$test->tested_by = Auth::user()->id;
 		$test->time_completed = date('Y-m-d H:i:s');
-		$test->save();
 
 		if ($test->testType->name == 'Gram Staining') {
 			$results = '';
@@ -786,6 +833,12 @@ class UnhlsTestController extends \BaseController {
 				$testResult->save();
 			}
 		}
+		if ($test->isHIV()) {
+			$test->interpretation = $test->interpreteHIVResults();
+		}else{
+			$test->interpretation = Input::get('interpretation');
+		}
+		$test->save();
 
 		//Fire of entry saved/edited event
 		Event::fire('test.saved', array($testID));
@@ -814,6 +867,7 @@ class UnhlsTestController extends \BaseController {
 	 * @param
 	 * @return
 	 */
+	// todo: move editing results to a different controller and here leave editing particular test request?
 	public function edit($testID)
 	{
 		$test = UnhlsTest::find($testID);
@@ -940,23 +994,40 @@ class UnhlsTestController extends \BaseController {
 	}
 
 	/**
-	 * Culture worksheet for Test
 	 *
 	 * @param
 	 * @return
 	 */
-	public function culture()
+	public function delete($id)
 	{
-		$test = UnhlsTest::find(Input::get('testID'));
-		$test->test_status_id = UnhlsTest::VERIFIED;
-		$test->time_verified = date('Y-m-d H:i:s');
-		$test->verified_by = Auth::user()->id;
-		$test->save();
+		// if no results saved, the permitted can delete - [clinician/technologist]
+		$test = UnhlsTest::find($id);
 
-		//Fire of entry verified event
-		Event::fire('unhls_test.verified', array($testID));
-
-		return View::make('unhls_test.viewDetails')->with('test', $test);
+		$testInUse = UnhlsTestResult::where('test_id', '=', $id)->first();
+		if (empty($testInUse)) {
+			// The test is not in use
+			$test->delete();
+		} else {
+			// The test is in use
+			return Redirect::route('visit.show', [$test->visit_id])
+				->with('message', 'Test can NOT be Deleted (has results)!');
+		}
+		// redirect
+		return Redirect::route('visit.show', [$test->visit_id])
+			->with('message', 'Test Successfully Deleted!');
 	}
 
+
+	/**
+	 * Import POC samples
+	 *@param
+	 * @return Response
+	 */
+	public function importPoc()
+	{
+
+		// Load the view and pass it the tests
+		return View::make('unhls_test.importPoCResults');
+
+	}
 }

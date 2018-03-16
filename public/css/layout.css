@@ -572,3 +572,7 @@ table.table.report-table-border > tbody > tr > td{
 .x.axis path {
   display: none;
 }
+
+.ui-datepicker .ui-datepicker-title select {
+    color: #000;
+}

@@ -14,13 +14,16 @@ class UnhlsTest extends Eloquent
 	/**
 	 * Test status constants
 	 */
-	const NOT_RECEIVED = 1;
+	const SPECIMEN_NOT_RECEIVED = 1;
 	const PENDING = 2;
 	const STARTED = 3;
 	const COMPLETED = 4;
 	const VERIFIED = 5;
 	// when a specimen is at the analytic stage, it's rejected only for that particular test
 	const REJECTED = 6;
+	// todo: consider how to consider it's pending, completed and verified statuses without confusion
+	const REFERRED_IN = 7;
+	const REFERRED_OUT = 8;
 
 
 	/**
@@ -55,9 +58,9 @@ class UnhlsTest extends Eloquent
 	/**
 	 * Rejected specimen relationship
 	 */
-	public function rejectedSpecimen()
+	public function analyticSpecimenRejections()
 	{
-		return $this->belongsTo('AnalyticSpecimenRejection', 'test_id');
+		return $this->hasOne('AnalyticSpecimenRejection', 'test_id');
 	}
 
 	/**
@@ -130,13 +133,13 @@ class UnhlsTest extends Eloquent
 	}
 
 	/**
-	 * Helper function: check if the Test status is NOT_RECEIVED
+	 * Helper function: check if the Test status is SPECIMEN_NOT_RECEIVED
 	 *
 	 * @return boolean
 	 */
 	public function isNotReceived()
 	{
-		if($this->test_status_id == UnhlsTest::NOT_RECEIVED)
+		if($this->test_status_id == UnhlsTest::SPECIMEN_NOT_RECEIVED)
 			return true;
 		else 
 			return false;
@@ -194,32 +197,49 @@ class UnhlsTest extends Eloquent
 			return false;
 	}
 
-    /**
-    * Check if specimen is rejected
-    *
-    * @return boolean
-    */
-    public function specimenIsRejected()
-    {
-        if($this->test_status_id == UnhlsTest::REJECTED)
-        {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
+	/**
+	 * Helper function
+	 *
+	 * @return boolean
+	 */
+	public function hasSpecimen()
+	{
+		if($this->test_status_id != UnhlsTest::SPECIMEN_NOT_RECEIVED)
+			return true;
+		else 
+			return false;
+	}
 
-    /**
-    * Function to get formatted specimenID's e.g PAR-3333
-    *
-    * @return string
-    */
-    public function getSpecimenId()
-    {
-    	$testCategoryName = $this->testType->testCategory->name;
-    	return substr($testCategoryName, 0 , 3).'-'.$this->specimen->id;
-    }
+	/**
+	* Check if specimen is rejected
+	*
+	* @return boolean
+	*/
+	public function specimenIsRejected()
+	{
+		if($this->test_status_id == UnhlsTest::REJECTED)
+		{
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	/**
+	* Function to get formatted specimenID's e.g PAR-3333
+	*
+	* @return string
+	*/
+	public function getSpecimenId()
+	{
+		if ($this->test_status_id == UnhlsTest::SPECIMEN_NOT_RECEIVED) {
+			return '';
+		}else{
+			$testCategoryName = $this->testType->testCategory->name;
+			return substr($testCategoryName, 0 , 3).'-'.$this->specimen->id;
+		}
+	}
 
 	/**
 	 * Wait Time: Time difference from test reception to start
@@ -332,29 +352,29 @@ class UnhlsTest extends Eloquent
 		$data = DB::select(
 			"SELECT * FROM (
 				SELECT
-				    tt.name AS test_name,
-				    m.name AS measure_name,
-				    mr.alphanumeric AS result,
+					tt.name AS test_name,
+					m.name AS measure_name,
+					mr.alphanumeric AS result,
 					s.gender,
-				    count(DISTINCT
-				    	IF((tr.result = mr.alphanumeric AND p.gender=s.id
-				    		AND floor(datediff(t.time_created,p.dob)/365.25)<$lowAgeBound),t.id,NULL)) AS RC_U_5,
-				    count(DISTINCT
-				    	IF((tr.result = mr.alphanumeric AND p.gender=s.id 
-				    		AND floor(datediff(t.time_created,p.dob)/365.25)>=$lowAgeBound 
-				    		AND floor(datediff(t.time_created,p.dob)/365.25)<$midAgeBound),t.id,NULL)) AS RC_5_15,
-				    count(DISTINCT
-				    	IF((tr.result = mr.alphanumeric AND p.gender=s.id 
-				    		AND floor(datediff(t.time_created,p.dob)/365.25)>=$midAgeBound),t.id,NULL)) AS RC_A_15
+					count(DISTINCT
+						IF((tr.result = mr.alphanumeric AND p.gender=s.id
+							AND floor(datediff(t.time_created,p.dob)/365.25)<$lowAgeBound),t.id,NULL)) AS RC_U_5,
+					count(DISTINCT
+						IF((tr.result = mr.alphanumeric AND p.gender=s.id 
+							AND floor(datediff(t.time_created,p.dob)/365.25)>=$lowAgeBound 
+							AND floor(datediff(t.time_created,p.dob)/365.25)<$midAgeBound),t.id,NULL)) AS RC_5_15,
+					count(DISTINCT
+						IF((tr.result = mr.alphanumeric AND p.gender=s.id 
+							AND floor(datediff(t.time_created,p.dob)/365.25)>=$midAgeBound),t.id,NULL)) AS RC_A_15
 				FROM test_types tt
-				    INNER JOIN testtype_measures tm ON tt.id = tm.test_type_id
-				    INNER JOIN measures m ON tm.measure_id = m.id
+					INNER JOIN testtype_measures tm ON tt.id = tm.test_type_id
+					INNER JOIN measures m ON tm.measure_id = m.id
 					CROSS JOIN (SELECT 0 AS id, 'Male' AS gender UNION SELECT 1, 'Female') AS s
-				    INNER JOIN measure_ranges mr ON tm.measure_id = mr.measure_id
+					INNER JOIN measure_ranges mr ON tm.measure_id = mr.measure_id
 					LEFT JOIN unhls_tests AS t ON t.test_type_id = tt.id
-				    INNER JOIN unhls_visits v ON t.visit_id = v.id
-				    INNER JOIN unhls_patients p ON v.patient_id = p.id
-				    INNER JOIN unhls_test_results tr ON t.id = tr.test_id AND m.id = tr.measure_id
+					INNER JOIN unhls_visits v ON t.visit_id = v.id
+					INNER JOIN unhls_patients p ON v.patient_id = p.id
+					INNER JOIN unhls_test_results tr ON t.id = tr.test_id AND m.id = tr.measure_id
 				WHERE (t.test_status_id=4 OR t.test_status_id=5) AND m.measure_type_id = 2
 					AND t.time_created BETWEEN ? AND ? $testCategoryWhereClause
 				GROUP BY tt.id, m.id, mr.alphanumeric, s.id) AS alpha
@@ -472,11 +492,11 @@ class UnhlsTest extends Eloquent
 			})
 			->orWhereHas('testType', function($q) use ($searchString)
 			{
-			    $q->where('name', 'like', '%' . $searchString . '%');//Search by test type
+				$q->where('name', 'like', '%' . $searchString . '%');//Search by test type
 			})
 			->orWhereHas('specimen', function($q) use ($searchString)
 			{
-			    $q->where('id', '=', $searchString );//Search by specimen number
+				$q->where('id', '=', $searchString );//Search by specimen number
 			})
 			->orWhereHas('visit',  function($q) use ($searchString)
 			{
@@ -491,7 +511,7 @@ class UnhlsTest extends Eloquent
 			$tests = $tests->where(function($q) use ($testStatusId)
 			{
 				$q->whereHas('testStatus', function($q) use ($testStatusId){
-				    $q->where('id','=', $testStatusId);//Filter by test status
+					$q->where('id','=', $testStatusId);//Filter by test status
 				});
 			});
 		}
@@ -523,6 +543,7 @@ class UnhlsTest extends Eloquent
 	* @param String $dateTo
 	* @return Collection 
 	*/
+	// todo: =this should include verified tests
 	public static function completedTests($searchString = '', $testStatusId = 4, $dateFrom = NULL, $dateTo = NULL)
 	{
 
@@ -548,11 +569,11 @@ class UnhlsTest extends Eloquent
 			})
 			->orWhereHas('testType', function($q) use ($searchString)
 			{
-			    $q->where('name', 'like', '%' . $searchString . '%');//Search by test type
+				$q->where('name', 'like', '%' . $searchString . '%');//Search by test type
 			})
 			->orWhereHas('specimen', function($q) use ($searchString)
 			{
-			    $q->where('id', '=', $searchString );//Search by specimen number
+				$q->where('id', '=', $searchString );//Search by specimen number
 			})
 			->orWhereHas('visit',  function($q) use ($searchString)
 			{
@@ -567,7 +588,7 @@ class UnhlsTest extends Eloquent
 			$tests = $tests->where(function($q) use ($testStatusId)
 			{
 				$q->whereHas('testStatus', function($q) use ($testStatusId){
-				    $q->where('id','=', $testStatusId);//Filter by test status
+					$q->where('id','=', $testStatusId);//Filter by test status
 				});
 			});
 		}
@@ -623,11 +644,11 @@ class UnhlsTest extends Eloquent
 			})
 			->orWhereHas('testType', function($q) use ($searchString)
 			{
-			    $q->where('name', 'like', '%' . $searchString . '%');//Search by test type
+				$q->where('name', 'like', '%' . $searchString . '%');//Search by test type
 			})
 			->orWhereHas('specimen', function($q) use ($searchString)
 			{
-			    $q->where('id', '=', $searchString );//Search by specimen number
+				$q->where('id', '=', $searchString );//Search by specimen number
 			})
 			->orWhereHas('visit',  function($q) use ($searchString)
 			{
@@ -642,7 +663,7 @@ class UnhlsTest extends Eloquent
 			$tests = $tests->where(function($q) use ($testStatusId)
 			{
 				$q->whereHas('testStatus', function($q) use ($testStatusId){
-				    $q->where('id','=', $testStatusId);//Filter by test status
+					$q->where('id','=', $testStatusId);//Filter by test status
 				});
 			});
 		}
@@ -698,11 +719,11 @@ class UnhlsTest extends Eloquent
 			})
 			->orWhereHas('testType', function($q) use ($searchString)
 			{
-			    $q->where('name', 'like', '%' . $searchString . '%');//Search by test type
+				$q->where('name', 'like', '%' . $searchString . '%');//Search by test type
 			})
 			->orWhereHas('specimen', function($q) use ($searchString)
 			{
-			    $q->where('id', '=', $searchString );//Search by specimen number
+				$q->where('id', '=', $searchString );//Search by specimen number
 			})
 			->orWhereHas('visit',  function($q) use ($searchString)
 			{
@@ -717,7 +738,7 @@ class UnhlsTest extends Eloquent
 			$tests = $tests->where(function($q) use ($testStatusId)
 			{
 				$q->whereHas('testStatus', function($q) use ($testStatusId){
-				    $q->where('id','=', $testStatusId);//Filter by test status
+					$q->where('id','=', $testStatusId);//Filter by test status
 				});
 			});
 		}
@@ -773,11 +794,11 @@ class UnhlsTest extends Eloquent
 			})
 			->orWhereHas('testType', function($q) use ($searchString)
 			{
-			    $q->where('name', 'like', '%' . $searchString . '%');//Search by test type
+				$q->where('name', 'like', '%' . $searchString . '%');//Search by test type
 			})
 			->orWhereHas('specimen', function($q) use ($searchString)
 			{
-			    $q->where('id', '=', $searchString );//Search by specimen number
+				$q->where('id', '=', $searchString );//Search by specimen number
 			})
 			->orWhereHas('visit',  function($q) use ($searchString)
 			{
@@ -792,7 +813,7 @@ class UnhlsTest extends Eloquent
 			$tests = $tests->where(function($q) use ($testStatusId)
 			{
 				$q->whereHas('testStatus', function($q) use ($testStatusId){
-				    $q->where('id','=', $testStatusId);//Filter by test status
+					$q->where('id','=', $testStatusId);//Filter by test status
 				});
 			});
 		}
@@ -848,11 +869,11 @@ class UnhlsTest extends Eloquent
 			})
 			->orWhereHas('testType', function($q) use ($searchString)
 			{
-			    $q->where('name', 'like', '%' . $searchString . '%');//Search by test type
+				$q->where('name', 'like', '%' . $searchString . '%');//Search by test type
 			})
 			->orWhereHas('specimen', function($q) use ($searchString)
 			{
-			    $q->where('id', '=', $searchString );//Search by specimen number
+				$q->where('id', '=', $searchString );//Search by specimen number
 			})
 			->orWhereHas('visit',  function($q) use ($searchString)
 			{
@@ -867,7 +888,7 @@ class UnhlsTest extends Eloquent
 			$tests = $tests->where(function($q) use ($testStatusId)
 			{
 				$q->whereHas('testStatus', function($q) use ($testStatusId){
-				    $q->where('id','=', $testStatusId);//Filter by test status
+					$q->where('id','=', $testStatusId);//Filter by test status
 				});
 			});
 		}
@@ -959,12 +980,12 @@ class UnhlsTest extends Eloquent
 						") and DATE_SUB(NOW(), INTERVAL 5 YEAR)<p.dob),t.id,NULL)) as ".$surveillance['disease_id'].
 							"_less_five_positive";
 
-			    //Add no comma if it is the last variable in the array
-			    if($surveillance == end($surveillances)) {
-			        $query = $query." ";
-			    }else{
-			        $query = $query.", ";
-			    }
+				//Add no comma if it is the last variable in the array
+				if($surveillance == end($surveillances)) {
+					$query = $query." ";
+				}else{
+					$query = $query.", ";
+				}
 			}
 
 			$query = $query." FROM unhls_tests t ".
@@ -1033,48 +1054,57 @@ class UnhlsTest extends Eloquent
 	 * Isolated Organism relationship
 	 */
 	public function isolatedOrganisms()
-    {
-        return $this->hasMany('IsolatedOrganism', 'test_id');
-    }
+	{
+		return $this->hasMany('IsolatedOrganism', 'test_id');
+	}
 
-    /**
-     * gram stain relationship
-     */
-    public function gramStainResults()
-    {
-      return $this->hasMany('GramStainResult','test_id','id');
-    }
+	/**
+	 * gram stain relationship
+	 */
+	public function gramStainResults()
+	{
+	  return $this->hasMany('GramStainResult','test_id','id');
+	}
 
-    /**
-     * Result Interpretation of HIV measures - Screening, Determine and Unigold
-     */
-    //TODO, make this more robust/flexible...this is short term fix
-    public function interpreteHIVResults(){
-    	$result = '';
-    	if($this->testType->name == 'HIV'){
-    		$measures = array();
-    		$measuresResult = $this->testResults;
-    		foreach($measuresResult as $measureResult){
-    			$measures[] = $measureResult;
-    			
-    		}
-    		$screening = $measures['0']['result'];
-    		$determine = $measures['1']['result'];
-    		$unigold = $measures['2']['result'];
+	/**
+	 * Result Interpretation of HIV measures - Screening, Determine and Unigold
+	 */
+	//TODO, make this more robust/flexible...this is short term fix
+	public function interpreteHIVResults(){
+		$result = '';
+		if($this->testType->name == 'HIV'){
+			$measures = array();
+			$measuresResult = $this->testResults;
+			foreach($measuresResult as $measureResult){
+				$measures[] = $measureResult;
+			}
 
-    		if($screening == 'Non-Reactive' && $unigold='Non-Reactive'){
-    			$result ='Negative';
+			$determine = $measures['0']['result'];
+			$statpak = $measures['1']['result'];
+			$unigold = $measures['2']['result'];
 
-    		}
-    		elseif($determine=='Reactive' || $unigold =='Reactive') {
-    			$result = 'Positive';
+			if($determine=='Non-Reactive' && $statpak =='Non-Reactive'){
+				$result ='Negative';
 
-    		}
+			}elseif($determine=='Reactive' && $statpak =='Reactive') {
+				$result = 'Positive';
 
-    		// return $result;
+			}elseif($statpak=='Reactive' && $unigold =='Reactive') {
+				$result = 'Positive';
+
+			}elseif($statpak=='Reactive' && $unigold =='Non-Reactive') {
+				$result = 'Negative';
+
+			}elseif($determine == 'Non-Reactive' && $unigold='Non-Reactive') {
+				$result = 'Negative';
+
+			}
     	}
     	return $result;
-
     }
 
+    public function isHIV()
+    {
+      return ($this->testType->name == 'HIV') ? true : false;
+    }
 }

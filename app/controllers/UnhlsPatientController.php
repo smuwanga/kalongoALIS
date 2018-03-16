@@ -22,9 +22,14 @@ class UnhlsPatientController extends \BaseController {
 		if (count($patients) == 0) {
 		 	Session::flash('message', trans('messages.no-match'));
 		}
+		$clinicianUI = AdhocConfig::where('name','Clinician_UI')->first()->activateClinicianUI();
+
 
 		// Load the view and pass the patients
-		return View::make('unhls_patient.index')->with('patients', $patients)->withInput(Input::all());
+		return View::make('unhls_patient.index')
+				->with('patients', $patients)
+				->with('clinicianUI', $clinicianUI)
+				->withInput(Input::all());
 	}
 
 	/**
@@ -35,7 +40,8 @@ class UnhlsPatientController extends \BaseController {
 	public function create()
 	{
 		//Create Patient
-		return View::make('unhls_patient.create');
+		$ulinFormat = AdhocConfig::where('name','ULIN')->first()->getULINFormat();
+		return View::make('unhls_patient.create')->with('ulinFormat', $ulinFormat);
 	}
 
 		/**
@@ -47,8 +53,6 @@ class UnhlsPatientController extends \BaseController {
 	{
 		//
 		$rules = array(
-
-			'patient_number' => 'required|unique:unhls_patients,patient_number',
 			'name'       => 'required',
 			'gender' => 'required',
 			'dob' => 'required' ,
@@ -76,8 +80,11 @@ class UnhlsPatientController extends \BaseController {
 
 			try{
 				$patient->save();
-				
-				$patient->ulin = $patient->getUlin();
+				if (Input::get('ulin')!= '') {
+					$patient->ulin = Input::get('ulin');
+				}else{
+					$patient->ulin = $patient->getUlin();
+				}
 				$patient->save();
 				$uuid = new UuidGenerator; 
 				$uuid->save();
@@ -132,7 +139,6 @@ class UnhlsPatientController extends \BaseController {
 	{
 		//
 		$rules = array(
-			'patient_number' => 'required',
 			'name'       => 'required',
 			'gender' => 'required',
 			'dob' => 'required'
@@ -188,15 +194,21 @@ class UnhlsPatientController extends \BaseController {
 	 */
 	public function delete($id)
 	{
-		//Soft delete the patient
+		// if no visit made, soft delete
 		$patient = UnhlsPatient::find($id);
 
-		$patient->delete();
-
+		$patientInUse = UnhlsVisit::where('patient_id', '=', $id)->first();
+		if (empty($patientInUse)) {
+			// The has no visit
+			$patient->delete();
+		} else {
+			// The has visit
+			return Redirect::route('unhls_patient.index')
+				->with('message', 'This Patient has visits, not Deleted!');
+		}
 		// redirect
-			$url = Session::get('SOURCE_URL');
-			return Redirect::to($url)
-			->with('message', 'The commodity was successfully deleted!');
+		return Redirect::route('unhls_patient.index')
+			->with('message', 'Patient Successfully Deleted!');
 	}
 
 	/**
@@ -210,27 +222,13 @@ class UnhlsPatientController extends \BaseController {
 	}
 
 	/**
-	 *Return a unique Lab Number
+	 * Show the form for creating a new resource.
 	 *
-	 * @return string of current age concatenated with incremental Number.
+	 * @return Response
 	 */
-	// Private function generateUniqueLabID(){
-
-	// 	//Get Year, Month and day of today. If Jan O1 then reset last insert ID to 1 to start a new cycle of IDs
-	// 	$year = date('Y');
-	// 	$month = date('m');
-	// 	$day = date('d');
-
-	// 	if($month == '01' && $day == '01'){
-	// 		$lastInsertId = 1;
-	// 	}
-	// 	else{
-	// 		$lastInsertId = DB::table('unhls_patients')->max('id')+1;
-	// 	}
-	// 	$fcode = \Config::get('constants.FACILITY_CODE');
-	// 	$num = $year.str_pad($lastInsertId, 6, '0', STR_PAD_LEFT);
-	// 	return $fcode.'-'.$num;
-	// }
-
-
+	public function createEid()
+	{
+		//Create Patient
+		return View::make('unhls_patient.eidCreate');
+	}
 }

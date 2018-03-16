@@ -42,7 +42,7 @@ class ReportController extends \BaseController {
 		$visitId = Input::get('visit_id');
 		//	Check checkbox if checked and assign the 'checked' value
 		if (Input::get('tests') === '1') {
-		    $pending='checked';
+			$pending='checked';
 		}
 		//	Query to get tests of a particular patient
 		if (($visit || $visitId) && $id && $testId){
@@ -57,7 +57,7 @@ class ReportController extends \BaseController {
 		}
 		//	Begin filters - include/exclude pending tests
 		if($pending){
-			$tests=$tests->where('unhls_tests.test_status_id', '!=', UnhlsTest::NOT_RECEIVED);
+			$tests=$tests->where('unhls_tests.test_status_id', '!=', UnhlsTest::SPECIMEN_NOT_RECEIVED);
 		}
 		else{
 			$tests = $tests->whereIn('unhls_tests.test_status_id', [UnhlsTest::COMPLETED, UnhlsTest::VERIFIED]);
@@ -89,42 +89,28 @@ class ReportController extends \BaseController {
 			else
 				continue;
 		}
-		if(Input::has('word')){
-			$date = date("Ymdhi");
-			$fileName = "blispatient_".$id."_".$date.".doc";
-			$headers = array(
-			    "Content-type"=>"text/html",
-			    "Content-Disposition"=>"attachment;Filename=".$fileName
-			);
-			$content = View::make('reports.patient.export')
-							->with('patient', $patient)
-							->with('tests', $tests)
-							->with('from', $from)
-							->with('to', $to)
-							->with('visit', $visit)
-							->with('accredited', $accredited);
-	    	return Response::make($content,200, $headers);
-		}
-		else{
-			// return View::make('reports.patient.report')
-			$content = View::make('reports.patient.report')
-						->with('patient', $patient)
-						->with('tests', $tests)
-						->with('pending', $pending)
-						->with('error', $error)
-						->with('visit', $visit)
-						->with('accredited', $accredited)
-						->with('verified', $verified)
-						->withInput(Input::all());
-			$pdf = new Mypdf;
-			$pdf->SetAutoPageBreak(TRUE, 15);
-			$pdf->AddPage();
-			$pdf->SetFont('times','','11');
-			$pdf->writeHTML($content, 'true', 'false', 'false', 'false', '');
 
-			return $pdf->output('report.pdf');
+		// adhoc config decision
+		$template = AdhocConfig::where('name','Report')->first()->getReportTemplate();
 
-		}
+		$content = View::make($template)
+			->with('patient', $patient)
+			->with('tests', $tests)
+			->with('pending', $pending)
+			->with('error', $error)
+			->with('visit', $visit)
+			->with('accredited', $accredited)
+			->with('verified', $verified)
+			->withInput(Input::all());
+
+		$pdf = new Mypdf;
+		$pdf->SetAutoPageBreak(TRUE, 15);
+		$pdf->AddPage();
+		$pdf->SetFont('times','','11');
+		$pdf->writeHTML($content, 'true', 'false', 'false', 'false', '');
+
+		return $pdf->output('report.pdf');
+
 	}
 
 	/**
@@ -154,11 +140,11 @@ class ReportController extends \BaseController {
 	*	Function to return test types of a particular test category to fill test types dropdown
 	*/
 	public function reportsDropdown(){
-        $input = Input::get('option');
-        $testCategory = TestCategory::find($input);
-        $testTypes = $testCategory->testTypes();
-        return Response::make($testTypes->get(['id','name']));
-    }
+		$input = Input::get('option');
+		$testCategory = TestCategory::find($input);
+		$testTypes = $testCategory->testTypes();
+		return Response::make($testTypes->get(['id','name']));
+	}
 
 	//	Begin Daily Log-Patient report functions
 	/**
@@ -174,7 +160,7 @@ class ReportController extends \BaseController {
 		$accredited = array();
 		//	Check radiobutton for pending/all tests is checked and assign the 'true' value
 		if (Input::get('tests') === '1') {
-		    $pending='true';
+			$pending='true';
 		}
 		$date = date('Y-m-d');
 		if(!$to){
@@ -213,14 +199,14 @@ class ReportController extends \BaseController {
 				$date = date("Ymdhi");
 				$fileName = "daily_visits_log_".$date.".doc";
 				$headers = array(
-				    "Content-type"=>"text/html",
-				    "Content-Disposition"=>"attachment;Filename=".$fileName
+					"Content-type"=>"text/html",
+					"Content-Disposition"=>"attachment;Filename=".$fileName
 				);
 				$content = View::make('reports.daily.exportPatientLog')
 								->with('visits', $visits)
 								->with('accredited', $accredited)
 								->withInput(Input::all());
-		    	return Response::make($content,200, $headers);
+				return Response::make($content,200, $headers);
 			}
 			else{
 				return View::make('reports.daily.patient')
@@ -272,8 +258,8 @@ class ReportController extends \BaseController {
 				$date = date("Ymdhi");
 				$fileName = "daily_rejected_specimen_".$date.".doc";
 				$headers = array(
-				    "Content-type"=>"text/html",
-				    "Content-Disposition"=>"attachment;Filename=".$fileName
+					"Content-type"=>"text/html",
+					"Content-Disposition"=>"attachment;Filename=".$fileName
 				);
 				$content = View::make('reports.daily.exportSpecimenLog')
 								->with('specimens', $specimens)
@@ -281,7 +267,7 @@ class ReportController extends \BaseController {
 								->with('testType', $testType)
 								->with('accredited', $accredited)
 								->withInput(Input::all());
-		    	return Response::make($content,200, $headers);
+				return Response::make($content,200, $headers);
 			}
 			else
 			{
@@ -299,7 +285,7 @@ class ReportController extends \BaseController {
 		//Begin test records
 		else
 		{
-			$tests = UnhlsTest::whereNotIn('test_status_id', [UnhlsTest::NOT_RECEIVED]);
+			$tests = UnhlsTest::whereNotIn('test_status_id', [UnhlsTest::SPECIMEN_NOT_RECEIVED]);
 			
 			/*Filter by test category*/
 			if($testCategory&&!$testType){
@@ -341,8 +327,8 @@ class ReportController extends \BaseController {
 				$date = date("Ymdhi");
 				$fileName = "daily_test_records_".$date.".doc";
 				$headers = array(
-				    "Content-type"=>"text/html",
-				    "Content-Disposition"=>"attachment;Filename=".$fileName
+					"Content-type"=>"text/html",
+					"Content-Disposition"=>"attachment;Filename=".$fileName
 				);
 				$content = View::make('reports.daily.exportTestLog')
 								->with('tests', $tests)
@@ -351,7 +337,7 @@ class ReportController extends \BaseController {
 								->with('pendingOrAll', $pendingOrAll)
 								->with('accredited', $accredited)
 								->withInput(Input::all());
-		    	return Response::make($content,200, $headers);
+				return Response::make($content,200, $headers);
 			}
 			else
 			{
@@ -467,84 +453,84 @@ class ReportController extends \BaseController {
 		}
 
 		$options = '{
-		    "chart": {
-		        "type": "spline"
-		    },
-		    "title": {
-		        "text":"'.trans('messages.positivity-rates').'"
-		    },
-		    "subtitle": {
-		        "text":'; 
-		        if($from==$to)
-		        	$options.='"'.trans('messages.for-the-year').' '.date('Y').'"';
-		        else
-		        	$options.='"'.trans('messages.from').' '.$from.' '.trans('messages.to').' '.$to.'"';
-		    $options.='},
-		    "credits": {
-		        "enabled": false
-		    },
-		    "navigation": {
-		        "buttonOptions": {
-		            "align": "right"
-		        }
-		    },
-		    "series": [';
-		    	$counts = count($testTypes);
+			"chart": {
+				"type": "spline"
+			},
+			"title": {
+				"text":"'.trans('messages.positivity-rates').'"
+			},
+			"subtitle": {
+				"text":';
+				if($from==$to)
+					$options.='"'.trans('messages.for-the-year').' '.date('Y').'"';
+				else
+					$options.='"'.trans('messages.from').' '.$from.' '.trans('messages.to').' '.$to.'"';
+			$options.='},
+			"credits": {
+				"enabled": false
+			},
+			"navigation": {
+				"buttonOptions": {
+					"align": "right"
+				}
+			},
+			"series": [';
+				$counts = count($testTypes);
 
-			    	foreach ($testTypes as $testType) {
-		        		$options.= '{
-		        			"name": "'.$testType->name.'","data": [';
-		        				$counter = count($months);
-		            			foreach ($months as $month) {
-		            			$data = $testType->getPrevalenceCount($month->annum, $month->months);
-		            				if($data->isEmpty()){
-		            					$options.= '0.00';
-		            					if($counter==1)
-			            					$options.='';
-			            				else
-			            					$options.=',';
-		            				}
-		            				else{
-		            					foreach ($data as $datum) {
-				            				$options.= $datum->rate;
+					foreach ($testTypes as $testType) {
+						$options.= '{
+							"name": "'.$testType->name.'","data": [';
+								$counter = count($months);
+								foreach ($months as $month) {
+								$data = $testType->getPrevalenceCount($month->annum, $month->months);
+									if($data->isEmpty()){
+										$options.= '0.00';
+										if($counter==1)
+											$options.='';
+										else
+											$options.=',';
+									}
+									else{
+										foreach ($data as $datum) {
+											$options.= $datum->rate;
 
-				            				if($counter==1)
-				            					$options.='';
-				            				else
-				            					$options.=',';
-					            		}
-		            				}
-		            			$counter--;
-				    		}
-				    		$options.=']';
-				    	if($counts==1)
+											if($counter==1)
+												$options.='';
+											else
+												$options.=',';
+										}
+									}
+								$counter--;
+							}
+							$options.=']';
+						if($counts==1)
 							$options.='}';
 						else
 							$options.='},';
 						$counts--;
 					}
 			$options.='],
-		    "xAxis": {
-		        "categories": [';
-		        $count = count($months);
-	            	foreach ($months as $month) {
-	    				$options.= '"'.$month->label." ".$month->annum;
-	    				if($count==1)
-	    					$options.='" ';
-	    				else
-	    					$options.='" ,';
-	    				$count--;
-	    			}
-	            $options.=']
-		    },
-		    "yAxis": {
-		        "title": {
-		            "text": "'.trans('messages.prevalence-rates-label').'"
-		        },
-	            "min": "0",
-	            "max": "100"
-		    },
-		    "exporting": {
+			"xAxis": {
+				"categories": [';
+				$count = count($months);
+					foreach ($months as $month) {
+						$options.= '"'.$month->label." ".$month->annum;
+						if($count==1)
+							$options.='" ';
+						else
+							$options.='" ,';
+						$count--;
+					}
+				$options.=']
+			},
+			"yAxis": {
+				"title": {
+					"text": "'.trans('messages.prevalence-rates-label').'"
+				},
+				"min": "0",
+				"max": "100"
+			},
+			"exporting": {
 				"buttons":{
 					"contextButtons": {
 						"symbol": "url(../../../i/button_download.png)",
@@ -1133,8 +1119,8 @@ class ReportController extends \BaseController {
 		if(Input::has('word')){
 			$fileName = "surveillance_".$date.".doc";
 			$headers = array(
-			    "Content-type"=>"text/html",
-			    "Content-Disposition"=>"attachment;Filename=".$fileName
+				"Content-type"=>"text/html",
+				"Content-Disposition"=>"attachment;Filename=".$fileName
 			);
 			$content = View::make('reports.surveillance.exportSurveillance')
 							->with('surveillance', $surveillance)
@@ -1158,14 +1144,14 @@ class ReportController extends \BaseController {
 	 */
 	public function surveillanceConfig(){
 		
-        $allSurveillanceIds = array();
+		$allSurveillanceIds = array();
 		
 		//edit or leave surveillance entries as is
 		if (Input::get('surveillance')) {
 			$diseases = Input::get('surveillance');
 
 			foreach ($diseases as $id => $disease) {
-                $allSurveillanceIds[] = $id;
+				$allSurveillanceIds[] = $id;
 				$surveillance = ReportDisease::find($id);
 				$surveillance->test_type_id = $disease['test-type'];
 				$surveillance->disease_id = $disease['disease'];
@@ -1182,28 +1168,28 @@ class ReportController extends \BaseController {
 				$surveillance->test_type_id = $disease['test-type'];
 				$surveillance->disease_id = $disease['disease'];
 				$surveillance->save();
-                $allSurveillanceIds[] = $surveillance->id;
+				$allSurveillanceIds[] = $surveillance->id;
 				
 			}
 		}
 
-        //check if action is from a form submission
-        if (Input::get('from-form')) {
-	     	// Delete any pre-existing surveillance entries
-	     	//that were not captured in any of the above save loops
-	        $allSurveillances = ReportDisease::all(array('id'));
+		//check if action is from a form submission
+		if (Input::get('from-form')) {
+			// Delete any pre-existing surveillance entries
+			//that were not captured in any of the above save loops
+			$allSurveillances = ReportDisease::all(array('id'));
 
-	        $deleteSurveillances = array();
+			$deleteSurveillances = array();
 
-	        //Identify survillance entries to be deleted by Ids
-	        foreach ($allSurveillances as $key => $value) {
-	            if (!in_array($value->id, $allSurveillanceIds)) {
-	                $deleteSurveillances[] = $value->id;
-	            }
-	        }
-	        //Delete Surveillance entry if any
-	        if(count($deleteSurveillances)>0)ReportDisease::destroy($deleteSurveillances);
-        }
+			//Identify survillance entries to be deleted by Ids
+			foreach ($allSurveillances as $key => $value) {
+				if (!in_array($value->id, $allSurveillanceIds)) {
+					$deleteSurveillances[] = $value->id;
+				}
+			}
+			//Delete Surveillance entry if any
+			if(count($deleteSurveillances)>0)ReportDisease::destroy($deleteSurveillances);
+		}
 
 		$diseaseTests = ReportDisease::all();
 
@@ -1236,1793 +1222,6 @@ class ReportController extends \BaseController {
 	 */
 	public function moh706(){
 		//	Variables definition
-		$date = date('Y-m-d');
-		$from = Input::get('start');
-		if(!$from) $from = date('Y-m-01');
-		$end = Input::get('end');
-		if(!$end) $end = $date;
-		$toPlusOne = date_add(new DateTime($end), date_interval_create_from_date_string('1 day'));
-		$to = date_add(new DateTime($end), date_interval_create_from_date_string('1 day'))->format('Y-m-d');
-		$ageRanges = array('0-5', '5-14', '14-120');
-		$sex = array(UnhlsPatient::MALE, UnhlsPatient::FEMALE);
-		$ranges = array('Low', 'Normal', 'High');
-		$specimen_types = array('Urine', 'Pus', 'HVS', 'Throat', 'Stool', 'Blood', 'CSF', 'Water', 'Food', 'Other fluids');
-		$isolates = array('Naisseria', 'Klebsiella', 'Staphylococci', 'Streptoccoci'. 'Proteus', 'Shigella', 'Salmonella', 'V. cholera', 
-						  'E. coli', 'C. neoformans', 'Cardinella vaginalis', 'Haemophilus', 'Bordotella pertusis', 'Pseudomonas', 
-						  'Coliforms', 'Faecal coliforms', 'Enterococcus faecalis', 'Total viable counts-22C', 'Total viable counts-37C', 
-						  'Clostridium', 'Others');
-
-		//	Get specimen_types for microbiology
-		$labSecId = TestCategory::getTestCatIdByName('microbiology');
-		$specTypeIds = DB::select(DB::raw("select distinct(specimen_types.id) as spec_id from testtype_specimentypes".
-										  " join test_types on test_types.id=testtype_specimentypes.test_type_id".
-										  " join specimen_types on testtype_specimentypes.specimen_type_id=specimen_types.id".
-										  "  where test_types.test_category_id=?"), array($labSecId));
-
-		//	Referred out specimen
-		$referredSpecimens = DB::select(DB::raw("SELECT specimen_type_id, specimen_types.name as spec, count(specimens.id) as tot,".
-												" facility_id, facilities.name as facility FROM iblis.specimens".
-												" join referrals on specimens.referral_id=referrals.id".
-												" join specimen_types on specimen_type_id=specimen_types.id".
-												" join facilities on referrals.facility_id=facilities.id".
-												" where referral_id is not null and status=1".
-												" and time_accepted between ? and ?".
-												" group by facility_id;"), array($from, $toPlusOne));
-		$table = '<!-- URINALYSIS -->
-			<div class="col-sm-12">
-				<strong>URINE ANALYSIS</strong>
-				<table class="table table-condensed report-table-border">
-					<thead>
-						<tr>
-							<th rowspan="2">Urine Chemistry</th>
-							<th colspan="2">No. Exam</th>
-							<th colspan="4"> Number positive</th>
-						</tr>
-						<tr>
-							<th>M</th>
-							<th>F</th>
-							<th>Total</th>
-							<th>&lt;5yrs</th>
-							<th>5-14yrs</th>
-							<th>&gt;14yrs</th>
-						</tr>
-					</thead>';
-				$urinaId = TestType::getTestTypeIdByTestName('Urinalysis');
-				$urinalysis = TestType::find($urinaId);
-				$urineChem = TestType::getTestTypeIdByTestName('Urine Chemistry');
-				$urineChemistry = TestType::find($urineChem);
-				$measures = TestTypeMeasure::where('test_type_id', $urinaId)->orderBy('measure_id', 'DESC')->get();
-				$table.='<tbody>
-						<tr>
-							<td>Totals</td>';
-						foreach ($sex as $gender) {
-							$table.='<td>'.($this->getGroupedTestCounts($urinalysis, [$gender], null, $from, $toPlusOne)+$this->getGroupedTestCounts($urineChemistry, [$gender], null, $from, $toPlusOne)).'</td>';
-						}
-						$table.='<td>'.($this->getGroupedTestCounts($urinalysis, null, null, $from, $toPlusOne)+$this->getGroupedTestCounts($urineChemistry, null, null, $from, $toPlusOne)).'</td>';
-						foreach ($ageRanges as $ageRange) {
-							$table.='<td>'.($this->getGroupedTestCounts($urinalysis, [UnhlsPatient::MALE, UnhlsPatient::FEMALE], $ageRange, $from, $toPlusOne)+$this->getGroupedTestCounts($urineChemistry, [UnhlsPatient::MALE, UnhlsPatient::FEMALE], $ageRange, $from, $toPlusOne)).'</td>';
-						}	
-					$table.='</tr>';
-				
-				foreach ($measures as $measure) {
-					$tMeasure = Measure::find($measure->measure_id);
-					if(in_array($tMeasure->name, ['ph', 'Epithelial cells', 'Pus cells', 'S. haematobium', 'T. vaginalis', 'Yeast cells', 'Red blood cells', 'Bacteria', 'Spermatozoa'])){continue;}
-					$table.='<tr>
-								<td>'.$tMeasure->name.'</td>';
-							foreach ($sex as $gender) {
-								$table.='<td>'.$this->getTotalTestResults($tMeasure, [$gender], null, $from, $toPlusOne, null, null).'</td>';
-							}
-							$table.='<td>'.$this->getTotalTestResults($tMeasure, $sex, null, $from, $toPlusOne, null, 1).'</td>';
-							foreach ($ageRanges as $ageRange) {
-								$table.='<td>'.$this->getTotalTestResults($tMeasure, null, $ageRange, $from, $toPlusOne, null, 1).'</td>';
-							}
-							$table.='</tr>';
-				}
-
-				$table.='<tr>
-							<td>Others</td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
-					</tbody>
-				</table>
-				<table class="table table-condensed report-table-border">
-					<thead>
-						<tr>
-							<th rowspan="2">Urine Microscopy</th>
-							<th colspan="2">No. Exam</th>
-							<th colspan="4"> Number positive</th>
-						</tr>
-						<tr>
-							<th>M</th>
-							<th>F</th>
-							<th>Total</th>
-							<th>&lt;5yrs</th>
-							<th>5-14yrs</th>
-							<th>&gt;14yrs</th>
-						</tr>
-					</thead>
-
-					<tbody>
-						<tr>
-							<td>Totals</td>';
-				$urineMic = TestType::getTestTypeIdByTestName('Urine Microscopy');
-				$urineMicroscopy = TestType::find($urineMic);
-				$measures = TestTypeMeasure::where('test_type_id', $urinaId)->orderBy('measure_id', 'DESC')->get();
-						foreach ($sex as $gender) {
-							$table.='<td>'.($this->getGroupedTestCounts($urinalysis, [$gender], null, $from, $toPlusOne)+$this->getGroupedTestCounts($urineMicroscopy, [$gender], null, $from, $toPlusOne)).'</td>';
-						}
-						$table.='<td>'.($this->getGroupedTestCounts($urinalysis, null, null, $from, $toPlusOne)+$this->getGroupedTestCounts($urineMicroscopy, null, null, $from, $toPlusOne)).'</td>';
-						foreach ($ageRanges as $ageRange) {
-							$table.='<td>'.($this->getGroupedTestCounts($urinalysis, [UnhlsPatient::MALE, UnhlsPatient::FEMALE], $ageRange, $from, $toPlusOne)+$this->getGroupedTestCounts($urineMicroscopy, [UnhlsPatient::MALE, UnhlsPatient::FEMALE], $ageRange, $from, $toPlusOne)).'</td>';
-						}	
-					$table.='</tr>';
-				
-				foreach ($measures as $measure) {
-					$tMeasure = Measure::find($measure->measure_id);
-					if(in_array($tMeasure->name, ['Leucocytes', 'Nitrites', 'Glucose', 'pH', 'Bilirubin', 'Ketones', 'Proteins', 'Blood', 'Urobilinogen Phenlpyruvic acid'])){continue;}
-					$table.='<tr>
-								<td>'.$tMeasure->name.'</td>';
-							foreach ($sex as $gender) {
-								$table.='<td>'.$this->getTotalTestResults($tMeasure, [$gender], null, $from, $toPlusOne, null, null).'</td>';
-							}
-							$table.='<td>'.$this->getTotalTestResults($tMeasure, $sex, null, $from, $toPlusOne, null, 1).'</td>';
-							foreach ($ageRanges as $ageRange) {
-								$table.='<td>'.$this->getTotalTestResults($tMeasure, null, $ageRange, $from, $toPlusOne, null, 1).'</td>';
-							}
-							$table.='</tr>';
-				}
-				$table.='<tr>
-							<td>Others</td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
-					</tbody>
-				</table>
-				<table class="table table-condensed report-table-border">
-					<thead>
-						<tr>
-							<th rowspan="2">Blood Chemistry</th>
-							<th colspan="2">No. Exam</th>
-							<th colspan="4"> Number positive</th>
-						</tr>
-						<tr>
-							<th>M</th>
-							<th>F</th>
-							<th>Total</th>
-							<th>Low</th>
-							<th>Normal</th>
-							<th>High</th>
-						</tr>
-					</thead>
-					<tbody>';
-				$bloodChem = TestType::getTestTypeIdByTestName('Blood Sugar');
-				$bloodChemistry = TestType::find($bloodChem);
-				$measures = TestTypeMeasure::where('test_type_id', $bloodChem)->orderBy('measure_id', 'DESC')->get();
-					$table.='<tr>
-							<td>Totals</td>';
-					foreach ($sex as $gender) {
-						$table.='<td>'.$this->getGroupedTestCounts($bloodChemistry, [$gender], null, $from, $toPlusOne).'</td>';
-					}
-					$table.='<td>'.$this->getGroupedTestCounts($bloodChemistry, null, null, $from, $toPlusOne).'</td>';
-					foreach ($ageRanges as $ageRange) {
-						$table.='<td>'.$this->getGroupedTestCounts($bloodChemistry, [UnhlsPatient::MALE, UnhlsPatient::FEMALE], $ageRange, $from, $toPlusOne).'</td>';
-					}
-					foreach ($measures as $measure) {
-						$tMeasure = Measure::find($measure->measure_id);	
-						$table.='<tr>
-								<td>'.$tMeasure->name.'</td>';
-							foreach ($sex as $gender) {
-								$table.='<td>'.$this->getTotalTestResults($tMeasure, [$gender], null, $from, $toPlusOne, null, null).'</td>';
-							}
-							$table.='<td>'.$this->getTotalTestResults($tMeasure, $sex, null, $from, $toPlusOne, ['Low', 'Normal', 'High'], null).'</td>';
-							foreach ($ranges as $range) {
-								$table.='<td>'.$this->getTotalTestResults($tMeasure, null, null, $from, $toPlusOne, [$range], 1).'</td>';
-							}
-							$table.='</tr>';
-					}
-					$table.='<tr>
-							<td>OGTT</td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
-					</tbody>
-				</table>
-				<table class="table table-condensed report-table-border">
-					<thead>
-						<tr>
-							<th rowspan="2">Renal function tests</th>
-							<th colspan="2">No. Exam</th>
-							<th colspan="4"> Number positive</th>
-						</tr>
-						<tr>
-							<th>M</th>
-							<th>F</th>
-							<th>Total</th>
-							<th>Low</th>
-							<th>Normal</th>
-							<th>High</th>
-						</tr>
-					</thead>
-					<tbody>';
-				$rfts = TestType::getTestTypeIdByTestName('RFTS');
-				$rft = TestType::find($rfts);
-				$measures = TestTypeMeasure::where('test_type_id', $rfts)->orderBy('measure_id', 'DESC')->get();
-				$table.='<tr>
-						<td>Totals</td>';
-	        		foreach ($sex as $gender) {
-						$table.='<td>'.$this->getGroupedTestCounts($rft, [$gender], null, $from, $toPlusOne).'</td>';
-					}
-					$table.='<td>'.$this->getGroupedTestCounts($rft, null, null, $from, $toPlusOne).'</td>';
-					foreach ($ageRanges as $ageRange) {
-						$table.='<td>'.$this->getGroupedTestCounts($rft, [UnhlsPatient::MALE, UnhlsPatient::FEMALE], $ageRange, $from, $toPlusOne).'</td>';
-					}	
-				$table.='</tr>';
-				foreach ($measures as $measure) {
-					$name = Measure::find($measure->measure_id)->name;
-					if($name == 'Electrolytes'){
-						continue;
-					}
-					$tMeasure = Measure::find($measure->measure_id);
-					$table.='<tr>
-								<td>'.$tMeasure->name.'</td>';
-							foreach ($sex as $gender) {
-								$table.='<td>'.$this->getTotalTestResults($tMeasure, [$gender], null, $from, $toPlusOne, null, null).'</td>';
-							}
-							$table.='<td>'.$this->getTotalTestResults($tMeasure, $sex, null, $from, $toPlusOne, null, 1).'</td>';
-							foreach ($ranges as $range) {
-								$table.='<td>'.$this->getTotalTestResults($tMeasure, null, null, $from, $toPlusOne, [$range], 1).'</td>';
-							}
-							$table.='</tr>';
-				}
-				$table.='</tbody>
-				</table>
-				<table class="table table-condensed report-table-border">
-					<thead>
-						<tr>
-							<th rowspan="2">Liver Function Tests</th>
-							<th colspan="2">No. Exam</th>
-							<th colspan="4"> Number positive</th>
-						</tr>
-						<tr>
-							<th>M</th>
-							<th>F</th>
-							<th>Total</th>
-							<th>Low</th>
-							<th>Normal</th>
-							<th>High</th>
-						</tr>
-					</thead>
-					<tbody>';
-				$lfts = TestType::getTestTypeIdByTestName('LFTS');
-				$lft = TestType::find($lfts);
-				$measures = TestTypeMeasure::where('test_type_id', $lfts)->orderBy('measure_id', 'DESC')->get();
-				$table.='<tr>
-						<td>Totals</td>';
-		        		foreach ($sex as $gender) {
-							$table.='<td>'.$this->getGroupedTestCounts($lft, [$gender], null, $from, $toPlusOne).'</td>';
-						}
-						$table.='<td>'.$this->getGroupedTestCounts($lft, null, null, $from, $toPlusOne).'</td>';
-						foreach ($ageRanges as $ageRange) {
-							$table.='<td>'.$this->getGroupedTestCounts($lft, [UnhlsPatient::MALE, UnhlsPatient::FEMALE], $ageRange, $from, $toPlusOne).'</td>';
-						}	
-					$table.='</tr>';
-				foreach ($measures as $measure) {
-					$name = Measure::find($measure->measure_id)->name;
-					if($name == 'SGOT'){
-						$name = 'ASAT (SGOT)';
-					}
-					if($name == 'ALAT'){
-						$name = 'ASAT (SGPT)';
-					}
-					if($name == 'Total Proteins'){
-						$name = 'Serum Protein';
-					}
-					$tMeasure = Measure::find($measure->measure_id);
-					$table.='<tr>
-								<td>'.$tMeasure->name.'</td>';
-							foreach ($sex as $gender) {
-								$table.='<td>'.$this->getTotalTestResults($tMeasure, [$gender], null, $from, $toPlusOne, null, null).'</td>';
-							}
-							$table.='<td>'.$this->getTotalTestResults($tMeasure, $sex, null, $from, $toPlusOne, null, 1).'</td>';
-							foreach ($ranges as $range) {
-								$table.='<td>'.$this->getTotalTestResults($tMeasure, null, null, $from, $toPlusOne, [$range], 1).'</td>';
-							}
-							$table.='</tr>';
-				}
-				$table.='<tr>
-							<td>Gamma GT</td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
-					</tbody>
-				</table>
-				<table class="table table-condensed report-table-border">
-					<thead>
-						<tr>
-							<th rowspan="2">Lipid Profile</th>
-							<th colspan="2">No. Exam</th>
-							<th colspan="4"> Number positive</th>
-						</tr>
-						<tr>
-							<th>M</th>
-							<th>F</th>
-							<th>Total</th>
-							<th>Low</th>
-							<th>Normal</th>
-							<th>High</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>Totals</td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr><tr>
-							<td>Amylase</td>';
-							$tMeasure = Measure::find(Measure::getMeasureIdByName('Serum Amylase'));
-							foreach ($sex as $gender) {
-								$table.='<td>'.$this->getTotalTestResults($tMeasure, [$gender], null, $from, $toPlusOne, null, null).'</td>';
-							}
-							$table.='<td>'.$this->getTotalTestResults($tMeasure, $sex, null, $from, $toPlusOne, null, 1).'</td>';
-							foreach ($ranges as $range) {
-								$table.='<td>'.$this->getTotalTestResults($tMeasure, null, $ageRange, $from, $toPlusOne, [$range], 1).'</td>';
-							}
-						$table.='</tr><tr>
-							<td>Total cholestrol</td>';
-							$tMeasure = Measure::find(Measure::getMeasureIdByName('cholestrol'));
-							foreach ($sex as $gender) {
-								$table.='<td>'.$this->getTotalTestResults($tMeasure, [$gender], null, $from, $toPlusOne, null, null).'</td>';
-							}
-							$table.='<td>'.$this->getTotalTestResults($tMeasure, $sex, null, $from, $toPlusOne, null, 1).'</td>';
-							foreach ($ranges as $range) {
-								$table.='<td>'.$this->getTotalTestResults($tMeasure, null, null, $from, $toPlusOne, [$range], 1).'</td>';
-							}
-						$table.='</tr><tr>
-							<td>Tryglycerides</td>';
-							$tMeasure = Measure::find(Measure::getMeasureIdByName('Tryglycerides'));
-							foreach ($sex as $gender) {
-								$table.='<td>'.$this->getTotalTestResults($tMeasure, [$gender], null, $from, $toPlusOne, null, null).'</td>';
-							}
-							$table.='<td>'.$this->getTotalTestResults($tMeasure, $sex, null, $from, $toPlusOne, null, 1).'</td>';
-							foreach ($ranges as $range) {
-								$table.='<td>'.$this->getTotalTestResults($tMeasure, null, null, $from, $toPlusOne, [$range], 1).'</td>';
-							}
-						$table.='</tr><tr>
-							<td>HDL</td>';
-							$tMeasure = Measure::find(Measure::getMeasureIdByName('HDL'));
-							foreach ($sex as $gender) {
-								$table.='<td>'.$this->getTotalTestResults($tMeasure, [$gender], null, $from, $toPlusOne, null, null).'</td>';
-							}
-							$table.='<td>'.$this->getTotalTestResults($tMeasure, $sex, null, $from, $toPlusOne, null, 1).'</td>';
-							foreach ($ranges as $range) {
-								$table.='<td>'.$this->getTotalTestResults($tMeasure, null, null, $from, $toPlusOne, [$range], 1).'</td>';
-							}
-						$table.='</tr><tr>
-							<td>LDL</td>';
-							$tMeasure = Measure::find(Measure::getMeasureIdByName('LDL'));
-							foreach ($sex as $gender) {
-								$table.='<td>'.$this->getTotalTestResults($tMeasure, [$gender], null, $from, $toPlusOne, null, null).'</td>';
-							}
-							$table.='<td>'.$this->getTotalTestResults($tMeasure, $sex, null, $from, $toPlusOne, null, 1).'</td>';
-							foreach ($ranges as $range) {
-								$table.='<td>'.$this->getTotalTestResults($tMeasure, null, null, $from, $toPlusOne, [$range], 1).'</td>';
-							}
-						$table.='</tr>
-						<tr>
-							<td>PSA</td>';
-							$tMeasure = Measure::find(Measure::getMeasureIdByName('PSA'));
-							foreach ($sex as $gender) {
-								$table.='<td>'.$this->getTotalTestResults($tMeasure, [$gender], null, $from, $toPlusOne, null, null).'</td>';
-							}
-							$table.='<td>'.$this->getTotalTestResults($tMeasure, $sex, null, $from, $toPlusOne, null, 1).'</td>';
-							foreach ($ranges as $range) {
-								$table.='<td>'.$this->getTotalTestResults($tMeasure, null, null, $from, $toPlusOne, [$range], 1).'</td>';
-							}
-						$table.='</tr>
-					</tbody>
-				</table>
-				<table class="table table-condensed report-table-border">
-					<thead>
-						<tr>
-							<th rowspan="2">CSF Chemistry</th>
-							<th colspan="2">No. Exam</th>
-							<th colspan="4"> Number positive</th>
-						</tr>
-						<tr>
-							<th>M</th>
-							<th>F</th>
-							<th>Total</th>
-							<th>Low</th>
-							<th>Normal</th>
-							<th>High</th>
-						</tr>
-					</thead>
-					<tbody>';
-				$csf = TestType::getTestTypeIdByTestName('CSF for biochemistry');
-				$bioCsf = TestType::find($csf);
-				$table.='<tr>
-					<td>Totals</td>';
-	        		foreach ($sex as $gender) {
-						$table.='<td>'.$this->getGroupedTestCounts($bioCsf, [$gender], null, $from, $toPlusOne).'</td>';
-					}
-					$table.='<td>'.$this->getGroupedTestCounts($bioCsf, null, null, $from, $toPlusOne).'</td>';
-					foreach ($ageRanges as $ageRange) {
-						$table.='<td>'.$this->getGroupedTestCounts($bioCsf, [UnhlsPatient::MALE, UnhlsPatient::FEMALE], $ageRange, $from, $toPlusOne).'</td>';
-					}	
-				$table.='</tr>';
-				$measures = TestTypeMeasure::where('test_type_id', $csf)->orderBy('measure_id', 'DESC')->get();
-				foreach ($measures as $measure) {
-					$name = Measure::find($measure->measure_id)->name;
-					$table.='<tr>
-							<td>'.$name.'</td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>';
-				}
-				$table.='</tbody>
-				</table>
-				<table class="table table-condensed report-table-border">
-					<thead>
-						<tr>
-							<th rowspan="2">Body Fluids</th>
-							<th colspan="2">No. Exam</th>
-							<th colspan="4"> Number positive</th>
-						</tr>
-						<tr>
-							<th>M</th>
-							<th>F</th>
-							<th>Total</th>
-							<th>Low</th>
-							<th>Normal</th>
-							<th>High</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>Totals</td>
-							<td>0</td>
-							<td>0</td>
-							<td>0</td>
-							<td>0</td>
-							<td>0</td>
-							<td>0</td>
-						</tr>
-						<tr>
-							<td>Proteins</td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>Glucose</td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>Acid phosphatase</td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>Bence jones protein</td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
-					</tbody>
-				</table>
-				<table class="table table-condensed report-table-border">
-					<thead>
-						<tr>
-							<th rowspan="2">Thyroid Function Tests</th>
-							<th colspan="2">No. Exam</th>
-							<th colspan="4"> Number positive</th>
-						</tr>
-						<tr>
-							<th>M</th>
-							<th>F</th>
-							<th>Total</th>
-							<th>Low</th>
-							<th>Normal</th>
-							<th>High</th>
-						</tr>
-					</thead>
-					<tbody>';
-				$tfts = TestType::getTestTypeIdByTestName('TFT');
-				$tft = TestType::find($tfts);
-				$table.='<tr>
-					<td>Totals</td>';
-	        		foreach ($sex as $gender) {
-						$table.='<td>'.$this->getGroupedTestCounts($tft, [$gender], null, $from, $toPlusOne).'</td>';
-					}
-					$table.='<td>'.$this->getGroupedTestCounts($tft, null, null, $from, $toPlusOne).'</td>';
-					foreach ($ageRanges as $ageRange) {
-						$table.='<td>'.$this->getGroupedTestCounts($tft, [UnhlsPatient::MALE, UnhlsPatient::FEMALE], $ageRange, $from, $toPlusOne).'</td>';
-					}	
-				$table.='</tr>';
-				$measures = TestTypeMeasure::where('test_type_id', $tfts)->orderBy('measure_id', 'ASC')->get();
-				foreach ($measures as $measure) {
-					$tMeasure = Measure::find($measure->measure_id);
-					$table.='<tr>
-						<td>'.$tMeasure->name.'</td>';
-					foreach ($sex as $gender) {
-						$table.='<td>'.$this->getTotalTestResults($tMeasure, [$gender], null, $from, $toPlusOne, null, null).'</td>';
-					}
-					$table.='<td>'.$this->getTotalTestResults($tMeasure, $sex, null, $from, $toPlusOne, null, 1).'</td>';
-					foreach ($ranges as $range) {
-						$table.='<td>'.$this->getTotalTestResults($tMeasure, null, null, $from, $toPlusOne, [$range]).'</td>';
-					}
-					$table.='</tr>';
-				}
-				$table.='<tr>
-							<td>Others</td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-			<!-- URINALYSIS -->
-			<!-- PARASITOLOGY -->
-			<div class="col-sm-12">
-				<strong>PARASITOLOGY</strong>
-				<table class="table table-condensed report-table-border">
-					<thead>
-						<tr>
-							<th colspan="5">Blood Smears</th>
-						</tr>
-						<tr>
-							<th rowspan="2">Malaria</th>
-							<th colspan="4">Positive</th>
-						</tr>
-						<tr>
-							<th>Total Done</th>
-							<th>&lt;5yrs</th>
-							<th>5-14yrs</th>
-							<th>&gt;14yrs</th>
-						</tr>
-					</thead>';
-				$bs = TestType::getTestTypeIdByTestName('Bs for mps');
-				$bs4mps = TestType::find($bs);
-				$table.='<tbody>
-						<tr>
-							<td></td>
-							<td>'.$this->getGroupedTestCounts($bs4mps, null, null, $from, $toPlusOne).'</td>';
-						foreach ($ageRanges as $ageRange) {
-							$table.='<td>'.$this->getGroupedTestCounts($bs4mps, null, $ageRange, $from, $toPlusOne).'</td>';
-						}
-					$table.='</tr>
-						<tr style="text-align:right;">
-							<td>Falciparum</td>
-							<td style="background-color: #CCCCCC;"></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr style="text-align:right;">
-							<td>Ovale</td>
-							<td style="background-color: #CCCCCC;"></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr style="text-align:right;">
-							<td>Malariae</td>
-							<td style="background-color: #CCCCCC;"></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr style="text-align:right;">
-							<td>Vivax</td>
-							<td style="background-color: #CCCCCC;"></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td><strong>Borrelia</strong></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td><strong>Microfilariae</strong></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td><strong>Trypanosomes</strong></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td colspan="5"><strong>Genital Smears</strong></td>
-						</tr>
-						<tr>
-							<td>Total</td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>T. vaginalis</td>
-							<td style="background-color: #CCCCCC;"></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>S. haematobium</td>
-							<td style="background-color: #CCCCCC;"></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>Yeast cells</td>
-							<td style="background-color: #CCCCCC;"></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>Others</td>
-							<td style="background-color: #CCCCCC;"></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td colspan="5"><strong>Spleen/bone marrow</strong></td>
-						</tr>
-						<tr>
-							<td>Total</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-						</tr>
-						<tr>
-							<td>L. donovani</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-						</tr>
-						<tr>';
-				$stool = TestType::getTestTypeIdByTestName('Stool for O/C');
-				$stoolForOc = TestType::find($stool);
-				$measures = TestTypeMeasure::where('test_type_id', $stool)->orderBy('measure_id', 'DESC')->get();
-				$table.='<td colspan="5"><strong>Stool</strong></td>
-						</tr>
-						<tr>
-							<td>Total</td>
-							<td>'.$this->getGroupedTestCounts($stoolForOc, null, null, $from, $toPlusOne).'</td>';
-							foreach ($ageRanges as $ageRange) {
-								$table.='<td>'.$this->getGroupedTestCounts($stoolForOc, null, $ageRange, $from, $toPlusOne).'</td>';
-							}
-						$table.='</tr>';
-						foreach ($measures as $measure) {
-							$tMeasure = Measure::find($measure->measure_id);
-							foreach ($tMeasure->measureRanges as $range) {
-								if($range->alphanumeric=='O#C not seen'){ continue; }
-							$table.='<tr>
-									<td>'.$range->alphanumeric.'</td>';
-								$table.='<td style="background-color: #CCCCCC;"></td>';
-								foreach ($ageRanges as $ageRange) {
-									$table.='<td>'.$this->getTotalTestResults($tMeasure, null, $ageRange, $from, $toPlusOne, [$range->alphanumeric]).'</td>';
-								}
-								$table.='</tr>';
-							}
-						}
-						$table.='<tr>
-							<td colspan="5"><strong>Lavages</strong></td>
-						</tr>
-						<tr>
-							<td>Total</td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-			<!-- PARASITOLOGY -->
-			<!-- BACTERIOLOGY -->
-			<div class="col-sm-12">
-				<strong>BACTERIOLOGY</strong>
-				<div class="row">
-					<div class="col-sm-4">
-						<table class="table table-condensed report-table-border" style="padding-right:5px;">
-							<tbody style="text-align:right;">
-								<tr>
-									<td>Total examinations done</td>
-									<td></td>
-								</tr>';
-						foreach ($specTypeIds as $key) {
-							if(in_array(SpecimenType::find($key->spec_id)->name, ['Aspirate', 'Pleural Tap', 'Synovial Fluid', 'Sputum', 'Ascitic Tap', 'Semen', 'Skin'])){
-								continue;
-							}
-							$totalCount = DB::select(DB::raw("select count(specimen_id) as per_spec_count from unhls_tests".
-															 " join specimens on unhls_tests.specimen_id=specimens.id".
-															 " join test_types on unhls_tests.test_type_id=test_types.id".
-															 " where specimens.specimen_type_id=?".
-															 " and test_types.test_category_id=?".
-															 " and test_status_id in(?,?)".
-															 " and unhls_tests.time_created BETWEEN ? and ?;"), 
-															[$key->spec_id, $labSecId, UnhlsTest::COMPLETED, UnhlsTest::VERIFIED, $from, $toPlusOne]);
-							$table.='<tr>
-									<td>'.SpecimenType::find($key->spec_id)->name.'</td>
-									<td>'.$totalCount[0]->per_spec_count.'</td>
-								</tr>';
-						}
-						$table.='</tr>
-									<td>Rectal swab</td>
-									<td>0</td>
-								</tr>
-								</tr>
-									<td>Water</td>
-									<td>0</td>
-								</tr>
-								</tr>
-									<td>Food</td>
-									<td>0</td>
-								</tr>
-								</tr>
-									<td>Other (specify)....</td>
-									<td></td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-					<div class="col-sm-8">
-						<table class="table table-condensed report-table-border">
-							<tbody>
-								<tr>
-									<td colspan="3">Drugs</td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-								</tr>
-								<tr>
-									<td colspan="3">Sensitivity (Total done)</td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-								</tr>
-								<tr>
-									<td colspan="3">Resistance per drug</td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-								</tr>
-								<tr>
-									<td rowspan="3">KOH Preparations</td>
-									<td>Fungi</td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td colspan="2">Others (specify)</td>
-								</tr>
-								<tr>
-									<td>Others</td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td>...</td>
-									<td></td>
-								</tr>
-								<tr>
-									<td>Total</td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td>...</td>
-									<td></td>
-								</tr>
-							</tbody>
-						</table>
-						<p>SPUTUM</p>
-						<table class="table table-condensed report-table-border">
-							<tbody>
-								<tr>
-									<td></td>
-									<td>Total</td>
-									<td>Positive</td>
-								</tr>
-								<tr>
-									<td>TB new suspects</td>
-									<td></td>
-									<td></td>
-								</tr>
-								<tr>
-									<td>Followup</td>
-									<td></td>
-									<td></td>
-								</tr>
-								<tr>
-									<td>TB smears</td>
-									<td></td>
-									<td></td>
-								</tr>
-								<tr>
-									<td>MDR</td>
-									<td></td>
-									<td></td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-				<table class="table table-condensed report-table-border">
-					<tbody>
-						<tr><td></td>';
-					foreach ($specimen_types as $spec) {
-						$table.='<td>'.$spec.'</td>';
-					}	
-					$table.='</tr>';
-					foreach ($isolates as $isolate) {
-						$table.='<tr>
-							<td>'.$isolate.'</td>';
-							foreach ($specimen_types as $spec) {
-								$table.='<td>'.UnhlsTestResult::microCounts($isolate,$spec, $from, $toPlusOne)[0]->total.'</td>';
-							}
-						$table.='</tr>';
-					}
-					$table.='<tr>
-							<td colspan="11">Specify species of each isolate</td>
-						</tr>
-					</tbody>
-				</table>
-				<div class="row">
-					<div class="col-sm-12">
-						<strong>HEMATOLOGY REPORT</strong>
-						<table class="table table-condensed report-table-border">
-							<thead>
-								<tr>
-									<th colspan="2">Type of examination</th>
-									<th>No. of Tests</th>
-									<th>Controls</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td colspan="2">Full blood count</td>
-									<td>'.$this->getGroupedTestCounts(TestType::find(TestType::getTestTypeIdByTestName('Full haemogram')), null, null, $from, $toPlusOne).'</td>
-									<td></td>
-								</tr>
-								<tr>
-									<td colspan="2">Manual WBC counts</td>
-									<td></td>
-									<td></td>
-								</tr>
-								<tr>
-									<td colspan="2">Peripheral blood films</td>
-									<td></td>
-									<td></td>
-								</tr>
-								<tr>
-									<td colspan="2">Erythrocyte Sedimentation rate</td>
-									<td>'.$this->getGroupedTestCounts(TestType::find(TestType::getTestTypeIdByTestName('ESR')), null, null, $from, $toPlusOne).'</td>
-									<td></td>
-								</tr>
-								<tr>
-									<td colspan="2">Sickling test</td>
-									<td>'.$this->getGroupedTestCounts(TestType::find(TestType::getTestTypeIdByTestName('Sickling test')), null, null, $from, $toPlusOne).'</td>
-									<td></td>
-								</tr>
-								<tr>
-									<td colspan="2">HB electrophoresis</td>
-									<td></td>
-									<td></td>
-								</tr>
-								<tr>
-									<td colspan="2">G6PD screening</td>
-									<td></td>
-									<td></td>
-								</tr>
-								<tr>
-									<td colspan="2">Bleeding time</td>
-									<td>'.$this->getGroupedTestCounts(TestType::find(TestType::getTestTypeIdByTestName('Bleeding time test')), null, null, $from, $toPlusOne).'</td>
-									<td></td>
-								</tr>
-								<tr>
-									<td colspan="2">Clotting time</td>
-									<td>'.$this->getGroupedTestCounts(TestType::find(TestType::getTestTypeIdByTestName('Clotting time test')), null, null, $from, $toPlusOne).'</td>
-									<td></td>
-								</tr>
-								<tr>
-									<td colspan="2">Prothrombin test</td>
-									<td></td>
-									<td></td>
-								</tr>
-								<tr>
-									<td colspan="2">Partial prothrombin time</td>
-									<td></td>
-									<td></td>
-								</tr>
-								<tr>
-									<td colspan="2">Bone Marrow Aspirates</td>
-									<td></td>
-									<td style="background-color: #CCCCCC;"></td>
-								</tr>
-								<tr>
-									<td colspan="2">Reticulocyte counts</td>
-									<td></td>
-									<td style="background-color: #CCCCCC;"></td>
-								</tr>
-								<tr>
-									<td colspan="2">Others</td>
-									<td></td>
-									<td style="background-color: #CCCCCC;"></td>
-								</tr>
-								<tr>
-									<td rowspan="2">Haemoglobin</td>
-									<td>No. Tests</td>
-									<td>&lt;5</td>
-									<td>5&lt;Hb&lt;10</td>
-								</tr>
-								<tr>
-									<td>'.$this->getGroupedTestCounts(TestType::find(TestType::getTestTypeIdByTestName('HB')), null, null, $from, $toPlusOne).'</td>
-									<td></td>
-									<td></td>
-								</tr>
-								<tr>
-									<td rowspan="2">CD4/CD8</td>
-									<td>No. Tests</td>
-									<td>&lt;200</td>
-									<td>200-350</td>
-								</tr>
-								<tr>
-									<td></td>
-									<td></td>
-									<td></td>
-								</tr>
-								<tr>
-									<td rowspan="2">CD4%</td>
-									<td>No. Tests</td>
-									<td>&lt;25%</td>
-									<td>&gt;25%</td>
-								</tr>
-								<tr>
-									<td></td>
-									<td></td>
-									<td></td>
-								</tr>
-								<tr>
-									<td rowspan="2">Peripheral Blood Films</td>
-									<td>Parasites</td>
-									<td colspan="2">No. smears with inclusions</td>
-								</tr>
-								<tr>
-									<td></td>
-									<td></td>
-									<td colspan="2"></td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-					<div class="col-sm-12">
-						<strong>BLOOD GROUPING AND CROSSMATCH REPORT</strong>
-						<div class="row">
-							<div class="col-sm-6">
-								<table class="table table-condensed report-table-border">
-									<tbody>
-										<tr>
-											<td>Total groupings done</td>
-											<td>'.$this->getGroupedTestCounts(TestType::find(TestType::getTestTypeIdByTestName('GXM')), null, null, $from, $toPlusOne).'</td>
-										</tr>
-										<tr>
-											<td>Blood units grouped</td>
-											<td>'.$this->getGroupedTestCounts(TestType::find(TestType::getTestTypeIdByTestName('Blood Grouping')), null, null, $from, $toPlusOne).'</td>
-										</tr>
-										<tr>
-											<td>Total transfusion reactions</td>
-											<td></td>
-										</tr>
-										<tr>
-											<td>Blood cross matches</td>
-											<td>'.$this->getGroupedTestCounts(TestType::find(TestType::getTestTypeIdByTestName('Cross Match')), null, null, $from, $toPlusOne).'</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-							<div class="col-sm-6">
-								<strong>Blood safety</strong>
-								<table class="table table-condensed report-table-border">
-									<tbody>
-										<tr>
-											<td>Measure</td>
-											<td>Number</td>
-										</tr>
-										<tr>
-											<td>A. Blood units collected from regional blood transfusion centres</td>
-											<td></td>
-										</tr>
-										<tr>
-											<td>Blood units collected from other centres and screened at health facility</td>
-											<td></td>
-										</tr>
-										<tr>
-											<td>Blood units screened at health facility that are HIV positive</td>
-											<td></td>
-										</tr>
-										<tr>
-											<td>Blood units screened at health facility that are Hepatitis positive</td>
-											<td></td>
-										</tr>
-										<tr>
-											<td>Blood units positive for other infections</td>
-											<td></td>
-										</tr>
-										<tr>
-											<td>Blood units transfered</td>
-											<td></td>
-										</tr>
-										<tr>
-											<td rowspan="2">General remarks .............................</td>
-											<td rowspan="2"></td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- BACTERIOLOGY -->
-			<!-- HISTOLOGY AND CYTOLOGY -->
-			<div class="col-sm-12">
-				<strong>HISTOLOGY AND CYTOLOGY REPORT</strong>
-				<table class="table table-condensed report-table-border">
-					<thead>
-						<tr>
-							<th rowspan="2"></th>
-							<th rowspan="2">Total</th>
-							<th rowspan="2">Normal</th>
-							<th rowspan="2">Infective</th>
-							<th colspan="2">Non-infective</th>
-							<th colspan="3">Positive findings</th>
-						</tr>
-						<tr>
-							<th>Benign</th>
-							<th>Malignant</th>
-							<th>&lt;5 yrs</th>
-							<th>5-14 yrs</th>
-							<th>&gt;14 yrs</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td colspan="9">SMEARS</td>
-						</tr>
-						<tr>
-							<td>Pap Smear</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-						</tr>
-						<tr>
-							<td>Tissue Impressions</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-						</tr>
-						<tr>
-							<td colspan="9">TISSUE ASPIRATES (FNA)</td>
-						</tr>
-						<tr>
-							<td></td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-						</tr>
-						<tr>
-							<td colspan="9">FLUID CYTOLOGY</td>
-						</tr>
-						<tr>
-							<td>Ascitic fluid</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-						</tr>
-						<tr>
-							<td>CSF</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-						</tr>
-						<tr>
-							<td>Pleural fluid</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-						</tr>
-						<tr>
-							<td>Others</td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td colspan="9">TISSUE HISTOLOGY</td>
-						</tr>
-						<tr>
-							<td>Cervix</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-						</tr>
-						<tr>
-							<td>Prostrate</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-						</tr>
-						<tr>
-							<td>Breast</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-						</tr>
-						<tr>
-							<td>Ovarian cyst</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-						</tr>
-						<tr>
-							<td>Fibroids</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-						</tr>
-						<tr>
-							<td>Lymph nodes</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-						</tr>
-						<tr>
-							<td>Others</td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
-					</tbody>
-				</table>
-				<strong>SEROLOGY REPORT</strong>
-				<table class="table table-condensed report-table-border">
-					<thead>
-						<tr>
-							<th rowspan="2">Serological test</th>
-							<th colspan="2">Total</th>
-							<th colspan="2">&lt;5 yrs</th>
-							<th colspan="2">5-14 yrs</th>
-							<th colspan="2">&gt;14 yrs</th>
-						</tr>
-						<tr>
-							<th>Tested</th>
-							<th>No. +ve</th>
-							<th>Tested</th>
-							<th>No. +ve</th>
-							<th>Tested</th>
-							<th>No. +ve</th>
-							<th>Tested</th>
-							<th>No. +ve</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>Rapid Plasma Region</td>';
-							if(count(TestType::getPrevalenceCounts($from, $to, TestType::getTestTypeIdByTestName('VDRL')))==0)
-							{
-								$table.='<td>0</td>
-									<td>0</td>';
-							}
-							else{
-								foreach(TestType::getPrevalenceCounts($from, $to, TestType::getTestTypeIdByTestName('VDRL')) as $count){
-									if(count($count)==0)
-										{
-											$count->total=0;
-											$count->positive=0;
-										}
-									$table.='<td>'.$count->total.'</td>
-									<td>'.$count->positive.'</td>';
-								}
-							}
-							foreach ($ageRanges as $ageRange) {
-								if(count(TestType::getPrevalenceCounts($from, $to, TestType::getTestTypeIdByTestName('VDRL'), $ageRange))==0)
-								{
-									$table.='<td>0</td>
-									<td>0</td>';
-								}
-								else{
-									foreach(TestType::getPrevalenceCounts($from, $to, TestType::getTestTypeIdByTestName('VDRL'), $ageRange) as $count){
-										$table.='<td>'.$count->total.'</td>
-										<td>'.$count->positive.'</td>';
-									}
-								}
-							}
-							$table.='</tr>
-						<tr>
-							<td>TPHA</td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>ASO Test</td>';
-							if(count(TestType::getPrevalenceCounts($from, $to, TestType::getTestTypeIdByTestName('Asot')))==0)
-							{
-								$table.='<td>0</td>
-									<td>0</td>';
-							}
-							else{
-								foreach(TestType::getPrevalenceCounts($from, $to, TestType::getTestTypeIdByTestName('Asot')) as $count){
-									if(count($count)==0)
-										{
-											$count->total=0;
-											$count->positive=0;
-										}
-									$table.='<td>'.$count->total.'</td>
-									<td>'.$count->positive.'</td>';
-								}
-							}
-							foreach ($ageRanges as $ageRange) {
-								$data = TestType::getPrevalenceCounts($from, $to, TestType::getTestTypeIdByTestName('Asot'), $ageRange);
-								if(count($data)==0)
-								{
-									$table.='<td>0</td>
-									<td>0</td>';
-								}
-								else{
-									foreach($data as $count){
-										$table.='<td>'.$count->total.'</td>
-										<td>'.$count->positive.'</td>';
-									}
-								}
-							}
-							$table.='</tr>
-						<tr>
-							<td>HIV Test</td>';
-							if(count(TestType::getPrevalenceCounts($from, $to, TestType::getTestTypeIdByTestName('Rapid HIV test')))==0)
-							{
-								$table.='<td>0</td>
-									<td>0</td>';
-							}
-							else{
-								foreach(TestType::getPrevalenceCounts($from, $to, TestType::getTestTypeIdByTestName('Rapid HIV test')) as $count){
-									if(count($count)==0)
-										{
-											$count->total=0;
-											$count->positive=0;
-										}
-									$table.='<td>'.$count->total.'</td>
-									<td>'.$count->positive.'</td>';
-								}
-							}
-							foreach ($ageRanges as $ageRange) {
-								$data = TestType::getPrevalenceCounts($from, $to, TestType::getTestTypeIdByTestName('Rapid HIV test'), $ageRange);
-								if(count($data)==0)
-								{
-									$table.='<td>0</td>
-									<td>0</td>';
-								}
-								else{
-									foreach($data as $count){
-										$table.='<td>'.$count->total.'</td>
-										<td>'.$count->positive.'</td>';
-									}
-								}
-							}
-							$table.='</tr>
-						<tr>
-							<td>Widal Test</td>';
-							if(count(TestType::getPrevalenceCounts($from, $to, TestType::getTestTypeIdByTestName('Widal')))==0)
-							{
-								$table.='<td>0</td>
-									<td>0</td>';
-							}
-							else{
-								foreach(TestType::getPrevalenceCounts($from, $to, TestType::getTestTypeIdByTestName('Widal')) as $count){
-									if(count($count)==0)
-										{
-											$count->total=0;
-											$count->positive=0;
-										}
-									$table.='<td>'.$count->total.'</td>
-									<td>'.$count->positive.'</td>';
-								}
-							}
-							foreach ($ageRanges as $ageRange) {
-								$data = TestType::getPrevalenceCounts($from, $to, TestType::getTestTypeIdByTestName('Widal'), $ageRange);
-								if(count($data)==0)
-								{
-									$table.='<td>0</td>
-									<td>0</td>';
-								}
-								else{
-									foreach($data as $count){
-										$table.='<td>'.$count->total.'</td>
-										<td>'.$count->positive.'</td>';
-									}
-								}
-							}
-							$table.='</tr>
-						<tr>
-							<td>Brucella Test</td>';
-							if(count(TestType::getPrevalenceCounts($from, $to, TestType::getTestTypeIdByTestName('Brucella')))==0)
-							{
-								$table.='<td>0</td>
-									<td>0</td>';
-							}
-							else{
-								foreach(TestType::getPrevalenceCounts($from, $to, TestType::getTestTypeIdByTestName('Brucella')) as $count){
-									if(count($count)==0)
-										{
-											$count->total=0;
-											$count->positive=0;
-										}
-									$table.='<td>'.$count->total.'</td>
-									<td>'.$count->positive.'</td>';
-								}
-							}
-							foreach ($ageRanges as $ageRange) {
-								$data = TestType::getPrevalenceCounts($from, $to, TestType::getTestTypeIdByTestName('Brucella'), $ageRange);
-								if(count($data)==0)
-								{
-									$table.='<td>0</td>
-									<td>0</td>';
-								}
-								else{
-									foreach($data as $count){
-										$table.='<td>'.$count->total.'</td>
-										<td>'.$count->positive.'</td>';
-									}
-								}
-							}
-							$table.='</tr>
-						<tr>
-							<td>Rheumatoid Factor Tests</td>';
-							if(count(TestType::getPrevalenceCounts($from, $to, TestType::getTestTypeIdByTestName('RF')))==0)
-							{
-								$table.='<td>0</td>
-									<td>0</td>';
-							}
-							else{
-								foreach(TestType::getPrevalenceCounts($from, $to, TestType::getTestTypeIdByTestName('RF')) as $count){
-									if(count($count)==0)
-										{
-											$count->total=0;
-											$count->positive=0;
-										}
-									$table.='<td>'.$count->total.'</td>
-									<td>'.$count->positive.'</td>';
-								}
-							}
-							foreach ($ageRanges as $ageRange) {
-								$data = TestType::getPrevalenceCounts($from, $to, TestType::getTestTypeIdByTestName('RF'), $ageRange);
-								if(count($data)==0)
-								{
-									$table.='<td>0</td>
-									<td>0</td>';
-								}
-								else{
-									foreach($data as $count){
-										$table.='<td>'.$count->total.'</td>
-										<td>'.$count->positive.'</td>';
-									}
-								}
-							}
-							$table.='</tr>
-						<tr>
-							<td>Cryptococcal Antigen</td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>Helicobacter pylori test</td>';
-							if(count(TestType::getPrevalenceCounts($from, $to, TestType::getTestTypeIdByTestName('H pylori')))==0)
-							{
-								$table.='<td>0</td>
-									<td>0</td>';
-							}
-							else{
-								foreach(TestType::getPrevalenceCounts($from, $to, TestType::getTestTypeIdByTestName('H pylori')) as $count){
-									if(count($count)==0)
-										{
-											$count->total=0;
-											$count->positive=0;
-										}
-									$table.='<td>'.$count->total.'</td>
-									<td>'.$count->positive.'</td>';
-								}
-							}
-							foreach ($ageRanges as $ageRange) {
-								$data = TestType::getPrevalenceCounts($from, $to, TestType::getTestTypeIdByTestName('H pylori'), $ageRange);
-								if(count($data)==0)
-								{
-									$table.='<td>0</td>
-									<td>0</td>';
-								}
-								else{
-									foreach($data as $count){
-										$table.='<td>'.$count->total.'</td>
-										<td>'.$count->positive.'</td>';
-									}
-								}
-							}
-							$table.='</tr>
-						<tr>
-							<td>Hepatitis A test</td>
-							<td>0</td>
-							<td>0</td>
-							<td>0</td>
-							<td>0</td>
-							<td>0</td>
-							<td>0</td>
-							<td>0</td>
-							<td>0</td>';
-							$table.='</tr>
-						<tr>
-							<td>Hepatitis B test</td>';
-							if(count(TestType::getPrevalenceCounts($from, $to, TestType::getTestTypeIdByTestName('Hepatitis B')))==0)
-							{
-								$table.='<td>0</td>
-									<td>0</td>';
-							}
-							else{
-								foreach(TestType::getPrevalenceCounts($from, $to, TestType::getTestTypeIdByTestName('Hepatitis B')) as $count){
-									if(count($count)==0)
-										{
-											$count->total=0;
-											$count->positive=0;
-										}
-									$table.='<td>'.$count->total.'</td>
-									<td>'.$count->positive.'</td>';
-								}
-							}
-							foreach ($ageRanges as $ageRange) {
-								$data = TestType::getPrevalenceCounts($from, $to, TestType::getTestTypeIdByTestName('Hepatitis B'), $ageRange);
-								if(count($data)==0)
-								{
-									$table.='<td>0</td>
-									<td>0</td>';
-								}
-								else{
-									foreach($data as $count){
-										$table.='<td>'.$count->total.'</td>
-										<td>'.$count->positive.'</td>';
-									}
-								}
-							}
-							$table.='</tr>
-						<tr>
-							<td>Hepatitis C test</td>';
-							if(count(TestType::getPrevalenceCounts($from, $to, TestType::getTestTypeIdByTestName('Hepatitis C')))==0)
-							{
-								$table.='<td>0</td>
-									<td>0</td>';
-							}
-							else{
-								foreach(TestType::getPrevalenceCounts($from, $to, TestType::getTestTypeIdByTestName('Hepatitis C')) as $count){
-									if(count($count)==0)
-										{
-											$count->total=0;
-											$count->positive=0;
-										}
-									$table.='<td>'.$count->total.'</td>
-									<td>'.$count->positive.'</td>';
-								}
-							}
-							foreach ($ageRanges as $ageRange) {
-								$data = TestType::getPrevalenceCounts($from, $to, TestType::getTestTypeIdByTestName('Hepatitis C'), $ageRange);
-								if(count($data)==0)
-								{
-									$table.='<td>0</td>
-									<td>0</td>';
-								}
-								else{
-									foreach($data as $count){
-										$table.='<td>'.$count->total.'</td>
-										<td>'.$count->positive.'</td>';
-									}
-								}
-							}
-							$table.='</tr>
-						<tr>
-							<td>Viral Load</td>';
-							if(count(TestType::getPrevalenceCounts($from, $to, TestType::getTestTypeIdByTestName('Viral load')))==0)
-							{
-								$table.='<td>0</td>
-									<td style="background-color: #CCCCCC;"></td>';
-							}
-							else{
-								foreach(TestType::getPrevalenceCounts($from, $to, TestType::getTestTypeIdByTestName('Viral load')) as $count){
-									if(count($count)==0)
-										{
-											$count->total=0;
-											$count->positive=0;
-										}
-									$table.='<td>'.$count->total.'</td>
-									<td style="background-color: #CCCCCC;"></td>';
-								}
-							}
-							foreach ($ageRanges as $ageRange) {
-								$data = TestType::getPrevalenceCounts($from, $to, TestType::getTestTypeIdByTestName('Viral load'), $ageRange);
-								if(count($data)==0)
-								{
-									$table.='<td>0</td>
-									<td style="background-color: #CCCCCC;"></td>';
-								}
-								else{
-									foreach($data as $count){
-										$table.='<td>'.$count->total.'</td>
-										<td style="background-color: #CCCCCC;"></td>';
-									}
-								}
-							}
-							$table.='</tr>
-						<tr>
-							<td>Formal Gel Test</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-							<td>N/S</td>
-						</tr>
-						<tr>
-							<td>Other Tests</td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
-					</tbody>
-				</table>
-				<br />
-				<table class="table table-condensed report-table-border">
-					<thead>
-						<tr>
-							<th>Dried Blood Spots</th>
-							<th>Tested</th>
-							<th># +ve</th>
-							<th>Discrepant</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>Early Infant Diagnosis of HIV</td>';
-							if(count(TestType::getPrevalenceCounts($from, $to, TestType::getTestTypeIdByTestName('eid of hiv')))==0)
-							{
-								$table.='<td>0</td>
-									<td>0</td>';
-							}
-							else{
-								foreach(TestType::getPrevalenceCounts($from, $to, TestType::getTestTypeIdByTestName('eid of hiv')) as $count){
-									if(count($count)==0)
-										{
-											$count->total=0;
-											$count->positive=0;
-										}
-									$table.='<td>'.$count->total.'</td>
-									<td>'.$count->positive.'</td>';
-								}
-							}
-							$table.='<td></td>
-						</tr>
-						<tr>
-							<td>Quality Assurance</td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>Discordant couples</td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td>Others</td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
-					</tbody>
-				</table>
-				<p><strong>Specimen referral to higher levels</strong></p>
-				<table class="table table-condensed report-table-border">
-					<thead>
-						<tr>
-							<th>Specimen</th>
-							<th>No</th>
-							<th>Sent to</th>
-							<th>No. of Reports/results received</th>
-						</tr>
-					</thead>
-					<tbody>';
-				if($referredSpecimens){
-					foreach ($referredSpecimens as $referredSpecimen) {
-						$table.='<tr>
-								<td>'.$referredSpecimen->spec.'</td>
-								<td>'.$referredSpecimen->tot.'</td>
-								<td>'.$referredSpecimen->facility.'</td>
-								<td></td>
-							</tr>';
-					}
-				}else{
-					$table.='<tr>
-								<td colspan="4">'.trans('messages.no-records-found').'</td>
-							</tr>';
-				}
-				$table.='</tbody>
-				</table>
-			</div>
-			<!-- HISTOLOGY AND CYTOLOGY -->';
-		if(Input::has('excel')){
-			$date = date("Ymdhi");
-			$fileName = "MOH706_".$date.".xls";
-			$headers = array(
-			    "Content-type"=>"text/html",
-			    "Content-Disposition"=>"attachment;Filename=".$fileName
-			);
-			$content = $table;
-	    	return Response::make($content,200, $headers);
-		}
-		else{
-			//return View::make('reports.moh.706');
-			return View::make('reports.moh.index')->with('table', $table)->with('from', $from)->with('end', $end);
-		}
 	}
 	/**
 	 * Manage Diseases reported on
@@ -3048,14 +1247,14 @@ class ReportController extends \BaseController {
 				return Redirect::route('reportconfig.disease')->withErrors($validator);
 			} else {
 
-		        $allDiseaseIds = array();
+				$allDiseaseIds = array();
 				
 				//edit or leave disease entries as is
 				if (Input::get('diseases')) {
 					$diseases = Input::get('diseases');
 
 					foreach ($diseases as $id => $disease) {
-		                $allDiseaseIds[] = $id;
+						$allDiseaseIds[] = $id;
 						$diseases = Disease::find($id);
 						$diseases->name = $disease['disease'];
 						$diseases->save();
@@ -3070,37 +1269,37 @@ class ReportController extends \BaseController {
 						$diseases = new Disease;
 						$diseases->name = $disease['disease'];
 						$diseases->save();
-		                $allDiseaseIds[] = $diseases->id;
+						$allDiseaseIds[] = $diseases->id;
 					}
 				}
 
-		        //check if action is from a form submission
-		        if (Input::get('from-form')) {
-			     	// Delete any pre-existing disease entries
-			     	//that were not captured in any of the above save loops
-			        $allDiseases = Disease::all(array('id'));
+				//check if action is from a form submission
+				if (Input::get('from-form')) {
+					// Delete any pre-existing disease entries
+					//that were not captured in any of the above save loops
+					$allDiseases = Disease::all(array('id'));
 
-			        $deleteDiseases = array();
+					$deleteDiseases = array();
 
-			        //Identify disease entries to be deleted by Ids
-			        foreach ($allDiseases as $key => $value) {
-			            if (!in_array($value->id, $allDiseaseIds)) {
+					//Identify disease entries to be deleted by Ids
+					foreach ($allDiseases as $key => $value) {
+						if (!in_array($value->id, $allDiseaseIds)) {
 
 							//Allow delete if not in use
 							$inUseByReports = Disease::find($value->id)->reportDiseases->toArray();
 							if (empty($inUseByReports)) {
-							    
-							    // The disease is not in use
-			                	$deleteDiseases[] = $value->id;
-							}
-			            }
-			        }
-			        //Delete disease entry if any
-			        if(count($deleteDiseases)>0){
 
-			        	Disease::destroy($deleteDiseases);
-			        }
-		        }
+								// The disease is not in use
+								$deleteDiseases[] = $value->id;
+							}
+						}
+					}
+					//Delete disease entry if any
+					if(count($deleteDiseases)>0){
+
+						Disease::destroy($deleteDiseases);
+					}
+				}
 			}
 		}
 		$diseases = Disease::all();
@@ -3212,37 +1411,37 @@ class ReportController extends \BaseController {
 		return json_encode($response);
 	}
 
-    /**
-     * This user-land implementation follows the implementation quite strictly;
-     * it does not attempt to improve the code or algorithm in any way. It will
-     * raise a warning if you have fewer than 2 values in your array, just like
-     * the extension does (although as an E_USER_WARNING, not E_WARNING).
-     * 
-     * @param array $a 
-     * @param bool $sample [optional] Defaults to false
-     * @return float|bool The standard deviation or false on error.
-     */
-    function stat_standard_deviation(array $a, $sample = false) {
-        $n = count($a);
-        if ($n === 0) {
-            trigger_error("The array has zero elements", E_USER_WARNING);
-            return false;
-        }
-        if ($sample && $n === 1) {
-            trigger_error("The array has only 1 element", E_USER_WARNING);
-            return false;
-        }
-        $mean = array_sum($a) / $n;
-        $carry = 0.0;
-        foreach ($a as $val) {
-            $d = ((double) $val) - $mean;
-            $carry += $d * $d;
-        };
-        if ($sample) {
-           --$n;
-        }
-        return sqrt($carry / $n);
-    }
+	/**
+	 * This user-land implementation follows the implementation quite strictly;
+	 * it does not attempt to improve the code or algorithm in any way. It will
+	 * raise a warning if you have fewer than 2 values in your array, just like
+	 * the extension does (although as an E_USER_WARNING, not E_WARNING).
+	 *
+	 * @param array $a
+	 * @param bool $sample [optional] Defaults to false
+	 * @return float|bool The standard deviation or false on error.
+	 */
+	function stat_standard_deviation(array $a, $sample = false) {
+		$n = count($a);
+		if ($n === 0) {
+			trigger_error("The array has zero elements", E_USER_WARNING);
+			return false;
+		}
+		if ($sample && $n === 1) {
+			trigger_error("The array has only 1 element", E_USER_WARNING);
+			return false;
+		}
+		$mean = array_sum($a) / $n;
+		$carry = 0.0;
+		foreach ($a as $val) {
+			$d = ((double) $val) - $mean;
+			$carry += $d * $d;
+		};
+		if ($sample) {
+		   --$n;
+		}
+		return sqrt($carry / $n);
+	}
 
 	/**
 	 * Display data after applying the filters on the report uses patient ID
@@ -3285,8 +1484,8 @@ class ReportController extends \BaseController {
 			$date = date("Ymdhi");
 			$fileName = "cd4_report_".$date.".doc";
 			$headers = array(
-			    "Content-type"=>"text/html",
-			    "Content-Disposition"=>"attachment;Filename=".$fileName
+				"Content-type"=>"text/html",
+				"Content-Disposition"=>"attachment;Filename=".$fileName
 			);
 			$content = View::make('reports.cd4.export')
 				->with('columns', $columns)
@@ -3295,7 +1494,7 @@ class ReportController extends \BaseController {
 				->with('test', $test)
 				->with('counts', $counts)
 				->withInput(Input::all());
-	    	return Response::make($content,200, $headers);
+			return Response::make($content,200, $headers);
 		}
 		else
 		{
@@ -3308,17 +1507,351 @@ class ReportController extends \BaseController {
 				->withInput(Input::all());
 		}
 	}
-    /**
-    *	Function to check for accredited test types
-    *
-    */
-    public function accredited($tests)
-    {
-    	$accredited = array();
+	/**
+	*	Function to check for accredited test types
+	*
+	*/
+	public function accredited($tests)
+	{
+		$accredited = array();
 		foreach ($tests as $test) {
 			if($test->testType->isAccredited())
 				array_push($accredited, $test->id);
 		}
 		return $accredited;
-    }
+	}
+
+	/**
+	*	Function to check for accredited test types
+	*
+	*/
+	public function hmis105($month = '')
+	{
+		$month = ($month == '') ? date('Y-m') : $month ;
+		$testTypes = TestType::all();
+		$testTypeCountArray = [];
+		$testTypeCountArray['vdrl_rpr']['total'] = 0;
+		$testTypeCountArray['vdrl_rpr']['positive'] = 0;
+
+		/*ZN stain, modified ZN might have same fate as above */
+
+		foreach ($testTypes as $testType) {
+			if ($testType->testNameMapping != '') {
+				$testSystemName = $testType->testNameMapping->system_name;
+				$test_type_id = $testType->id;
+
+				if ($testSystemName == 'malaria_microscopy')  {
+
+					$positiveRanges = MeasureRange::where('measure_id',$testType->measures->first()->id)
+						->where('result_interpretation_id', ResultInterpretation::POSITIVE)->lists('id');
+
+					$totalUnderFive  = DailyTestTypeCount::where('date', 'like', '%'.$month.'%')->where('gender',UnhlsPatient::BOTH)
+						->where('age_upper_limit','<',5)->where('age_lower_limit','=',0)->where('test_type_id',$test_type_id);
+					$testTypeCountArray[$testSystemName]['total']['under_5'] = $totalUnderFive->sum('all');
+
+					$totalAboveFive  = DailyTestTypeCount::where('date', 'like', '%'.$month.'%')->where('gender',UnhlsPatient::BOTH)
+						->where('age_upper_limit','>=',100)->where('age_lower_limit','>=',5)->where('test_type_id',$test_type_id);
+					$testTypeCountArray[$testSystemName]['total']['above_5'] = $totalAboveFive->sum('all');
+
+					$positiveUnderFive  = DailyAlphanumericCount::where(function($q) use ($test_type_id, $month){
+						$q->whereHas('dailyTestTypeCount', function($q)  use ($test_type_id, $month){
+							$q->where(function($q) use ($test_type_id, $month){
+								$q->where('date', 'like', '%'.$month.'%')->where('gender',UnhlsPatient::BOTH)
+									->where('age_upper_limit','<',5)->where('age_lower_limit','=',0)
+									->where('test_type_id',$test_type_id);
+							});
+						});
+					})->whereIn('measure_range_id',$positiveRanges);
+					$testTypeCountArray[$testSystemName]['positive']['under_5'] = $positiveUnderFive->sum('count');
+
+					$totalAboveFive  = DailyAlphanumericCount::where(function($q) use ($test_type_id, $month){
+						$q->whereHas('dailyTestTypeCount', function($q)  use ($test_type_id, $month){
+							$q->where(function($q) use ($test_type_id, $month){
+								$q->where('date', 'like', '%'.$month.'%')->where('gender',UnhlsPatient::BOTH)
+									->where('age_upper_limit','>=',100)->where('age_lower_limit','=',5)
+									->where('test_type_id',$test_type_id);
+							});
+						});
+					})->whereIn('measure_range_id',$positiveRanges);
+					$testTypeCountArray[$testSystemName]['positive']['above_5'] = $totalAboveFive->sum('count');
+
+				}elseif ($testSystemName == 'malaria_rdts') {
+					$positiveRange = MeasureRange::where('measure_id',$testType->measures->first()->id)
+						->where('result_interpretation_id', ResultInterpretation::POSITIVE)->first();
+
+					$positiveRange = ($positiveRange!='') ? $positiveRange->id : '' ;
+
+					$totalUnderFive  = DailyTestTypeCount::where('date', 'like', '%'.$month.'%')->where('gender',UnhlsPatient::BOTH)
+						->where('age_upper_limit','<',5)->where('age_lower_limit','=',0)->where('test_type_id',$test_type_id);
+					$testTypeCountArray[$testSystemName]['total']['under_5'] = $totalUnderFive->sum('all');
+
+					$totalAboveFive  = DailyTestTypeCount::where('date', 'like', '%'.$month.'%')->where('gender',UnhlsPatient::BOTH)
+						->where('age_upper_limit','>=',100)->where('age_lower_limit','>=',5)->where('test_type_id',$test_type_id);
+					$testTypeCountArray[$testSystemName]['total']['above_5'] = $totalAboveFive->sum('all');
+
+					$positiveUnderFive  = DailyAlphanumericCount::where(function($q) use ($test_type_id, $month){
+						$q->whereHas('dailyTestTypeCount', function($q)  use ($test_type_id, $month){
+							$q->where(function($q) use ($test_type_id, $month){
+								$q->where('date', 'like', '%'.$month.'%')->where('gender',UnhlsPatient::BOTH)
+									->where('age_upper_limit','<',5)->where('age_lower_limit','=',0)
+									->where('test_type_id',$test_type_id);
+							});
+						});
+					})->where('measure_range_id',$positiveRange);
+					$testTypeCountArray[$testSystemName]['positive']['under_5'] = $positiveUnderFive->sum('count');
+
+					$totalAboveFive  = DailyAlphanumericCount::where(function($q) use ($test_type_id, $month){
+						$q->whereHas('dailyTestTypeCount', function($q)  use ($test_type_id, $month){
+							$q->where(function($q) use ($test_type_id, $month){
+								$q->where('date', 'like', '%'.$month.'%')->where('gender',UnhlsPatient::BOTH)
+									->where('age_upper_limit','>=',100)->where('age_lower_limit','=',5)
+									->where('test_type_id',$test_type_id);
+							});
+						});
+					})->where('measure_range_id',$positiveRange);
+					$testTypeCountArray[$testSystemName]['positive']['above_5'] = $totalAboveFive->sum('count');
+
+				}elseif ($testSystemName == 'hiv') {
+
+					// HCT
+					$hctCount  = DailyHIVCount::where('date', 'like', '%'.$month.'%')->where('purpose','HCT');
+					$testTypeCountArray[$testSystemName]['determine']['HCT'] = $hctCount->where('measure_id',1)->sum('count');
+					$testTypeCountArray[$testSystemName]['start_pak']['HCT'] = $hctCount->where('measure_id',2)->sum('count');
+					$testTypeCountArray[$testSystemName]['unigold']['HCT'] = $hctCount->where('measure_id',3)->sum('count');
+
+					// PMTCT
+					$pmtctCount  = DailyHIVCount::where('date', 'like', '%'.$month.'%')->where('purpose','PMTCT');
+					$testTypeCountArray[$testSystemName]['determine']['PMTCT'] = $pmtctCount->where('measure_id',1)->sum('count');
+					$testTypeCountArray[$testSystemName]['start_pak']['PMTCT'] = $pmtctCount->where('measure_id',2)->sum('count');
+					$testTypeCountArray[$testSystemName]['unigold']['PMTCT'] = $pmtctCount->where('measure_id',3)->sum('count');
+
+					// CLINICAL DIAGNOSIS
+					$clinicalDiagnosisCount  = DailyHIVCount::where('date', 'like', '%'.$month.'%')->where('purpose','CLINICAL DIAGNOSIS');
+					$testTypeCountArray[$testSystemName]['determine']['CLINICAL DIAGNOSIS'] = $clinicalDiagnosisCount->where('measure_id',1)->sum('count');
+					$testTypeCountArray[$testSystemName]['start_pak']['CLINICAL DIAGNOSIS'] = $clinicalDiagnosisCount->where('measure_id',2)->sum('count');
+					$testTypeCountArray[$testSystemName]['unigold']['CLINICAL DIAGNOSIS'] = $clinicalDiagnosisCount->where('measure_id',3)->sum('count');
+
+					// QUALITY CONTROL
+					$qualityControlCount  = DailyHIVCount::where('date', 'like', '%'.$month.'%')->where('purpose','QUALITY CONTROL');
+					$testTypeCountArray[$testSystemName]['determine']['QUALITY CONTROL'] = $qualityControlCount->where('measure_id',1)->sum('count');
+					$testTypeCountArray[$testSystemName]['start_pak']['QUALITY CONTROL'] = $qualityControlCount->where('measure_id',2)->sum('count');
+					$testTypeCountArray[$testSystemName]['unigold']['QUALITY CONTROL'] = $qualityControlCount->where('measure_id',3)->sum('count');
+
+					// SMC
+					$smcCount  = DailyHIVCount::where('date', 'like', '%'.$month.'%')->where('purpose','SMC');
+					$testTypeCountArray[$testSystemName]['determine']['SMC'] = $smcCount->where('measure_id',1)->sum('count');
+					$testTypeCountArray[$testSystemName]['start_pak']['SMC'] = $smcCount->where('measure_id',2)->sum('count');
+					$testTypeCountArray[$testSystemName]['unigold']['SMC'] = $smcCount->where('measure_id',3)->sum('count');
+
+					$totalCount  = DailyHIVCount::where('date', 'like', '%'.$month.'%');
+					$testTypeCountArray[$testSystemName]['determine']['total'] = $totalCount->where('measure_id',1)->sum('count');
+					$testTypeCountArray[$testSystemName]['start_pak']['total'] = $totalCount->where('measure_id',2)->sum('count');
+					$testTypeCountArray[$testSystemName]['unigold']['total'] = $totalCount->where('measure_id',3)->sum('count');
+
+				}elseif ($testSystemName == 'gram_stain') {
+					$measureSystemName = ($testType->measures->first()->measureNameMapping != '') ?
+								$testType->measures->first()->measureNameMapping->system_name : '' ;
+
+					$testTypeCount  = DailyTestTypeCount::where('date', 'like', '%'.$month.'%')->where('gender',UnhlsPatient::BOTH)
+						->where('age_upper_limit','>=',100)->where('age_lower_limit','=',0)
+						->where('test_type_id',$test_type_id)->where('test_type_id',$test_type_id);
+					$testTypeCountArray[$testSystemName][$measureSystemName]['total'] = $testTypeCount->sum('all');
+
+					$negatives = DailyNegativeGramStain::lists('gram_stain_range_id');
+					$testTypeCount  = DailyTestTypeCount::with('dailyGramStainResultCount','dailyGramStainResultCount.gramStainRange')
+						->where('date', 'like', '%'.$month.'%')->where('gender',UnhlsPatient::BOTH)
+						->where('age_upper_limit','>=',100)->where('age_lower_limit','=',0)
+						->where('test_type_id',$test_type_id)->where('test_type_id',$test_type_id)
+						->where(function($q) use ($negatives){
+							$q->whereHas('dailyGramStainResultCount', function($q)  use ($negatives){
+								$q->where(function($q) use ($negatives){
+									$q->whereHas('gramStainRange', function($q)  use ($negatives){
+										$q->whereNotIn('id',$negatives);
+									});
+								});
+							});
+						});
+					$testTypeCountArray[$testSystemName][$measureSystemName]['positive'] = $testTypeCount->sum('all');
+
+				}elseif ($testSystemName == 'culture_sensitivity') {
+					
+					$measureSystemName = ($testType->measures->first()->measureNameMapping != '') ?
+								$testType->measures->first()->measureNameMapping->system_name : '' ;
+					$testTypeCount  = DailyTestTypeCount::where('date', 'like', '%'.$month.'%')->where('gender',UnhlsPatient::BOTH)
+						->where('age_upper_limit','>=',100)->where('age_lower_limit','=',0)
+						->where('test_type_id',$test_type_id)->where('test_type_id',$test_type_id);
+					$testTypeCountArray[$testSystemName][$measureSystemName]['total'] = $testTypeCount->sum('all');
+
+					$negatives = DailyNegativeCulture::lists('organism_id');
+					$testTypeCount  = DailyTestTypeCount::with('dailyOrganismCount')
+						->where('date', 'like', '%'.$month.'%')->where('gender',UnhlsPatient::BOTH)
+						->where('age_upper_limit','>=',100)->where('age_lower_limit','=',0)
+						->where('test_type_id',$test_type_id)->where('test_type_id',$test_type_id)
+						->where(function($q) use ($negatives){
+							$q->whereHas('dailyOrganismCount', function($q)  use ($negatives){
+								$q->where(function($q) use ($negatives){
+									$q->whereHas('organism', function($q)  use ($negatives){
+										$q->whereNotIn('id',$negatives);
+									});
+								});
+							});
+						});
+					$testTypeCountArray[$testSystemName][$measureSystemName]['positive'] = $testTypeCount->sum('all');
+
+				}elseif ($testType->hasNumericMeasures()) {
+					foreach ($testType->measures as $measure) {
+
+						if ($measure->measureNameMapping != '' && $measure->measureNameMapping->system_name == 'hgb') {
+							$measureSystemName = $measure->measureNameMapping->system_name;
+							// less than 8
+							$testTypeCount  = DailyNumericRangeCount::with('dailyTestTypeCount')
+								->where('date', 'like', '%'.$month.'%')->where('measure_id',$measure->id)
+								->where('result','hbg_less_8')
+								->where(function($q) use ($test_type_id){
+									$q->whereHas('dailyTestTypeCount', function($q)  use ($test_type_id){
+										$q->where('gender',UnhlsPatient::BOTH)->where('age_upper_limit','>=',100)->where('age_lower_limit','=',0);
+									});
+								});
+							$testTypeCountArray[$testSystemName][$measureSystemName]['hbg_less_8'] = $testTypeCount->sum('count');
+
+							// greater or equal 8
+							$testTypeCount  = DailyNumericRangeCount::with('dailyTestTypeCount')
+								->where('date', 'like', '%'.$month.'%')->where('measure_id',$measure->id)
+								->where('result','hbg_equal_8')
+								->where(function($q) use ($test_type_id){
+									$q->whereHas('dailyTestTypeCount', function($q)  use ($test_type_id){
+										$q->where('gender',UnhlsPatient::BOTH)->where('age_upper_limit','>=',100)->where('age_lower_limit','=',0);
+									});
+								});
+
+							$testTypeCountArray[$testSystemName][$measureSystemName]['hbg_equal_8'] = $testTypeCount->sum('count');
+						}elseif($measure->measureNameMapping != ''){
+
+							$measureSystemName = $measure->measureNameMapping->system_name;
+							$testTypeCount  = DailyNumericRangeCount::with('dailyTestTypeCount')
+								->where('date', 'like', '%'.$month.'%')->where('measure_id',$measure->id)->where('result','all')
+								->where(function($q) use ($test_type_id){
+									$q->whereHas('dailyTestTypeCount', function($q)  use ($test_type_id){
+										$q->where('gender',UnhlsPatient::BOTH)->where('age_upper_limit','>=',100)->where('age_lower_limit','=',0);
+									});
+								});
+							$testTypeCountArray[$testSystemName][$measureSystemName]['total'] = $testTypeCount->sum('count');
+						}
+					}
+
+				}elseif ($testType->hasAlphanumericMeasures()) {
+					foreach ($testType->measures as $measure) {
+						if ($measure->measureNameMapping != '' && $measure->measureNameMapping->system_name != '') {
+							$measureSystemName = $measure->measureNameMapping->system_name;
+							$testTypeCount  = DailyAlphanumericCount::with('dailyTestTypeCount')
+								->where('date', 'like', '%'.$month.'%')->where('measure_id',$measure->id)
+								->where(function($q) use ($test_type_id){
+									$q->whereHas('dailyTestTypeCount', function($q)  use ($test_type_id){
+										$q->where('gender',UnhlsPatient::BOTH)->where('age_upper_limit','>=',100)->where('age_lower_limit','=',0);
+									});
+								});
+
+							$testTypeCountArray[$testSystemName][$measureSystemName]['total'] = $testTypeCount->sum('count');
+
+							$positiveRange = MeasureRange::where('measure_id',$measure->id)
+								->where('result_interpretation_id', ResultInterpretation::POSITIVE)->first()->id;
+
+							$positive  = DailyAlphanumericCount::with('dailyTestTypeCount')
+								->where('date', 'like', '%'.$month.'%')->where('measure_id',$measure->id)
+								->where(function($q) use ($test_type_id){
+									$q->whereHas('dailyTestTypeCount', function($q)  use ($test_type_id){
+										$q->where('gender',UnhlsPatient::BOTH)->where('age_upper_limit','>=',100)->where('age_lower_limit','=',0);
+									});
+								})->where('measure_range_id',$positiveRange);
+							$testTypeCountArray[$testSystemName][$measureSystemName]['positive'] = $positive->sum('count');
+						}
+					}
+					if ($testType->testNameMapping->system_name == 'vdrl' || $testType->testNameMapping->system_name == 'rpr') {
+						$testTypeCountArray['vdrl_rpr']['total'] = $testTypeCountArray['vdrl_rpr']['total'] +
+							$testTypeCountArray[$testSystemName][$measureSystemName]['total'];
+						$testTypeCountArray['vdrl_rpr']['positive'] = $testTypeCountArray['vdrl_rpr']['positive'] +
+							$testTypeCountArray[$testSystemName][$measureSystemName]['positive'];
+					}
+				}else{
+					$testTypeCount  = DailyTestTypeCount::with('dailyAlphanumericCount')
+						->where('date', 'like', '%'.$month.'%')->where('gender',UnhlsPatient::BOTH)
+						->where('age_upper_limit','>=',100)->where('age_lower_limit','=',0)
+						->where('test_type_id',$test_type_id)->where('test_type_id',$test_type_id);
+
+					$testTypeCountArray[$testSystemName][$measureSystemName]['total'] = $testTypeCount->sum('all');
+				}
+			}
+		}
+
+		return View::make('reports.hmis.105')
+			->with('month', $month)
+			->with('testTypeCountArray', $testTypeCountArray);
+	}
+
+	public function searchMicrobiology()
+	{
+		$dateFrom =  date('Y-m-01');
+		$dateTo = date('Y-m-d');
+
+		// Load the view and pass it the tests
+		return View::make('reports.microbiology')
+					->with('dateFrom', $dateFrom)
+					->with('dateTo', $dateTo);
+	}
+
+	public function downloadMicrobiology()
+	{
+
+		$dateFrom =  Input::get('date_from');
+		$dateTo = Input::get('date_to');
+
+		if(!$dateFrom) $dateFrom = date('Y-m-01');
+		if(!$dateTo) $dateTo = date('Y-m-d');
+
+		$drugs = Drug::all();
+
+		$isolatedOrganisms = IsolatedOrganism::with(
+				'test',
+				'test.visit',
+				'test.visit.patient',
+				'test.specimen',
+				'drugSusceptibilities',
+				'drugSusceptibilities.drug',
+				'organism'
+			)->where(function($q) use ($dateFrom, $dateTo){
+				$dateTo = $dateTo . ' 23:59:59';
+				$q->where('created_at', '>=', $dateFrom);
+				$q->where('created_at', '<=', $dateTo);
+			})->orderBy('created_at', 'DESC')->get();
+		$content = [];
+
+		$i = 1;
+		foreach ($isolatedOrganisms as $isolatedOrganism) {
+			$content[$i]['Patient ID'] = $isolatedOrganism->test->visit->patient->ulin;
+			$content[$i]['Sex'] = $isolatedOrganism->test->visit->patient->getGender();//sex
+			$content[$i]['Age'] = $isolatedOrganism->test->visit->patient->getAge();//age
+			$content[$i]['Hospitalized for more than 2 days (48 hours) at time of specimen collection? '] = ($isolatedOrganism->test->visit->hospitalized == 1) ? 'Yes' : 'No';//48hrs
+			$content[$i]['Specimen Date'] = $isolatedOrganism->test->specimen->time_accepted;//specimen_date
+			$content[$i]['Specimen Type'] = $isolatedOrganism->test->specimen->specimenType->name;//specimen_type
+			$content[$i]['Organism'] = $isolatedOrganism->organism->name;
+
+			// put all antibiotic indexes with empty values
+			foreach ($drugs as $drug) {
+				$content[$i][$drug->name] = '';
+			}
+
+			// update with available values as available
+			foreach ($isolatedOrganism->drugSusceptibilities as $drugSusceptibility) {
+				$content[$i][$drugSusceptibility->drug->name] = $drugSusceptibility->drugSusceptibilityMeasure->symbol;
+			}
+			$i++;
+		}
+
+		$fileName = $dateFrom.' to '.$dateTo;
+		Excel::create($fileName, function($excel) use($content) {
+			$excel->sheet('Sheet1', function($sheet) use($content) {
+				$sheet->fromArray($content);
+			});
+		})->export('xls');
+	}
 }

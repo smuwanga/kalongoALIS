@@ -20,6 +20,6 @@ class IsolatedOrganism extends Eloquent
 	}
 	public function drugSusceptibilities()
 	{
-		return $this->hasMany('DrugSusceptibility');
+		return $this->hasMany('DrugSusceptibility','isolated_organism_id');
 	}
 }
