@@ -101,6 +101,16 @@ Route::group(array("before" => "auth"), function()
         "uses" => "PocController@update"
     ));
 
+    Route::get("/poc/enter_results/{patient_id}/", array(
+        "as"   => "poc.enter_results",
+        "uses" => "PocController@enter_results"
+    ));
+
+    Route::post("/poc/save_results/{patient_id}/", array(
+        "as"   => "poc.save_results",
+        "uses" => "PocController@save_results"
+    ));
+
 
     //Unhls patiend routes end
 

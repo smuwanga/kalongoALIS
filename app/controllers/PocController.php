@@ -17,7 +17,12 @@ class PocController extends \BaseController {
 		{
 		$search = Input::get('search');
 
-		$patients = POC::all();
+		//$patients = POC::all();
+
+		$patients = POC::leftjoin('poc_results as pr', 'pr.patient_id', '=', 'poc_tables.id')
+						->select('poc_tables.*','pr.results', 'pr.test_date')
+						->from('poc_tables')
+						->get();
 		// ->paginate(Config::get('kblis.page-items'))->appends(Input::except('_token'));
 
 		if (count($patients) == 0) {
@@ -260,6 +265,40 @@ $patient->created_by = Auth::user()->id;
 	public function search()
 	{
         return UnhlsPatient::search(Input::get('text'))->take(Config::get('kblis.limit-items'))->get()->toJson();
+	}
+
+	public function enter_results($patient_id){
+		$patient = POC::find($patient_id);
+		return View::make('poc.enter_results')
+		->with('patient', $patient);
+	}
+
+	public function save_results($patient_id)
+	{
+		$rules = array(
+			'results' => 'required',
+			'test_date' => 'required',
+		);
+		$validator = Validator::make(Input::all(), $rules);
+
+		if ($validator->fails()) {
+			return Redirect::back()->withErrors($validator)->withInput(Input::all());
+		} else {
+			// store
+			$result = new POCResult;
+			$result->patient_id = $patient_id;
+			$result->results = Input::get('results');
+			$result->test_date = Input::get('test_date');
+			try{
+				$result->save();
+				return Redirect::route('poc.index')
+				->with('message', 'Successfully saved results information:!');
+
+			}catch(QueryException $e){
+				Log::error($e);
+				echo $e->getMessage();
+			}
+		}
 	}
 
 	/**

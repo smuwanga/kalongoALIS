@@ -22,9 +22,16 @@ class POC extends Eloquent
 	 */
 	protected $table = 'poc_tables';
 
+
+	public function poc_result(){
+		return $this->hasOne('POCResult', 'patient_id');
+	}
+
 	/**
 	 * Visits relationship
 	 */
+
+
     public function visits()
     {
         return $this->hasMany('UnhlsVisit');
