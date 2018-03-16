@@ -90,6 +90,17 @@ Route::group(array("before" => "auth"), function()
         "uses" => "PocController@search"
     ));
 
+    Route::get("/poc/edit", array(
+        "as"   => "poc.edit",
+        "uses" => "PocController@edit"
+    ));
+
+    Route::put("/poc/update", array(
+        "as"   => "poc.update",
+        "uses" => "PocController@update"
+    ));
+
+
     //Unhls patiend routes end
     Route::any("/instrument/getresult", array(
         "as"   => "instrument.getResult",

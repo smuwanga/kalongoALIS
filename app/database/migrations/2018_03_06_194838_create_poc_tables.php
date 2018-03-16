@@ -18,7 +18,7 @@ class CreatePocTables extends Migration {
 			$table->integer('facility_id');
 			$table->integer('district_id');
 			$table->string('gender');
-			$table->integer('age');
+			$table->float('age');
 			$table->integer('exp_no');
 			$table->string('caretaker_number');
 			$table->string('admimission_date');
@@ -29,20 +29,23 @@ class CreatePocTables extends Migration {
 			$table->string('mother_hiv_status');
 			$table->date('collection_date');
 			$table->string('pcr_level');
+			$table->string('created_by');
 			$table->string('pmtct_antenatal');
 			$table->string('pmtct_delivery');
 			$table->string('pmtct_postnatal');
 			$table->string('sample_id');
-			$table->string('sample_received_by');
-			$table->date('sample_received_date');
-			$table->string('tested_by');
-			$table->date('test_date');
-			$table->string('device_used');
-			$table->string('result');
-			$table->string('error_code');
-			$table->string('results_reviewed_by');
-			$table->date('date_reviewed');
-			$table->date('results_dispatched_by');
+			// $table->string('sample_received_by');
+			// $table->date('sample_received_date');
+			// $table->string('tested_by');
+			// $table->date('test_date');
+			// $table->string('device_used');
+			// $table->string('infant_pmtctarv');
+			$table->string('mother_pmtctarv');
+			// $table->string('result');
+			// $table->string('error_code');
+			// $table->string('results_reviewed_by');
+			// $table->date('date_reviewed');
+			// $table->date('results_dispatched_by');
 			$table->timestamps();
 		});
 	}
@@ -84,6 +87,7 @@ class CreatePocTables extends Migration {
 		Schema::drop('error_code');
 		Schema::drop('results_reviewed_by');
 		Schema::drop('date_reviewed');
+		Schema::drop('infant_pmtctarv');
 		Schema::drop('results_dispatched_by');
 	}
 

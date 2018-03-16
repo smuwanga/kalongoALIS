@@ -17,7 +17,8 @@ class PocController extends \BaseController {
 		{
 		$search = Input::get('search');
 
-		$patients = POC::search($search)->orderBy('id', 'desc')->paginate(Config::get('kblis.page-items'))->appends(Input::except('_token'));
+		$patients = POC::all();
+		// ->paginate(Config::get('kblis.page-items'))->appends(Input::except('_token'));
 
 		if (count($patients) == 0) {
 		 	Session::flash('message', trans('messages.no-match'));
@@ -51,10 +52,11 @@ class PocController extends \BaseController {
 		//
 		$rules = array(
 
-			'patient_number' => 'required|unique:unhls_patients,patient_number',
-			'name'       => 'required',
+			'infant_name' => 'required',
+			'age'       => 'required',
 			'gender' => 'required',
-			'dob' => 'required' ,
+			'mother_name' => 'required' ,
+			// 'entry_point' => 'required' ,
 		);
 		$validator = Validator::make(Input::all(), $rules);
 
@@ -63,30 +65,48 @@ class PocController extends \BaseController {
 			return Redirect::back()->withErrors($validator)->withInput(Input::all());
 		} else {
 			// store
-			$patient = new POC;
-			$patient->patient_number = Input::get('patient_number');
-			$patient->nin = Input::get('nin');
-			$patient->name = Input::get('name');
-			$patient->gender = Input::get('gender');
-			$patient->dob = Input::get('dob');
-			$patient->village_residence = Input::get('village_residence');
-			$patient->village_workplace = Input::get('village_workplace');
-			$patient->occupation = Input::get('occupation');
-			$patient->email = Input::get('email');
-			$patient->address = Input::get('address');
-			$patient->phone_number = Input::get('phone_number');
-			$patient->created_by = Auth::user()->id;
+
+
+
+$patient = new POC;
+$patient->district_id = \Config::get('constants.DISTRICT_ID');
+$patient->facility_id = \Config::get('constants.FACILITY_ID');
+// $patient->facility_id	= Input::get('facility_id');
+// $patient->district_id	= Input::get('district_id');
+$patient->gender	= Input::get('gender');
+$patient->age	= Input::get('age');
+$patient->exp_no = Input::get('exp_no');
+$patient->caretaker_number	= Input::get('caretaker_number');
+$patient->admission_date	= Input::get('admission_date');
+$patient->entry_point	= Input::get('entry_point');
+$patient->mother_name	= Input::get('mother_name');
+$patient->infant_name	= Input::get('infant_name');
+$patient->mother_hiv_status	= Input::get('mother_hiv_status');
+$patient->collection_date	= Input::get('collection_date');
+$patient->pcr_level	= Input::get('pcr_level');
+// $patient->pmtct_antenatal	= Input::get('pmtct_antenatal');
+// $patient->pmtct_delivery	= Input::get('pmtct_delivery');
+// $patient->pmtct_postnatal	= Input::get('pmtct_postnatal');
+$patient->sample_id	= Input::get('sample_id');
+$patient->created_by = Auth::user()->id;
+// $patient->sample_received_by	= Input::get('sample_received_by');
+// $patient->sample_received_date	= Input::get('sample_received_date');
+// $patient->tested_by	= Input::get('tested_by');
+// $patient->test_date	= Input::get('test_date');
+// $patient->device_used	= Input::get('device_used');
+// $patient->result	= Input::get('result');
+// $patient->error_code	= Input::get('error_code');
+// $patient->results_reviewed_by	= Input::get('results_reviewed_by');
+// $patient->date_reviewed	= Input::get('date_reviewed');
+// $patient->results_dispatched_by	= Input::get('results_dispatched_by');
+
 
 			try{
 				$patient->save();
 
-				$patient->ulin = $patient->getUlin();
-				$patient->save();
-				$uuid = new UuidGenerator;
-				$uuid->save();
-			$url = Session::get('SOURCE_URL');
-			return Redirect::to($url)
-			->with('message', 'Successfully created patient with ULIN:  '.$patient->ulin.'!');
+				return Redirect::route('poc.index')
+				->with('message', 'Successfully saved patient information:!');
+
 			}catch(QueryException $e){
 				Log::error($e);
 				echo $e->getMessage();
@@ -104,10 +124,10 @@ class PocController extends \BaseController {
 	public function show($id)
 	{
 		//Show a patient
-		$patient = UnhlsPatient::find($id);
+		$patient = POC::find($id);
 
 		//Show the view and pass the $patient to it
-		return View::make('unhls_patient.show')->with('patient', $patient);
+		return View::make('poc.show')->with('patient', $patient);
 	}
 
 	/**
@@ -119,10 +139,16 @@ class PocController extends \BaseController {
 	public function edit($id)
 	{
 		//Get the patient
-		$patient = UnhlsPatient::find($id);
+		$patient = POC::find($id);
+		$antenatal= array('0'=>'Ante-natal', '1' => 'Delivery', '2' => 'Post-natal');
+
+		return View::make('poc.create')
+				->with('antenatal', $antenatal);
 
 		//Open the Edit View and pass to it the $patient
-		return View::make('unhls_patient.edit')->with('patient', $patient);
+		return View::make('poc.edit')
+		->with('antenatal', $antenatal)
+		->with('patient', $patient);
 	}
 
 	/**
@@ -135,33 +161,55 @@ class PocController extends \BaseController {
 	{
 		//
 		$rules = array(
-			'patient_number' => 'required',
-			'name'       => 'required',
+			'infant_name' => 'required',
+			'age'       => 'required',
 			'gender' => 'required',
-			'dob' => 'required'
+			'mother_name' => 'required'
 		);
 		$validator = Validator::make(Input::all(), $rules);
 
 		// process the login
 		if ($validator->fails()) {
-			return Redirect::to('unhls_patient/' . $id . '/edit')
+			return Redirect::to('poc/' . $id . '/edit')
 				->withErrors($validator)
 				->withInput(Input::except('password'));
-		} else {
+		}
+
+		 else {
 			// Update
-			$patient = UnhlsPatient::find($id);
-			$patient->patient_number = Input::get('patient_number');
-			$patient->nin = Input::get('nin');
-			$patient->name = Input::get('name');
-			$patient->gender = Input::get('gender');
-			$patient->dob = Input::get('dob');
-			$patient->village_residence = Input::get('village_residence');
-			$patient->village_workplace = Input::get('village_workplace');
-			$patient->occupation = Input::get('occupation');
-			$patient->email = Input::get('email');
-			$patient->address = Input::get('address');
-			$patient->phone_number = Input::get('phone_number');
+			$patient = POC::find($id);
+
+			$patient->district_id = \Config::get('constants.DISTRICT_ID');
+			$patient->facility_id = \Config::get('constants.FACILITY_ID');
+			// $patient->facility_id	= Input::get('facility_id');
+			// $patient->district_id	= Input::get('district_id');
+			$patient->gender	= Input::get('gender');
+			$patient->age	= Input::get('age');
+			$patient->exp_no = Input::get('exp_no');
+			$patient->caretaker_number	= Input::get('caretaker_number');
+			$patient->admission_date	= Input::get('admission_date');
+			$patient->entry_point	= Input::get('entry_point');
+			$patient->mother_name	= Input::get('mother_name');
+			$patient->infant_name	= Input::get('infant_name');
+			$patient->mother_hiv_status	= Input::get('mother_hiv_status');
+			$patient->collection_date	= Input::get('collection_date');
+			$patient->pcr_level	= Input::get('pcr_level');
+			// $patient->pmtct_antenatal	= Input::get('pmtct_antenatal');
+			// $patient->pmtct_delivery	= Input::get('pmtct_delivery');
+			// $patient->pmtct_postnatal	= Input::get('pmtct_postnatal');
+			$patient->sample_id	= Input::get('sample_id');
 			$patient->created_by = Auth::user()->id;
+			// $patient->sample_received_by	= Input::get('sample_received_by');
+			// $patient->sample_received_date	= Input::get('sample_received_date');
+			// $patient->tested_by	= Input::get('tested_by');
+			// $patient->test_date	= Input::get('test_date');
+			// $patient->device_used	= Input::get('device_used');
+			// $patient->result	= Input::get('result');
+			// $patient->error_code	= Input::get('error_code');
+			// $patient->results_reviewed_by	= Input::get('results_reviewed_by');
+			// $patient->date_reviewed	= Input::get('date_reviewed');
+			// $patient->results_dispatched_by	= Input::get('results_dispatched_by');
+
 			$patient->save();
 
 			// redirect

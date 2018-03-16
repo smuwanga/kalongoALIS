@@ -10,8 +10,7 @@
 <div class='container-fluid'>
 	<div class='row'>
 		<div class='col-md-12'>
-			{{ Form::open(array('route' => array('poc.index'), 'class'=>'form-inline',
-				'role'=>'form', 'method'=>'GET')) }}
+			{{ Form::open(array('route' => array('poc.index'), 'class'=>'form-inline','role'=>'form', 'method'=>'GET')) }}
 				<div class="form-group">
 
 				    {{ Form::label('search', "search", array('class' => 'sr-only')) }}
@@ -37,7 +36,7 @@
 		<span class="glyphicon glyphicon-user"></span>
 	POC / EID Patient List
 		<div class="panel-btn">
-			<a class="btn btn-sm btn-warning" href="{{ URL::route('poc.create') }}">
+			<a class="btn btn-sm btn-info" href="{{ URL::route('poc.create') }}">
 				<span class="glyphicon glyphicon-plus-sign"></span>
 				{{trans('messages.new-patient')}}
 			</a>
@@ -47,66 +46,54 @@
 		<table class="table table-striped table-bordered table-hover table-condensed search-table">
 			<thead>
 				<tr>
+					<th>Sample ID</th>
 					<th>Infant Name</th>
 					<th>Gender</th>
-					<th>Age</th>
+					<th>Age In Months</th>
 					<th>Caretaker Mobile No.</th>
 					<th>Mother & HIV status</th>
 					<th>PCR Status</th>
 					<th>Mother's PMTCTARVs</th>
 					<th>Infant's PMTCTARVs</th>
-					<!-- <th>Sample ID </th>
-					<th>Sample Collection Date</th>
-					<th>Received By</th>
-					<th>Receive Date</th>
-					<th>Tested By</th>
-					<th>Sample Test Date</th>
-					<!- <th>Results</th>
-					<th>Results</th> -->
-					<!-- <th>POC Device Used</th> --> 
+				
 					<th>{{trans('messages.actions')}}</th>
 				</tr>
 			</thead>
+
 			<tbody>
+
 			@foreach($patients as $key => $patient)
 				<tr  @if(Session::has('activepatient'))
 						{{(Session::get('activepatient') == $patient->id)?"class='info'":""}}
 					@endif
-				>
-					<td>{{ $patient->patient_number }}</td>
-					<td>{{ $patient->patient_number }}</td>
-					<td>{{ $patient->patient_number }}</td>
-					<td>{{ $patient->patient_number }}</td>
-					<!-- <td>{{ $patient->nin}}</td> -->
-					<td>{{ $patient->name }}</td>
-					<td>{{ $patient->email }}</td>
-					<td>{{ ($patient->gender==0?trans('messages.male'):trans('messages.female')) }}</td>
-					<td>{{ $patient->getAge() }}</td>
-					<!-- <td>{{ $patient->village_residence }}</td> -->
-					<!-- <td>{{ $patient->village_residence }}</td>
-					<td>{{ $patient->village_residence }}</td> -->
-					<!-- <td>{{ $patient->village_residence }}</td> -->
-					<!-- <td>{{ $patient->village_residence }}</td>
-					<td>{{ $patient->village_residence }}</td>
-					<td>{{ $patient->village_residence }}</td> -->
-					<!-- <td>{{ $patient->village_workplace  }}</td>
-					<td>{{ $patient->village_workplace  }}</td> -->
+
+				<tr>
+
+					<td>{{ $patient->sample_id }}</td>
+					<td>{{ $patient->infant_name }}</td>
+					<td>{{ $patient->gender }}</td>
+					<td>{{ $patient->age}}</td>
+					<td>{{ $patient->caretaker_number}}</td>
+					<td>{{ $patient->mother_name}} <br>Status: {{ $patient->mother_hiv_status}}</td>
+					<td>{{ $patient->pcr_level}}</td>
+					<td>{{ $patient->mother_pmtctarv}}</td>
+					<td>{{ $patient->infant_pmtctarv}}</td>
 					<td>
 						@if(Auth::user()->can('request_test'))
-						<a class="btn btn-sm btn-info"
-							href="{{ URL::route('unhls_test.create', array('patient_id' => $patient->id)) }}">
+						<a class="btn btn-sm btn-warning"
+						
 							<span class="glyphicon glyphicon-edit"></span>
-							New Test
+							Enter Results
 						</a>
 						@endif
 						<!-- show the patient (uses the show method found at GET /patient/{id} -->
-						<a class="btn btn-sm btn-success" href="{{ URL::route('unhls_patient.show', array($patient->id)) }}" >
+						<a class="btn btn-sm btn-success" href="{{ URL::route('poc.show', array($patient->id)) }}" >
 							<span class="glyphicon glyphicon-eye-open"></span>
 							{{trans('messages.view')}}
 						</a>
 
 						<!-- edit this patient (uses the edit method found at GET /patient/{id}/edit -->
-						<a class="btn btn-sm btn-info" href="{{ URL::route('unhls_patient.edit', array($patient->id)) }}" >
+						<a class="btn btn-sm btn-info" href="{{ URL::route('poc.edit', array($patient->id)) }}" >
 							<span class="glyphicon glyphicon-edit"></span>
 							{{trans('messages.edit')}}
 						</a>
@@ -115,8 +102,7 @@
 			@endforeach
 			</tbody>
 		</table>
-		<?php echo $patients->links();
-		Session::put('SOURCE_URL', URL::full());?>
+
 	</div>
 </div>
 @stop
