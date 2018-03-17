@@ -91,6 +91,7 @@ $patient->breastfeeding_status	= Input::get('breastfeeding_status');
 $patient->entry_point	= Input::get('entry_point');
 $patient->mother_name	= Input::get('mother_name');
 $patient->infant_name	= Input::get('infant_name');
+$patient->provisional_diagnosis	= Input::get('provisional_diagnosis');
 $patient->infant_pmtctarv	= Input::get('infant_pmtctarv');
 $patient->mother_hiv_status	= Input::get('mother_hiv_status');
 $patient->collection_date	= Input::get('collection_date');

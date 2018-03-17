@@ -59,8 +59,6 @@ return array(
 			'username'  => 'root',
 
 			'password'  => '68965',
-			'password'  => 'mysql',
-
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',

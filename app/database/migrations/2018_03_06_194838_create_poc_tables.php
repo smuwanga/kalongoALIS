@@ -19,7 +19,8 @@ class CreatePocTables extends Migration {
 			$table->integer('district_id');
 			$table->string('gender');
 			$table->float('age');
-			$table->integer('exp_no');
+			$table->string('exp_no');
+			$table->string('provisional_diagnosis');
 			$table->string('caretaker_number');
 			$table->string('entry_point');
 			$table->string('mother_name');

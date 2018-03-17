@@ -70,6 +70,30 @@
 
 			</div>
 
+			<span>Entry Point <i>(Please select one)</i></span>
+			<br>
+			<br>
+
+			<div class="form-group">
+				{{ Form::label('entry_point', 'Infant PMTCT Codes: (Tick) :',array('class' =>'col-sm-2 required ')) }}
+				<div class="radio-inline">{{ Form::radio("entry_point", 'Nutrition', false) }} <span class="input-tag">Nutrition</span></div>
+				<div class="radio-inline">{{ Form::radio("entry_point", 'Pediatric Inpatient', false) }} <span class="input-tag">Pediatric Inpatient</span></div>
+				<div class="radio-inline">{{ Form::radio("entry_point", 'MBCP/eMTCT', false) }} <span class="input-tag">MBCP/eMTCT</span></div>
+				<div class="radio-inline">{{ Form::radio("entry_point", 'Outpatient', false) }} <span class="input-tag">Outpatient</span></div>
+				<div class="radio-inline">{{ Form::radio("entry_point", 'Young Child Clinic', false) }} <span class="input-tag">Young Child Clinic</span></div>
+				<div class="radio-inline">{{ Form::radio("entry_point", 'EPI', false) }} <span class="input-tag">EPI</span></div>
+			</div>
+
+			<div class="form-group">
+				{{ Form::label('entry_point', 'Other Entry Point(other than above):',array('class' =>'col-sm-2')) }}
+				{{ Form::text('entry_point', Input::old('entry_point'), array('class' => 'form-control col-sm-4')) }}
+			</div>
+
+			<div class="form-group">
+				{{ Form::label('provisional_diagnosis', 'Provisional Diagnosis:',array('class' =>'col-sm-2')) }}
+				{{ Form::text('provisional_diagnosis', Input::old('provisional_diagnosis'), array('class' => 'form-control col-sm-4')) }}
+			</div>
+
 			<div class="form-group">
 
 				{{ Form::label('mother_name', 'Mothers Name', array('class' =>'col-sm-2 ')) }}
@@ -86,30 +110,12 @@
 				@endif -->
 
 				{{ Form::label('mother_hiv_status', 'Mothers HIV Status', array('class' =>'col-sm-2')) }}
-				<div class="radio-inline">{{ Form::radio('mother_hiv_status', 'Negative', false) }} <span class="input-tag">Negative</span></div>
 				<div class="radio-inline">{{ Form::radio("mother_hiv_status", 'Positive', false) }} <span class="input-tag">Positive</span></div>
+				<div class="radio-inline">{{ Form::radio('mother_hiv_status', 'Negative', false) }} <span class="input-tag">Negative</span></div>
 				<div class="radio-inline">{{ Form::radio("mother_hiv_status", 'Unknown', false) }} <span class="input-tag">Unknown</span></div>
 
 			</div>
 
-			<span>Entry Point <i>(Please select one)</i></span>
-			<br>
-			<br>
-
-			<div class="form-group">
-				{{ Form::label('entry_point', 'Infant PMTCT Codes: (Tick) :',array('class' =>'col-sm-2 required ')) }}
-				<div class="radio-inline">{{ Form::radio("entry_point", 'Nutrition', false) }} <span class="input-tag">Nutrition</span></div>
-				<div class="radio-inline">{{ Form::radio("entry_point", 'Pediatric Inpatient', false) }} <span class="input-tag">Pediatric Inpatient</span></div>
-				<div class="radio-inline">{{ Form::radio("entry_point", 'MBCP/eMTCT', false) }} <span class="input-tag">MBCP/eMTCT</span></div>
-				<div class="radio-inline">{{ Form::radio("entry_point", 'Outpatient', false) }} <span class="input-tag">Outpatient</span></div>
-				<div class="radio-inline">{{ Form::radio("entry_point", 'Young Child Clinic', false) }} <span class="input-tag">Young Child Clinic</span></div>
-				<div class="radio-inline">{{ Form::radio("entry_point", 'EPI', false) }} <span class="input-tag">EPI</span></div>
-			</div>
-
-			<div class="form-group">
-			{{ Form::label('entry_point', 'Other Entry Point(other than above):',array('class' =>'col-sm-2')) }}
-			{{ Form::text('entry_point', Input::old('entry_point'), array('class' => 'form-control col-sm-4')) }}
-		</div>
 
 		<span>For known HIV Exposed infants, information to enter on this Request Form should be picked from EI register. <br> For all other infants,
 			use the inpatient register (HMIS 054)</span></div>
@@ -224,6 +230,14 @@
 					});
 				</script>
 
+				</div>
+				<div class="form-group">
+					<span> * To request POC EID supplies or ask any questions, immediately call the National EID Coordinating Office on <strong>Toll Free: 0800 221 100 or 0772 391 676, <u>customercare@cphl.go.ug</u></strong></span>
+					<br>
+					<br>
+					<span> * For every Positive result, manage the child as HIV Positive, but collect a Dried Blood Spot sample and refer to CPHL for reference testing as per National HTS Guidelines</span>
+					<br>
+					<br>
 				</div>
 			</div>
 		</div>
