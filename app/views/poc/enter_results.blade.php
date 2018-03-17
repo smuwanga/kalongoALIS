@@ -49,18 +49,19 @@
 
 				<div class="form-group">
 					{{ Form::label('test_date', 'Test Date:', array('class' =>'col-sm-2 ')) }}
-					{{ Form::text('test_date', Input::old('test_date'), array('class' => 'form-control standard-datepicker col-sm-4')) }}
+					{{ Form::text('test_date', Input::old('test_date'), array('class' => 'form-control standard-datepicker standard-datepicker-nofuture col-sm-4')) }}
 				</div>
 
 			<div class="form-group actions-row">
 				{{ Form::button('<span class="glyphicon glyphicon-save"></span> '.'SAVE RESULTS',
 				['class' => 'btn btn-primary', 'onclick' => 'submit()']) }}
 			</div>
-
-
-
-
 			{{ Form::close() }}
+			<script>
+			$(".standard-datepicker-nofuture").datepicker({
+				maxDate: 0
+			});
+		</script>
 
 		</div>
 
