@@ -27,7 +27,12 @@
 				{{ HTML::ul($errors->all()) }}
 			</div>
 		@endif
-		{{ Form::open(array('route' => 'unhls_test.rejectAction',"id"=>"js-upload-form")) }}
+
+		@if ($message)
+        	<div class="alert alert-info">{{ $message }}</div>
+    	@endif
+
+		{{ Form::open(array('route' => 'unhls_test.uploadPoCResults','files'=>true)) }}
 			<div class="panel-body">
 
 					<div class="input-group image-preview">
@@ -36,8 +41,9 @@
 						<!-- don't give a name === doesn't send on POST/GET --> 
 						<span class="input-group-btn"> 
 						<!-- image-preview-input -->
-						<div class="btn btn-default image-preview-input file"> <span class="glyphicon glyphicon-folder-open"></span> <span class="image-preview-input-title">Browse</span>
-							<input type="file" class="file" accept=".csv" name="input-file-preview" id="filez"/>
+						<div class="btn btn-default image-preview-input file"> <span class="glyphicon glyphicon-folder-open"></span> <span class="image-preview-input-title">Browse</span>							
+							{{ Form::label('file', 'File', array('class'=>'control-label hidden')) }}		
+							<input type="file" class="file" accept=".csv" name="file" id="filez"/>
 							<!-- rename it --> 
 						</div>
 						<button type="submit" class="btn btn-labeled btn-default"> <span class="btn-label"><i class="glyphicon glyphicon-upload"></i> </span>Upload</button>
@@ -45,12 +51,17 @@
 					</div>
 					<!-- /input-group image-preview [TO HERE]--> 
 					</br></br>
+
+					@if ($failed_import)
 					<!-- Upload Finished -->
-					<div class="js-upload-finished">
-						<h4>Upload history</h4>
-						<div class="list-group"> <a href="#" class="list-group-item list-group-item-danger"><span class="badge alert-danger pull-right">23-11-2014</span>amended-catalogue-01.xls</a> <a href="#" class="list-group-item list-group-item-success"><span class="badge alert-success pull-right">23-11-2014</span>amended-catalogue-01.xls</a> <a href="#" class="list-group-item list-group-item-success"><span class="badge alert-success pull-right">23-11-2014</span>amended-catalogue-01.xls</a> <a href="#" class="list-group-item list-group-item-success"><span class="badge alert-success pull-right">23-11-2014</span>amended-catalogue.xls</a> </div>
-					</div>
-				
+						<div class="js-upload-finished">
+							<h4>Upload history</h4>
+							<div class="list-group"> 
+								@foreach($failed_import as $item)
+									<a href="#" class="list-group-item list-group-item-danger"> {{$item}} </a> </div>
+								@endforeach
+						</div>
+					@endif
 		{{ Form::close() }}
 		</div>
 	</div>
