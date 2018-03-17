@@ -54,8 +54,8 @@
 					<th>Mother & HIV status</th>
 					<th>PCR Status</th>
 					<th>Mother's PMTCTARVs</th>
-					<th>Infant's PMTCTARVs</th>
-				
+					<th>Entry Point</th>
+
 					<th>{{trans('messages.actions')}}</th>
 				</tr>
 			</thead>
@@ -74,14 +74,17 @@
 					<td>{{ $patient->gender }}</td>
 					<td>{{ $patient->age}}</td>
 					<td>{{ $patient->caretaker_number}}</td>
-					<td>{{ $patient->mother_name}} <br>Status: {{ $patient->mother_hiv_status}}</td>
+					<td>{{ $patient->mother_name}} <br>HIV Status: {{ $patient->mother_hiv_status}}</td>
 					<td>{{ $patient->pcr_level}}</td>
-					<td>{{ $patient->mother_pmtctarv}}</td>
-					<td>{{ $patient->infant_pmtctarv}}</td>
+
+					<td><i>Antenatal:: </i> {{$patient->pmtct_antenatal}} <i>Delivery:: </i>{{$patient->pmtct_delivery}} <i>Postnatal:: </i>{{$patient->pmtct_postnatal}}</td>
+
+
+					<td>{{ $patient->entry_point}}</td>
 					<td>
 						@if(Auth::user()->can('request_test'))
 						<a class="btn btn-sm btn-warning"
-						
+
 							<span class="glyphicon glyphicon-edit"></span>
 							Enter Results
 						</a>

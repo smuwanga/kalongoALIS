@@ -20,7 +20,7 @@
 			{{ HTML::ul($errors->all()) }}
 		</div>
 		@endif
-		{{ Form::open(array('url' => 'poc', 'id' => 'form-create-bbincidence', 'autocomplete' => 'off')) }}
+		{{ Form::open(array('url' => 'poc', 'id' => 'form-create-poc', 'autocomplete' => 'off')) }}
 		<div class="form-group actions-row" style="text-align:right;">
 		</div>
 		<div class="panel panel-primary">
@@ -44,15 +44,9 @@
 					<div class="radio-inline">{{ Form::radio("gender", 'Female', false) }} <span class="input-tag">Female</span></div>
 				</div>
 
-				<!--<div class="form-group">
-				{{ Form::label('personnel_dob', 'Date of Birth', array('class' =>'col-sm-2 required ')) }}
-				{{ Form::text('personnel_dob', Input::old('personnel_dob'), array('class' => 'form-control standard-datepicker col-sm-4')) }} -->
-
 				{{ Form::label('age', 'Age', array('class' =>'col-sm-2 required ')) }}
 				{{ Form::number('age', Input::old('age'), array('class' => 'form-control col-sm-4', 'placeholder' => '(In months)')) }}
 			</div>
-
-
 
 			<div class="form-group">
 
@@ -69,8 +63,8 @@
 				{{ Form::label('caretaker_number', 'Caretaker Tel. No.', array('class' =>'col-sm-2 ')) }}
 				{{ Form::text('caretaker_number', Input::old('caretaker_number'), array('class' => 'form-control col-sm-4')) }}
 
-				{{ Form::label('admimission_date', 'Admission Date', array('class' =>'col-sm-2 ')) }}
-				{{ Form::text('admimission_date', Input::old('admimission_date'), array('class' => 'form-control standard-datepicker col-sm-4', 'placeholder' => 'Ignore if not admitted', )) }}
+				{{ Form::label('admission_date', 'Admission Date', array('class' =>'col-sm-2 ')) }}
+				{{ Form::text('admission_date', Input::old('admission_date'), array('class' => 'form-control standard-datepicker col-sm-4', 'placeholder' => 'Ignore if not admitted', )) }}
 			</div>
 
 			<div class="form-group">
@@ -79,7 +73,7 @@
 				{{ Form::text('mother_name', Input::old('mother_name'), array('class' => 'form-control col-sm-4')) }}
 
 				{{ Form::label('mother_hiv_status', 'Mothers HIV Status', array('class' =>'col-sm-2 ')) }}
-				{{ Form::select('mother_hiv_status',['','Positive', 'Negative','Unkown']) }}
+				{{ Form::select('mother_hiv_status', array_merge(array(null => ''), $hiv_status), Input::old('mother_hiv_status'), array('class' => 'form-control')) }}
 			</div>
 
 			<span>Entry Point <i>(Please select one)</i></span>
@@ -95,6 +89,7 @@
 				<div class="radio-inline">{{ Form::radio("entry_point", 'young_child_clinic', false) }} <span class="input-tag">Young Child Clinic</span></div>
 				<div class="radio-inline">{{ Form::radio("entry_point", 'epi', false) }} <span class="input-tag">EPI</span></div>
 			</div>
+
 			<div class="form-group">
 				{{ Form::label('entry_point', 'Other Entry Point(other than above):',array('class' =>'col-sm-2')) }}
 				{{ Form::text('entry_point', Input::old('entry_point'), array('class' => 'form-control col-sm-4')) }}
@@ -122,21 +117,27 @@
 		<br>
 
 		<div class="form-group">
-			<span>If Mother is HIV positive, Mother's PMTCT ARV's (Select & check circle)</span>
+			<span>If Mother is HIV positive, Mother's PMTCT ARV's (Select all that apply)</span>
 			<br>
 			<br>
-
-			{{ Form::label('pmtctarv', 'Mother PMTCTARVs:',array('class' =>'col-sm-2 required ')) }}
-			{{ Form::select('pmtctarv', array_merge(array(null => 'Select...	'), $antenatal), Input::old('pmtctarv'), array('class' => 'form-control', 'id' => 'pmtctarv')) }}
 		</div>
+
 
 		<div class="form-group">
-			{{ Form::label('mother_pmtctarv', 'Circle Number:', array('class' =>'col-sm-2')) }}
-			<div class="radio-inline">{{ Form::radio('mother_pmtctarv', 'Lifelong ART', false) }} <span class="input-tag">Lifelong ART</span></div>
-			<div class="radio-inline">{{ Form::radio("mother_pmtctarv", 'No ART', false) }} <span class="input-tag">No ART</span></div>
-			<div class="radio-inline">{{ Form::radio("mother_pmtctarv", 'Unknown', false) }} <span class="input-tag">UNKNOWN</span></div>
-		</div>
+			{{ Form::label('pmtct_delivery', 'PMTCT Delivery:',array('class' =>'col-sm-2 required ')) }}
+			{{ Form::select('pmtct_delivery', array_merge(array(null => 'Select...	'), $antenatal), Input::old('pmtct_delivery'), array('class' => 'form-control')) }}
+</div>
 
+<div class="form-group">
+			{{ Form::label('pmtct_postnatal', 'PMTCT Post Natal:',array('class' =>'col-sm-2 required ')) }}
+			{{ Form::select('pmtct_postnatal', array_merge(array(null => 'Select...	'), $antenatal), Input::old('pmtct_postnatal'), array('class' => 'form-control')) }}
+</div>
+
+<div class="form-group">
+			{{ Form::label('pmtct_antenatal', 'PMTCT Antenatal:',array('class' =>'col-sm-2 required ')) }}
+			{{ Form::select('pmtct_antenatal', array_merge(array(null => 'Select...	'), $antenatal), Input::old('pmtct_antenatal'), array('class' => 'form-control')) }}
+
+</div>
 		<br>
 		<br>
 
@@ -145,10 +146,10 @@
 		<br>
 		<div class="form-group">
 
-			<div class="radio-inline">{{ Form::radio("infant_pmtctarv", 'Lifelong ART', false) }} <span class="input-tag">Daily NVP from birth to 6 weeks</span></div>
-			<div class="radio-inline">{{ Form::radio("infant_pmtctarv", 'No ART', false) }} <span class="input-tag">NVP for 12 weeks for high risk infants</span></div>
-			<div class="radio-inline">{{ Form::radio("infant_pmtctarv", 'Unknown', false) }} <span class="input-tag">No ARVs taken at birth</span></div>
-			<div class="radio-inline">{{ Form::radio("infant_pmtctarv", 'Unknown', false) }} <span class="input-tag">UNKNOWN</span></div>
+			<div class="radio-inline">{{ Form::radio("infant_pmtctarv", 'Lifelong ART') }} <span class="input-tag">Daily NVP from birth to 6 weeks</span></div>
+			<div class="radio-inline">{{ Form::radio("infant_pmtctarv", 'No ART') }} <span class="input-tag">NVP for 12 weeks for high risk infants</span></div>
+			<div class="radio-inline">{{ Form::radio("infant_pmtctarv", 'Unknown') }} <span class="input-tag">No ARVs taken at birth</span></div>
+			<div class="radio-inline">{{ Form::radio("infant_pmtctarv", 'Unknown') }} <span class="input-tag">UNKNOWN</span></div>
 			<br>
 			<br>
 		</div>

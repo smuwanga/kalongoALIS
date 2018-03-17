@@ -25,7 +25,10 @@ class PocController extends \BaseController {
 		}
 
 		// Load the view and pass the patients
-		return View::make('poc.index')->with('patients', $patients)->withInput(Input::all());
+		$antenatal = array('0'=>'Lifelong ART', '1' => 'No ART', '2' => 'UNKNOWN');
+		return View::make('poc.index')
+		->with('antenatal',$antenatal)
+		->with('patients', $patients)->withInput(Input::all());
 	}
 
 	/**
@@ -37,11 +40,12 @@ class PocController extends \BaseController {
 	{
 		//Create patients
 		$hiv_status = array('0' => 'Positive', '1' => 'Negative', '2' => 'Unknown');
-		$antenatal= array('0'=>'Ante-natal', '1' => 'Delivery', '2' => 'Post-natal');
+		// $entry_point = array('0' => '', '1' => 'Negative', '2' => 'Unknown');
+		$antenatal= array('0'=>'Lifelong ART', '1' => 'No ART', '2' => 'UNKNOWN');
 
 		return View::make('poc.create')
 		->with('hiv_status', $hiv_status)
-		->with('antenatal', $antenatal);
+			->with('antenatal', $antenatal);
 	}
 
 		/**
@@ -80,15 +84,16 @@ $patient->age	= Input::get('age');
 $patient->exp_no = Input::get('exp_no');
 $patient->caretaker_number	= Input::get('caretaker_number');
 $patient->admission_date	= Input::get('admission_date');
+$patient->breastfeeding_status	= Input::get('breastfeeding_status');
 $patient->entry_point	= Input::get('entry_point');
 $patient->mother_name	= Input::get('mother_name');
 $patient->infant_name	= Input::get('infant_name');
 $patient->mother_hiv_status	= Input::get('mother_hiv_status');
 $patient->collection_date	= Input::get('collection_date');
 $patient->pcr_level	= Input::get('pcr_level');
-// $patient->pmtct_antenatal	= Input::get('pmtct_antenatal');
-// $patient->pmtct_delivery	= Input::get('pmtct_delivery');
-// $patient->pmtct_postnatal	= Input::get('pmtct_postnatal');
+$patient->pmtct_antenatal	= Input::get('pmtct_antenatal');
+$patient->pmtct_delivery	= Input::get('pmtct_delivery');
+$patient->pmtct_postnatal	= Input::get('pmtct_postnatal');
 $patient->sample_id	= Input::get('sample_id');
 $patient->created_by = Auth::user()->id;
 // $patient->sample_received_by	= Input::get('sample_received_by');
@@ -144,9 +149,6 @@ $patient->created_by = Auth::user()->id;
 		$patient = POC::find($id);
 		$antenatal= array('0'=>'Ante-natal', '1' => 'Delivery', '2' => 'Post-natal');
 
-		return View::make('poc.create')
-				->with('antenatal', $antenatal);
-
 		//Open the Edit View and pass to it the $patient
 		return View::make('poc.edit')
 		->with('antenatal', $antenatal)
@@ -193,6 +195,7 @@ $patient->created_by = Auth::user()->id;
 			$patient->entry_point	= Input::get('entry_point');
 			$patient->mother_name	= Input::get('mother_name');
 			$patient->infant_name	= Input::get('infant_name');
+			$patient->infant_pmtctarv	= Input::get('infant_pmtctarv');
 			$patient->mother_hiv_status	= Input::get('mother_hiv_status');
 			$patient->collection_date	= Input::get('collection_date');
 			$patient->pcr_level	= Input::get('pcr_level');

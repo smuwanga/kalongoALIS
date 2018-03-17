@@ -30,16 +30,17 @@
                 <h3 class="view"><strong>Infant Details:</strong>
                   <br>
                   <br>
-                  Name: {{ $patient->infant_name }} | Sex: {{ $patient->gender}} | Age: {{ $patient->age}} </h3>
+                  Name: {{ $patient->infant_name }} | Sex: {{ $patient->gender}} | Age: {{ $patient->age}} <i>months</i> </h3>
                     <p class="view-striped"><strong>Care Taker's Mobile No:</strong>{{ $patient->caretaker_number}}</p>
                     <p class="view-striped"><strong>Breastfeeding Child:</strong>{{ $patient->breastfeeding_status}}</p>
                     <p class="view-striped"><strong>Exp Number:</strong>{{ $patient->exp_no }}</p>
-                    <p class="view"><strong>Entry Point: {{$patient->entry_point}}</strong>
+                    <p class="view-striped"><strong>Admission Date:</strong>{{ $patient->admission_date }}</p>
+                    <p class="view"><strong>Entry Point:</strong> {{$patient->entry_point}}
                     <p class="view"><strong>PCR Level:</strong> {{$patient->pcr_level}}
                     <p class="view"><strong>Infant's PMTCT ARVs:</strong> {{$patient->infant_pmtctarv}}
                     <p class="view-striped"><strong>Mother's Name:</strong>{{ $patient->mother_name }}</p>
                     <p class="view-striped"><strong>Mother's HIV Status:</strong>{{ $patient-> mother_hiv_status}}</p>
-                    <p class="view-striped"><strong>Mother's PMTCTARV's <i>(If mother is HIV positive)</i>:</strong>{{ $patient->mother_pmtctarv }}</p>
+                    <p class="view-striped"><strong>Mother's PMTCTARV's <i>(If mother is HIV positive)</i>:</strong><i>Antenatal:: </i>{{ $patient->pmtct_antenatal }} || <i>Delivery:: </i>{{ $patient->pmtct_delivery }} || <i>Postnantal:: </i> {{ $patient->pmtct_postnatal }}</p>
 
                 <p class="view"><strong>{{ trans('messages.date-created') }}</strong>
                     {{ $patient->created_at }}</p>

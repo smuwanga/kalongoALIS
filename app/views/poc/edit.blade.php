@@ -121,14 +121,6 @@
 		<br>
 		<br>
 
-		<div class="form-group">
-			<span>If Mother is HIV positive, Mother's PMTCT ARV's (Select & check circle)</span>
-			<br>
-			<br>
-
-			{{ Form::label('pmtctarv', 'Mother PMTCTARVs:',array('class' =>'col-sm-2 required ')) }}
-			{{ Form::select('pmtctarv', array_merge(array(null => 'Select...	'), $pmtctarv), Input::old('pmtctarv'), array('class' => 'form-control', 'id' => 'pmtctarv')) }}
-		</div>
 
 		<div class="form-group">
 			{{ Form::label('mother_pmtctarv', 'Circle Number:', array('class' =>'col-sm-2')) }}
