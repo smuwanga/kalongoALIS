@@ -56,6 +56,10 @@
 					<th>Mother's PMTCTARVs</th>
 					<th>Entry Point</th>
 
+					<th>Infant's PMTCTARVs</th>
+					<th>Result</th>
+					<th>Test Date</th>
+
 					<th>{{trans('messages.actions')}}</th>
 				</tr>
 			</thead>
@@ -85,6 +89,15 @@
 						@if(Auth::user()->can('request_test'))
 						<a class="btn btn-sm btn-warning"
 
+					<td>{{ $patient->mother_pmtctarv}}</td>
+					<td>{{ $patient->infant_pmtctarv}}</td>
+
+					<td>{{ $patient->results }}</td>
+					<td>{{ $patient->test_date }}</td>
+
+					<td>
+						@if(Auth::user()->can('request_test') and empty($patient->results))
+						<a class="btn btn-sm btn-warning" href="{{ URL::route('poc.enter_results', array($patient->id)) }}"
 							<span class="glyphicon glyphicon-edit"></span>
 							Enter Results
 						</a>
