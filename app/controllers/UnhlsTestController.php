@@ -1042,16 +1042,18 @@ class UnhlsTestController extends \BaseController {
             $path = Input::file('file')->getRealPath();
 
             $data = Excel::load($path, function($reader) {
-            })->get();
-            //dd($data->first());
 
-            $failed_import =[];
+            })->get();
+            
+            //print_r( $data->first() );
+
+            $failed_import = array();
+
             if(!empty($data) && $data->count()){
                 foreach ($data as $key => $value) {
 
-
 			        //check for sample id in tests
-					$patient = DB::table('poc_tables')->where('sample_id','=',345)->select('id', 'sample_id')->first();
+					$patient = DB::table('poc_tables')->where('sample_id','=',$value->sample_id)->select('id', 'sample_id')->first();
 
 					if(count($patient)>0)
 					{
@@ -1060,11 +1062,12 @@ class UnhlsTestController extends \BaseController {
 
 								if($result_exists->count()==0)
 								{									
+
 										$result = new POCResult;			
 
 										$result->patient_id = $patient->id;
 										$result->test_date = date('Y-m-d H:i:s');
-										$result->results = trim(strtolower($value->hiv_1_mn))=="undetected"?"Negative":"Positive";
+										$result->results = trim(strtolower($value->hiv_1_mn))=="detected"?"Positive":"Negative";
 																	
 										$result->save();
 								}	
@@ -1074,12 +1077,13 @@ class UnhlsTestController extends \BaseController {
 					{
 						array_push($failed_import, trim($value->sample_id));
 
-	            		dd($trim($value->sample_id));
+	            		//dd(trim($value->sample_id));
 					}
 
                 }
             		//dd($failed_import);
 				// redirect
+				//return Redirect::to('unhls_test/importPoc')
 				return View::make('unhls_test.importPoCResults')
 							->with('message', 'Import completed successfully')
 							->with('failed_import', $failed_import);

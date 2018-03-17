@@ -56,11 +56,11 @@
 					<!-- Upload Finished -->
 						<div class="js-upload-finished">
 							<h4>Upload history</h4>
-							<div class="list-group"> 
-								@foreach($failed_import as $item)
-									<a href="#" class="list-group-item list-group-item-danger"> {{$item}} </a> </div>
-								@endforeach
-						</div>
+							<ul class="list-group"> 
+								
+									<li class="list-group-item list-group-item-danger"> {{implode("</br>",$failed_import)}} </li> 
+								
+						</ul>
 					@endif
 		{{ Form::close() }}
 		</div>
