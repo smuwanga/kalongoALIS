@@ -10,7 +10,8 @@
 </div>
 <div class="panel panel-primary">
 	<div class="panel-heading ">
-		Facility:: {{Auth::user()->facility->name}} || Level:: {{Auth::user()->facility->level->level}} || {{Auth::user()->facility->district->name}}
+
+		Facility:: {{ \Config::get('constants.FACILITY_NAME') }} || DISTRICT:: {{ \Config::get('constants.DISTRICT_NAME') }} 
 	</div>
 	<div class="panel-body">
 

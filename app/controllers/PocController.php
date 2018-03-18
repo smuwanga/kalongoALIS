@@ -138,15 +138,15 @@ $patient->created_by = Auth::user()->id;
 	 * @param  int  $id
 	 * @return Response
 	 */
+
+
 	public function edit($id)
 	{
 		//Get the patient
 		$patient = POC::find($id);
-		$antenatal= array('0'=>'Ante-natal', '1' => 'Delivery', '2' => 'Post-natal');
 
 		//Open the Edit View and pass to it the $patient
 		return View::make('poc.edit')
-		->with('antenatal', $antenatal)
 		->with('patient', $patient);
 	}
 
@@ -178,37 +178,25 @@ $patient->created_by = Auth::user()->id;
 			// Update
 			$patient = POC::find($id);
 
-			$patient->district_id = \Config::get('constants.DISTRICT_ID');
-			$patient->facility_id = \Config::get('constants.FACILITY_ID');
-			// $patient->facility_id	= Input::get('facility_id');
-			// $patient->district_id	= Input::get('district_id');
 			$patient->gender	= Input::get('gender');
 			$patient->age	= Input::get('age');
+			// $patient->exp_no = Input::get('exp_no');
 			$patient->exp_no = Input::get('exp_no');
 			$patient->caretaker_number	= Input::get('caretaker_number');
 			$patient->admission_date	= Input::get('admission_date');
+			$patient->breastfeeding_status	= Input::get('breastfeeding_status');
 			$patient->entry_point	= Input::get('entry_point');
 			$patient->mother_name	= Input::get('mother_name');
 			$patient->infant_name	= Input::get('infant_name');
+			$patient->provisional_diagnosis	= Input::get('provisional_diagnosis');
 			$patient->infant_pmtctarv	= Input::get('infant_pmtctarv');
 			$patient->mother_hiv_status	= Input::get('mother_hiv_status');
 			$patient->collection_date	= Input::get('collection_date');
 			$patient->pcr_level	= Input::get('pcr_level');
-			// $patient->pmtct_antenatal	= Input::get('pmtct_antenatal');
-			// $patient->pmtct_delivery	= Input::get('pmtct_delivery');
-			// $patient->pmtct_postnatal	= Input::get('pmtct_postnatal');
+			$patient->pmtct_antenatal	= Input::get('pmtct_antenatal');
+			$patient->pmtct_delivery	= Input::get('pmtct_delivery');
+			$patient->pmtct_postnatal	= Input::get('pmtct_postnatal');
 			$patient->sample_id	= Input::get('sample_id');
-			$patient->created_by = Auth::user()->id;
-			// $patient->sample_received_by	= Input::get('sample_received_by');
-			// $patient->sample_received_date	= Input::get('sample_received_date');
-			// $patient->tested_by	= Input::get('tested_by');
-			// $patient->test_date	= Input::get('test_date');
-			// $patient->device_used	= Input::get('device_used');
-			// $patient->result	= Input::get('result');
-			// $patient->error_code	= Input::get('error_code');
-			// $patient->results_reviewed_by	= Input::get('results_reviewed_by');
-			// $patient->date_reviewed	= Input::get('date_reviewed');
-			// $patient->results_dispatched_by	= Input::get('results_dispatched_by');
 
 			$patient->save();
 

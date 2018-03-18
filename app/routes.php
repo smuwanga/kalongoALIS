@@ -91,7 +91,7 @@ Route::group(array("before" => "auth"), function()
         "uses" => "PocController@search"
     ));
 
-    Route::get("/poc/edit", array(
+    Route::get("/poc/{id}/edit", array(
         "as"   => "poc.edit",
         "uses" => "PocController@edit"
     ));
@@ -117,7 +117,7 @@ Route::group(array("before" => "auth"), function()
 
     Route::post("unhls_test/uploadPoCResults", array(
         "as" => "unhls_test.uploadPoCResults",
-        "uses" => "UnhlsTestController@uploadPoCResults"));       
+        "uses" => "UnhlsTestController@uploadPoCResults"));
 
     //Unhls patiend routes end
 
