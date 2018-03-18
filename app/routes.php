@@ -111,6 +111,11 @@ Route::group(array("before" => "auth"), function()
         "uses" => "PocController@save_results"
     ));
 
+    Route::get("/poc_download/", array(
+        "as"   => "poc.download",
+        "uses" => "PocController@download"
+    ));
+
     Route::get("unhls_test/importPoc", array(
         "as" => "unhls_test.importPoc",
         "uses" => "UnhlsTestController@importPoc"));

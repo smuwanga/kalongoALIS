@@ -86,8 +86,8 @@
 			</div>
 
 			<div class="form-group">
-				{{ Form::label('entry_point', 'Other Entry Point(other than above):',array('class' =>'col-sm-2')) }}
-				{{ Form::text('entry_point', Input::old('entry_point'), array('class' => 'form-control col-sm-4')) }}
+				{{ Form::label('other_entry_point', 'Other Entry Point(other than above):',array('class' =>'col-sm-2')) }}
+				{{ Form::text('other_entry_point', Input::old('other_entry_point'), array('class' => 'form-control col-sm-4')) }}
 			</div>
 
 			<div class="form-group">
@@ -205,7 +205,7 @@
 						{{ Form::text('sample_id', Input::old('sample_id'), array('class' => 'form-control col-sm-4')) }}
 
 						{{ Form::label('collection_date', 'Sample Collection Date:', array('class' =>'col-sm-2 ')) }}
-						{{ Form::text('collection_date', Input::old('collection_date'), array('class' => 'form-control standard-datepicker standard-datepicker-nofuture col-sm-4', 'placeholder' => 'DD/ MM /YYYY')) }}
+						{{ Form::text('collection_date', Input::old('collection_date'), array('class' => 'form-control standard-datepicker standard-datepicker-nofuture col-sm-4', 'placeholder' => 'YYYY-MM-DD')) }}
 					</div>
 					<div class="form-group">
 						{{ Form::label('requesting_officer', 'Requesting Clinician:', array('class' =>'col-sm-2 ')) }}
@@ -227,7 +227,8 @@
 					{{ Form::close() }}
 					<script>
 					$(".standard-datepicker-nofuture").datepicker({
-						maxDate: 0
+						 maxDate: new Date(),
+						 dateFormat: "yy-mm-dd"
 					});
 				</script>
 

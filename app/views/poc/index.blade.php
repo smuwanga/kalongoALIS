@@ -73,7 +73,7 @@
 				@endif
 
 				<tr>
-					<th class="text-center">{{ $row }}</th>
+					<td class="text-center">{{ $row }}</td>
 					<td>{{ $patient->sample_id }}</td>
 					<td>{{ $patient->infant_name }}</td>
 					<td>{{ $patient->gender }}</td>
