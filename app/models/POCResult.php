@@ -5,15 +5,8 @@ class POCResult extends \Eloquent {
 
 	protected $table = 'poc_results';
 
-	protected $result = "erer";
-
-	public function result(){
-		return $this->attributes["result"];
-	}
-
-
 	public function poc(){
-		return $this->hasOne('POC', 'patient_id');
+		return $this->belongsTo('POC', 'patient_id');
 	}
 
 }
