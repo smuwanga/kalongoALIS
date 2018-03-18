@@ -10,7 +10,7 @@
 </div>
 <div class="panel panel-primary">
 	<div class="panel-heading ">
-		Facility:: {{Auth::user()->facility->name}} || Level:: {{Auth::user()->facility->level->level}} || {{Auth::user()->facility->district->name}}
+	FACILITY:: {{ \Config::get('constants.FACILITY_NAME') }} || DISTRICT:: {{ \Config::get('constants.DISTRICT_NAME') }}
 	</div>
 	<div class="panel-body">
 
@@ -20,6 +20,8 @@
 			{{ HTML::ul($errors->all()) }}
 		</div>
 		@endif
+		{{ Form::model($patient, array('route' => array('poc.update', $patient->id), 'method' => 'PUT',
+			'id' => 'form-edit-patient')) }}
 
 		<div class="form-group actions-row" style="text-align:right;">
 		</div>
@@ -121,14 +123,6 @@
 		<br>
 		<br>
 
-		<div class="form-group">
-			<span>If Mother is HIV positive, Mother's PMTCT ARV's (Select & check circle)</span>
-			<br>
-			<br>
-
-			{{ Form::label('pmtctarv', 'Mother PMTCTARVs:',array('class' =>'col-sm-2 required ')) }}
-			{{ Form::select('pmtctarv', array_merge(array(null => 'Select...	'), $pmtctarv), Input::old('pmtctarv'), array('class' => 'form-control', 'id' => 'pmtctarv')) }}
-		</div>
 
 		<div class="form-group">
 			{{ Form::label('mother_pmtctarv', 'Circle Number:', array('class' =>'col-sm-2')) }}
@@ -136,7 +130,6 @@
 			<div class="radio-inline">{{ Form::radio("mother_pmtctarv", 'No ART', false) }} <span class="input-tag">No ART</span></div>
 			<div class="radio-inline">{{ Form::radio("mother_pmtctarv", 'Unknown', false) }} <span class="input-tag">UNKNOWN</span></div>
 		</div>
-
 		<br>
 		<br>
 
@@ -173,18 +166,11 @@
 						{{ Form::text('clinician_phone', Auth::user()->phone_contact, array('class' => 'form-control col-sm-4', 'readonly')) }}
 			<!-- {{ Form::text('collection_date', Input::old('collection_date'), array('class' => 'form-control standard-datepicker col-sm-4', 'placeholder' => 'DD/ MM /YYYY')) }} -->
 		</div>
-
 		<br>
-
-
 			<div class="form-group actions-row" style="text-align:right;">
 				{{ Form::button('<span class="glyphicon glyphicon-save"></span> '.'SAVE',
 				['class' => 'btn btn-primary', 'onclick' => 'submit()']) }}
 			</div>
-
-
 			{{ Form::close() }}
-
 		</div>
-
 		@stop

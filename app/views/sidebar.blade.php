@@ -5,7 +5,7 @@
 				<li>
 					<a href="{{ URL::route('user.home')}}"><span class="ion-home"></span> <span class="nav_title">Main Menu</span></a>
 				</li>
-				
+
 				<li class="nav_trigger">
 					<a href="#">
 						<span class="ion-stats-bars"></span>
@@ -115,7 +115,7 @@
 						<div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 3px; width: 215px; display: none;"><div class="ps-scrollbar-x" style="left: 0px; width: 0px;"></div></div><div class="ps-scrollbar-y-rail" style="top: 0px; right: 3px; height: 620px; display: none;"><div class="ps-scrollbar-y" style="top: 0px; height: 0px;"></div></div></div>
 					</div>
 				</li>
-				
+
 				<li class="nav_trigger">
 					<a href="#"><span class="ion-person"></span><span class="nav_title">Patient Information</span>
 					</a>
@@ -131,7 +131,7 @@
 								</li>
 																<li>
 									<div>
-										<a href="{{ URL::route('eid_patient.create') }}">
+										<a href="{{ URL::route('poc.create') }}">
 											<span class="glyphicon glyphicon-tag"></span> {{"Register EID patient"}}</a>
 									</div>
 								</li>
@@ -171,7 +171,7 @@
 											<!--<span class="glyphicon glyphicon-tag"></span> {{Lang::choice('messages.test-unhls', 2)}}</a>-->
 											<span class="glyphicon glyphicon-tag"></span> List of All Tests</a>
 									</div>
-								</li> 
+								</li>
 								<li>
 									<div>
 										<a href="{{URL::route('unhls_test.completed')}}">
@@ -256,7 +256,7 @@
 					</div>
 				</li>
 			@endif
-				
+
 			@if(Entrust::can('manage_test_catalog'))
 				<li class="nav_trigger">
 					<a href="#">
@@ -411,7 +411,7 @@
 					</div>
 				</li>
 			@endif
-				
+
 				<li class="nav_trigger">
 					<a href="#">
 						<span class="ion-ios-folder"></span>
@@ -446,5 +446,3 @@
 			</ul>
 		</nav>
 @show
-
-

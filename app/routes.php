@@ -91,7 +91,7 @@ Route::group(array("before" => "auth"), function()
         "uses" => "PocController@search"
     ));
 
-    Route::get("/poc/edit", array(
+    Route::get("/poc/{id}/edit", array(
         "as"   => "poc.edit",
         "uses" => "PocController@edit"
     ));
@@ -111,6 +111,13 @@ Route::group(array("before" => "auth"), function()
         "uses" => "PocController@save_results"
     ));
 
+    Route::get("unhls_test/importPoc", array(
+        "as" => "unhls_test.importPoc",
+        "uses" => "UnhlsTestController@importPoc"));
+
+    Route::post("unhls_test/uploadPoCResults", array(
+        "as" => "unhls_test.uploadPoCResults",
+        "uses" => "UnhlsTestController@uploadPoCResults"));
 
     //Unhls patiend routes end
 
@@ -314,9 +321,6 @@ Route::group(array("before" => "auth"), function()
     Route::get("unhls_test/verified", array(
         "as" => "unhls_test.verified",
         "uses" => "UnhlsTestController@verified"));
-    Route::get("unhls_test/importPoc", array(
-        "as" => "unhls_test.importPoc",
-        "uses" => "UnhlsTestController@importPoc"));
     //Test viewDetails start
     Route::get("/unhls_test/{test}/viewdetails", array(
         "as"   => "unhls_test.viewDetails",

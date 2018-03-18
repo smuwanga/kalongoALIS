@@ -6,10 +6,10 @@ use Illuminate\Database\Schema\Blueprint;
 class CreatePocTables extends Migration {
 
 	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
+	* Run the migrations.
+	*
+	* @return void
+	*/
 	public function up()
 	{
 		Schema::create('poc_tables', function(Blueprint $table)
@@ -19,7 +19,8 @@ class CreatePocTables extends Migration {
 			$table->integer('district_id');
 			$table->string('gender');
 			$table->float('age');
-			$table->integer('exp_no');
+			$table->string('exp_no');
+			$table->string('provisional_diagnosis');
 			$table->string('caretaker_number');
 			$table->string('entry_point');
 			$table->string('mother_name');
@@ -39,7 +40,7 @@ class CreatePocTables extends Migration {
 			// $table->string('tested_by');
 			// $table->date('test_date');
 			// $table->string('device_used');
-			// $table->string('infant_pmtctarv');
+			$table->string('infant_pmtctarv');
 			$table->string('mother_pmtctarv');
 			// $table->string('result');
 			// $table->string('error_code');
@@ -52,10 +53,10 @@ class CreatePocTables extends Migration {
 
 
 	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
+	* Reverse the migrations.
+	*
+	* @return void
+	*/
 	public function down()
 	{
 		Schema::drop('poc_tables');

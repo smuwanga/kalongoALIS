@@ -16,21 +16,21 @@
                             <span><i class="icon ion-chevron-right"></i></span>
                             {{ \Config::get('constants.FACILITY_NAME') }}
                         </a>
-                    </li>   
+                    </li>
 
                     <li>
                         <a href="#">
                             <span><i class="icon ion-chevron-right"></i></span>
                             {{ \Config::get('constants.FIN_YEAR_NAME') }}
                         </a>
-                    </li>   
+                    </li>
 
                     <li>
                         <a href="#">
                             <span><i class="icon ion-chevron-right"></i></span>
                             <?php echo date("F");?>
                         </a>
-                    </li>   
+                    </li>
 
                 </ul>
                 @if (Auth::check())
@@ -38,7 +38,7 @@
 
                     <li class="user_menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-							{{Auth::user()->facility->name}} | {{Auth::user()->name}}
+							    {{ \Config::get('constants.FACILITY_NAME') }} | {{Auth::user()->name}}
 							<span class="navbar_el_icon ion-person"></span> <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right">

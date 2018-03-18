@@ -2,8 +2,8 @@
 @section("content")
 <div>
 	<ol class="breadcrumb">
-	  <li><a href="{{{URL::route('user.home')}}}">{{trans('messages.home')}}</a></li>
-	  <li class="active">{{ Lang::choice('messages.patient',2) }}</li>
+		<li><a href="{{{URL::route('user.home')}}}">{{trans('messages.home')}}</a></li>
+		<li class="active">{{ Lang::choice('messages.patient',2) }}</li>
 	</ol>
 </div>
 
@@ -11,30 +11,30 @@
 	<div class='row'>
 		<div class='col-md-12'>
 			{{ Form::open(array('route' => array('poc.index'), 'class'=>'form-inline','role'=>'form', 'method'=>'GET')) }}
-				<div class="form-group">
+			<div class="form-group">
 
-				    {{ Form::label('search', "search", array('class' => 'sr-only')) }}
-		            {{ Form::text('search', Input::get('search'), array('class' => 'form-control test-search')) }}
-				</div>
-				<div class="form-group">
-					{{ Form::button("<span class='glyphicon glyphicon-search'></span> ".trans('messages.search'),
-				        array('class' => 'btn btn-primary', 'type' => 'submit')) }}
-				</div>
+				{{ Form::label('search', "search", array('class' => 'sr-only')) }}
+				{{ Form::text('search', Input::get('search'), array('class' => 'form-control test-search')) }}
+			</div>
+			<div class="form-group">
+				{{ Form::button("<span class='glyphicon glyphicon-search'></span> ".trans('messages.search'),
+				array('class' => 'btn btn-primary', 'type' => 'submit')) }}
+			</div>
 			{{ Form::close() }}
 		</div>
 	</div>
 </div>
 
-	<br>
+<br>
 
 @if (Session::has('message'))
-	<div class="alert alert-info">{{ trans(Session::get('message')) }}</div>
+<div class="alert alert-info">{{ trans(Session::get('message')) }}</div>
 @endif
 
 <div class="panel panel-default">
 	<div class="panel-heading ">
 		<span class="glyphicon glyphicon-user"></span>
-	POC / EID Patient List
+		POC / EID Patient List
 		<div class="panel-btn">
 			<a class="btn btn-sm btn-info" href="{{ URL::route('poc.create') }}">
 				<span class="glyphicon glyphicon-plus-sign"></span>
@@ -46,6 +46,7 @@
 		<table class="table table-striped table-bordered table-hover table-condensed search-table">
 			<thead>
 				<tr>
+					<th>#</th>
 					<th>Sample ID</th>
 					<th>Infant Name</th>
 					<th>Gender</th>
@@ -54,37 +55,44 @@
 					<th>Mother & HIV status</th>
 					<th>PCR Status</th>
 					<th>Mother's PMTCTARVs</th>
+					<th>Entry Point</th>
+
 					<th>Infant's PMTCTARVs</th>
-					<th>Result</th>
+					<th>EID Test Result</th>
 					<th>Test Date</th>
-				
+
 					<th>{{trans('messages.actions')}}</th>
 				</tr>
 			</thead>
 
 			<tbody>
-
-			@foreach($patients as $key => $patient)
+				<?php $row=1; ?>
+				@foreach($patients as $key => $patient)
 				<tr  @if(Session::has('activepatient'))
-						{{(Session::get('activepatient') == $patient->id)?"class='info'":""}}
-					@endif
+				{{(Session::get('activepatient') == $patient->id)?"class='info'":""}}
+				@endif
 
 				<tr>
-
+					<th class="text-center">{{ $row }}</th>
 					<td>{{ $patient->sample_id }}</td>
 					<td>{{ $patient->infant_name }}</td>
 					<td>{{ $patient->gender }}</td>
-					<td>{{ $patient->age}}</td>
+					<td class="text-center">{{ $patient->age}}</td>
 					<td>{{ $patient->caretaker_number}}</td>
-					<td>{{ $patient->mother_name}} <br>Status: {{ $patient->mother_hiv_status}}</td>
+					<td>Name: {{ $patient->mother_name}} <br>HIV Status: {{ $patient->mother_hiv_status}}</td>
 					<td>{{ $patient->pcr_level}}</td>
-					<td>{{ $patient->mother_pmtctarv}}</td>
+					<td><i>Antenatal:: </i>{{$patient->pmtct_antenatal}}<br> <i>Delivery:: </i>{{$patient->pmtct_delivery}} <br> <i>Postnatal:: </i>{{$patient->pmtct_postnatal}}</td>
+					@if ($patient->entry_point == '')
+					<td>-</td>
+					@else
+					<td>{{ $patient->entry_point}}</td>
+					@endif
 					<td>{{ $patient->infant_pmtctarv}}</td>
-					
 					<td>{{ $patient->results }}</td>
 					<td>{{ $patient->test_date }}</td>
 
 					<td>
+
 						@if(Auth::user()->can('request_test') and empty($patient->results))
 						<a class="btn btn-sm btn-warning" href="{{ URL::route('poc.enter_results', array($patient->id)) }}"
 							<span class="glyphicon glyphicon-edit"></span>
@@ -104,7 +112,8 @@
 						</a>
 					</td>
 				</tr>
-			@endforeach
+				<?php $row++; ?>
+				@endforeach
 			</tbody>
 		</table>
 
