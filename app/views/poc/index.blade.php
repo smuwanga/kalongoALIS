@@ -78,7 +78,12 @@
 					<td>{{ $patient->infant_name }}</td>
 					<td>{{ $patient->gender }}</td>
 					<td class="text-center">{{ $patient->age}}</td>
+					@if ($patient->caretaker_number == '')
+					<td>-</td>
+					@else
 					<td>{{ $patient->caretaker_number}}</td>
+					@endif
+
 					<td>Name: {{ $patient->mother_name}} <br>HIV Status: {{ $patient->mother_hiv_status}}</td>
 					<td>{{ $patient->pcr_level}}</td>
 					<td><i>Antenatal:: </i>{{$patient->pmtct_antenatal}}<br> <i>Delivery:: </i>{{$patient->pmtct_delivery}} <br> <i>Postnatal:: </i>{{$patient->pmtct_postnatal}}</td>
