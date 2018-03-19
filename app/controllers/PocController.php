@@ -67,7 +67,6 @@ class PocController extends \BaseController {
 			'gender' => 'required',
 			'mother_name' => 'required' ,
 			'entry_point' => 'required' ,
-			'pcr_level' => 'required',
 		);
 		$validator = Validator::make(Input::all(), $rules);
 
@@ -101,7 +100,7 @@ $patient->pmtct_antenatal	= Input::get('pmtct_antenatal');
 $patient->pmtct_delivery	= Input::get('pmtct_delivery');
 $patient->pmtct_postnatal	= Input::get('pmtct_postnatal');
 $patient->sample_id	= Input::get('sample_id');
-$patient->created_by = Auth::user()->id;
+$patient->created_by = Auth::user()->nameqsa;
 
 
 			try{
@@ -181,7 +180,6 @@ $patient->created_by = Auth::user()->id;
 
 			$patient->gender	= Input::get('gender');
 			$patient->age	= Input::get('age');
-			// $patient->exp_no = Input::get('exp_no');
 			$patient->exp_no = Input::get('exp_no');
 			$patient->caretaker_number	= Input::get('caretaker_number');
 			$patient->admission_date	= Input::get('admission_date');
@@ -198,12 +196,10 @@ $patient->created_by = Auth::user()->id;
 			$patient->pmtct_delivery	= Input::get('pmtct_delivery');
 			$patient->pmtct_postnatal	= Input::get('pmtct_postnatal');
 			$patient->sample_id	= Input::get('sample_id');
-
 			$patient->save();
 
 			// redirect
-			$url = Session::get('SOURCE_URL');
-			return Redirect::to($url)
+			return Redirect::route('poc.index')
 			->with('message', 'The patient details were successfully updated!') ->with('activepatient',$patient ->id);
 
 		}
@@ -281,83 +277,6 @@ $patient->created_by = Auth::user()->id;
 				echo $e->getMessage();
 			}
 		}
-	}
-
-	public function download(){
-		$test_date_fro = Input::get('test_date_fro');
-		$test_date_to = Input::get('test_date_to');
-		if(!empty($test_date_fro) and !empty($test_date_to)){
-			$this->csv_download($test_date_fro, $test_date_to);
-		}else{
-			return View::make('poc.download');
-		}
-	}
-
-	private function csv_download($fro, $to){
-		$patients = POC::leftjoin('poc_results as pr', 'pr.patient_id', '=', 'poc_tables.id')
-						->select('poc_tables.*','pr.results', 'pr.test_date')
-						->from('poc_tables')
-						->where('test_date','>=',$fro)
-						->where('test_date','<=',$to)
-						->get();
-		header('Content-Type: text/csv; charset=utf-8');
-		header("Content-Disposition: attachment; filename=eid_poc_date_$fro"."_$to.csv");
-		$output = fopen('php://output', 'w');
-		$headers = array(
-				'Infant Name',
-				'Gender',
-				'Age',
-			
-				'EXP No',
-				'Caretaker Number',
-				'Admission Date',
-				'Breastfeeding?',
-				'Entry Point',
-				'Mother Name',
-				
-				'Provisional Diagnosis',
-				'Infant PMTCT ARV',
-				'Mother HIV Status',
-				'Collection Date',
-				'PRC Level',
-				'PMTCT Antenatal',
-				'PMTCT Delivery',
-				'PMTCT Post Natal',
-				'Sample ID',
-				'Results',
-				'Test Date'
-				);
-
-		fputcsv($output, $headers);
-		foreach ($patients as $patient) {
-			$row=array(
-				$patient->infant_name,
-				$patient->gender,
-				$patient->age,
-			
-				$patient->exp_no,
-				$patient->caretaker_number,
-				$patient->admission_date,
-				$patient->breastfeeding_status,
-				$patient->entry_point,
-				$patient->mother_name,
-				
-				$patient->provisional_diagnosis,
-				$patient->infant_pmtctarv,
-				$patient->mother_hiv_status,
-				$patient->collection_date,
-				$patient->pcr_level,
-				$patient->pmtct_antenatal,
-				$patient->pmtct_delivery,
-				$patient->pmtct_postnatal,
-				$patient->sample_id,
-				$patient->results,
-				$patient->test_date
-				);
-			fputcsv($output, $row);	
-		}
-		fclose($output);
-
 	}
 
 	/**

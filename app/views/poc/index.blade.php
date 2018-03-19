@@ -99,17 +99,24 @@
 							Enter Results
 						</a>
 						@endif
+
+						@if($patient->results != '')
 						<!-- show the patient (uses the show method found at GET /patient/{id} -->
 						<a class="btn btn-sm btn-success" href="{{ URL::route('poc.show', array($patient->id)) }}" >
 							<span class="glyphicon glyphicon-eye-open"></span>
 							{{trans('messages.view')}}
 						</a>
 
+
+
+						@else
 						<!-- edit this patient (uses the edit method found at GET /patient/{id}/edit -->
 						<a class="btn btn-sm btn-info" href="{{ URL::route('poc.edit', array($patient->id)) }}" >
 							<span class="glyphicon glyphicon-edit"></span>
 							{{trans('messages.edit')}}
 						</a>
+						</a>
+@endif
 					</td>
 				</tr>
 				<?php $row++; ?>

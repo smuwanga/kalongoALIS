@@ -11,7 +11,7 @@
 <div class="panel panel-primary">
 	<div class="panel-heading ">
 
-		Facility:: {{ \Config::get('constants.FACILITY_NAME') }} || DISTRICT:: {{ \Config::get('constants.DISTRICT_NAME') }} 
+		Facility:: {{ \Config::get('constants.FACILITY_NAME') }} || DISTRICT:: {{ \Config::get('constants.DISTRICT_NAME') }}
 	</div>
 	<div class="panel-body">
 
@@ -21,7 +21,7 @@
 			{{ HTML::ul($errors->all()) }}
 		</div>
 		@endif
-		{{ Form::open(array('url' => 'poc', 'id' => 'form-create-poc', 'autocomplete' => 'off')) }}
+		{{ Form::open(array('url' => 'poc', 'id' => 'form-create-poc', 'autocomplete' => 'on')) }}
 		<div class="form-group actions-row" style="text-align:right;">
 		</div>
 		<div class="panel panel-primary">
