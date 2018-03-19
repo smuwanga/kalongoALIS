@@ -297,6 +297,8 @@ $patient->created_by = Auth::user()->id;
 		$patients = POC::leftjoin('poc_results as pr', 'pr.patient_id', '=', 'poc_tables.id')
 						->select('poc_tables.*','pr.results', 'pr.test_date')
 						->from('poc_tables')
+						->where('test_date','>=',$fro)
+						->where('test_date','<=',$to)
 						->get();
 		header('Content-Type: text/csv; charset=utf-8');
 		header("Content-Disposition: attachment; filename=eid_poc_date_$fro"."_$to.csv");

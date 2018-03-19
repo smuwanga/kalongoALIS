@@ -215,6 +215,14 @@
 									</div>
 								</li>
 
+								<li>
+									<div>
+										<a href="{{URL::route('poc.download')}}">
+											<span class="glyphicon glyphicon-tag" ></span>{{trans('Download POC Data')}}
+										</a>
+									</div>
+								</li>
+
 							</ul>
 
 						<div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 3px; width: 215px; display: none;"><div class="ps-scrollbar-x" style="left: 0px; width: 0px;"></div></div><div class="ps-scrollbar-y-rail" style="top: 0px; right: 3px; height: 620px; display: none;"><div class="ps-scrollbar-y" style="top: 0px; height: 0px;"></div></div></div>
