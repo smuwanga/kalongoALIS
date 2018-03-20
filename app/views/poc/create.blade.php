@@ -228,7 +228,9 @@
 					<script>
 					$(".standard-datepicker-nofuture").datepicker({
 						 maxDate: new Date(),
-						 dateFormat: "yy-mm-dd"
+						 dateFormat: "yy-mm-dd",
+						 changeMonth: true,
+						 changeYear: true,
 					});
 				</script>
 

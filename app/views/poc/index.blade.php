@@ -51,16 +51,9 @@
 					<th>Infant Name</th>
 					<th>Gender</th>
 					<th>Age In Months</th>
-					<th>Caretaker Mobile No.</th>
-					<th>Mother & HIV status</th>
 					<th>PCR Status</th>
-					<th>Mother's PMTCTARVs</th>
-					<th>Entry Point</th>
-
-					<th>Infant's PMTCTARVs</th>
 					<th>EID Test Result</th>
 					<th>Test Date</th>
-
 					<th>{{trans('messages.actions')}}</th>
 				</tr>
 			</thead>
@@ -78,21 +71,7 @@
 					<td>{{ $patient->infant_name }}</td>
 					<td>{{ $patient->gender }}</td>
 					<td class="text-center">{{ $patient->age}}</td>
-					@if ($patient->caretaker_number == '')
-					<td>-</td>
-					@else
-					<td>{{ $patient->caretaker_number}}</td>
-					@endif
-
-					<td>Name: {{ $patient->mother_name}} <br>HIV Status: {{ $patient->mother_hiv_status}}</td>
 					<td>{{ $patient->pcr_level}}</td>
-					<td><i>Antenatal:: </i>{{$patient->pmtct_antenatal}}<br> <i>Delivery:: </i>{{$patient->pmtct_delivery}} <br> <i>Postnatal:: </i>{{$patient->pmtct_postnatal}}</td>
-					@if ($patient->entry_point == '')
-					<td>-</td>
-					@else
-					<td>{{ $patient->entry_point}}</td>
-					@endif
-					<td>{{ $patient->infant_pmtctarv}}</td>
 					<td>{{ $patient->results }}</td>
 					<td>{{ $patient->test_date }}</td>
 
