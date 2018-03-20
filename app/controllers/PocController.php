@@ -298,7 +298,7 @@ $patient->created_by = Auth::user()->id;
 						->select('poc_tables.*','pr.results', 'pr.test_date')
 						->from('poc_tables')
 						->where('test_date','>=',$fro)
-						->where('test_date','<=',$to)
+						->where('test_date','<=',$today)
 						->get();
 		header('Content-Type: text/csv; charset=utf-8');
 		header("Content-Disposition: attachment; filename=eid_poc_date_$fro"."_$to.csv");
@@ -333,15 +333,13 @@ $patient->created_by = Auth::user()->id;
 			$row=array(
 				$patient->infant_name,
 				$patient->gender,
-				$patient->age,
-			
+				$patient->age,			
 				$patient->exp_no,
 				$patient->caretaker_number,
 				$patient->admission_date,
 				$patient->breastfeeding_status,
 				$patient->entry_point,
-				$patient->mother_name,
-				
+				$patient->mother_name,				
 				$patient->provisional_diagnosis,
 				$patient->infant_pmtctarv,
 				$patient->mother_hiv_status,
