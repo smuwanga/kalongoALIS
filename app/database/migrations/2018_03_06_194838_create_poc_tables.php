@@ -42,6 +42,7 @@ class CreatePocTables extends Migration {
 			// $table->string('device_used');
 			$table->string('infant_pmtctarv');
 			$table->string('mother_pmtctarv');
+			$table->string('provisional_diagnosis');
 			// $table->string('result');
 			// $table->string('error_code');
 			// $table->string('results_reviewed_by');

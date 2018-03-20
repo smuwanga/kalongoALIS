@@ -78,7 +78,12 @@
 					<td>{{ $patient->infant_name }}</td>
 					<td>{{ $patient->gender }}</td>
 					<td class="text-center">{{ $patient->age}}</td>
+					@if ($patient->caretaker_number == '')
+					<td>-</td>
+					@else
 					<td>{{ $patient->caretaker_number}}</td>
+					@endif
+
 					<td>Name: {{ $patient->mother_name}} <br>HIV Status: {{ $patient->mother_hiv_status}}</td>
 					<td>{{ $patient->pcr_level}}</td>
 					<td><i>Antenatal:: </i>{{$patient->pmtct_antenatal}}<br> <i>Delivery:: </i>{{$patient->pmtct_delivery}} <br> <i>Postnatal:: </i>{{$patient->pmtct_postnatal}}</td>
@@ -99,17 +104,24 @@
 							Enter Results
 						</a>
 						@endif
+
+						@if($patient->results != '')
 						<!-- show the patient (uses the show method found at GET /patient/{id} -->
 						<a class="btn btn-sm btn-success" href="{{ URL::route('poc.show', array($patient->id)) }}" >
 							<span class="glyphicon glyphicon-eye-open"></span>
 							{{trans('messages.view')}}
 						</a>
 
+
+
+						@else
 						<!-- edit this patient (uses the edit method found at GET /patient/{id}/edit -->
 						<a class="btn btn-sm btn-info" href="{{ URL::route('poc.edit', array($patient->id)) }}" >
 							<span class="glyphicon glyphicon-edit"></span>
 							{{trans('messages.edit')}}
 						</a>
+						</a>
+@endif
 					</td>
 				</tr>
 				<?php $row++; ?>

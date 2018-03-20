@@ -67,7 +67,6 @@ class PocController extends \BaseController {
 			'gender' => 'required',
 			'mother_name' => 'required' ,
 			'entry_point' => 'required' ,
-			'pcr_level' => 'required',
 		);
 		$validator = Validator::make(Input::all(), $rules);
 
@@ -101,7 +100,7 @@ $patient->pmtct_antenatal	= Input::get('pmtct_antenatal');
 $patient->pmtct_delivery	= Input::get('pmtct_delivery');
 $patient->pmtct_postnatal	= Input::get('pmtct_postnatal');
 $patient->sample_id	= Input::get('sample_id');
-$patient->created_by = Auth::user()->id;
+$patient->created_by = Auth::user()->nameqsa;
 
 
 			try{
@@ -181,7 +180,6 @@ $patient->created_by = Auth::user()->id;
 
 			$patient->gender	= Input::get('gender');
 			$patient->age	= Input::get('age');
-			// $patient->exp_no = Input::get('exp_no');
 			$patient->exp_no = Input::get('exp_no');
 			$patient->caretaker_number	= Input::get('caretaker_number');
 			$patient->admission_date	= Input::get('admission_date');
@@ -198,12 +196,10 @@ $patient->created_by = Auth::user()->id;
 			$patient->pmtct_delivery	= Input::get('pmtct_delivery');
 			$patient->pmtct_postnatal	= Input::get('pmtct_postnatal');
 			$patient->sample_id	= Input::get('sample_id');
-
 			$patient->save();
 
 			// redirect
-			$url = Session::get('SOURCE_URL');
-			return Redirect::to($url)
+			return Redirect::route('poc.index')
 			->with('message', 'The patient details were successfully updated!') ->with('activepatient',$patient ->id);
 
 		}

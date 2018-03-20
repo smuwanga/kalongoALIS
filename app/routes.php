@@ -96,7 +96,7 @@ Route::group(array("before" => "auth"), function()
         "uses" => "PocController@edit"
     ));
 
-    Route::put("/poc/update", array(
+    Route::put("/poc/{id}/update", array(
         "as"   => "poc.update",
         "uses" => "PocController@update"
     ));

@@ -21,7 +21,7 @@
 		</div>
 		@endif
 		{{ Form::model($patient, array('route' => array('poc.update', $patient->id), 'method' => 'PUT',
-			'id' => 'form-edit-patient')) }}
+			'id' => 'form-edit-poc')) }}
 
 		<div class="form-group actions-row" style="text-align:right;">
 		</div>
@@ -75,31 +75,39 @@
 				{{ Form::text('admimission_date', Input::old('admimission_date'), array('class' => 'form-control standard-datepicker col-sm-4', 'placeholder' => 'Ignore if not admitted', )) }}
 			</div>
 
-			<div class="form-group">
-
-				{{ Form::label('mother_name', 'Mothers Name', array('class' =>'col-sm-2 ')) }}
-				{{ Form::text('mother_name', Input::old('mother_name'), array('class' => 'form-control col-sm-4')) }}
-
-				{{ Form::label('mother_hiv_status', 'Mothers HIV Status', array('class' =>'col-sm-2 ')) }}
-				{{ Form::select('mother_hiv_status',['','Positive', 'Negative','Unkown']) }}
-			</div>
-
 			<span>Entry Point <i>(Please select one)</i></span>
 			<br>
 			<br>
 
 			<div class="form-group">
 				{{ Form::label('entry_point', 'Infant PMTCT Codes: (Tick) :',array('class' =>'col-sm-2 required ')) }}
-				<div class="radio-inline">{{ Form::radio("entry_point", 'nutrition', false) }} <span class="input-tag">Nutrition</span></div>
-				<div class="radio-inline">{{ Form::radio("entry_point", 'pediatric_inpatient', false) }} <span class="input-tag">Pediatric Inpatient</span></div>
-				<div class="radio-inline">{{ Form::radio("entry_point", 'mbcp', false) }} <span class="input-tag">MBCP/eMTCT</span></div>
-				<div class="radio-inline">{{ Form::radio("entry_point", 'outpatient', false) }} <span class="input-tag">Outpatient</span></div>
-				<div class="radio-inline">{{ Form::radio("entry_point", 'young_child_clinic', false) }} <span class="input-tag">Young Child Clinic</span></div>
-				<div class="radio-inline">{{ Form::radio("entry_point", 'epi', false) }} <span class="input-tag">EPI</span></div>
+				<div class="radio-inline">{{ Form::radio("entry_point", 'Nutrition', false) }} <span class="input-tag">Nutrition</span></div>
+				<div class="radio-inline">{{ Form::radio("entry_point", 'Pediatric Inpatient', false) }} <span class="input-tag">Pediatric Inpatient</span></div>
+				<div class="radio-inline">{{ Form::radio("entry_point", 'MBCP/eMTCT', false) }} <span class="input-tag">MBCP/eMTCT</span></div>
+				<div class="radio-inline">{{ Form::radio("entry_point", 'Outpatient', false) }} <span class="input-tag">Outpatient</span></div>
+				<div class="radio-inline">{{ Form::radio("entry_point", 'Young Child Clinic', false) }} <span class="input-tag">Young Child Clinic</span></div>
+				<div class="radio-inline">{{ Form::radio("entry_point", 'EPI', false) }} <span class="input-tag">EPI</span></div>
+			</div>
+
+			<div class="form-group">
+				{{ Form::label('other_entry_point', 'Other Entry Point(other than above):',array('class' =>'col-sm-2')) }}
+				{{ Form::text('other_entry_point', Input::old('other_entry_point'), array('class' => 'form-control col-sm-4')) }}
 			</div>
 			<div class="form-group">
-				{{ Form::label('entry_point', 'Other Entry Point(other than above):',array('class' =>'col-sm-2')) }}
-				{{ Form::text('entry_point', Input::old('entry_point'), array('class' => 'form-control col-sm-4')) }}
+				{{ Form::label('provisional_diagnosis', 'Provisional Diagnosis:',array('class' =>'col-sm-2')) }}
+				{{ Form::text('provisional_diagnosis', Input::old('provisional_diagnosis'), array('class' => 'form-control col-sm-4')) }}
+			</div>
+
+			<div class="form-group">
+
+				{{ Form::label('mother_name', 'Mothers Name', array('class' =>'col-sm-2 ')) }}
+				{{ Form::text('mother_name', Input::old('mother_name'), array('class' => 'form-control col-sm-4')) }}
+
+				{{ Form::label('mother_hiv_status', 'Mothers HIV Status', array('class' =>'col-sm-2')) }}
+				<div class="radio-inline">{{ Form::radio("mother_hiv_status", 'Positive', false) }} <span class="input-tag">Positive</span></div>
+				<div class="radio-inline">{{ Form::radio('mother_hiv_status', 'Negative', false) }} <span class="input-tag">Negative</span></div>
+				<div class="radio-inline">{{ Form::radio("mother_hiv_status", 'Unknown', false) }} <span class="input-tag">Unknown</span></div>
+
 			</div>
 
 <span>For known HIV Exposed infants, information to enter on this Request Form should be picked from EI register. <br> For all other infants,
@@ -123,15 +131,42 @@
 		<br>
 		<br>
 
-
 		<div class="form-group">
-			{{ Form::label('mother_pmtctarv', 'Circle Number:', array('class' =>'col-sm-2')) }}
-			<div class="radio-inline">{{ Form::radio('mother_pmtctarv', 'Lifelong ART', false) }} <span class="input-tag">Lifelong ART</span></div>
-			<div class="radio-inline">{{ Form::radio("mother_pmtctarv", 'No ART', false) }} <span class="input-tag">No ART</span></div>
-			<div class="radio-inline">{{ Form::radio("mother_pmtctarv", 'Unknown', false) }} <span class="input-tag">UNKNOWN</span></div>
+			<span>If Mother is HIV positive, Mother's PMTCT ARV's (Select all that apply)</span>
+			<br>
+			<br>
+		</div>
+
+ <div class="form-group">
+
+		{{ Form::label('pmtct_antenatal', 'PMTCT Antenatal', array('class' =>'col-sm-2')) }}
+		<div class="radio-inline">{{ Form::radio('pmtct_antenatal', 'Lifelong ART', false) }} <span class="input-tag">Lifelong ART</span></div>
+		<div class="radio-inline">{{ Form::radio("pmtct_antenatal", 'No ART', false) }} <span class="input-tag">No Art</span></div>
+		<div class="radio-inline">{{ Form::radio("pmtct_antenatal", 'Unknown', false) }} <span class="input-tag">Unknown</span></div>
+
+	</div>
+
+	<div class="form-group">
+
+			{{ Form::label('pmtct_delivery', 'PMTCT Delivery', array('class' =>'col-sm-2')) }}
+			<div class="radio-inline">{{ Form::radio('pmtct_delivery', 'Lifelong ART', false) }} <span class="input-tag">Lifelong ART</span></div>
+			<div class="radio-inline">{{ Form::radio("pmtct_delivery", 'No ART', false) }} <span class="input-tag">No ART</span></div>
+			<div class="radio-inline">{{ Form::radio("pmtct_delivery", 'Unknown', false) }} <span class="input-tag">Unknown</span></div>
+
+		</div>
+
+			<div class="form-group">
+
+			{{ Form::label('pmtct_postnatal', 'PMTCT Postnatal', array('class' =>'col-sm-2')) }}
+			<div class="radio-inline">{{ Form::radio('pmtct_postnatal', 'Lifelong ART', false) }} <span class="input-tag">Lifelong ART</span></div>
+			<div class="radio-inline">{{ Form::radio("pmtct_postnatal", 'No ART', false) }} <span class="input-tag">No ART</span></div>
+			<div class="radio-inline">{{ Form::radio("pmtct_postnatal", 'Unknown', false) }} <span class="input-tag">Unknown</span></div>
+
+
 		</div>
 		<br>
 		<br>
+
 
 		<span>If known HEI, Infant's PMTCT ARVs (Select code:)</span>
 		<br>
