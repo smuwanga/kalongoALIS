@@ -100,7 +100,7 @@ $patient->pmtct_antenatal	= Input::get('pmtct_antenatal');
 $patient->pmtct_delivery	= Input::get('pmtct_delivery');
 $patient->pmtct_postnatal	= Input::get('pmtct_postnatal');
 $patient->sample_id	= Input::get('sample_id');
-$patient->created_by = Auth::user()->nameqsa;
+$patient->created_by = Auth::user()->name;
 
 
 			try{
@@ -123,14 +123,42 @@ $patient->created_by = Auth::user()->nameqsa;
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
-	{
-		//Show a patient
-		$patient = POC::find($id);
+	// public function show($id)
+	// {
+	// 	//Show a patient
+	// 	$patient = POC::find($id);
+	//
+	// 	//Show the view and pass the $patient to it
+	// 	return View::make('poc.show')->with('patient', $patient);
+	// }
 
-		//Show the view and pass the $patient to it
-		return View::make('poc.show')->with('patient', $patient);
+
+
+	public function show($id)
+		{
+		$search = Input::get('search');
+
+		//$patients = POC::all();
+
+		$patient = POC::leftjoin('poc_results as pr', 'pr.patient_id', '=', 'poc_tables.id')
+						->select('poc_tables.*','pr.results', 'pr.test_date')
+						->from('poc_tables')->find($id);
+		// ->paginate(Config::get('kblis.page-items'))->appends(Input::except('_token'));
+
+		if (count($patient) == 0) {
+		 	Session::flash('message', trans('messages.no-match'));
+		}
+
+		// Load the view and pass the patients
+		$antenatal = array('0'=>'Lifelong ART', '1' => 'No ART', '2' => 'UNKNOWN');
+		return View::make('poc.show')
+		->with('antenatal',$antenatal)
+		->with('patient', $patient)->withInput(Input::all());
 	}
+
+
+
+
 
 	/**
 	 * Show the form for editing the specified resource.

@@ -49,7 +49,7 @@
 
 				<div class="form-group">
 					{{ Form::label('test_date', 'Test Date:', array('class' =>'col-sm-2 ')) }}
-					{{ Form::text('test_date', Input::old('test_date'), array('class' => 'form-control standard-datepicker standard-datepicker-nofuture col-sm-4')) }}
+					{{ Form::text('test_date', Input::old('test_date'), array('class' => 'form-control standard-datepicker  col-sm-4')) }}
 				</div>
 
 			<div class="form-group actions-row">

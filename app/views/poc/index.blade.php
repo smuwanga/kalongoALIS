@@ -93,8 +93,8 @@
 					<td>{{ $patient->entry_point}}</td>
 					@endif
 					<td>{{ $patient->infant_pmtctarv}}</td>
-					<td>{{ $patient->results }}</td>
-					<td>{{ $patient->test_date }}</td>
+					<td>{{ $patient->results}}</td>
+					<td>{{ $patient->test_date}}</td>
 
 					<td>
 
