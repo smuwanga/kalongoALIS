@@ -13,7 +13,7 @@
             {{ Form::text('search', Input::get('search'), array('class' => 'form-control test-search')) }}
 		</div>
 		<div class="form-group">
-			{{ Form::button("<span class='glyphicon glyphicon-search'></span> ".trans('messages.search'), 
+			{{ Form::button("<span class='glyphicon glyphicon-search'></span> ".trans('messages.search'),
 		        array('class' => 'btn btn-primary', 'id' => 'filter', 'type' => 'submit')) }}
 		</div>
 	{{ Form::close() }}

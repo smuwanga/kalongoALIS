@@ -19,8 +19,8 @@
 		<td colspan="1">{{ $patient->getGender(false) }}</td>
 		<td colspan="1"><strong>{{ trans('messages.age')}}</strong></td>
 		<td colspan="1">{{ $patient->getAge()}}</td>
-		<td colspan="2"><strong>{{ trans('messages.patient-id')}}</strong></td>
-		<td colspan="1">{{ $patient->patient_number}}</td>
+		<td colspan="1"><strong>Lab ID</strong></td>
+		<td colspan="2">{{ $patient->ulin}}</td>
 	</tr>
 </table>
 <table style="border-bottom: 1px solid #cecfd5;">
@@ -62,7 +62,7 @@
 </table>
 <table style="border-bottom: 1px solid #cecfd5;">
 		@forelse($tests as $test)
-				<tr>	
+				<tr>
 					<td colspan="2">{{ $test->specimen->specimenType->name }}</td>
 					@if($test->specimen->specimen_status_id == UnhlsSpecimen::NOT_COLLECTED)
 						<td colspan="2"></td>
