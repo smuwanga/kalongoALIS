@@ -59,7 +59,8 @@
 			{{ Form::close() }}
 			<script>
 			$(".standard-datepicker-nofuture").datepicker({
-				maxDate: 0
+				 maxDate: new Date(),
+				 dateFormat: "yy-mm-dd"
 			});
 		</script>
 
