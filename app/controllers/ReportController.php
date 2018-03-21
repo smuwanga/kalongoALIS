@@ -102,7 +102,7 @@ class ReportController extends \BaseController {
 			->with('accredited', $accredited)
 			->with('verified', $verified)
 			->withInput(Input::all());
-
+		ob_end_clean();
 		$pdf = new Mypdf;
 		$pdf->SetAutoPageBreak(TRUE, 15);
 		$pdf->AddPage();
