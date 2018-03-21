@@ -52,8 +52,8 @@
 					<th>Gender</th>
 					<th>Age In Months</th>
 					<th>PCR Status</th>
+					<th>Mother's PMTCT ARV</th>
 					<th>EID Test Result</th>
-					<th>Test Date</th>
 					<th>{{trans('messages.actions')}}</th>
 				</tr>
 			</thead>
