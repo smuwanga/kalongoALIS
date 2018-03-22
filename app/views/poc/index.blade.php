@@ -53,7 +53,9 @@
 					<th>Age In Months</th>
 					<th>PCR Status</th>
 					<th>Mother's PMTCT ARV</th>
+					<th>Entry Point</th>
 					<th>EID Test Result</th>
+					<th>Test Date</th>
 					<th>{{trans('messages.actions')}}</th>
 				</tr>
 			</thead>
@@ -78,11 +80,9 @@
 					@else
 					<td>{{ $patient->entry_point}}</td>
 					@endif
-					<td>{{ $patient->infant_pmtctarv}}</td>
 					<td>{{ $patient->results}}</td>
 					<td>{{ $patient->test_date}}</td>
-					<td>{{ $patient->results }}</td>
-					<td>{{ $patient->test_date }}</td>
+				
 
 					<td>
 
