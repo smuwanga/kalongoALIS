@@ -18,7 +18,7 @@
                         {{ Form::label('date_from', trans('messages.from')) }}
                     </div>
                     <div class='col-md-10'>
-                        {{ Form::text('date_from', $dateFrom, 
+                        {{ Form::text('date_from', $dateFrom,
                             array('class' => 'form-control standard-datepicker')) }}
                     </div>
                 </div>
@@ -27,7 +27,7 @@
                         {{ Form::label('date_to', trans('messages.to')) }}
                     </div>
                     <div class='col-md-10'>
-                        {{ Form::text('date_to', $dateTo, 
+                        {{ Form::text('date_to', $dateTo,
                             array('class' => 'form-control standard-datepicker')) }}
                     </div>
                 </div>
@@ -99,7 +99,7 @@
                 @foreach($testSet as $key => $test)
                     <!-- todo: revise:for now excluding tests without specimens -->
                     @if(!$test->isNotReceived())
-                    <tr 
+                    <tr
                         @if(Session::has('activeTest'))
                             {{ in_array($test->id, Session::get('activeTest'))?"class='info'":""}}
                         @endif
@@ -115,7 +115,7 @@
                             {{ empty($test->visit->visit_number)?
                                 $test->visit->id:
                                 $test->visit->visit_number
-                            }}</td> --> 
+                            }}</td> -->
                         <!--Visit Number -->
                         <td>{{ $test->visit->patient->name.' ('.($test->visit->patient->getGender(true)).',
                             '.$test->visit->patient->getAge('Y'). ')'}}</td> <!--Patient Name -->
@@ -127,15 +127,15 @@
                         <td>
                             <a class="btn btn-sm btn-success"
                                 href="{{ URL::route('unhls_test.viewDetails', $test->id) }}"
-                                id="view-details-{{$test->id}}-link" 
+                                id="view-details-{{$test->id}}-link"
                                 title="{{trans('messages.view-details-title')}}">
                                 <span class="glyphicon glyphicon-eye-open"></span>
                                 {{trans('messages.view-details')}}
                             </a>
-                        @if ($test->isNotReceived()) 
+                        @if ($test->isNotReceived())
                             @if(Auth::user()->can('accept_test_specimen'))
                             <!-- todo: udate this to operate as that on the queue, if possible -->
-                                <!-- 
+                                <!--
                                 <a class="btn btn-sm btn-default receive-test" href="javascript:void(0)"
                                     data-test-id="{{$test->id}}"
                                     title="{{trans('messages.receive-test-title')}}">
@@ -217,7 +217,7 @@
                         <td id="test-status-{{$test->id}}" class='test-status'>
                             <!-- Test Statuses -->
                             <div class="container-fluid">
-                            
+
                                 <div class="row">
 
                                     <div class="col-md-12">
@@ -244,7 +244,7 @@
                                     <div class="col-md-12">
                                         <!-- Specimen statuses -->
                                         @if($test->isNotReceived())
-                                            
+
                                             <span class='label label-default'>
                                                 {{trans('messages.specimen-not-received-label')}}</span>
                                         @elseif($test->specimen->isReferred())
@@ -275,7 +275,7 @@
             {{ $testSet->links() }}
         {{ Session::put('SOURCE_URL', URL::full()) }}
         {{ Session::put('TESTS_FILTER_INPUT', Input::except('_token')); }}
-        
+
         </div>
     </div>
 
@@ -297,7 +297,7 @@
             <div class="row">
               <div class="col-lg-12">
                 <div class="input-group">
-                  <input type="text" class="form-control search-text" 
+                  <input type="text" class="form-control search-text"
                     placeholder="{{ trans('messages.search-patient-placeholder') }}">
                   <span class="input-group-btn">
                     <button class="btn btn-default search-patient" type="button">
@@ -366,7 +366,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <span class='label label-default'>
-                        {{trans('messages.specimen-not-received-label')}}</span>                
+                        {{trans('messages.specimen-not-received-label')}}</span>
                 </div>
             </div>
         </div>
@@ -447,7 +447,7 @@
         </a>
     </div> <!-- /. referral-button -->
     <!-- Barcode begins -->
-    
+
     <div id="count" style='display:none;'>0</div>
     <div id ="barcodeList" style="display:none;"></div>
 

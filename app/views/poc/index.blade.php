@@ -52,8 +52,8 @@
 					<th>Gender</th>
 					<th>Age In Months</th>
 					<th>PCR Status</th>
+					<th>Mother's PMTCT ARV</th>
 					<th>EID Test Result</th>
-					<th>Test Date</th>
 					<th>{{trans('messages.actions')}}</th>
 				</tr>
 			</thead>
@@ -72,6 +72,15 @@
 					<td>{{ $patient->gender }}</td>
 					<td class="text-center">{{ $patient->age}}</td>
 					<td>{{ $patient->pcr_level}}</td>
+					<td><i>Antenatal:: </i>{{$patient->pmtct_antenatal}}<br> <i>Delivery:: </i>{{$patient->pmtct_delivery}} <br> <i>Postnatal:: </i>{{$patient->pmtct_postnatal}}</td>
+					@if ($patient->entry_point == '')
+					<td>-</td>
+					@else
+					<td>{{ $patient->entry_point}}</td>
+					@endif
+					<td>{{ $patient->infant_pmtctarv}}</td>
+					<td>{{ $patient->results}}</td>
+					<td>{{ $patient->test_date}}</td>
 					<td>{{ $patient->results }}</td>
 					<td>{{ $patient->test_date }}</td>
 
