@@ -322,7 +322,7 @@ $patient->created_by = Auth::user()->name;
 						->select('poc_tables.*','pr.results', 'pr.test_date')
 						->from('poc_tables')
 						->where('test_date','>=',$fro)
-						->where('test_date','<=',$today)
+						->where('test_date','<=',$to)
 						->get();
 		header('Content-Type: text/csv; charset=utf-8');
 		header("Content-Disposition: attachment; filename=eid_poc_date_$fro"."_$to.csv");
