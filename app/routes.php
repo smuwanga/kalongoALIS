@@ -111,6 +111,16 @@ Route::group(array("before" => "auth"), function()
         "uses" => "PocController@save_results"
     ));
 
+     Route::get("/poc/edit_results/{patient_id}/", array(
+        "as"   => "poc.edit_results",
+        "uses" => "PocController@edit_results"
+    ));
+
+    Route::post("/poc/update_results/{patient_id}/", array(
+        "as"   => "poc.update_results",
+        "uses" => "PocController@update_results"
+    ));
+
     Route::get("/poc_download/", array(
         "as"   => "poc.download",
         "uses" => "PocController@download"

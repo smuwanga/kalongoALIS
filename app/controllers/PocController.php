@@ -295,10 +295,46 @@ $patient->created_by = Auth::user()->name;
 			$result->patient_id = $patient_id;
 			$result->results = Input::get('results');
 			$result->test_date = Input::get('test_date');
+			$result->error_code = Input::get('error_code');
 			try{
 				$result->save();
 				return Redirect::route('poc.index')
 				->with('message', 'Successfully saved results information:!');
+
+			}catch(QueryException $e){
+				Log::error($e);
+				echo $e->getMessage();
+			}
+		}
+	}
+
+	public function edit_results($patient_id){
+		$patient = POC::find($patient_id);
+		$result = POCResult::where('patient_id', $patient_id)->limit(1)->first();
+		return View::make('poc.edit_results')
+		->with('patient', $patient)->with('result', $result);
+	}
+
+	public function update_results($patient_id)
+	{
+		$rules = array(
+			'results' => 'required',
+			'test_date' => 'required',
+		);
+		$validator = Validator::make(Input::all(), $rules);
+
+		if ($validator->fails()) {
+			return Redirect::back()->withErrors($validator)->withInput(Input::all());
+		} else {
+			// store
+			$result = POCResult::find(Input::get('result_id'));
+			$result->results = Input::get('results');
+			$result->test_date = Input::get('test_date');
+			$result->error_code = Input::get('error_code');
+			try{
+				$result->save();
+				return Redirect::route('poc.index')
+				->with('message', 'Successfully updated esults information:!');
 
 			}catch(QueryException $e){
 				Log::error($e);
