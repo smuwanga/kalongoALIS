@@ -100,6 +100,7 @@ $patient->pmtct_antenatal	= Input::get('pmtct_antenatal');
 $patient->pmtct_delivery	= Input::get('pmtct_delivery');
 $patient->pmtct_postnatal	= Input::get('pmtct_postnatal');
 $patient->sample_id	= Input::get('sample_id');
+$patient->other_entry_point	= Input::get('other_entry_point');
 $patient->created_by = Auth::user()->name;
 
 
@@ -367,14 +368,14 @@ $patient->created_by = Auth::user()->name;
 				'Infant Name',
 				'Gender',
 				'Age',
-			
+
 				'EXP No',
 				'Caretaker Number',
 				'Admission Date',
 				'Breastfeeding?',
 				'Entry Point',
 				'Mother Name',
-				
+
 				'Provisional Diagnosis',
 				'Infant PMTCT ARV',
 				'Mother HIV Status',
@@ -393,13 +394,13 @@ $patient->created_by = Auth::user()->name;
 			$row=array(
 				$patient->infant_name,
 				$patient->gender,
-				$patient->age,			
+				$patient->age,
 				$patient->exp_no,
 				$patient->caretaker_number,
 				$patient->admission_date,
 				$patient->breastfeeding_status,
 				$patient->entry_point,
-				$patient->mother_name,				
+				$patient->mother_name,
 				$patient->provisional_diagnosis,
 				$patient->infant_pmtctarv,
 				$patient->mother_hiv_status,
@@ -412,7 +413,7 @@ $patient->created_by = Auth::user()->name;
 				$patient->results,
 				$patient->test_date
 				);
-			fputcsv($output, $row);	
+			fputcsv($output, $row);
 		}
 		fclose($output);
 

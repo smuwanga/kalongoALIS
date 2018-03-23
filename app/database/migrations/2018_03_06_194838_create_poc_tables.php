@@ -43,7 +43,7 @@ class CreatePocTables extends Migration {
 			$table->string('infant_pmtctarv');
 			$table->string('mother_pmtctarv');
 			$table->string('provisional_diagnosis');
-			// $table->string('result');
+			$table->string('other_entry_point');
 			// $table->string('error_code');
 			// $table->string('results_reviewed_by');
 			// $table->date('date_reviewed');
@@ -90,6 +90,7 @@ class CreatePocTables extends Migration {
 		Schema::drop('results_reviewed_by');
 		Schema::drop('date_reviewed');
 		Schema::drop('infant_pmtctarv');
+		Schema::drop('other_entry_point');
 		Schema::drop('results_dispatched_by');
 	}
 
