@@ -83,11 +83,12 @@
 				<div class="radio-inline">{{ Form::radio("entry_point", 'Outpatient', false) }} <span class="input-tag">Outpatient</span></div>
 				<div class="radio-inline">{{ Form::radio("entry_point", 'Young Child Clinic', false) }} <span class="input-tag">Young Child Clinic</span></div>
 				<div class="radio-inline">{{ Form::radio("entry_point", 'EPI', false) }} <span class="input-tag">EPI</span></div>
+				<div class="radio-inline">{{ Form::radio("entry_point", 'Maternity', false) }} <span class="input-tag">Maternity</span></div>
 			</div>
 
 			<div class="form-group">
 				{{ Form::label('other_entry_point', 'Other Entry Point(other than above):',array('class' =>'col-sm-2')) }}
-				{{ Form::text('other_entry_point', Input::old('other_entry_point'), array('class' => 'form-control col-sm-4')) }}
+				{{ Form::text('other_entry_point', Input::old('entry_point'), array('class' => 'form-control col-sm-4')) }}
 			</div>
 
 			<div class="form-group">
