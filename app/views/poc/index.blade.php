@@ -100,7 +100,7 @@
 							{{trans('messages.view')}}
 						</a>
 
-						<a class="btn btn-sm btn-warning" href="{{ URL::route('poc.edit_results', array($patient->id)) }}"
+						<a class="btn btn-sm btn-info" href="{{ URL::route('poc.edit_results', array($patient->id)) }}"
 							<span class="glyphicon glyphicon-edit"></span>
 							Edit Results
 						</a>
