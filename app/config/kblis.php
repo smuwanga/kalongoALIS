@@ -47,7 +47,7 @@ return array(
 	|--------------------------------------------------------------------------
 	|
 	*/
-	'address-info' => 'Plot No. 1 Kamwenge Road, P.O. BOX 10, Kabarole<br>',
+	'address-info' => 'P.O.BOX 2210, Kampala<br>',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -56,7 +56,7 @@ return array(
 	|
 	*/
 
-	// 'organization-logo' => '/i/coat_of_arms_of_uganda.png',
+	'organization-logo' => '/i/coat_of_arms_of_uganda.png',
 	'organization-logo' => '/i/coat_of_arms.png',
 	'uganda-logo' => '/i/uganda.png',
 	'cdc-logo' => '/i/cdc.png',

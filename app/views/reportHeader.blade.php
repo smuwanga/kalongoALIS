@@ -15,13 +15,15 @@
             <tr>
                 <td colspan="12" style="text-align:center;">
 
+                  <!-- {{ @HTML::image(Config::get('kblis.organization-logo'),  Config::get('kblis.country') . trans('messages.court-of-arms'), array('width' => '40px')) }} -->
                    </td>
             </tr>
             <tr>
                 <td colspan="12" style="text-align:center;"><b>
+                    {{ strtoupper(Config::get('constants.MINISTRY')) }}<br>
                     {{ strtoupper(Config::get('constants.FACILITY_NAME')) }}<br>
                     {{Config::get('kblis.address-info')}}</b>
-                    {{ trans('messages.laboratory-report')}}
+                  STORES REQUISITION AND ISSUE VOUCHER
                 </td>
             </tr>
         </thead>
