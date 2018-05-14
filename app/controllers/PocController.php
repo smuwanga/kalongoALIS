@@ -33,6 +33,8 @@ class PocController extends \BaseController {
 		$antenatal = array('0'=>'Lifelong ART', '1' => 'No ART', '2' => 'UNKNOWN');
 		return View::make('poc.index')
 		->with('antenatal',$antenatal)
+		->with('facility',$facility)
+		->with('district',$district)
 		->with('patients', $patients)->withInput(Input::all());
 	}
 
@@ -46,9 +48,15 @@ class PocController extends \BaseController {
 		//Create patients
 		$hiv_status = array('0' => 'Positive', '1' => 'Negative', '2' => 'Unknown');
 		$antenatal= array('0'=>'Lifelong ART', '1' => 'No ART', '2' => 'UNKNOWN');
+		$facility = Hubs::orderBy('name','ASC')
+		->lists('name','id');
+		$district = District::orderBy('name','ASC')
+		->lists('name', 'id');
 
 		return View::make('poc.create')
 		->with('hiv_status', $hiv_status)
+		->with('facility',$facility)
+		->with('district',$district)
 			->with('antenatal', $antenatal);
 	}
 
@@ -101,6 +109,8 @@ $patient->pmtct_delivery	= Input::get('pmtct_delivery');
 $patient->pmtct_postnatal	= Input::get('pmtct_postnatal');
 $patient->sample_id	= Input::get('sample_id');
 $patient->other_entry_point	= Input::get('other_entry_point');
+$patient->facility	= Input::get('facility');
+$patient->district	= Input::get('district');
 $patient->created_by = Auth::user()->name;
 
 

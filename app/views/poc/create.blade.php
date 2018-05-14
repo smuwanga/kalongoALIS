@@ -35,6 +35,17 @@
 
 				</br>
 				<div class="form-group">
+				{{  Form::label('facility', 'Health Unit', array('class'=>'control-label')) }}
+				{{ Form::select('facility', array(null => 'Select Requesting health facility')+$facility,'', array('class' => 'form-control', 'id' => 'facility')) }}
+				</div>		
+				
+				<div class="form-group">
+				{{  Form::label('district', 'In-charge Name', array('class'=>'control-label')) }}
+				{{ Form::select('district', array(null => 'Select Department Incharge/Supervisor')+$district,'', array('class' => 'form-control', 'id' => 'district')) }}
+				</div>	
+
+
+				<div class="form-group">
 					{{ Form::label('infant_name', 'Infant Name', array('class' =>'col-sm-2 required ')) }}
 					{{ Form::text('infant_name', Input::old('infant_name'), array('class' => 'form-control col-sm-4')) }}
 				</div>
@@ -210,10 +221,10 @@
 					</div>
 					<div class="form-group">
 						{{ Form::label('requesting_officer', 'Requesting Clinician:', array('class' =>'col-sm-2 ')) }}
-						{{ Form::text('requesting_officer', Auth::user()->name, array('class' => 'form-control col-sm-4', 'readonly')) }}
+						{{ Form::text('requesting_officer', Auth::user()->name, array('class' => 'form-control col-sm-4')) }}
 
 						{{ Form::label('clinician_phone', 'Mobile Number:', array('class' =>'col-sm-2 ')) }}
-						{{ Form::text('clinician_phone', Auth::user()->phone_contact, array('class' => 'form-control col-sm-4', 'readonly')) }}
+						{{ Form::text('clinician_phone', Auth::user()->phone_contact, array('class' => 'form-control col-sm-4')) }}
 						<!-- {{ Form::text('collection_date', Input::old('collection_date'), array('class' => 'form-control standard-datepicker col-sm-4', 'placeholder' => 'DD/ MM /YYYY')) }} -->
 					</div>
 					<br>

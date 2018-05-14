@@ -47,6 +47,8 @@
 			<thead>
 				<tr>
 					<th>#</th>
+					<th>Facility</th>
+					<th>District</th>
 					<th>Sample ID</th>
 					<th>Infant Name</th>
 					<th>Gender</th>
@@ -69,6 +71,8 @@
 
 				<tr>
 					<td class="text-center">{{ $row }}</td>
+					<td>{{ $patient->facility }}</td>
+					<td>{{ $patient->district }}</td>
 					<td>{{ $patient->sample_id }}</td>
 					<td>{{ $patient->infant_name }}</td>
 					<td>{{ $patient->gender }}</td>
