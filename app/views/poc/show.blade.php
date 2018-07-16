@@ -27,11 +27,15 @@
         </div>
         <div class="panel-body">
             <div class="display-details">
-                <h3 class="view"><strong>Infant Details:</strong>
+                <h5 class="view" style = "color:green;"><strong>Infant Details:</strong>
                   <br>
                   <br>
 
-                    Name: {{ $patient->infant_name }} | Sex: {{ $patient->gender}} | Age: {{ $patient->age}} <i>months</i> | EID Result: {{$patient->results}}</h3>
+                    Name: {{ $patient->infant_name }} | Sex: {{ $patient->gender}} | Age: {{ $patient->age}} <i>months</i> | EID Result: {{$patient->results}}
+| Equipment Used: {{$patient->equipment_used}}
+| Test Date: {{$patient->test_date}}
+| Tested By: {{$patient->tested_by}}
+</h5>
                     <p class="view-striped"><strong>Care Taker's Mobile No:</strong>{{ $patient->caretaker_number}}</p>
                     <p class="view-striped"><strong>Breastfeeding Child:</strong>{{ $patient->breastfeeding_status}}</p>
                     <p class="view-striped"><strong>Exp Number:</strong>{{ $patient->exp_no }}</p>

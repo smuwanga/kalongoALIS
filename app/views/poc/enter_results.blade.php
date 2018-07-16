@@ -24,40 +24,67 @@
 		<div class="form-group actions-row" style="text-align:right;">
 		</div>
 
-			<div class="panel-heading "><strong>Patient Results</strong></div>
-			<div class="panel-body">
+		<div class="panel-heading "><strong>Patient Results</strong></div>
+		<div class="panel-body">
 
-				<div class="form-group">
-					{{ Form::label('infant_name', 'Infant Name:', array('class' =>'col-sm-2 ')) }}
-					{{ $patient->infant_name }}
+			<div class="form-group">
+				{{ Form::label('infant_name', 'Infant Name:', array('class' =>'col-sm-2 ')) }}
+				{{ $patient->infant_name }}
 
-				</div>
+			</div>
 
-				<div class="form-group">
-					{{ Form::label('sample_id', 'Sample ID:', array('class' =>'col-sm-2 ')) }}
-					{{ $patient->sample_id }}
+			<div class="form-group">
+				{{ Form::label('sample_id', 'Sample ID:', array('class' =>'col-sm-2 ')) }}
+				{{ $patient->sample_id }}
 
-				</div>
+			</div>
 
 
-				<div class="form-group">
-					{{ Form::label('results', 'Results:', array('class' =>'col-sm-2 required ')) }}
-					<div class="radio-inline">{{ Form::radio('results', 'Positive', false) }} <span class="input-tag">Positive</span></div>
-					<div class="radio-inline">{{ Form::radio("results", 'Negative', false) }} <span class="input-tag">Negative</span></div>
-					<div class="radio-inline">{{ Form::radio("results", 'Error', false) }} <span class="input-tag">Error</span></div>
-				</div>
+			<div class="form-group">
+				{{ Form::label('results', 'Results:', array('class' =>'col-sm-2 required ')) }}
+				<div class="radio-inline">{{ Form::radio('results', 'Positive', false) }} <span class="input-tag">Positive</span></div>
+				<div class="radio-inline">{{ Form::radio("results", 'Negative', false) }} <span class="input-tag">Negative</span></div>
+				<div class="radio-inline">{{ Form::radio("results", 'Error', false) }} <span class="input-tag">Error</span></div>
+			</div>
 
-				<div class="form-group">
-					{{ Form::label('error_code', 'Error Code:', array('class' =>'col-sm-2 ')) }}
-					{{ Form::text('error_code', Input::old('error_code'), array('class' => 'form-control  col-sm-4')) }}
-				</div>
+			<div class="form-group">
+				{{ Form::label('error_code', 'Error Code:', array('class' =>'col-sm-2 ')) }}
+				{{ Form::text('error_code', Input::old('error_code'), array('class' => 'form-control  col-sm-4')) }}
+			</div>
 
-				<div class="form-group">
-					{{ Form::label('test_date', 'Test Date:', array('class' =>'col-sm-2 ')) }}
-					{{ Form::text('test_date', Input::old('test_date'), array('class' => 'form-control standard-datepicker  col-sm-4')) }}
-				</div>
+<div class="form-group">
+				{{ Form::label('tested_by', 'Tested By:', array('class' =>'col-sm-2 ')) }}
+				{{ Form::text('tested_by', Input::old('tested_by'), array('class' => 'form-control  col-sm-4')) }}
+			</div>
 
-				
+
+		
+
+			<div class="form-group">
+				{{ Form::label('test_date', 'Test Date:', array('class' =>'col-sm-2 ')) }}
+				{{ Form::text('test_date', Input::old('test_date'), array('class' => 'form-control standard-datepicker-nofuture  col-sm-4')) }}
+			</div>
+<div class="form-group">
+
+				{{ Form::label('equipment_used', 'POC Device Used for EID test (Select one):', array('class' =>'col-sm-2 required ')) }}
+				<div class="radio-inline">{{ Form::radio('equipment_used', 'Alere q', false) }} <span class="input-tag">Alere q</span></div>
+				<div class="radio-inline">{{ Form::radio("equipment_used", 'SAMBA I', false) }} <span class="input-tag">SAMBA I</span></div>
+				<div class="radio-inline">{{ Form::radio("equipment_used", 'SAMBA II', false) }} <span class="input-tag">SAMBA II</span></div>
+	<div class="radio-inline">{{ Form::radio("equipment_used", 'GeneXpert', false) }} <span class="input-tag">GeneXpert</span></div>
+
+			<div class="form-group">
+				{{ Form::label('dispatched_by', 'Results reviewed & dispatched By:', array('class' =>'col-sm-2 ')) }}
+				{{ Form::text('dispatched_by', Input::old('dispatched_by'), array('class' => 'form-control  col-sm-4')) }}
+			</div>
+
+
+			<div class="form-group">
+				{{ Form::label('dispatched_date', 'Dispatched Date:', array('class' =>'col-sm-2 ')) }}
+				{{ Form::text('dispatched_date', Input::old('dispatched_date'), array('class' => 'form-control standard-datepicker standard-datepicker-nofuture col-sm-4', 'placeholder' => 'YYYY-MM-DD')) }}
+
+			</div>
+
+
 
 			<div class="form-group actions-row">
 				{{ Form::button('<span class="glyphicon glyphicon-save"></span> '.'SAVE RESULTS',
@@ -65,11 +92,11 @@
 			</div>
 			{{ Form::close() }}
 			<script>
-			$(".standard-datepicker-nofuture").datepicker({
-				 maxDate: new Date(),
-				 dateFormat: "yy-mm-dd"
-			});
-		</script>
+				$(".standard-datepicker-nofuture").datepicker({
+					maxDate: new Date(),
+					dateFormat: "yy-mm-dd"
+				});
+			</script>
 
 		</div>
 

@@ -10,6 +10,22 @@ if($result->results=='Positive'){
 	$res_error = true;
 }
 ?>
+
+<?php
+$res_alere = $res_sambai = $res_sambaii = $res_genexpert = false;
+if($result->equipment_used =='Alere q'){
+	$res_sambai = true;
+}elseif($result->equipment_used =='SAMBA I'){
+	$res_sambaii = true;
+}elseif($result->equipment_used =='SAMBA II'){
+	$res_sambii = true;
+}
+elseif($result->equipment_used =='GeneXpert'){
+	$res_genexpert = true;
+}
+
+?>
+
 <div>
 	<ol class="breadcrumb">
 		<li><a href="{{{URL::route('user.home')}}}">{{ trans('messages.home') }}</a></li>
@@ -24,13 +40,13 @@ if($result->results=='Positive'){
 	</div>
 	<div class="panel-body">
 
-		<!-- if there are creation errors, they will show here -->
+<!-- if there are creation errors, they will show here -->
 		@if($errors->all())
 		<div class="alert alert-danger">
 			{{ HTML::ul($errors->all()) }}
 		</div>
 		@endif
-		{{ Form::open(array('url' => 'poc/update_results/'.$patient->id, 'id' => 'form-create-bbincidence', 'autocomplete' => 'off')) }}
+		{{ Form::open(array('url' => 'poc/update_results/'.$patient->id, 'id' => 'form-create-pocupdate', 'autocomplete' => 'off')) }}
 		<input type="hidden" name="result_id" value="{{ $result->id }}">
 		<div class="form-group actions-row" style="text-align:right;">
 		</div>
@@ -52,21 +68,59 @@ if($result->results=='Positive'){
 
 
 				<div class="form-group">
-					{{ Form::label('results', 'Results:', array('class' =>'col-sm-2 required ')) }}
+{{ Form::label('results', 'Results:', array('class' =>'col-sm-2 required ')) }}
 					<div class="radio-inline">{{ Form::radio('results', 'Positive', $res_positive ) }} <span class="input-tag">Positive</span></div>
 					<div class="radio-inline">{{ Form::radio("results", 'Negative', $res_negative) }} <span class="input-tag">Negative</span></div>
 					<div class="radio-inline">{{ Form::radio("results", 'Error', $res_error) }} <span class="input-tag">Error</span></div>
 				</div>
 
-				<div class="form-group">
-					{{ Form::label('error_code', 'Error Code:', array('class' =>'col-sm-2 ')) }}
-					{{ Form::text('error_code', $result->error_code, array('class' => 'form-control  col-sm-4')) }}
+<div class="form-group">
+{{ Form::label('error_code', 'Error Code:', array('class' =>'col-sm-2 ')) }}
+{{ Form::text('error_code', $result->error_code, array('class' => 'form-control  col-sm-4')) }}
 				</div>
 
 				<div class="form-group">
 					{{ Form::label('test_date', 'Test Date:', array('class' =>'col-sm-2 ')) }}
 					{{ Form::text('test_date', $result->test_date, array('class' => 'form-control standard-datepicker  col-sm-4')) }}
-				</div>
+</div>
+
+
+	<div class="form-group">
+				{{ Form::label('tested_by', 'Tested By:', array('class' =>'col-sm-2 ')) }}
+				{{ Form::text('tested_by', $result->tested_by, array('class' => 'form-control  col-sm-4')) }}
+			</div>
+{{ Form::label('equipment_used', 'POC Device Used for EID test (Select one):', array('class' =>'col-sm-2')) }}
+
+<div class="radio-inline">
+{{ Form::radio('equipment_used', 'Alere q', $res_alere) }} 
+
+
+<span class="input-tag">Alere q</span></div>
+<div class="radio-inline">
+{{ Form::radio("equipment_used", 'SAMBA I', $res_sambai) }} <span class="input-tag">SAMBA I</span></div>
+
+<div class="radio-inline">
+{{ Form::radio("equipment_used", 'SAMBA II', $res_sambaii) }} <span class="input-tag">SAMBA II</span>
+</div>
+
+<div class="radio-inline">
+{{ Form::radio("equipment_used", 'GeneXpert', $res_genexpert) }} <span class="input-tag">GeneXpert</span>
+</div>
+
+
+<div class="form-group">
+{{ Form::label('dispatched_date', 'Dispatched Date:', array('class' =>'col-sm-2 ')) }}
+{{ Form::text('dispatched_date', $result->dispatched_date, array('class' => 'form-control standard-datepicker standard-datepicker-nofuture col-sm-4', 'placeholder' => 'YYYY-MM-DD')) }}
+
+			</div>
+
+	<div class="form-group">
+				{{ Form::label('dispatched_by', 'Dispatched By:', array('class' =>'col-sm-2 ')) }}
+				{{ Form::text('dispatched_by', $result->dispatched_by, array('class' => 'form-control  col-sm-4')) }}
+			</div>
+
+
+
 
 				
 

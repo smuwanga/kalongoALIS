@@ -33,16 +33,6 @@
 				<div class="form-group">
 
 
-				</br>
-				<div class="form-group">
-				{{  Form::label('facility', 'Health Unit', array('class'=>'control-label')) }}
-				{{ Form::select('facility', array(null => 'Select Requesting health facility')+$facility,'', array('class' => 'form-control', 'id' => 'facility')) }}
-				</div>		
-				
-				<div class="form-group">
-				{{  Form::label('district', 'In-charge Name', array('class'=>'control-label')) }}
-				{{ Form::select('district', array(null => 'Select Department Incharge/Supervisor')+$district,'', array('class' => 'form-control', 'id' => 'district')) }}
-				</div>	
 
 
 				<div class="form-group">
@@ -67,7 +57,7 @@
 				<!-- {{ Form::label('exp_no', 'Expo No.', array('class' =>'col-sm-2 ')) }}
 				{{ Form::text('exp_no', Input::old('exp_no'), array('class' => 'form-control col-sm-4', 'placeholder' => 'If Status is not known')) }} -->
 
-				{{ Form::label('breastfeeding_status', 'Is Mother Breastfeeding?', array('class' =>'col-sm-2')) }}
+				{{ Form::label('breastfeeding_status', 'Is Baby Breastfeeding?', array('class' =>'col-sm-2')) }}
 				<div class="radio-inline">{{ Form::radio('breastfeeding_status', 'Yes', false) }} <span class="input-tag">Yes</span></div>
 				<div class="radio-inline">{{ Form::radio("breastfeeding_status", 'No', false) }} <span class="input-tag">No</span></div>
 			</div>
@@ -220,7 +210,7 @@
 						{{ Form::text('collection_date', Input::old('collection_date'), array('class' => 'form-control standard-datepicker standard-datepicker-nofuture col-sm-4', 'placeholder' => 'YYYY-MM-DD')) }}
 					</div>
 					<div class="form-group">
-						{{ Form::label('requesting_officer', 'Requesting Clinician:', array('class' =>'col-sm-2 ')) }}
+						{{ Form::label('requesting_officer', 'Recieved By:', array('class' =>'col-sm-2 ')) }}
 						{{ Form::text('requesting_officer', Auth::user()->name, array('class' => 'form-control col-sm-4')) }}
 
 						{{ Form::label('clinician_phone', 'Mobile Number:', array('class' =>'col-sm-2 ')) }}

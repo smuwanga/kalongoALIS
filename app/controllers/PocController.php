@@ -33,8 +33,8 @@ class PocController extends \BaseController {
 		$antenatal = array('0'=>'Lifelong ART', '1' => 'No ART', '2' => 'UNKNOWN');
 		return View::make('poc.index')
 		->with('antenatal',$antenatal)
-		->with('facility',$facility)
-		->with('district',$district)
+		// ->with('facility',$facility)
+		// ->with('district',$district)
 		->with('patients', $patients)->withInput(Input::all());
 	}
 
@@ -48,15 +48,15 @@ class PocController extends \BaseController {
 		//Create patients
 		$hiv_status = array('0' => 'Positive', '1' => 'Negative', '2' => 'Unknown');
 		$antenatal= array('0'=>'Lifelong ART', '1' => 'No ART', '2' => 'UNKNOWN');
-		$facility = Hubs::orderBy('name','ASC')
-		->lists('name','id');
-		$district = District::orderBy('name','ASC')
-		->lists('name', 'id');
+		// $facility = Hubs::orderBy('name','ASC')
+		// ->lists('name','id');
+		// $district = District::orderBy('name','ASC')
+		// ->lists('name', 'id');
 
 		return View::make('poc.create')
 		->with('hiv_status', $hiv_status)
-		->with('facility',$facility)
-		->with('district',$district)
+		// ->with('facility',$facility)
+		// ->with('district',$district)
 			->with('antenatal', $antenatal);
 	}
 
@@ -87,11 +87,10 @@ class PocController extends \BaseController {
 
 
 $patient = new POC;
-$patient->district_id = \Config::get('constants.DISTRICT_ID');
-$patient->facility_id = \Config::get('constants.FACILITY_ID');
+// $patient->district_id = \Config::get('constants.DISTRICT_ID');
+// $patient->facility_id = \Config::get('constants.FACILITY_ID');
 $patient->gender	= Input::get('gender');
 $patient->age	= Input::get('age');
-// $patient->exp_no = Input::get('exp_no');
 $patient->exp_no = Input::get('exp_no');
 $patient->caretaker_number	= Input::get('caretaker_number');
 $patient->admission_date	= Input::get('admission_date');
@@ -109,8 +108,8 @@ $patient->pmtct_delivery	= Input::get('pmtct_delivery');
 $patient->pmtct_postnatal	= Input::get('pmtct_postnatal');
 $patient->sample_id	= Input::get('sample_id');
 $patient->other_entry_point	= Input::get('other_entry_point');
-$patient->facility	= Input::get('facility');
-$patient->district	= Input::get('district');
+// $patient->facility	= Input::get('facility');
+// $patient->district	= Input::get('district');
 $patient->created_by = Auth::user()->name;
 
 
@@ -152,7 +151,7 @@ $patient->created_by = Auth::user()->name;
 		//$patients = POC::all();
 
 		$patient = POC::leftjoin('poc_results as pr', 'pr.patient_id', '=', 'poc_tables.id')
-						->select('poc_tables.*','pr.results', 'pr.test_date')
+						->select('poc_tables.*','pr.results', 'pr.test_date', 'pr.equipment_used', 'tested_by')
 						->from('poc_tables')->find($id);
 		// ->paginate(Config::get('kblis.page-items'))->appends(Input::except('_token'));
 
@@ -307,6 +306,10 @@ $patient->created_by = Auth::user()->name;
 			$result->results = Input::get('results');
 			$result->test_date = Input::get('test_date');
 			$result->error_code = Input::get('error_code');
+			$result->tested_by = Input::get('tested_by');
+			$result->dispatched_by = Input::get('dispatched_by');
+$result->equipment_used = Input::get('equipment_used');
+			$result->dispatched_date = Input::get('dispatched_date');
 			try{
 				$result->save();
 				return Redirect::route('poc.index')

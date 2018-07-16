@@ -1,48 +1,3 @@
-/* layout.css Style */
-.upload-drop-zone {
-  height: 200px;
-  border-width: 2px;
-  margin-bottom: 20px;
-}
-
-/* skin.css Style*/
-.upload-drop-zone {
-  color: #ccc;
-  border-style: dashed;
-  border-color: #ccc;
-  line-height: 200px;
-  text-align: center
-}
-.upload-drop-zone.drop {
-  color: #222;
-  border-color: #222;
-}
-
-
-
-.image-preview-input {
-    position: relative;
-    overflow: hidden;
-    margin: 0px;    
-    color: #333;
-    background-color: #fff;
-    border-color: #ccc;    
-}
-.image-preview-input input[type=file] {
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin: 0;
-  padding: 0;
-  font-size: 20px;
-  cursor: pointer;
-  opacity: 0;
-  filter: alpha(opacity=0);
-}
-.image-preview-input-title {
-    margin-left:2px;
-}
-
 /* custom size for ion icons */
 .ion-icon{
 	font-size:80px;
@@ -326,7 +281,7 @@ h5 {
   color: #999;
 }
 .icon-list li:hover {
-  background: #f0f7fc;
+  background: red;
 }
 .icon-list li:hover span,
 .icon-list li:hover code {
@@ -848,8 +803,8 @@ fieldset[disabled] .btn-inverse.active {
 }
 /* Tooltip */
 .tooltip > .tooltip-inner {
-    background-color: #040404; 
-    color: #FFFFFF; 
+    background-color: #040404;
+    color: #FFFFFF;
     padding: 15px;
     font-size: 14px;
   }
@@ -3744,10 +3699,10 @@ a.list-group-item-danger:hover {
 .mfp-zoom-in.mfp-removing.mfp-bg {
   opacity: 0;
 }
-/* 
-	
+/*
+
 	====== Move-from-top effect ======
-	
+
 	*/
 .mfp-move-from-top .mfp-content {
   vertical-align: top;
@@ -3775,10 +3730,10 @@ a.list-group-item-danger:hover {
 .mfp-move-from-top.mfp-removing.mfp-bg {
   opacity: 0;
 }
-/* 
-	
+/*
+
 	====== 3d unfold ======
-	
+
 	*/
 .mfp-3d-unfold .mfp-content {
   perspective: 2000px;
@@ -3807,10 +3762,10 @@ a.list-group-item-danger:hover {
 .mfp-3d-unfold.mfp-removing.mfp-bg {
   opacity: 0;
 }
-/* 
-	
+/*
+
 	====== Zoom-out effect ======
-	
+
 	*/
 .mfp-zoom-out .mfp-with-anim {
   opacity: 0;
@@ -5414,6 +5369,4 @@ a.fc-event:hover {
   .page_bar [class*='col-lg'].text-right {
     text-align: left;
   }
-
-
 }

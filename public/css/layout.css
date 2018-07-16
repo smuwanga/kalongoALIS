@@ -11,7 +11,7 @@ body {
   /* Negative indent footer by its height */
   margin: 0 auto -50px;
   /* Pad bottom by footer height */
-  padding: 0 0 50px;
+  padding: 0 0 30px;
  }
 
  /*  General and Miscellaneous Tag Styles */
@@ -137,7 +137,7 @@ label, input {
 
 /*
 *
-* LOGIN PAGE 
+* LOGIN PAGE
 *
 */
 
@@ -147,7 +147,7 @@ label, input {
     width: 100%;
     height: 100%;
     margin: 0;
-    padding: 0; 
+    padding: 0;
     bottom: 0;
     top:0;
     position: absolute;
@@ -253,7 +253,7 @@ label, input {
  *
  * BODY
  *
- */                
+ */
 /*
  *      Side Menubar Left
  */
@@ -270,7 +270,7 @@ label, input {
 }
 .sidebar-nav {
   border-bottom: 1px solid rgba(0, 0, 0, 0.3);
-  
+
 }
 .sidebar-nav ul {
   padding: 0;
@@ -317,7 +317,7 @@ label, input {
         margin-top: 71px;
         overflow-y: auto;
     }
-    
+
 /*
 *
 * FOOTER
@@ -408,7 +408,7 @@ label, input {
 
 /*
 * REPORTS PAGES
-* 
+*
 */
 
 .report-filter .btn{
@@ -571,8 +571,4 @@ table.table.report-table-border > tbody > tr > td{
 
 .x.axis path {
   display: none;
-}
-
-.ui-datepicker .ui-datepicker-title select {
-    color: #000;
 }

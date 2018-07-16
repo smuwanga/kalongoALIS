@@ -18,7 +18,11 @@ class CreatePocResults extends Migration {
 			$table->integer('patient_id')->unsigned();
 			$table->enum('results', array('Negative', 'Positive', 'Error'));
 			$table->date('test_date');
+			$table->string('tested_by');
+			$table->string('dispatched_by');
+			$table->date('dispatched_date');
 			$table->time('test_time');
+			$table->string('equipment_used');
 			$table->foreign('patient_id')->references('id')->on('poc_tables');
 			$table->timestamps();
 		});

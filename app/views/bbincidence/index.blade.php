@@ -71,13 +71,13 @@
 				<tr>
 					<th>#</th>
 					<th>BB incident No.</th>
-					<th>Date / Time</th>
+					<th>Date / Time Of Ocuurence</th>
 					<th>Description</th>
 					<!--<th>Victim Details</th>-->
-					<!--<th>Nature of Incident</th>
 					<th>Cause of Incident</th>
+					<th>Nature of Incident</th>
 
-					<th>Actions</th> -->
+					<th>Actions</th>
 
 				</tr>
 			</thead>
@@ -94,7 +94,7 @@
 
 				<!--	<td class="text-left"> {{$bbincidence->personnel_surname}} {{$bbincidence->personnel_othername}}<br>{{$bbincidence->personnel_gender}}</td>-->
 
-				<!--	<td>
+					<td>
 						@foreach ($bbincidence->bbnature as $nature)
 							<span title="{{$nature->name}}">{{$nature->priority}}/{{$nature->class}};</span>
 						@endforeach
@@ -104,7 +104,7 @@
 						@foreach ($bbincidence->bbcause as $cause)
 							{{$cause->causename}};
 						@endforeach
-					</td>-->
+					</td>
 
 					<td>'{{ $bbincidence->description }}'</td>
 

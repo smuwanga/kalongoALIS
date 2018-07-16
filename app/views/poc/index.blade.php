@@ -90,7 +90,7 @@
 
 					<td>
 
-						@if(Auth::user()->can('request_test') and empty($patient->results))
+						@if($patient->results == "")
 						<a class="btn btn-sm btn-warning" href="{{ URL::route('poc.enter_results', array($patient->id)) }}"
 							<span class="glyphicon glyphicon-edit"></span>
 							Enter Results
