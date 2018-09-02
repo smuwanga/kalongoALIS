@@ -15,7 +15,7 @@ class UNHLSEquipmentBreakdown extends Eloquent
 	{
 
 		$staff = UNHLSStaff::find($id);
-		return $staff->firstName." ".$staff->lastName;
+		// return $staff->name." ".$staff->name;
 
 	}
 

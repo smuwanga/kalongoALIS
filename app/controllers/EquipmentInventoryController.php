@@ -36,8 +36,8 @@ class EquipmentInventoryController extends \BaseController {
 		$procurement_type_list = array('0' => 'Placement', '1' => 'Procured');
 		$location_list = array('0' => 'Chemistry', '1' => 'Microbiology', '2' => 'Mycology','3' => 'Heamatology', '4' => 'Serology', '5' => 'Blood Transfusion', '6' => 'Immunology', '7' => 'Ecology', '8' => 'Parasitology', '9' => 'Pathology');
 		$yes_no_list = array('1' => 'Yes', '0' => 'No');
-		$service_frequency_list = array('0' => '3 months', '1' => '6 months', '2' => '9 months', '4' => '12 months');	
-		$warranty_list = array('0' => '6 months','1' => '1 year', '2' => '2 years', '3' => '3 years', '4' => '4 years', '5' => '5 years');	
+		$service_frequency_list = array('0' => '3 months', '1' => '6 months', '2' => '9 months', '4' => '12 months');
+		$warranty_list = array('0' => '6 months','1' => '1 year', '2' => '2 years', '3' => '3 years', '4' => '4 years', '5' => '5 years');
 
 		$supplier_list = UNHLSEquipmentSupplier::get(['name','id'])->lists('name','id');
 
@@ -65,7 +65,7 @@ class EquipmentInventoryController extends \BaseController {
 		'equipment_name' => 'required',
 		'model' => 'required',
 		'serial_number' => 'required',
-		'location' => 'required',		
+		'location' => 'required',
 		'procurement_type' => 'required',
 		'purchase_date' => 'required',
 		'delivery_date' => 'required',
@@ -76,10 +76,10 @@ class EquipmentInventoryController extends \BaseController {
 		'life_time' => 'required',
 		'service_frequency' => 'required',
 		'supplier_id' => 'required',
-		'service_contract' => 'required'									
+		'service_contract' => 'required'
 
 		);
-		
+
 		$validator = Validator::make(Input::all(), $rules);
 
 		if ($validator->fails()) {
@@ -89,24 +89,24 @@ class EquipmentInventoryController extends \BaseController {
 			$item = new UNHLSEquipmentInventory;
 
         	$item->district_id = \Config::get('constants.DISTRICT_ID') ;
-        	$item->facility_id = \Config::get('constants.FACILITY_ID');        
+        	$item->facility_id = \Config::get('constants.FACILITY_ID');
         	$item->year_id = \Config::get('constants.FIN_YEAR_ID');  
 
 			$item->name = Input::get('equipment_name');
 			$item->model = Input::get('model');
 			$item->serial_number = Input::get('serial_number');
 			$item->location = Input::get('location');
-			$item->procurement_type = Input::get('procurement_type'); 
-			$item->purchase_date = Input::get('purchase_date');      
-			$item->delivery_date = Input::get('delivery_date');      
-			$item->verification_date = Input::get('verification_date');      
-			$item->installation_date = Input::get('installation_date'); 
-			$item->spare_parts = Input::get('spare_parts');      
-			$item->warranty = Input::get('warranty');      
-			$item->life_span = Input::get('life_time');      
+			$item->procurement_type = Input::get('procurement_type');
+			$item->purchase_date = Input::get('purchase_date');
+			$item->delivery_date = Input::get('delivery_date');
+			$item->verification_date = Input::get('verification_date');
+			$item->installation_date = Input::get('installation_date');
+			$item->spare_parts = Input::get('spare_parts');
+			$item->warranty = Input::get('warranty');
+			$item->life_span = Input::get('life_time');
 			$item->service_frequency = Input::get('service_frequency');
 			$item->supplier_id = Input::get('supplier_id');
-			$item->service_contract = Input::get('service_contract');          
+			$item->service_contract = Input::get('service_contract');
 
 			$item->save();
 
