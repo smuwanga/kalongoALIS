@@ -42,19 +42,16 @@
 			</a>
 		</div>
 	</div>
-	<div class="panel-body">
+	<div class="panel-body" style="overflow-x:auto;">
 		<table class="table table-striped table-bordered table-hover table-condensed search-table">
 			<thead>
 				<tr>
 					<th>#</th>
-					<th>Facility</th>
-					<th>District</th>
 					<th>Sample ID</th>
 					<th>Infant Name</th>
 					<th>Gender</th>
 					<th>Age In Months</th>
 					<th>PCR Status</th>
-					<th>Mother's PMTCT ARV</th>
 					<th>Entry Point</th>
 					<th>EID Test Result</th>
 					<th>Test Date</th>
@@ -71,14 +68,11 @@
 
 				<tr>
 					<td class="text-center">{{ $row }}</td>
-					<td>{{ $patient->facility }}</td>
-					<td>{{ $patient->district }}</td>
 					<td>{{ $patient->sample_id }}</td>
 					<td>{{ $patient->infant_name }}</td>
 					<td>{{ $patient->gender }}</td>
 					<td class="text-center">{{ $patient->age}}</td>
 					<td>{{ $patient->pcr_level}}</td>
-					<td><i>Antenatal:: </i>{{$patient->pmtct_antenatal}}<br> <i>Delivery:: </i>{{$patient->pmtct_delivery}} <br> <i>Postnatal:: </i>{{$patient->pmtct_postnatal}}</td>
 					@if ($patient->entry_point == '')
 					<td>-</td>
 					@else
