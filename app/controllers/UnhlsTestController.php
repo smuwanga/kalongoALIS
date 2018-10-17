@@ -1049,8 +1049,6 @@ class UnhlsTestController extends \BaseController {
 
             $failed_import = array();
 
-            return $data;
-
             if(!empty($data) && $data->count()){
                 foreach ($data as $key => $value) {
 
