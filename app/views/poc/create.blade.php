@@ -53,10 +53,8 @@
 			<div class="form-group">
 				{{ Form::label('exp_no', 'Exp. Number', array('class' =>'col-sm-2 required ')) }}
 				{{ Form::text('exp_no', Input::old('exp_no'), array('class' => 'form-control col-sm-4', 'placeholder' => '(If Status is not known)')) }}
-
-				<!-- {{ Form::label('exp_no', 'Expo No.', array('class' =>'col-sm-2 ')) }}
-				{{ Form::text('exp_no', Input::old('exp_no'), array('class' => 'form-control col-sm-4', 'placeholder' => 'If Status is not known')) }} -->
-
+			</div>
+			<div class="form-group">
 				{{ Form::label('breastfeeding_status', 'Is Baby Breastfeeding?', array('class' =>'col-sm-2')) }}
 				<div class="radio-inline">{{ Form::radio('breastfeeding_status', 'Yes', false) }} <span class="input-tag">Yes</span></div>
 				<div class="radio-inline">{{ Form::radio("breastfeeding_status", 'No', false) }} <span class="input-tag">No</span></div>
