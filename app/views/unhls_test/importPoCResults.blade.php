@@ -54,13 +54,13 @@
 
 					@if ($failed_import)
 					<!-- Upload Finished -->
-						<div class="js-upload-finished">
+<!-- 						<div class="js-upload-finished">
 							<h4>Failed upload results list</h4>
 							<ul class="list-group"> 
 								
 									<li class="list-group-item list-group-item-danger"> {{implode("</br>",$failed_import)}} </li> 
 								
-						</ul>
+						</ul> -->
 					@endif
 		{{ Form::close() }}
 		</div>

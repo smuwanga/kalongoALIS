@@ -1066,7 +1066,7 @@ class UnhlsTestController extends \BaseController {
 										$result = new POCResult;			
 
 										$result->patient_id = $patient->id;
-										$result->test_date = date('Y-m-d H:i:s');
+										$result->test_date = isset($value->test_date)?$value->test_date:date('Y-m-d H:i:s');
 										if(isset($value->result)){
 											$valid_result = $value->result=='Positive'||$value->result=='Negative';
 											$result->results = $valid_result?$value->result:'Error';
