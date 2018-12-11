@@ -86,31 +86,31 @@ class PocController extends \BaseController {
 
 
 
-$patient = new POC;
-// $patient->district_id = \Config::get('constants.DISTRICT_ID');
-// $patient->facility_id = \Config::get('constants.FACILITY_ID');
-$patient->gender	= Input::get('gender');
-$patient->age	= Input::get('age');
-$patient->exp_no = Input::get('exp_no');
-$patient->caretaker_number	= Input::get('caretaker_number');
-$patient->admission_date	= Input::get('admission_date');
-$patient->breastfeeding_status	= Input::get('breastfeeding_status');
-$patient->entry_point	= Input::get('entry_point');
-$patient->mother_name	= Input::get('mother_name');
-$patient->infant_name	= Input::get('infant_name');
-$patient->provisional_diagnosis	= Input::get('provisional_diagnosis');
-$patient->infant_pmtctarv	= Input::get('infant_pmtctarv');
-$patient->mother_hiv_status	= Input::get('mother_hiv_status');
-$patient->collection_date	= Input::get('collection_date');
-$patient->pcr_level	= Input::get('pcr_level');
-$patient->pmtct_antenatal	= Input::get('pmtct_antenatal');
-$patient->pmtct_delivery	= Input::get('pmtct_delivery');
-$patient->pmtct_postnatal	= Input::get('pmtct_postnatal');
-$patient->sample_id	= Input::get('sample_id');
-$patient->other_entry_point	= Input::get('other_entry_point');
-// $patient->facility	= Input::get('facility');
-// $patient->district	= Input::get('district');
-$patient->created_by = Auth::user()->name;
+			$patient = new POC;
+			// $patient->district_id = \Config::get('constants.DISTRICT_ID');
+			// $patient->facility_id = \Config::get('constants.FACILITY_ID');
+			$patient->gender	= Input::get('gender');
+			$patient->age	= Input::get('age');
+			$patient->exp_no = Input::get('exp_no');
+			$patient->caretaker_number	= Input::get('caretaker_number');
+			$patient->admission_date	= Input::get('admission_date');
+			$patient->breastfeeding_status	= Input::get('breastfeeding_status');
+			$patient->entry_point	= Input::get('entry_point');
+			$patient->mother_name	= Input::get('mother_name');
+			$patient->infant_name	= Input::get('infant_name');
+			$patient->provisional_diagnosis	= Input::get('provisional_diagnosis');
+			$patient->infant_pmtctarv	= Input::get('infant_pmtctarv');
+			$patient->mother_hiv_status	= Input::get('mother_hiv_status');
+			$patient->collection_date	= Input::get('collection_date');
+			$patient->pcr_level	= Input::get('pcr_level');
+			$patient->pmtct_antenatal	= Input::get('pmtct_antenatal');
+			$patient->pmtct_delivery	= Input::get('pmtct_delivery');
+			$patient->pmtct_postnatal	= Input::get('pmtct_postnatal');
+			$patient->sample_id	= Input::get('sample_id');
+			$patient->other_entry_point	= Input::get('other_entry_point');
+			// $patient->facility	= Input::get('facility');
+			// $patient->district	= Input::get('district');
+			$patient->created_by = Auth::user()->name;
 
 
 			try{
@@ -121,7 +121,7 @@ $patient->created_by = Auth::user()->name;
 
 			}catch(QueryException $e){
 				Log::error($e);
-				echo $e->getMessage();
+				return Response::view('poc.error', array(), 404);
 			}
 
 			// redirect

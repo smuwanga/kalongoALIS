@@ -5,26 +5,21 @@
 </style>
 <br>
 <br>
-<b>From Unit/Department: VL Abbott Lab</b>
-<br>
-<br>
-<b>Date:.......................</b>
-<br>
-<br>
+<b>{{trans('messages.patient-report').': '.date('d-m-Y')}}</b>
 <br>
 <table style="border-bottom: 1px solid #cecfd5;">
 	<tr>
-		<td colspan="2"><strong>Incharge Name:</strong></td>
+		<td colspan="2"><strong>{{ trans('messages.patient-name')}}</strong></td>
 		@if(Entrust::can('view_names'))
 			<td colspan="3">{{ $patient->name }}</td>
 		@else
 			<td colspan="3">N/A</td>
 		@endif
-		<!-- <td colspan="1"><strong>{{ trans('messages.gender')}}:</strong></td>
+		<td colspan="1"><strong>{{ trans('messages.gender')}}</strong></td>
 		<td colspan="1">{{ $patient->getGender(false) }}</td>
 		<td colspan="1"><strong>{{ trans('messages.age')}}</strong></td>
-		<td colspan="1">{{ $patient->getAge()}}</td> -->
-		<td colspan="1"><strong>Voucher No.</strong></td>
+		<td colspan="1">{{ $patient->getAge()}}</td>
+		<td colspan="1"><strong>Lab ID</strong></td>
 		<td colspan="2">{{ $patient->ulin}}</td>
 	</tr>
 </table>
@@ -50,10 +45,6 @@
 </table>
 <br>
 <br>
-<br>
-<br>
-<table style="border-bottom: 1px solid #cecfd5;">
-<table style="border-bottom: 1px solid #cecfd5;">
 <table style="border-bottom: 1px solid #cecfd5;">
 		<tr>
 			<th colspan="6">Lab Reception</th>
@@ -71,7 +62,7 @@
 </table>
 <table style="border-bottom: 1px solid #cecfd5;">
 		@forelse($tests as $test)
-				<tr>
+				<tr>	
 					<td colspan="2">{{ $test->specimen->specimenType->name }}</td>
 					@if($test->specimen->specimen_status_id == UnhlsSpecimen::NOT_COLLECTED)
 						<td colspan="2"></td>

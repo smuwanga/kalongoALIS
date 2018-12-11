@@ -26,7 +26,7 @@ return array(
 	|
 	*/
 
-	'url' => '/var/www/iBLIS_UGANDA/public',
+	'url' => '/Library/WebServer/Documents/iBLIS_UGANDA/public',
 
 	/*
 	|--------------------------------------------------------------------------
