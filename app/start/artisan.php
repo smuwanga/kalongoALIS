@@ -14,3 +14,4 @@
 Artisan::add(new SeedUpdater);
 Artisan::add(new DailyReporter);
 Artisan::add(new ResetUuidGenerator);
+Artisan::add(new ChangePocSampleId);
