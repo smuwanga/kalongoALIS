@@ -30,7 +30,7 @@
 										<div class="stat_box">
 											<div class="stat_ico color_a"><i class="ion-forward"></i></div>
 											<div class="stat_content">
-												@if(UnhlsTest::where('test_status_id','=', 4)->count() > 0)
+												@if(UnhlsTest::where('test_status_id','=', 4)->count() > 0 and Referral::whereMonth('created_at', '=', Carbon::today()->month)->count())
 												<span class="stat_count">{{round(Referral::whereMonth('created_at', '=', Carbon::today()->month)->count()/
 													UnhlsTest::where('test_status_id','=', 4)->whereMonth('time_created', '=', Carbon::today()->month)->count()/100, 2)}}%</span>
 												@endif
@@ -79,7 +79,7 @@
 										<div class="stat_box">
 											<div class="stat_ico color_c"><i class="ion-ios-close"></i></div>
 											<div class="stat_content">
-												@if(UnhlsSpecimen::count() > 0)
+												@if(UnhlsSpecimen::count() > 0 and UnhlsSpecimen::where('specimen_status_id', '=',3)->whereMonth('time_collected', '=', Carbon::today()->month)->count())
 												<span class="stat_count">{{round(UnhlsSpecimen::where('specimen_status_id', '=',3)->whereMonth('time_collected', '=', Carbon::today()->month)->count()*100/
 													UnhlsSpecimen::whereMonth('time_collected', '=', Carbon::today()->month)->count(), 2)}} % </span>
 												@endif
@@ -89,7 +89,7 @@
 										<div class="stat_box">
 											<div class="stat_ico color_c"><i class="ion-ios-checkmark"></i></div>
 											<div class="stat_content">
-												@if(UnhlsSpecimen::count() > 0)
+												@if(UnhlsSpecimen::count() > 0 and UnhlsSpecimen::whereMonth('time_collected', '=', Carbon::today()->month)->where('specimen_status_id', '=', 2)->count())
 												<span class="stat_count">{{round(UnhlsSpecimen::whereMonth('time_collected', '=', Carbon::today()->month)->where('specimen_status_id', '=', 2)->count()*100/
 													UnhlsSpecimen::whereMonth('time_collected', '=', Carbon::today()->month)->count(), 2)}} %</span>
 												@endif

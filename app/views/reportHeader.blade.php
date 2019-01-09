@@ -5,6 +5,8 @@
      }
 </style>
 
+
+
     <table style="padding: 0px;" >
         <thead>
             <tr>
@@ -19,11 +21,15 @@
                    </td>
             </tr>
             <tr>
+               
                 <td colspan="12" style="text-align:center;"><b>
                     {{ strtoupper(Config::get('constants.MINISTRY')) }}<br>
-                    {{ strtoupper(Config::get('constants.FACILITY_NAME')) }}<br>
+                    <span style="font-size:14px">
+                        {{ strtoupper(Config::get('constants.FACILITY_NAME')) }}<br>
+                    </span>
+                    
                     {{Config::get('kblis.address-info')}}</b>
-                  STORES REQUISITION AND ISSUE VOUCHER
+                     {{Config::get('kblis.report-name')}}
                 </td>
             </tr>
         </thead>

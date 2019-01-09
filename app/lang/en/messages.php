@@ -110,6 +110,7 @@ return array(
     'patient-unhls' => 'Patient Information',
     'patient-details' => 'Patient Details',
     'patient-id' => 'Patient ID',
+    'patient-contact'=>'Contact',
     //'patient-search-button' => 'Go!', UNHLS Terminology
     'patient-search-button' => 'View!',
     'patient-number' => 'Patient OPD/IPD Number.',
@@ -428,7 +429,8 @@ return array(
     'include-pending-tests' => 'Include Pending Tests',
     'include-range-visualization' => 'Include Range Visualization',
     'no-records-found' => 'No records found.',
-    'patient-report' => 'Patient Report',
+    'patient-report' => 'Report',
+    'report-date'=>'Report Date',
     'positivity-rates' => 'Positivity Rates',
     'report' => 'Report|Reports',
     'print' => 'Print',
