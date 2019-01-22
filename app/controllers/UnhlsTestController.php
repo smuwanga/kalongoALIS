@@ -507,6 +507,12 @@ class UnhlsTestController extends \BaseController {
 		$rules = array(
 			'visit_type' => 'required',
 			'testtypes' => 'required',
+			'phone_contact'=>'required',
+			'physician'=>'required',
+			'current_therapy'=>'required',
+			'previous_therapy'=>'required',
+			'clinical_notes'=>'required'
+
 		);
 		$validator = Validator::make(Input::all(), $rules);
 
@@ -537,6 +543,11 @@ class UnhlsTestController extends \BaseController {
 			$therapy->visit_id = $visit->id;
 			$therapy->previous_therapy = Input::get('previous_therapy');
 			$therapy->current_therapy = Input::get('current_therapy');
+
+			$therapy->clinical_notes = Input::get('clinical_notes');
+            $therapy->clinician = Input::get('physician');
+            $therapy->contact = Input::get('phone_contact');
+
 			$therapy->save();
 
 			/*
@@ -563,6 +574,8 @@ class UnhlsTestController extends \BaseController {
                         $test->test_status_id = UnhlsTest::PENDING;
                         $test->created_by = Auth::user()->id;
                         $test->requested_by = Input::get('physician');
+                        
+
                         $test->purpose = Input::get('hiv_purpose');
                         $test->save();
 
@@ -890,6 +903,7 @@ class UnhlsTestController extends \BaseController {
 	 */
 	public function viewDetails($testID)
 	{
+
 		return View::make('unhls_test.viewDetails')->with('test', UnhlsTest::find($testID));
 		
 	}
@@ -910,6 +924,26 @@ class UnhlsTestController extends \BaseController {
 
 		//Fire of entry verified event
 		Event::fire('test.verified', array($testID));
+
+		return View::make('unhls_test.viewDetails')->with('test', $test);
+	}
+
+	/**
+	 * Approve Test
+	 *
+	 * @param
+	 * @return
+	 */
+	public function approve($testID)
+	{
+		$test = UnhlsTest::find($testID);
+		$test->test_status_id = UnhlsTest::APPROVED;
+		$test->time_approved = date('Y-m-d H:i:s');
+		$test->approved_by = Auth::user()->id;
+		$test->save();
+
+		//Fire of entry approved event
+		Event::fire('test.approved', array($testID));
 
 		return View::make('unhls_test.viewDetails')->with('test', $test);
 	}

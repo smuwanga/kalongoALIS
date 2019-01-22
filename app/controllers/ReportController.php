@@ -28,6 +28,186 @@ class ReportController extends \BaseController {
 		return View::make('reports.patient.index')->with('patients', $patients)->withInput(Input::all());
 	}
 
+	public function viewFinalPatientReport($id, $visit = null,$testId = null){
+		$from = Input::get('start');
+		$to = Input::get('end');
+		$pending = Input::get('pending');
+		$date = date('Y-m-d');
+		$error = '';
+		$visitId = Input::get('visit_id');
+		//	Check checkbox if checked and assign the 'checked' value
+		if (Input::get('tests') === '1') {
+			$pending='checked';
+		}
+		//	Query to get tests of a particular patient
+		if (($visit || $visitId) && $id && $testId){
+			$tests = UnhlsTest::where('id', '=', $testId);
+		}
+		else if(($visit || $visitId) && $id){
+			$tests = UnhlsTest::where('visit_id', '=', $visit?$visit:$visitId);
+		}
+		else{
+			$tests = UnhlsTest::join('unhls_visits', 'unhls_visits.id', '=', 'unhls_tests.visit_id')
+							->where('patient_id', '=', $id);
+		}
+		//	Begin filters - include/exclude pending tests
+		if($pending){
+			$tests=$tests->where('unhls_tests.test_status_id', '!=', UnhlsTest::SPECIMEN_NOT_RECEIVED);
+		}
+		else{
+			$tests = $tests->whereIn('unhls_tests.test_status_id', [UnhlsTest::APPROVED]);
+		}
+		//	Date filters
+		if($from||$to){
+
+			if(!$to) $to = $date;
+
+			if(strtotime($from)>strtotime($to)||strtotime($from)>strtotime($date)||strtotime($to)>strtotime($date)){
+					$error = trans('messages.check-date-range');
+			}
+			else
+			{
+				$toPlusOne = date_add(new DateTime($to), date_interval_create_from_date_string('1 day'));
+				$tests=$tests->whereBetween('time_created', array($from, $toPlusOne->format('Y-m-d H:i:s')));
+			}
+		}
+		//	Get tests collection
+		$tests = $tests->get(array('unhls_tests.*'));
+		//	Get patient details
+		$patient = UnhlsPatient::find($id);
+		//	Check if tests are accredited
+		$accredited = $this->accredited($tests);
+		$verified = array();
+		foreach ($tests as $test) {
+			if($test->isVerified())
+				array_push($verified, $test->id);
+			else
+				continue;
+		}
+         
+
+		// adhoc config decision
+		//$template = AdhocConfig::where('name','Report')->first()->getReportTemplate();
+		$template = "reports.patient.entebbe_iso";
+
+		$content = View::make($template)
+			->with('patient', $patient)
+			->with('tests', $tests)
+			->with('pending', $pending)
+			->with('error', $error)
+			->with('visit', $visit)
+			->with('accredited', $accredited)
+			->with('verified', $verified)
+			->withInput(Input::all());
+
+			ob_end_clean();
+
+		$test_request_information  = array(
+			'tests' => $tests, 
+			'patient'=> $patient
+			);
+		$pdf = new FinalReportPdf;
+		$pdf->setTestRequestInformation($test_request_information);
+
+		$pdf->SetAutoPageBreak(TRUE, 15);
+		$pdf->AddPage();
+		$pdf->SetFont('times','','11');
+		$pdf->writeHTML($content, 'true', 'false', 'false', 'false', '');
+
+		return $pdf->output('report.pdf');
+
+
+	}
+
+	public function viewInterimPatientReport($id, $visit = null,$testId = null){
+		$from = Input::get('start');
+		$to = Input::get('end');
+		$pending = Input::get('pending');
+		$date = date('Y-m-d');
+		$error = '';
+		$visitId = Input::get('visit_id');
+		//	Check checkbox if checked and assign the 'checked' value
+		if (Input::get('tests') === '1') {
+			$pending='checked';
+		}
+		//	Query to get tests of a particular patient
+	    if(($visit || $visitId) && $id){
+			$tests = UnhlsTest::where('visit_id', '=', $visit?$visit:$visitId);
+		}
+		else{
+			$tests = UnhlsTest::join('unhls_visits', 'unhls_visits.id', '=', 'unhls_tests.visit_id')
+							->where('patient_id', '=', $id);
+		}
+		//	Begin filters - include/exclude pending tests
+		/**if($pending){
+			$tests=$tests->where('unhls_tests.test_status_id', '!=', UnhlsTest::SPECIMEN_NOT_RECEIVED);
+		}*/
+		
+		$tests = $tests->whereIn('unhls_tests.test_status_id', [UnhlsTest::VERIFIED,UnhlsTest::APPROVED]);
+		
+		//	Date filters
+		if($from||$to){
+
+			if(!$to) $to = $date;
+
+			if(strtotime($from)>strtotime($to)||strtotime($from)>strtotime($date)||strtotime($to)>strtotime($date)){
+					$error = trans('messages.check-date-range');
+			}
+			else
+			{
+				$toPlusOne = date_add(new DateTime($to), date_interval_create_from_date_string('1 day'));
+				$tests=$tests->whereBetween('time_created', array($from, $toPlusOne->format('Y-m-d H:i:s')));
+			}
+		}
+		//	Get tests collection
+		$tests = $tests->get(array('unhls_tests.*'));
+		//	Get patient details
+		$patient = UnhlsPatient::find($id);
+		//	Check if tests are accredited
+		$accredited = $this->accredited($tests);
+		$verified = array();
+		foreach ($tests as $test) {
+			if($test->isVerified())
+				array_push($verified, $test->id);
+			else
+				continue;
+		}
+
+		
+		
+		// adhoc config decision
+		//$template = AdhocConfig::where('name','Report')->first()->getReportTemplate();
+		$template = "reports.patient.entebbe_iso";
+
+		$content = View::make($template)
+			->with('patient', $patient)
+			->with('tests', $tests)
+			->with('pending', $pending)
+			->with('error', $error)
+			->with('visit', $visit)
+			->with('accredited', $accredited)
+			->with('verified', $verified)
+			->withInput(Input::all());
+
+			ob_end_clean();
+		$test_request_information  = array(
+			'tests' => $tests, 
+			'patient'=> $patient
+			);
+		
+		
+		$pdf = new InterimReportPdf;
+		$pdf->setTestRequestInformation($test_request_information);
+		$pdf->SetAutoPageBreak(TRUE, 15);
+		$pdf->AddPage();
+		$pdf->SetFont('times','','11');
+		$pdf->writeHTML($content, 'true', 'false', 'false', 'false', '');
+
+		return $pdf->output('report.pdf');
+
+
+	}
+
 	/**
 	 * Display data after applying the filters on the report uses patient ID
 	 *
@@ -90,6 +270,7 @@ class ReportController extends \BaseController {
 				continue;
 		}
 
+		
 		// adhoc config decision
 		$template = AdhocConfig::where('name','Report')->first()->getReportTemplate();
 

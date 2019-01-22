@@ -347,6 +347,11 @@ Route::group(array("before" => "auth"), function()
         "as"   => "test.verify",
         "uses" => "UnhlsTestController@verify"
     ));
+    Route::any("/test/{test}/approve", array(
+        "before" => "checkPerms:approve_test_results",
+        "as"   => "test.approve",
+        "uses" => "UnhlsTestController@approve"
+    ));
     Route::resource('culture', 'CultureController');
     Route::resource('cultureobservation', 'CultureObservationController');
     Route::resource('cultureobservation', 'CultureObservationController');
@@ -448,6 +453,14 @@ Route::group(array("before" => "auth"), function()
         Route::any("/patientreport/{id}", array(
             "as" => "reports.patient.report",
             "uses" => "ReportController@viewPatientReport"
+        ));
+        Route::any("/patient_final_report/{id}/{visit}", array(
+            "as" => "reports.patient.report",
+            "uses" => "ReportController@viewFinalPatientReport"
+        ));
+         Route::any("/patient_interim_report/{id}/{visit}", array(
+            "as" => "reports.patient.interim.report",
+            "uses" => "ReportController@viewInterimPatientReport"
         ));
         Route::any("/patientreport/{id}/{visit}/{testId?}", array(
             "as" => "reports.patient.report",

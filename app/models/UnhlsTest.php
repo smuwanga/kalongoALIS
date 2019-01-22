@@ -24,6 +24,7 @@ class UnhlsTest extends Eloquent
 	// todo: consider how to consider it's pending, completed and verified statuses without confusion
 	const REFERRED_IN = 7;
 	const REFERRED_OUT = 8;
+	const APPROVED = 7;//The final phase of a test. This means that all tests for this patient's visit are ready to be officially handed over
 
 
 	/**
@@ -38,6 +39,15 @@ class UnhlsTest extends Eloquent
 	{
 		return $this->belongsTo('UnhlsVisit', 'visit_id');
 	}	
+
+	/**
+	*
+	*
+	*/
+	public function therapy()
+	{
+		return $this->belongsTo('Therapy','visit_id');
+	}
 
 	/**
 	 * Test Type relationship
@@ -93,6 +103,14 @@ class UnhlsTest extends Eloquent
 	public function verifiedBy()
 	{
 		return $this->belongsTo('User', 'verified_by', 'id');
+	}
+
+	/**
+	 * User (verified) relationship
+	 */
+	public function approvedBy()
+	{
+		return $this->belongsTo('User', 'approved_by', 'id');
 	}
 
 	/**
@@ -192,6 +210,19 @@ class UnhlsTest extends Eloquent
 	public function isVerified()
 	{
 		if($this->test_status_id == UnhlsTest::VERIFIED)
+			return true;
+		else 
+			return false;
+	}
+
+	/**
+	 * Helper function: check if the Test status is VERIFIED
+	 *
+	 * @return boolean
+	 */
+	public function isApproved()
+	{
+		if($this->test_status_id == UnhlsTest::APPROVED)
 			return true;
 		else 
 			return false;

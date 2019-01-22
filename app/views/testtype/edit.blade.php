@@ -77,6 +77,8 @@
 			<div class="form-group">
 				{{ Form::label('targetTAT', trans('messages.target-turnaround-time')) }}
 				{{ Form::text('targetTAT', Input::old('targetTAT'), array('class' => 'form-control')) }}
+				{{ Form::select('targetTAT_unit', array('','minutes' => 'Minutes', 'hours' => 'Hours','days'=>'Days'), 
+						Input::old('targetTAT_unit'),array('class' => 'form-control','required' => 'required')) }}
 			</div>
 		<div class="panel-footer">
 			<div class="form-group actions-row">

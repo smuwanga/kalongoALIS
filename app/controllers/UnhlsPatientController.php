@@ -56,6 +56,8 @@ class UnhlsPatientController extends \BaseController {
 			'name'       => 'required',
 			'gender' => 'required',
 			'dob' => 'required' ,
+			'village_residence' => 'required',
+			'phone_number' => 'required'
 		);
 		$validator = Validator::make(Input::all(), $rules);
 
@@ -141,7 +143,9 @@ class UnhlsPatientController extends \BaseController {
 		$rules = array(
 			'name'       => 'required',
 			'gender' => 'required',
-			'dob' => 'required'
+			'dob' => 'required',
+			'village_residence' => 'required',
+			'phone_number' => 'required'
 		);
 		$validator = Validator::make(Input::all(), $rules);
 
@@ -158,6 +162,7 @@ class UnhlsPatientController extends \BaseController {
 			$patient->name = Input::get('name');
 			$patient->gender = Input::get('gender');
 			$patient->dob = Input::get('dob');
+
 			$patient->village_residence = Input::get('village_residence');
 			$patient->village_workplace = Input::get('village_workplace');
 			$patient->occupation = Input::get('occupation');
@@ -174,7 +179,7 @@ class UnhlsPatientController extends \BaseController {
 
 		}
 	}
-
+	
 	/**
 	 * Remove the specified resource from storage.
 	 *

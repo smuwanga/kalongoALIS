@@ -57,6 +57,9 @@ class TestTypeController extends \BaseController {
 			'test_category_id' => 'required|non_zero_key',
 			'specimentypes' => 'required',
 			'new-measures' => 'required',
+			'targetTAT' => 'required',
+			'targetTAT_unit'=>'required'
+			
 		);
 		$validator = Validator::make(Input::all(), $rules);
 			//array to be split here and sent to appropriate place! man! with ids and all possibilities
@@ -71,6 +74,7 @@ class TestTypeController extends \BaseController {
 			$testtype->description = Input::get('description');
 			$testtype->test_category_id = Input::get('test_category_id');
 			$testtype->targetTAT = Input::get('targetTAT');
+			$testtype->targetTAT_unit = Input::get('targetTAT_unit');
 			$testtype->prevalence_threshold = Input::get('prevalence_threshold');
 			$testtype->orderable_test = Input::get('orderable_test');
 			$testtype->accredited = Input::get('accredited');
@@ -149,6 +153,8 @@ class TestTypeController extends \BaseController {
 			'name' => 'required',
 			'test_category_id' => 'required|non_zero_key',
 			'specimentypes' => 'required',
+			'targetTAT' => 'required',
+			'targetTAT_unit'=>'required'
 		);
 		$validator = Validator::make(Input::all(), $rules);
 
@@ -162,6 +168,7 @@ class TestTypeController extends \BaseController {
 			$testtype->description = Input::get('description');
 			$testtype->test_category_id = Input::get('test_category_id');
 			$testtype->targetTAT = Input::get('targetTAT');
+			$testtype->targetTAT_unit = Input::get('targetTAT_unit');
 			$testtype->prevalence_threshold = Input::get('prevalence_threshold');
 			$testtype->orderable_test = Input::get('orderable_test');
 			$testtype->accredited = Input::get('accredited');

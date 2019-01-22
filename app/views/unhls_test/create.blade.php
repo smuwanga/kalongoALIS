@@ -73,22 +73,22 @@
 												{{ Form::text('bed_no', Input::old('bed_no'), array('class' => 'form-control')) }}
 										</div>
 										<div class="form-group">
-											{{ Form::label('clinical_notes','Clinical Notes') }}
+											{{ Form::label('clinical_notes','Clinical Notes',array('class' => 'required')) }}
 											{{ Form::textarea('clinical_notes', Input::old('clinical_notes'), array('class' => 'form-control')) }}
 										</div>
 									</div>
 									<div class="col-md-6">
 										<div class="form-group">
-											{{ Form::label('previous_therapy','Previous Therapy') }}
+											{{ Form::label('previous_therapy','Previous Therapy',array('class' => 'required')) }}
 											{{ Form::text('previous_therapy', Input::old('previous_therapy'), array('class' => 'form-control')) }}
 										</div>
 										<div class="form-group">
-											{{ Form::label('current_therapy','Current Therapy', array('text-align' => 'right')) }}
-											{{ Form::text('current_therapy', Input::old('current_therapy'), array('class' => 'form-control')) }}
+											{{ Form::label('current_therapy','Current Therapy', array('text-align' => 'right','class' => 'required')) }}
+											{{ Form::text('current_therapy', Input::old('current_therapy'), array('class' => 'form-control','required')) }}
 										</div>
 										<div class="form-group">
-											{{ Form::label('physician', 'Test Requested By') }}
-											{{Form::text('physician', Input::old('physician'), array('class' => 'form-control'))}}
+											{{ Form::label('physician', 'Test Requested By',array('class' => 'required')) }}
+											{{Form::text('physician', Input::old('physician'), array('class' => 'form-control','required'))}}
 										</div>
 									</div>
 									<div class="col-md-6">
@@ -97,7 +97,7 @@
 											{{Form::text('cadre', Input::old('physician'), array('class' => 'form-control'))}}
 										</div>
 										<div class="form-group">
-											{{ Form::label('phone_contact', 'Phone Contact') }}
+											{{ Form::label('phone_contact', 'Phone Contact',array('class' => 'required')) }}
 											{{Form::text('phone_contact', Input::old('phone_contact'), array('class' => 'form-control'))}}
 										</div>
 										<div class="form-group">

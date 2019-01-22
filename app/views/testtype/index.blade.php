@@ -39,7 +39,7 @@
                         >
 					<td>{{ $value->name }}</td>
 					<td>{{ $value->description }}</td>
-					<td>{{ $value->targetTAT }}</td>
+					<td>{{ $value->targetTAT }} {{$value->targetTAT_unit}}</td>
 					<td>{{ $value->prevalence_threshold }}</td>
 					<td>
 						<!-- show the testtype (uses the show method found at GET /testtype/{id} -->

@@ -28,26 +28,42 @@
 									<span class="glyphicon glyphicon-thumbs-up"></span>
 									{{trans('messages.verify')}}
 								</a>
+								
+								@endif
+							@endif
+
+
+							@if(Auth::user()->can('approve_test_results') && Auth::user()->id != $test->isApproved())
+								@if($test->isVerified())
+								
+								<a class="btn btn-sm btn-success" href="{{ URL::route('test.approve', array($test->id)) }}">
+									<span class="glyphicon glyphicon-thumbs-up"></span>
+									{{trans('messages.approve')}}
+								</a>
 								@endif
 							@endif
 						</div>
 						@endif
-						@if($test->isCompleted() || $test->isVerified())
+						
 						<div class="panel-btn">
 							@if(Auth::user()->can('view_reports'))
+							    @if($test->isApproved())
 								<a class="btn btn-sm btn-default"
-								href="{{ URL::to('patientreport/'.$test->visit->patient->id.'/'.$test->visit->id ) }}"
+								href="{{ URL::to('patient_final_report/'.$test->visit->patient->id.'/'.$test->visit->id ) }}"
 								>
 									<span class="glyphicon glyphicon-eye-open"></span>
-									{{trans('messages.view-visit-report')}}
+									{{trans('messages.view-final-report')}}
 								</a>
-								<a class="btn btn-sm btn-default" href="{{ URL::to('patientreport/'.$test->visit->patient->id.'/'.$test->visit->id.'/'.$test->id ) }}">
+								
+								@elseif( $test->isVerified())
+								<a class="btn btn-sm btn-default" href="{{ URL::to('patient_interim_report/'.$test->visit->patient->id.'/'.$test->visit->id ) }}">
 									<span class="glyphicon glyphicon-eye-open"></span>
-									{{trans('messages.view-test-report')}}
+									{{trans('messages.view-interim-report')}}
 								</a>
+								@endif
 							@endif
 						</div>
-						@endif
+						
                     </div>
                     <div class="col-md-1">
                         <a class="btn btn-sm btn-primary pull-right" href="#" onclick="window.history.back();return false;"
@@ -99,6 +115,23 @@
 							<p class="view-striped"><strong>{{trans('messages.turnaround-time')}}</strong>
 								{{$test->getFormattedTurnaroundTime()}}</p>
 							@endif
+							<!-- Previous therapy-->
+							<p class="view-striped"><strong>Previous Therapy</strong>
+								{{$test->therapy->previous_therapy}}</p>
+							<!-- Current therapy-->
+							<p class="view-striped"><strong>Current Therapy</strong>
+								{{$test->therapy->current_therapy}}</p>
+
+							<!-- Clinical notes-->
+							<p class="view-striped"><strong>Clinical notes</strong>
+								{{$test->therapy->clinical_notes}}</p>
+							<!-- Test Requested by -->
+							<p class="view-striped"><strong>Test requested by</strong>
+								{{$test->therapy->clinician}}</p>
+							<!-- Requested by -->
+							<p class="view-striped"><strong>Phone contact of clinician</strong>
+								{{$test->therapy->contact}}</p>
+
 						</div>
 					</div>
 					<div class="col-md-6">

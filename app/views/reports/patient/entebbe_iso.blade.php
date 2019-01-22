@@ -3,131 +3,59 @@
 	 	padding: 2px;
 	 }
 </style>
-<br>
-<br>
 
 
-<table style="border-bottom: 1px solid #cecfd5; font-size:8px;
- font-family: 'Courier New',Courier;">
-	<tr>
-		<td width="15%"><strong>Patient ID</strong>:</td>
-		<td width="55%" style="text-align:left; ">{{ $patient->ulin}}</td>
 
-		<td width="15%"><strong>{{ trans('messages.report-date')}}</strong>:</td>
-		<td width="15%" style="text-align:left;">{{ date('d-m-Y') }}</td>
 
-	</tr>
-</table>
-<br>
-<table style="border-bottom: 1px solid #cecfd5; font-size:8px;
- font-family: 'Courier New',Courier;">
-	<tr>
-		<td width="13%"><strong>{{ trans('messages.patient-name')}}</strong>:</td>
-		@if(Entrust::can('view_names'))
-			<td width="28%" style="text-align:left;">{{ $patient->name }}</td>
-		@else
-			<td width="28%" style="text-align:left;">N/A</td>
-		@endif
-		<td width="8%"><strong>{{ trans('messages.gender')}}</strong>:</td>
-		<td width="8%" style="text-align:left;">{{ $patient->getGender(false) }}</td>
 
-		<td width="5%"><strong>{{ trans('messages.age')}}</strong>:</td>
-		<td width="8%" style="text-align:left;">{{ $patient->getAge()}}</td>
-
-		<td width="15%"><strong>{{ trans('messages.patient-contact')}}</strong>:</td>
-		<td width="15%" style="text-align:left;">{{ $patient->phone_number}}</td>
-		
-	</tr>
-</table>
-
-<table style="border-bottom: 1px solid #cecfd5; font-size:8px;
- font-family: 'Courier New',Courier;">
-	<tr>
-		<td width="20%"><strong>Requesting Officer</strong>:</td>
-		<td width="30%">
-		@if(isset($tests))
-			{{ is_null($tests->first()) ? '':$tests->first()->requested_by }}
-		@endif
-		</td>
-
-		<td width="20%"><strong>Officer's Contact</strong>:{{ is_null($tests->first()->therapy->contact)? '': $tests->first()->therapy->contact}}</td>
-		<td width="30%">
-		@if(isset($tests))
-			{{ is_null($tests->first()) ? '':'' }}
-		@endif
-		</td>
-
-		
-		
-	</tr>
-	<tr>
-		<td width="20%"><strong>Facility/Dept</strong>:</td>
-		<td width="30%">
-		@if(isset($tests))
-			@if(!is_null($tests->first()))
-			{{ is_null($tests->first()->visit->ward) ? '':$tests->first()->visit->ward->name }}
-			@endif
-		@endif
-		</td>
-
-		<td width="25%"><strong>Patient Facility/Dept ID</strong>:</td>
-		<td width="25%">
-		
-			{{is_null( $patient->patient_number)?'': $patient->patient_number}}
-			
-	
-		</td>
-	</tr>
-</table>
 <br>
 <br>
 
 <table style="border-bottom: 1px solid #cecfd5; font-size:8px;
  font-family: 'Courier New',Courier;">
 <thead>
- 	<tr>
-			<th width="20%"><strong>Sample Type</strong></th>
-			<th width="20%"><strong>Date Collected</strong></th>
-			
-			<th width="20%"><strong>Date Received</strong></th>
-			
-			<th width="20%"><strong>{{ Lang::choice('messages.test-category', 1)}}</strong></th>
-			<th width="20%"><strong>Tests Requested</strong></th>
-		</tr>
+    <tr>
+            <th width="20%"><strong>Sample Type</strong></th>
+            <th width="20%"><strong>Date Collected</strong></th>
+            
+            <th width="20%"><strong>Date Received</strong></th>
+            
+            <th width="20%"><strong>{{ Lang::choice('messages.test-category', 1)}}</strong></th>
+            <th width="20%"><strong>Tests Requested</strong></th>
+        </tr>
 </thead>
 <tbody>
-	@if(isset($tests))
-		@forelse($tests as $test)
-				<tr>	
-					<td>{{ isset($test->specimen->specimenType->name)? $test->specimen->specimenType->name : ''}}</td>
+    @if(isset($tests))
+        @forelse($tests as $test)
+                <tr>    
+                    <td>{{ isset($test->specimen->specimenType->name)? $test->specimen->specimenType->name : ''}}</td>
 
-					@if($test->specimen->specimen_status_id == UnhlsSpecimen::NOT_COLLECTED)
-						
-						<td>{{trans('messages.specimen-not-collected')}}</td>
-						<td>not received</td>
-					@elseif($test->specimen->specimen_status_id == UnhlsSpecimen::ACCEPTED)
-						<td >{{ ($test->specimen->time_collected)?$test->specimen->time_collected:'' }}</td>
-						<td >{{isset($test->specimen->time_accepted)?$test->specimen->time_accepted : ''}}</td>
-						
-					@elseif($test->test_status_id == UnhlsTest::REJECTED)
-						<td >{{trans('messages.specimen-not-collected')}}</td>
-						<td >{{isset($test->specimen->time_rejected)?$test->specimen->time_rejected:''}}</td>
-						
-					@endif
+                    @if($test->specimen->specimen_status_id == UnhlsSpecimen::NOT_COLLECTED)
+                        
+                        <td>{{trans('messages.specimen-not-collected')}}</td>
+                        <td>not received</td>
+                    @elseif($test->specimen->specimen_status_id == UnhlsSpecimen::ACCEPTED)
+                        <td >{{ ($test->specimen->time_collected)?$test->specimen->time_collected:'' }}</td>
+                        <td >{{isset($test->specimen->time_accepted)?$test->specimen->time_accepted : ''}}</td>
+                        
+                    @elseif($test->test_status_id == UnhlsTest::REJECTED)
+                        <td >{{trans('messages.specimen-not-collected')}}</td>
+                        <td >{{isset($test->specimen->time_rejected)?$test->specimen->time_rejected:''}}</td>
+                        
+                    @endif
 
-					<td >{{ isset($test->testType->testCategory->name)?$test->testType->testCategory->name:'' }}</td>
-					<td >{{ isset($test->testType->name)?$test->testType->name:'' }}</td>
-				</tr>
-		@empty
-			<tr>
-				<td colspan="5">{{trans("messages.no-records-found")}}</td>
-			</tr>
-		@endforelse
-	@endif
+                    <td >{{ isset($test->testType->testCategory->name)?$test->testType->testCategory->name:'' }}</td>
+                    <td >{{ isset($test->testType->name)?$test->testType->name:'' }}</td>
+                </tr>
+        @empty
+            <tr>
+                <td colspan="5">{{trans("messages.no-records-found")}}</td>
+            </tr>
+        @endforelse
+    @endif
 </tbody>
 
 </table>
-
 
 <br>
 <br>
@@ -187,17 +115,17 @@
 						@else
 							<tr>
 								<td width="100%"><br><br>
-									<b>Comment on Patient/Sample Suitability:</b> {{ $test->interpretation == '' ? 'Suitable for the test' : $test->interpretation }}
+									<b>{{trans('messages.comments')}}:</b> {{ $test->interpretation == '' ? 'Suitable for the test' : $test->interpretation }}
 								</td>
 								
 							</tr>
-	                        <tr>
+	                        <!--tr>
 								<td width="100%"><br><br>
 									<b>Expert Interpretation:</b> 
 									<br>
 								</td>
 								
-							</tr>
+							</tr-->
 							<tr>
 								<td width="50%" style="font-size:8px">
 									<b>Results Entry Date</b>:{{ $test->time_completed }}</td>

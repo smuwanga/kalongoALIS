@@ -716,27 +716,41 @@ $(function(){
         var now_s = date_now.getTime();
         var age = $("#age").val();
         var units = $("#id_age_units").val();
+        var age_s=0;
         if(units=='M'){
-            var age = age/12;
+             age = age/12;
+             age_s = age*365*24*3600*1000;
+        }else if (units=='D') {
+            
+            age_s = age*24*3600*1000;
+        }else{
+            age_s = age*365*24*3600*1000;
         }
-        var age_s = age*365*24*3600*1000;
+         
         var dob_s = now_s-age_s;
 
         var dob = new Date(dob_s);
-        dob.setMonth(0, 1);
+        //dob.setMonth(0, 1);
         $("#dob").combodate('setValue', dob);
     }
 
     function set_age(){
+        var date_now = new Date();
+        var now_s = date_now.getTime();
 
         var dob = new Date($("#dob").val());
         var dob_s = dob.getTime();
         var yrs = (now_s-dob_s)/(365*24*3600*1000) || 0;
-        if(yrs<1){
+        var fraction_of_a_month_in_a_year=(30/365)||2;
+
+        if(yrs<1 && yrs >= fraction_of_a_month_in_a_year){//Age in Months
             var mths = yrs*12;
             $("#age").val(round1(mths));
             $("#id_age_units").val("M");
-        }else{
+        }else if(yrs<fraction_of_a_month_in_a_year){//Age in Days
+            
+            $("#id_age_units").val("D");
+        }else{//Age in Years
             $("#age").val(round1(yrs));
             $("#id_age_units").val("Y");
         }

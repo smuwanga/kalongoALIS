@@ -54,6 +54,7 @@
 					<select name="age_units" id="id_age_units" class="form-control input-sm">
 						<option value="Y">Years</option>
 						<option value="M">Months</option>
+						<option value="D">Days</option>
 					</select>
 				</div>
 				<div class="form-group">
@@ -64,8 +65,9 @@
 					<span class="input-tag">{{trans('messages.female')}}</span></div>
 				</div>
 				<div class="form-group">
-					{{ Form::label('village_residence', trans('messages.residence-village')) }}
-					{{ Form::text('village_residence', Input::old('village_residence'), array('class' => 'form-control')) }}
+					{{ Form::label('village_residence', trans('messages.residence-village'), array('class' => 'required')) }}
+					{{ Form::text('village_residence', Input::old('village_residence'), array('class' => 'form-control',
+					'required' => 'required')) }}
 				</div>
 				<div class="form-group">
 					{{ Form::label('village_workplace', trans('messages.workplace-village')) }}
@@ -80,8 +82,8 @@
 					{{ Form::text('occupation', Input::old('occupation'), array('class' => 'form-control')) }}
 				</div>
 				<div class="form-group">
-					{{ Form::label('phone_number', trans('messages.phone-number')) }}
-					{{ Form::text('phone_number', Input::old('phone_number'), array('class' => 'form-control')) }}
+					{{ Form::label('phone_number', trans('messages.phone-number'), array('class' => 'required')) }}
+					{{ Form::text('phone_number', Input::old('phone_number'), array('class' => 'form-control','required' => 'required')) }}
 				</div>
 				<div class="form-group">
 					{{ Form::label('email', trans('messages.email-address')) }}
