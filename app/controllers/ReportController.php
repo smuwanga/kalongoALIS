@@ -1,6 +1,7 @@
 <?php
 set_time_limit(0); //60 seconds = 1 minute
 class ReportController extends \BaseController {
+
 	//	Begin patient report functions
 	/**
 	 * Display a listing of the resource.
@@ -224,6 +225,8 @@ class ReportController extends \BaseController {
 		if (Input::get('tests') === '1') {
 			$pending='checked';
 		}
+
+		
 		//	Query to get tests of a particular patient
 		if (($visit || $visitId) && $id && $testId){
 			$tests = UnhlsTest::where('id', '=', $testId);
@@ -232,11 +235,15 @@ class ReportController extends \BaseController {
 			$tests = UnhlsTest::where('visit_id', '=', $visit?$visit:$visitId);
 		}
 		else{
-			$tests = UnhlsTest::join('unhls_visits', 'unhls_visits.id', '=', 'unhls_tests.visit_id')
+			/*$tests = UnhlsTest::join('unhls_visits', 'unhls_visits.id', '=', 'unhls_tests.visit_id')
 							->where('patient_id', '=', $id);
+			*/
+			
+
+		    
 		}
 		//	Begin filters - include/exclude pending tests
-		if($pending){
+		/**if($pending){
 			$tests=$tests->where('unhls_tests.test_status_id', '!=', UnhlsTest::SPECIMEN_NOT_RECEIVED);
 		}
 		else{
@@ -258,8 +265,8 @@ class ReportController extends \BaseController {
 		}
 		//	Get tests collection
 		$tests = $tests->get(array('unhls_tests.*'));
-		//	Get patient details
-		$patient = UnhlsPatient::find($id);
+		
+		
 		//	Check if tests are accredited
 		$accredited = $this->accredited($tests);
 		$verified = array();
@@ -268,13 +275,37 @@ class ReportController extends \BaseController {
 				array_push($verified, $test->id);
 			else
 				continue;
-		}
+		}*/
 
-		
+		//	Get patient details
+		$patient = UnhlsPatient::find($id);
+		$visits = UnhlsVisit::select('id')->where('patient_id','=',$id)->get();
+		//$tests = UnhlsTest::whereIn('visit_id', [5051])->get();
+
+		\Log::info('...visits...');
+		\Log::info($visits);
+		$visits_array=json_decode($visits,true);
+		\Log::info('...end visits...');
+		$tests = UnhlsTest::whereIn('visit_id', $visits_array)->get();
+
+		\Log::info("....1....");		
 		// adhoc config decision
 		$template = AdhocConfig::where('name','Report')->first()->getReportTemplate();
 
+		\Log::info("....2....");
+		\Log::info($patient);
+		
+		\Log::info("....tests....");
+		\Log::info($tests);
+		\Log::info("..end..tests....");
+		
 		$content = View::make($template)
+			->with('patient', $patient)
+			->with('tests', $tests)
+			
+			->withInput(Input::all());
+
+			/*$content = View::make($template)
 			->with('patient', $patient)
 			->with('tests', $tests)
 			->with('pending', $pending)
@@ -282,19 +313,94 @@ class ReportController extends \BaseController {
 			->with('visit', $visit)
 			->with('accredited', $accredited)
 			->with('verified', $verified)
-			->withInput(Input::all());
+			->withInput(Input::all());*/
 
-			ob_end_clean();
+		ob_end_clean();
+		
 		$pdf = new Mypdf;
 		$pdf->SetAutoPageBreak(TRUE, 15);
 		$pdf->AddPage();
 		$pdf->SetFont('times','','11');
 		$pdf->writeHTML($content, 'true', 'false', 'false', 'false', '');
 
+
 		return $pdf->output('report.pdf');
 
 	}
+    
+    public function viewPatientVisitReport($visit_id){
 
+	    $tests = UnhlsTest::where('visit_id', '=', $visit_id)->get();
+		
+		$patient_json_id_instance = UnhlsVisit::select('patient_id')->where('id','=',$visit_id)->get();
+	    $patient_json_id_decoded_instance = json_decode($patient_json_id_instance,true);
+	   
+		//	Get patient details
+		$patient = UnhlsPatient::find($patient_json_id_decoded_instance[0]['patient_id']);
+		
+         
+
+		// adhoc config decision
+		//$template = AdhocConfig::where('name','Report')->first()->getReportTemplate();
+		$template = "reports.patient.entebbe_iso";
+
+		$content = View::make($template)
+			->with('patient', $patient)
+			->with('tests', $tests)
+			->withInput(Input::all());
+
+			ob_end_clean();
+
+		$test_request_information  = array(
+			'tests' => $tests, 
+			'patient'=> $patient
+			);
+		$pdf = new FinalReportPdf;
+
+		if($this->isReportInterim($tests)){
+			$pdf = new InterimReportPdf;
+		}
+
+		$pdf->setTestRequestInformation($test_request_information);
+
+		$pdf->SetAutoPageBreak(TRUE, 15);
+		$pdf->AddPage();
+		$pdf->SetFont('times','','11');
+		$pdf->writeHTML($content, 'true', 'false', 'false', 'false', '');
+
+		return $pdf->output('report.pdf');
+    }
+
+    private function isReportInterim($tests){
+    	$isInterim = false;
+    	foreach ($tests as $key => $test) {
+    	    if($test->test_status_id != UnhlsTest::APPROVED){
+    	    	$isInterim = true;
+    	    	
+    	    	break;
+    	    }else{
+    	    	$isInterim = false;
+    	    }
+    	    	
+    	}
+
+    	return $isInterim;
+    }
+	public function viewPatientVisits($id){
+		
+		$error = '';
+		$visitId = Input::get('visit_id');
+	
+		//	Get patient details
+		$patient = UnhlsPatient::find($id);
+		$visits = UnhlsVisit::where('patient_id','=',$id)->get();
+	
+		
+		// Load the view and pass the patients
+		return View::make('reports.patient.visits')->with('patient', $patient)
+		->with('visits', $visits)->withInput(Input::all());
+
+	}
 	/**
 	 *
 	 *

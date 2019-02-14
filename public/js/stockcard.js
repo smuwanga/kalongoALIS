@@ -1,4 +1,5 @@
 $(document).ready(function () {
+	$('#patient_visits_datatable').DataTable();
 $("input[name=optAction]").click(function(){
  	
  	$selected = $(this).val();

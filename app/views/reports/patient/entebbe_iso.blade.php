@@ -69,7 +69,7 @@
 </table>
 
 @forelse($tests as $test)
-	@if( $test->testStatus->name == 'approved')
+	@if( $test->testStatus->name == 'approved' || $test->testStatus->name == 'verified' || $test->testStatus->name == 'completed')
 	<table  id="results_content_id" style="border-bottom: 1px solid #cecfd5; font-size:10px;font-family: 'Courier New',Courier;">
 		<tr>
 			<td width="20%">{{ $test->testType->name }}</td>

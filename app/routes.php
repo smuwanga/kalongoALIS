@@ -454,6 +454,14 @@ Route::group(array("before" => "auth"), function()
             "as" => "reports.patient.report",
             "uses" => "ReportController@viewPatientReport"
         ));
+        Route::any("/patientvisits/{id}", array(
+            "as" => "reports.patient.visits",
+            "uses" => "ReportController@viewPatientVisits"
+        ));
+         Route::any("/patientvisitreport/{id}", array(
+            "as" => "reports.patient.visit.report",
+            "uses" => "ReportController@viewPatientVisitReport"
+        ));
         Route::any("/patient_final_report/{id}/{visit}", array(
             "as" => "reports.patient.report",
             "uses" => "ReportController@viewFinalPatientReport"

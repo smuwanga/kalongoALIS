@@ -444,6 +444,7 @@ return array(
     'view-final-report'=>'View Final Report',
     'view-interim-report'=>'View Interim Report',
     'view-visit-report' => 'View Visit Report',
+    'view-visits' => 'View Visits',
     'view-test-report' => 'View Test Report',
     'test-records'  =>  'Test Records',
     'patient-records' =>    'Patient Records',
