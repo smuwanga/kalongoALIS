@@ -49,6 +49,10 @@ class UnhlsVisit extends Eloquent
 		return $this->belongsTo('VisitStatus');
 	}
 
+	public function therapy()
+	{
+		return $this->belongsTo('Therapy','visit_id');
+	}
 	/**
 	 * Specimen relationship
 	 */

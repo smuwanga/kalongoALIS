@@ -10,4 +10,15 @@ class Therapy extends Eloquent
 	protected $table = 'therapy';
 
 	public $timestamps = false;
+
+	/**
+	*
+	*
+	*/
+	public function clinicianLink()
+	{
+		return $this->belongsTo('Clinician','clinician_id');
+	}
+
+
 }

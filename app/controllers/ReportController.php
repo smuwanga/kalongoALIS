@@ -21,6 +21,8 @@ class ReportController extends \BaseController {
 
 		$patients = UnhlsPatient::search($search)->orderBy('id','DESC')->paginate(Config::get('kblis.page-items'));
 
+
+
 		if (count($patients) == 0) {
 		 	Session::flash('message', trans('messages.no-match'));
 		}
@@ -359,8 +361,10 @@ class ReportController extends \BaseController {
 
 		if($this->isReportInterim($tests)){
 			$pdf = new InterimReportPdf;
+			
 		}
 
+		
 		$pdf->setTestRequestInformation($test_request_information);
 
 		$pdf->SetAutoPageBreak(TRUE, 15);

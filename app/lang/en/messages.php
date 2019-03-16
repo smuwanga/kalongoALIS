@@ -372,7 +372,9 @@ return array(
     'view-details-title' => 'View Test Details',
     'patient-lab-number' => 'Lab No.',
     'visit-number' => 'Visit No.',
+    'visit-lab-number' => 'Visit Lab No.',//This number is issued at each patient visit in the Lab
     'visit-type' => 'Visit Type',
+
 
     /** 
      *   Tests search panel
@@ -787,5 +789,8 @@ return array(
     'equipment-maintenance'=> 'Equipment maintenance',         
     'supplier-list'=> 'Supplier List',    
     'add'=> 'Add',
+
+    //
+    'ward-type'=>'Type of unit location',
 
 );

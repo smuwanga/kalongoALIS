@@ -1,5 +1,52 @@
 $(document).ready(function () {
+
+	/**
+	*Code for datatables
+	*/
 	$('#patient_visits_datatable').DataTable();
+	$('#patients_table').DataTable();
+
+	/**
+	* Event manager for loading dependent select/drop-down for Health Centre Units
+	*/
+
+    $("#visit_type_dropdown_id").change(function(){
+    	   var ward_type_id = $(this).val();
+            $.ajax({
+                url: "/unhls_test/wards/" + $(this).val(),
+                method: 'GET',
+                
+                success: function(data) {
+                    $('#ward_dropdown_id').html(data.html);
+                    $('select[name="ward_dropdown"]').empty();
+                        $.each(data, function(key, value) {
+                            $('select[name="ward_dropdown"]').append('<option value="'+ value.id +'">'+ value.name +'</option>');
+                    });
+
+                }
+            });
+    });
+
+    $("#clinician_dropdown_id").change(function(){
+            $.ajax({
+                url: "/unhls_test/clinician/" + $(this).val(),
+                method: 'GET',
+                
+                success: function(data) {
+                    $('#clinician_cadre_id').val(data.cadre);
+                    $('#clinician_cadre_id').attr('readonly','true');
+
+                    $('#clinician_phone_id').val(data.phone);
+                    $('#clinician_phone_id').attr('readonly','true');
+
+                    $('#clinician_email_id').val(data.email);
+                    $('#clinician_email_id').attr('readonly','true');
+                }
+            });
+    });
+    
+
+
 $("input[name=optAction]").click(function(){
  	
  	$selected = $(this).val();

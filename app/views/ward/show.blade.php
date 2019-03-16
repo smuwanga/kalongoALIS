@@ -28,6 +28,9 @@
                 <h3 class="view"><strong>{{ Lang::choice('messages.name',1) }}:</strong>{{ $ward->name }} </h3>
                 <p class="view-striped"><strong>{{ trans('messages.description') }}:</strong>
                     {{ $ward->description }}</p>
+
+                <p class="view-striped"><strong>{{ trans('messages.ward-type') }}:</strong>
+                    {{ $ward->getWardType()->name }}</p>
                 
             </div>
         </div>

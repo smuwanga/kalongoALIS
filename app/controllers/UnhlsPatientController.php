@@ -15,22 +15,42 @@ class UnhlsPatientController extends \BaseController {
 	 */
 	public function index()
 		{
-		$search = Input::get('search');
-
-		$patients = UnhlsPatient::search($search)->orderBy('id', 'desc')->paginate(Config::get('kblis.page-items'))->appends(Input::except('_token'));
-
-		if (count($patients) == 0) {
+		
+		$patients = UnhlsPatient::all();
+		/*if (count($patients) == 0) {
 		 	Session::flash('message', trans('messages.no-match'));
-		}
+		}*/
 		$clinicianUI = AdhocConfig::where('name','Clinician_UI')->first()->activateClinicianUI();
 
+		
 
+				
 		// Load the view and pass the patients
 		return View::make('unhls_patient.index')
 				->with('patients', $patients)
-				->with('clinicianUI', $clinicianUI)
+				
 				->withInput(Input::all());
 	}
+
+	public function live()
+		{
+		
+		$patients = UnhlsPatient::all();
+		/*if (count($patients) == 0) {
+		 	Session::flash('message', trans('messages.no-match'));
+		}*/
+		$clinicianUI = AdhocConfig::where('name','Clinician_UI')->first()->activateClinicianUI();
+
+		
+
+		return compact('patients');		
+		// Load the view and pass the patients
+		/**return View::make('unhls_patient.index')
+				->with('patients', $patients)
+				->with('clinicianUI', $clinicianUI)
+				->withInput(Input::all());*/
+	}
+
 
 	/**
 	 * Show the form for creating a new resource.
@@ -90,9 +110,14 @@ class UnhlsPatientController extends \BaseController {
 				$patient->save();
 				$uuid = new UuidGenerator; 
 				$uuid->save();
-			$url = Session::get('SOURCE_URL');
-			return Redirect::to($url)
-			->with('message', 'Successfully created patient with ULIN:  '.$patient->ulin.'!');
+			
+			  /*
+				$url = Session::get('SOURCE_URL');
+				return Redirect::to($url)
+				->with('message', 'Successfully created patient with ULIN:  '.$patient->ulin.'!');
+				**/
+				//Show the view and pass the $patient to it
+		return View::make('unhls_patient.show')->with('patient', $patient);
 			}catch(QueryException $e){
 				Log::error($e);
 				echo $e->getMessage();

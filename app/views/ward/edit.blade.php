@@ -35,6 +35,11 @@
                     {{ Form::textarea('description', Input::old('description'), 
                         array('class' => 'form-control', 'rows' => '2')) }}
                 </div>
+                 <div class="form-group">
+                    {{ Form::label('ward_type_id',Lang::choice('messages.ward-type',1)) }}
+                    {{ Form::select('ward_type_id', $ward_types, $ward->ward_type_id,
+                                            array('class' => 'form-control')) }}
+                </div>
                 <div class="form-group actions-row">
                     {{ Form::button('<span class="glyphicon glyphicon-save"></span> '. trans('messages.save'), 
                         ['class' => 'btn btn-primary', 'onclick' => 'submit()']) }}

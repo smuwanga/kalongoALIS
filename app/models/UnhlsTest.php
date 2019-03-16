@@ -49,6 +49,21 @@ class UnhlsTest extends Eloquent
 		return $this->belongsTo('Therapy','visit_id');
 	}
 
+	
+
+   /**
+	*
+	*
+	*/
+	public function clinician()
+	{
+		return $this->belongsTo('Clinician','clinician_id');
+	}
+
+	public function getClinician()
+	{
+		return Clinician::find($this->clinician_id);
+	}
 	/**
 	 * Test Type relationship
 	 */

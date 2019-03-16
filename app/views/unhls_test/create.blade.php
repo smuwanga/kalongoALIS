@@ -58,16 +58,25 @@
 									<div class="panel-body inline-display-details">
 									<div class="col-md-12">
 										<div class="form-group">
+												{{ Form::label('visit_lab_number','Visit Lab No:', array('text-align' => 'right')) }}
+												{{ Form::text('visit_lab_number', Input::old('visit_lab_number'), array('class' => 'form-control')) }}
+										</div>
+										<div class="form-group">
 											{{ Form::hidden('patient_id', $patient->id) }}
 											{{ Form::label('visit_type', trans("messages.visit-type")) }}
-											{{ Form::select('visit_type', [' ' => '--- Select visit type ---','0' => trans("messages.out-patient"),'1' => trans("messages.in-patient")], null,
-												 array('class' => 'form-control')) }}
+											{{ Form::select('visit_type', [' ' => '--- Select visit type ---','2' => trans("messages.out-patient"),'1' => trans("messages.in-patient")], null,
+												 array('class' => 'form-control','id' => 'visit_type_dropdown_id')) }}
 										</div>
 										<div class="form-group">
 											{{ Form::label('ward_id','Ward/Clinic/Health Unit') }}
+											{{ Form::select('ward_id', [' ' => '--- ---'], null,
+											array('class' => 'form-control','id'=>'ward_dropdown_id','name'=>'ward_dropdown')) }}
+										</div>
+										<!--div class="form-group">
+											{{ Form::label('ward_id','Ward/Clinic/Health Unit') }}
 											{{ Form::select('ward_id', $ward, Input::get('ward_id'),
 											array('class' => 'form-control')) }}
-										</div>
+										</div-->
 										<div class="form-group">
 												{{ Form::label('bed_no','Bed No:', array('text-align' => 'right')) }}
 												{{ Form::text('bed_no', Input::old('bed_no'), array('class' => 'form-control')) }}
@@ -79,30 +88,34 @@
 									</div>
 									<div class="col-md-6">
 										<div class="form-group">
-											{{ Form::label('previous_therapy','Previous Therapy',array('class' => 'required')) }}
+											{{ Form::label('previous_therapy','Previous Therapy') }}
 											{{ Form::text('previous_therapy', Input::old('previous_therapy'), array('class' => 'form-control')) }}
 										</div>
 										<div class="form-group">
-											{{ Form::label('current_therapy','Current Therapy', array('text-align' => 'right','class' => 'required')) }}
-											{{ Form::text('current_therapy', Input::old('current_therapy'), array('class' => 'form-control','required')) }}
+											{{ Form::label('current_therapy','Current Therapy', array('text-align' => 'right')) }}
+											{{ Form::text('current_therapy', Input::old('current_therapy'), array('class' => 'form-control')) }}
 										</div>
 										<div class="form-group">
-											{{ Form::label('physician', 'Test Requested By',array('class' => 'required')) }}
-											{{Form::text('physician', Input::old('physician'), array('class' => 'form-control','required'))}}
+											{{ Form::label('clinician', 'Test Requested By',array('class' => 'required')) }}
+											{{ Form::select('clinician', $clinicians, null,
+											array('class' => 'form-control','id'=>'clinician_dropdown_id')) }}
 										</div>
 									</div>
 									<div class="col-md-6">
 										<div class="form-group">
 											{{ Form::label('cadre', 'Cadre') }}
-											{{Form::text('cadre', Input::old('physician'), array('class' => 'form-control'))}}
+											{{Form::text('cadre', Input::old('cadre'), array('class' => 'form-control','id'=>'clinician_cadre_id',
+											'name'=>'clinician_cadre'))}}
 										</div>
 										<div class="form-group">
 											{{ Form::label('phone_contact', 'Phone Contact',array('class' => 'required')) }}
-											{{Form::text('phone_contact', Input::old('phone_contact'), array('class' => 'form-control'))}}
+											{{Form::text('phone_contact', Input::old('phone_contact'), array('class' => 'form-control',
+											'id'=>'clinician_phone_id','name'=>'clinician_phone'))}}
 										</div>
 										<div class="form-group">
 											{{ Form::label('email', 'E-mail') }}
-											{{Form::email('email', Auth::user()->email, array('class' => 'form-control', 'placeholder' =>Auth::user()->email))}}
+											{{Form::email('email', Auth::user()->email, array('class' => 'form-control', 'id'=>'clinician_email_id',
+											'name'=>'clinician_email'))}}
 										</div>
 									</div>
 									<div class="col-md-6">

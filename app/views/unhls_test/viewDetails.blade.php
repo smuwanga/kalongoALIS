@@ -82,6 +82,8 @@
 								{{ $test->testType->name }}</h3>
 							<p class="view"><strong>{{trans('messages.visit-number')}}</strong>
 								{{$test->visit->id }}</p>
+							<p class="view"><strong>{{trans('messages.visit-lab-number')}}</strong>
+								{{$test->visit->visit_lab_number }}</p>
 							<p class="view"><strong>{{trans('messages.date-ordered')}}</strong>
 								{{ $test->isExternal()?$test->external()->request_date:$test->time_created }}</p>
 							<p class="view"><strong>{{trans('messages.lab-receipt-date')}}</strong>
@@ -117,20 +119,46 @@
 							@endif
 							<!-- Previous therapy-->
 							<p class="view-striped"><strong>Previous Therapy</strong>
-								{{$test->therapy->previous_therapy}}</p>
+								@if(!empty($test->therapy->previous_therapy))
+									{{$test->therapy->previous_therapy}}
+								@else
+								@endif
+							</p>
 							<!-- Current therapy-->
 							<p class="view-striped"><strong>Current Therapy</strong>
-								{{$test->therapy->current_therapy}}</p>
+								
+								@if(!empty($test->therapy->current_therapy))
+									{{$test->therapy->current_therapy}}
+								@else
+									
+								@endif
+							</p>
 
 							<!-- Clinical notes-->
 							<p class="view-striped"><strong>Clinical notes</strong>
-								{{$test->therapy->clinical_notes}}</p>
+								
+								@if(!empty($test->therapy->clinical_notes))
+									{{$test->therapy->clinical_notes}}
+								@endif
+
+							</p>
 							<!-- Test Requested by -->
 							<p class="view-striped"><strong>Test requested by</strong>
-								{{$test->therapy->clinician}}</p>
+								@if(!empty($test->therapy->clinician))
+									{{$test->therapy->clinician}}
+								@elseif(!empty($test->clinician->name ))
+		                            {{$test->clinician->name }}
+		                        
+								@endif
+							</p>
 							<!-- Requested by -->
 							<p class="view-striped"><strong>Phone contact of clinician</strong>
-								{{$test->therapy->contact}}</p>
+								
+								@if(!empty($test->therapy->clinician))
+									{{$test->therapy->contact}}
+								@elseif(!empty($test->clinician->phone))
+		                           {{$test->clinician->phone }}
+								@endif
 
 						</div>
 					</div>

@@ -22,7 +22,7 @@
 	    	<table  id="patient_visits_datatable" class="row-border hover table table-bordered table-condensed table-striped" style="width:100%">
                 <thead>
                     <tr>
-                        <th>Visit Number</th>  
+                        <th>Visit Lab Number</th>  
                         <th>Visit Date</th>                   
                         <th>Actions</th>
                        
@@ -33,7 +33,7 @@
 
                       @forelse($visits as $key => $visit)
 				      <tr>
-						<td>{{ $visit->visit_number }}</td>
+						<td>{{ $visit->visit_lab_number }}</td>
 						<td>{{ $visit->created_at }}</td>
 						<td>
 						<!-- show the patient report(uses the show method found at GET /patientvisits/{id} -->

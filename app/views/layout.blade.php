@@ -13,30 +13,32 @@
         <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/dataTables.bootstrap.css') }}" />
         <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/layout.css') }}" />
 
-        <script type="text/javascript" src="{{ URL::asset('js/jquery.min.js') }} "></script>
-        <script type="text/javascript" src="{{ URL::asset('js/jquery-ui-min.js') }}"></script>
-        <script type="text/javascript" src="{{URL::asset('js/moment.js')}}"></script>
-        <script type="text/javascript" src="{{URL::asset('js/combodate.js')}}"></script>
-        <script type="text/javascript" src="{{ URL::asset('js/bootstrap.min.js') }}"></script>
-        <script type="text/javascript" src="{{ URL::asset('js/jquery.dataTables.js') }}"></script>
-        <script type="text/javascript" src="{{ URL::asset('js/dataTables.bootstrap.js') }}"></script>
-        <script type="text/javascript" src="{{ URL::asset('js/script.js') }} "></script>
+        <script defer type="text/javascript" src="{{ URL::asset('js/jquery.min.js') }} "></script>
+        <script defer type="text/javascript" src="{{ URL::asset('js/jquery-ui-min.js') }} "></script>
+        <script defer type="text/javascript" src="{{URL::asset('js/moment.js')}} "></script>
+        <script defer type="text/javascript" src="{{URL::asset('js/combodate.js')}} "></script>
+        <script defer type="text/javascript" src="{{ URL::asset('js/bootstrap.min.js') }} "></script>
+        <script defer type="text/javascript" src="{{ URL::asset('js/jquery.dataTables.js') }} "></script>
+        <script defer type="text/javascript" src="{{ URL::asset('js/dataTables.bootstrap.js') }} "></script>
+        <script defer type="text/javascript" src="{{ URL::asset('js/script.js') }} "></script>
 		<!-- print special used in bb module -->
-        <script type="text/javascript" src="{{ URL::asset('js/print_special.js') }} "></script>
+        <script defer type="text/javascript" src="{{ URL::asset('js/print_special.js') }} "></script>
         <!--   -->
 
-        <script type="text/javascript" src="{{ URL::asset('js/validator.min.js') }} "></script>
-        <script type="text/javascript" src="{{ URL::asset('js/stockcard.js') }} "></script>   
-        <script type="text/javascript" src="{{ URL::asset('js/jquery.easing.1.3.min.js') }} "></script>
-        <script type="text/javascript" src="{{ URL::asset('js/tinynav.js') }} "></script>
-        <script type="text/javascript" src="{{ URL::asset('js/perfect-scrollbar-0.4.8.with-mousewheel.min.js') }} "></script>
+        <script defer type="text/javascript" src="{{ URL::asset('js/validator.min.js') }} "></script>
+        <script defer type="text/javascript" src="{{ URL::asset('js/stockcard.js') }} "></script>   
+        <script defer type="text/javascript" src="{{ URL::asset('js/jquery.easing.1.3.min.js') }} "></script>
+        <script defer type="text/javascript" src="{{ URL::asset('js/tinynav.js') }} "></script>
+        <script defer type="text/javascript" src="{{ URL::asset('js/perfect-scrollbar-0.4.8.with-mousewheel.min.js') }}"></script>
         
-        <script type="text/javascript" src="{{ URL::asset('js/common.js') }} "></script>
-        <script src="{{ URL::asset('js/jquery.easypiechart.min.js') }}"></script>
-        <script src="{{ URL::asset('js/dashboard.js') }}"></script>
+        <script defer type="text/javascript" src="{{ URL::asset('js/common.js') }}"></script>
+        <script defer src="{{ URL::asset('js/jquery.easypiechart.min.js') }}"></script>
+        <script defer src="{{ URL::asset('js/dashboard.js') }} "></script>
+
+     
 
         <!-- jQuery barcode script -->
-        <script type="text/javascript" src="{{ asset('js/jquery-barcode-2.0.2.js') }} "></script>
+        <script defer type="text/javascript" src="{{ asset('js/jquery-barcode-2.0.2.js') }}"></script>
         <title>{{ Config::get('kblis.name') }} </title>
     </head>
     <body class="side_nav_hover">

@@ -468,6 +468,7 @@ class UnhlsTestController extends \BaseController {
 		//Create a Lab categories Array
 		$categories = ['Select Lab Section']+TestCategory::lists('name', 'id');
 		$wards = ['Select Sample Origin']+Ward::lists('name', 'id');
+		$clinicians = ['Select clinician']+Clinician::lists('name', 'id');
 
 		// sample collection default details
 		$now = new DateTime();
@@ -493,9 +494,31 @@ class UnhlsTestController extends \BaseController {
 					->with('specimenType', $specimenTypes)
 					->with('patient', $patient)
 					->with('testCategory', $categories)
-					->with('ward', $wards);
+					->with('ward', $wards)
+					->with('clinicians',$clinicians);
 	}
 
+	public function getWards($ward_type_id = 0){
+
+		if($ward_type_id == 0){
+			$ward_type_id = Input::get('ward_type_id');
+			
+		}else{
+			$wards = Ward::where('ward_type_id','=',$ward_type_id)->get();
+		    
+		   
+       
+		}
+		
+
+		return $wards;
+		
+	}
+
+	public function getClinician($id){
+		$clinician = Clinician::find($id);
+		return $clinician;
+	}
 	/**
 	 * Save a new Test.
 	 *
@@ -503,14 +526,15 @@ class UnhlsTestController extends \BaseController {
 	 */
 	public function saveNewTest()
 	{
+		
 		//Create New Test
 		$rules = array(
 			'visit_type' => 'required',
 			'testtypes' => 'required',
-			'phone_contact'=>'required',
-			'physician'=>'required',
-			'current_therapy'=>'required',
-			'previous_therapy'=>'required',
+			//'phone_contact'=>'required',
+			'clinician'=>'required',
+			//'current_therapy'=>'required',
+			//'previous_therapy'=>'required',
 			'clinical_notes'=>'required'
 
 		);
@@ -522,7 +546,7 @@ class UnhlsTestController extends \BaseController {
 				array(Input::get('patient_id')))->withInput()->withErrors($validator);
 		} else {
 
-			$visitType = ['Out-patient','In-patient'];
+			$visitType = ['2' => 'Out-patient','1' => 'In-patient'];
 			$activeTest = array();
 
 			/*
@@ -530,6 +554,7 @@ class UnhlsTestController extends \BaseController {
 			 * - Fields required: visit_type, patient_id
 			 */
 			$visit = new UnhlsVisit;
+			$visit->visit_lab_number = Input::get('visit_lab_number');
 			$visit->patient_id = Input::get('patient_id');
 			$visit->visit_type = $visitType[Input::get('visit_type')];
 			$visit->ward_id = Input::get('ward_id');
@@ -545,8 +570,9 @@ class UnhlsTestController extends \BaseController {
 			$therapy->current_therapy = Input::get('current_therapy');
 
 			$therapy->clinical_notes = Input::get('clinical_notes');
-            $therapy->clinician = Input::get('physician');
-            $therapy->contact = Input::get('phone_contact');
+
+            $therapy->clinician_id = Input::get('clinician');
+            //$therapy->contact = Input::get('phone_contact');
 
 			$therapy->save();
 
@@ -573,8 +599,8 @@ class UnhlsTestController extends \BaseController {
                         $test->specimen_id = $specimen->id;
                         $test->test_status_id = UnhlsTest::PENDING;
                         $test->created_by = Auth::user()->id;
-                        $test->requested_by = Input::get('physician');
-                        
+                        $test->requested_by = Input::get('clinician');
+                        $therapy->clinician_id = Input::get('clinician');
 
                         $test->purpose = Input::get('hiv_purpose');
                         $test->save();
@@ -904,7 +930,8 @@ class UnhlsTestController extends \BaseController {
 	public function viewDetails($testID)
 	{
 
-		return View::make('unhls_test.viewDetails')->with('test', UnhlsTest::find($testID));
+		$test = UnhlsTest::find($testID);
+		return View::make('unhls_test.viewDetails')->with('test',$test );
 		
 	}
 

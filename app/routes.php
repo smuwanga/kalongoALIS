@@ -70,6 +70,8 @@ Route::group(array("before" => "auth"), function()
 
     //Unhls patient routes start here
     Route::resource('unhls_patient', 'UnhlsPatientController');
+   
+
     Route::get("/unhls_patient/{id}/delete", array(
         "as"   => "unhls_patient.delete",
         "uses" => "UnhlsPatientController@delete"
@@ -192,6 +194,7 @@ Route::group(array("before" => "auth"), function()
     {
         Route::resource('instrument', 'InstrumentController');
         Route::resource('ward', 'WardController');
+        Route::resource('clinicians', 'CliniciansController');
         Route::resource('testnamemapping', 'TestNameMappingController');
 
         Route::get("/measurenamemapping/create/{test_type_id}", array(
@@ -241,6 +244,18 @@ Route::group(array("before" => "auth"), function()
         "before" => "checkPerms:receive_external_test",
         "as"   => "test.receive",
         "uses" => "UnhlsTestController@receive"
+    ));
+
+    Route::any("/unhls_test/wards/{ward_type_id?}", array(
+        "before" => "checkPerms:request_test",
+        "as"   => "unhls_test.wards",
+        "uses" => "UnhlsTestController@getWards"
+    ));
+
+    Route::any("/unhls_test/clinician/{id?}", array(
+        "before" => "checkPerms:request_test",
+        "as"   => "unhls_test.clinician",
+        "uses" => "UnhlsTestController@getClinician"
     ));
 
     Route::any("/unhls_test/create/{patient?}", array(
@@ -303,7 +318,7 @@ Route::group(array("before" => "auth"), function()
         "before" => "checkPerms:edit_test_results",
         "as"   => "unhls_test.edit",
         "uses" => "UnhlsTestController@edit"
-    ));
+    )); 
     Route::post("/unhls_test/{test}/saveresults", array(
         "before" => "checkPerms:edit_test_results",
         "as"   => "unhls_test.saveResults",
