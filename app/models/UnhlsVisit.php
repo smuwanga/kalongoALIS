@@ -120,14 +120,13 @@ class UnhlsVisit extends Eloquent
 	 */
 	public static function search($searchString = '', $visitStatusId = 0, $dateFrom = NULL, $dateTo = NULL)
 	{
-		
 		$visits = UnhlsVisit::with('patient')->where(function($q) use ($searchString){
+
 			$q->whereHas('patient', function($q)  use ($searchString){
 				$q->where(function($q) use ($searchString){
 					$q->where('external_patient_number', 'like', '%' . $searchString . '%')
 					  ->orWhere('patient_number', 'like', '%' . $searchString . '%')
 					  ->orWhere('name', 'like', '%' . $searchString . '%')
-					  ->orWhere('visit_lab_number', 'like', '%' . $searchString . '%')
 					  ->orWhere('ulin', 'like', '%' . $searchString . '%');
 				});
 			});
@@ -138,11 +137,8 @@ class UnhlsVisit extends Eloquent
 				$q->where('visit_status_id','=', $visitStatusId);
 			});
 		}
-
-        
 		//  put default to get content for today
 		if ($dateFrom||$dateTo) {
-			
 			$visits = $visits->where(function($q) use ($dateFrom, $dateTo)
 			{
 				if($dateFrom)$q->where('created_at', '>=', $dateFrom);
@@ -155,8 +151,6 @@ class UnhlsVisit extends Eloquent
 		}
 
 		$visits = $visits->orderBy('created_at', 'ASC');
-		
-
 
 		return $visits;
 	}

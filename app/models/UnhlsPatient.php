@@ -44,43 +44,31 @@ class UnhlsPatient extends Eloquent
 		$dateOfBirth = new DateTime($this->dob);
 		$interval = $dateOfBirth->diff($at);
 
-		//\Log::info("....patient age....months..");
-		//$mmm = 10;
-		//\Log::info($mmm);
-
-		
 		$age = "";
 
 		switch ($format) {
 			case 'ref_range_Y':
 				$seconds = ($interval->days * 24 * 3600) + ($interval->h * 3600) + ($interval->i * 60) + ($interval->s);
 				$age = $seconds/(365*24*60*60);
-				//\Log::info("....1......");
 				break;
 			case 'Y':
-			   // \Log::info("....2......");
 				$age = $interval->y;break;
 			case 'YY':
-			    //\Log::info("....3......");
 				$age = $interval->y ." years ";break;
 			default:
 				if($interval->y == 0){
-					//\Log::info("....4......");
 					$age = $interval->format('%a days');
 				}
 				elseif($interval->y > 0 && $interval->y <= 2){
-					//\Log::info("....5......");
 					$age = $interval->format('%m') + 12 * $interval->format('%y')." months";
 				}
 				else{
-					//\Log::info("....6......");
 					$age=$interval->y." years ";
 				}
 				
 				break;
 		}
 
-		//\Log::info("...enddddddd.patient age......");
 		return $age;
 	}
 
