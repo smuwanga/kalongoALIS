@@ -581,6 +581,32 @@ class UnhlsTest extends Eloquent
 
 
 	/**
+	* Search for tests meeting the given criteria
+	*
+	* @param String $id: visit ID
+	* @return Collection 
+	*/
+	public static function searchByVisit($id = NULL)
+	{
+
+		$tests = UnhlsTest::with('visit', 'visit.patient', 'testType', 'specimen', 
+			'testStatus', 'testStatus.testPhase')
+			->WhereHas('visit',  function($q) use ($id)
+			{
+				$q->where(function($q) use ($id){
+					$q->where('id', '=', $id );
+				});
+			});
+		
+
+		
+
+		$tests = $tests->orderBy('time_created', 'DESC');
+
+		return $tests;
+	}
+	
+	/**
 	* Search for completed tests meeting the given criteria
 	*
 	* @param String $searchString

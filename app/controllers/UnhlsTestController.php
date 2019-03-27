@@ -19,18 +19,14 @@ class UnhlsTestController extends \BaseController {
 	{
 
 		$fromRedirect = Session::pull('fromRedirect');
-
 		if($fromRedirect){
-
 			$input = Session::get('TESTS_FILTER_INPUT');
 			
 		}else{
-
 			$input = Input::except('_token');
 		}
 
 		$searchString = isset($input['search'])?$input['search']:'';
-		$testStatusId = isset($input['test_status'])?$input['test_status']:'';
 		if (isset($input['date_from'])) {
 			$dateFrom = $input['date_from'];
 		}else{
@@ -38,47 +34,68 @@ class UnhlsTestController extends \BaseController {
 			$input['date_from'] = date('Y-m-d');
 		}
 		$dateTo = isset($input['date_to'])?$input['date_to']:'';
-
+        
 		// Search Conditions
-		if($searchString||$testStatusId||$dateFrom||$dateTo){
+		if($searchString||$dateFrom||$dateTo){
 			if ($searchString != '') {
 				$dateFrom = '';
 				$dateTo = '';
 			}
+			$visits = UnhlsVisit::search($searchString,0, $dateFrom, $dateTo);
 
-			$tests = UnhlsTest::search($searchString, $testStatusId, $dateFrom, $dateTo);
-
-			if (count($tests) == 0) {
+			if (count($visits) == 0) {
 				Session::flash('message', trans('messages.empty-search'));
 			}
 		}
 		else
 		{
 			// List all the active tests
-			$tests = UnhlsTest::orderBy('time_created', 'ASC');
+			$visits = UnhlsVisit::orderBy('created_at', 'ASC');
 		}
 
-		// Create Test Statuses array. Include a first entry for ALL
-		$statuses = array('all')+TestStatus::all()->lists('name','id');
-
-		foreach ($statuses as $key => $value) {
-			$statuses[$key] = trans("messages.$value");
-		}
-
+		
+		
+		//\Log::info($visits);
 		// Pagination
-		$tests = $tests->paginate(Config::get('kblis.page-items'))->appends($input);
+		$visits = $visits->paginate(Config::get('kblis.page-items'))->appends($input);
+
+		
+
+		// Load the view and pass it the tests
+		return View::make('unhls_test.index')
+					->with('visitSet', $visits)
+					->with('dateFrom', $dateFrom)
+					->with('dateTo', $dateTo)
+					->withInput($input);
+	}
+
+	public function getTestVisit($id){
+		
+
+			$tests = UnhlsTest::searchByVisit( $id);
+
+			if (count($tests) == 0) {
+				Session::flash('message', trans('messages.empty-search'));
+			}
+		
+		// Pagination
+		$tests = $tests->paginate(Config::get('kblis.page-items'));
 
 		//	Barcode
 		$barcode = Barcode::first();
 
 		// Load the view and pass it the tests
-		return View::make('unhls_test.index')
+		return View::make('unhls_test.list_tests_in_visit')
 					->with('testSet', $tests)
-					->with('testStatus', $statuses)
-					->with('barcode', $barcode)
-					->with('dateFrom', $dateFrom)
-					->with('dateTo', $dateTo)
-					->withInput($input);
+					->with('barcode', $barcode);
+
+	}
+
+	public function cancelTest($id){
+		$test = UnhlsTest::find($id);
+		$test->delete();
+
+		return Redirect::route('unhls_test.index');
 	}
 
 	/**
@@ -449,6 +466,7 @@ class UnhlsTestController extends \BaseController {
 		$specimenType = SpecimenType::find($specimenTypeId);
 		$testTypes = $specimenType->testTypes;
 
+
 		return View::make('unhls_test.testTypeList')
 			->with('testCategoryId', $testCategoryId)
 			->with('testTypes', $testTypes);
@@ -487,6 +505,8 @@ class UnhlsTestController extends \BaseController {
 
 		$patient = UnhlsPatient::find($patientID);
 
+
+		\Log::info("....create....test.....");
 		//Load Test Create View
 		return View::make('unhls_test.create')
 					->with('collectionDate', $collectionDate)
@@ -540,6 +560,7 @@ class UnhlsTestController extends \BaseController {
 		);
 		$validator = Validator::make(Input::all(), $rules);
 
+		\Log::info("...saving 1......");
 		// process the login
 		if ($validator->fails()) {
 			return Redirect::route('unhls_test.create', 
@@ -562,6 +583,8 @@ class UnhlsTestController extends \BaseController {
 			$visit->hospitalized = Input::get('hospitalized');
 			$visit->on_antibiotics = Input::get('on_antibiotics');
 			$visit->save();
+
+			\Log::info($visit->id);
 
 			$therapy = new Therapy;
 			$therapy->patient_id = Input::get('patient_id');
@@ -610,7 +633,10 @@ class UnhlsTestController extends \BaseController {
                 }
             }
 
+
 			$url = Session::get('SOURCE_URL');
+			\Log::info($url);
+			\Log::info("...saving end......");
 			
 			return Redirect::to($url)->with('message', 'messages.success-creating-test')
 					->with('activeTest', $activeTest);

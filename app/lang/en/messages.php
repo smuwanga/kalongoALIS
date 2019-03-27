@@ -372,8 +372,9 @@ return array(
     'view-details-title' => 'View Test Details',
     'patient-lab-number' => 'Lab No.',
     'visit-number' => 'Visit No.',
-    'visit-lab-number' => 'Visit Lab No.',//This number is issued at each patient visit in the Lab
+    'visit-lab-number' => 'Visit Lab No.',//This number is issued at each patient-visit in the Lab
     'visit-type' => 'Visit Type',
+    'visit-test-details' => 'View List of Tests',
 
 
     /** 
@@ -754,21 +755,21 @@ return array(
     'follow-up' =>  'Follow Up',
     'cd4-less'  =>  '< 500',
     'cd4-greater'   =>  '> 500',   
-	
-	
-	/**
-	* BB Incidences
-	*/
-	'bbincidence' => 'BB Incidence | BB Incidences',
-	'new-bbincidence' => 'New BB Incidence',
-	'incident-serial-number' => 'Incident Serial Number',
-	'date-of-occurrence' => 'Date of Occurrence',
-	'time-of-occurrence' => 'Time of Occurrence',
-	'age' => 'Age',
-	'dob' => 'Date of Birth',
-	'filter' => 'Filter',
-	
-	
+    
+    
+    /**
+    * BB Incidences
+    */
+    'bbincidence' => 'BB Incidence | BB Incidences',
+    'new-bbincidence' => 'New BB Incidence',
+    'incident-serial-number' => 'Incident Serial Number',
+    'date-of-occurrence' => 'Date of Occurrence',
+    'time-of-occurrence' => 'Time of Occurrence',
+    'age' => 'Age',
+    'dob' => 'Date of Birth',
+    'filter' => 'Filter',
+    
+    
 
     //BLIS uganda
     'stock-card' => 'Stock card' ,   

@@ -236,6 +236,14 @@ Route::group(array("before" => "auth"), function()
         "as"   => "unhls_test.testList",
         "uses" => "UnhlsTestController@testList"
     ));
+    Route::any("/unhls_test/{id}", array(
+        "as"   => "unhls_test.list_tests_in_visit",
+        "uses" => "UnhlsTestController@getTestVisit"
+    ));
+    Route::any("/unhls_test/cancel/{id}", array(
+        "as"   => "unhls_test.cancel_test",
+        "uses" => "UnhlsTestController@cancelTest"
+    ));
     Route::post("/unhls_test/resultinterpretation", array(
     "as"   => "unhls_test.resultinterpretation",
     "uses" => "UnhlsTestController@getResultInterpretation"
