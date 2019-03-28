@@ -32,7 +32,7 @@
 					{{ HTML::ul($errors->all()) }}
 				</div>
 			@endif
-			{{ Form::open(array('route' => 'unhls_test.saveNewTest', 'id' => 'form-new-test')) }}
+			{{ Form::open(array('route' => 'submit_test', 'id' => 'form-new-test')) }}
 			<input type="hidden" name="_token" value="{{ Session::token() }}"><!--to be removed function for csrf_token -->
 				<div class="container-fluid">
 					<div class="row">

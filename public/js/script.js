@@ -565,7 +565,7 @@ $(function(){
         if (testTypeCategoryId != 0 && specimenTypeId != 0) {
             $.ajax({
                 type: 'POST',
-                url: "/unhls_test/testlist",
+                url: "/load_test_list",
                 data: {
                     test_category_id: testTypeCategoryId,
                     specimen_type_id: specimenTypeId
@@ -587,7 +587,7 @@ $(function(){
         if (testTypeCategoryId != 0 && specimenTypeId != 0) {
             $.ajax({
                 type: 'POST',
-                url: "/unhls_test/testlist",
+                url: "/load_test_list",
                 data: {
                     test_category_id: testTypeCategoryId,
                     specimen_type_id: specimenTypeId

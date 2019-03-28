@@ -17,20 +17,15 @@ class UnhlsTestController extends \BaseController {
 	 */
 	public function index()
 	{
-
 		$fromRedirect = Session::pull('fromRedirect');
-
 		if($fromRedirect){
-
 			$input = Session::get('TESTS_FILTER_INPUT');
 			
 		}else{
-
 			$input = Input::except('_token');
 		}
 
 		$searchString = isset($input['search'])?$input['search']:'';
-		$testStatusId = isset($input['test_status'])?$input['test_status']:'';
 		if (isset($input['date_from'])) {
 			$dateFrom = $input['date_from'];
 		}else{
@@ -38,47 +33,61 @@ class UnhlsTestController extends \BaseController {
 			$input['date_from'] = date('Y-m-d');
 		}
 		$dateTo = isset($input['date_to'])?$input['date_to']:'';
-
+        
 		// Search Conditions
-		if($searchString||$testStatusId||$dateFrom||$dateTo){
+		if($searchString||$dateFrom||$dateTo){
 			if ($searchString != '') {
 				$dateFrom = '';
 				$dateTo = '';
 			}
+			$visits = UnhlsVisit::search($searchString,0, $dateFrom, $dateTo);
 
-			$tests = UnhlsTest::search($searchString, $testStatusId, $dateFrom, $dateTo);
-
-			if (count($tests) == 0) {
+			if (count($visits) == 0) {
 				Session::flash('message', trans('messages.empty-search'));
 			}
 		}
 		else
 		{
 			// List all the active tests
-			$tests = UnhlsTest::orderBy('time_created', 'ASC');
+			$visits = UnhlsVisit::orderBy('created_at', 'ASC');
 		}
 
-		// Create Test Statuses array. Include a first entry for ALL
-		$statuses = array('all')+TestStatus::all()->lists('name','id');
-
-		foreach ($statuses as $key => $value) {
-			$statuses[$key] = trans("messages.$value");
-		}
-
+		
+		
+		//\Log::info($visits);
 		// Pagination
-		$tests = $tests->paginate(Config::get('kblis.page-items'))->appends($input);
+		$visits = $visits->paginate(Config::get('kblis.page-items'))->appends($input);
+
+		
+
+		// Load the view and pass it the tests
+		return View::make('unhls_test.index')
+					->with('visitSet', $visits)
+					->with('dateFrom', $dateFrom)
+					->with('dateTo', $dateTo)
+					->withInput($input);
+	}
+
+	public function getTestVisit($id){
+		
+
+			$tests = UnhlsTest::searchByVisit( $id);
+
+			if (count($tests) == 0) {
+				Session::flash('message', trans('messages.empty-search'));
+			}
+		
+		// Pagination
+		$tests = $tests->paginate(Config::get('kblis.page-items'));
 
 		//	Barcode
 		$barcode = Barcode::first();
 
 		// Load the view and pass it the tests
-		return View::make('unhls_test.index')
+		return View::make('unhls_test.list_tests_in_visit')
 					->with('testSet', $tests)
-					->with('testStatus', $statuses)
-					->with('barcode', $barcode)
-					->with('dateFrom', $dateFrom)
-					->with('dateTo', $dateTo)
-					->withInput($input);
+					->with('barcode', $barcode);
+
 	}
 
 	/**
@@ -449,6 +458,8 @@ class UnhlsTestController extends \BaseController {
 		$specimenType = SpecimenType::find($specimenTypeId);
 		$testTypes = $specimenType->testTypes;
 
+		
+
 		return View::make('unhls_test.testTypeList')
 			->with('testCategoryId', $testCategoryId)
 			->with('testTypes', $testTypes);
@@ -464,6 +475,7 @@ class UnhlsTestController extends \BaseController {
 		if ($patientID == 0) {
 			$patientID = Input::get('patient_id');
 		}
+
 
 		//Create a Lab categories Array
 		$categories = ['Select Lab Section']+TestCategory::lists('name', 'id');
@@ -526,7 +538,6 @@ class UnhlsTestController extends \BaseController {
 	 */
 	public function saveNewTest()
 	{
-		
 		//Create New Test
 		$rules = array(
 			'visit_type' => 'required',
@@ -610,8 +621,9 @@ class UnhlsTestController extends \BaseController {
                 }
             }
 
-			$url = Session::get('SOURCE_URL');
-			
+			//$url = Session::get('SOURCE_URL');
+			$url="/unhls_test";
+
 			return Redirect::to($url)->with('message', 'messages.success-creating-test')
 					->with('activeTest', $activeTest);
 		}
@@ -887,13 +899,14 @@ class UnhlsTestController extends \BaseController {
 		Session::put('fromRedirect', 'true');
 
 		// Get page
-		$url = Session::get('SOURCE_URL');
+		/*$url = Session::get('SOURCE_URL');
 		$urlParts = explode('&', $url);
 		if(isset($urlParts['page'])){
 			$pageParts = explode('=', $urlParts['page']);
 			$input['page'] = $pageParts[1];
-		}
-
+		}*/
+        $url = "/unhls_test/".$test->visit_id;
+		
 		// redirect
 		return Redirect::to($url)
 					->with('message', trans('messages.success-saving-results'))

@@ -43,7 +43,9 @@ class UnhlsPatient extends Eloquent
 
 		$dateOfBirth = new DateTime($this->dob);
 		$interval = $dateOfBirth->diff($at);
+		
 
+		
 		$age = "";
 
 		switch ($format) {
@@ -52,18 +54,31 @@ class UnhlsPatient extends Eloquent
 				$age = $seconds/(365*24*60*60);
 				break;
 			case 'Y':
+			    
 				$age = $interval->y;break;
 			case 'YY':
+			    
 				$age = $interval->y ." years ";break;
 			default:
 				if($interval->y == 0){
-					$age = $interval->format('%a days');
+					
+					
+					if($interval->format('%a') > 31){
+						$age = $interval->format('%m months');
+					}else{
+						$age = $interval->format('%a days');
+					 }
 				}
 				elseif($interval->y > 0 && $interval->y <= 2){
+				
 					$age = $interval->format('%m') + 12 * $interval->format('%y')." months";
 				}
 				else{
+					
 					$age=$interval->y." years ";
+
+					$seconds = ($interval->days * 24 * 3600) + ($interval->h * 3600) + ($interval->i * 60) + ($interval->s);
+				    $age = round($seconds/(365*24*60*60))." years ";
 				}
 				
 				break;

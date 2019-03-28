@@ -232,8 +232,12 @@ Route::group(array("before" => "auth"), function()
         "as"   => "unhls_test.index",
         "uses" => "UnhlsTestController@index"
     ));
-    Route::post("/unhls_test/testlist", array(
-        "as"   => "unhls_test.testList",
+     Route::any("/unhls_test/{id}", array(
+        "as"   => "unhls_test.list_tests_in_visit",
+        "uses" => "UnhlsTestController@getTestVisit"
+    ));
+    Route::post("/load_test_list", array(
+        "as"   => "unhls_test.loadTestList",
         "uses" => "UnhlsTestController@testList"
     ));
     Route::post("/unhls_test/resultinterpretation", array(
@@ -263,9 +267,14 @@ Route::group(array("before" => "auth"), function()
         "as"   => "unhls_test.create",
         "uses" => "UnhlsTestController@create"
     ));
-    Route::post("/unhls_test/savenewtest", array(
+    Route::any("/create_test", array(
         "before" => "checkPerms:request_test",
-        "as"   => "unhls_test.saveNewTest",
+        "as"   => "create_test",
+        "uses" => "UnhlsTestController@create"
+    ));
+    Route::post("/submit_test", array(
+        "before" => "checkPerms:request_test",
+        "as"   => "submit_test",
         "uses" => "UnhlsTestController@saveNewTest"
     ));
     Route::post("/unhls_test/acceptspecimen", array(

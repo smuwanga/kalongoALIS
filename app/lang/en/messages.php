@@ -374,6 +374,7 @@ return array(
     'visit-number' => 'Visit No.',
     'visit-lab-number' => 'Visit Lab No.',//This number is issued at each patient visit in the Lab
     'visit-type' => 'Visit Type',
+    'visit-test-details' => 'View List of Tests',
 
 
     /** 
