@@ -67,15 +67,34 @@ class UnhlsTestController extends \BaseController {
 					->with('dateTo', $dateTo)
 					->withInput($input);
 	}
+	public function cancelTest($id){
+		$test = UnhlsTest::find($id);
+		$visit_id = $test->visit_id;
+		
+		if($test->isPending()){
+			$test->delete();
+		}else{
+			Session::flash('message', "Test cannot be cancelled.");
+		}
+		
 
+		$tests_after_deleting = UnhlsTest::searchByVisit($visit_id);
+
+		if(count($tests_after_deleting) > 0){
+			$url = "/unhls_test/".$visit_id;
+			return Redirect::to($url);
+		}else{
+			return Redirect::route('unhls_test.index');
+		}
+	}
 	public function getTestVisit($id){
 		
 
-			$tests = UnhlsTest::searchByVisit( $id);
+		$tests = UnhlsTest::searchByVisit( $id);
 
-			if (count($tests) == 0) {
+		if (count($tests) == 0) {
 				Session::flash('message', trans('messages.empty-search'));
-			}
+		}
 		
 		// Pagination
 		$tests = $tests->paginate(Config::get('kblis.page-items'));
