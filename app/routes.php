@@ -287,15 +287,15 @@ Route::group(array("before" => "auth"), function()
         "as"   => "unhls_test.acceptSpecimen",
         "uses" => "UnhlsTestController@acceptSpecimenAction"
     ));
-    Route::get("/unhls_test/{id}/refer", array(
+    Route::get("/unhls_test/{testid}/refer", array(
         "before" => "checkPerms:refer_specimens",
         "as"   => "unhls_test.refer",
         "uses" => "UnhlsTestController@showRefer"
     ));
-    Route::post("/unhls_test/referaction", array(
+    Route::post("/refer_action", array(
         "before" => "checkPerms:refer_specimens",
-        "as"   => "unhls_test.referAction",
-        "uses" => "UnhlsTestController@referAction"
+        "as"   => "refer_action",
+        "uses" => "UnhlsTestController@refer_action"
     ));
     Route::get("/unhls_test/{id}/reject", array(
         "before" => "checkPerms:reject_test_specimen",

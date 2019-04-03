@@ -1013,16 +1013,16 @@ class UnhlsTestController extends \BaseController {
 	 * @param specimenId
 	 * @return View
 	 */
-	public function showRefer($specimenId)
+	public function showRefer($testid)
 	{
-		$unhlsspecimen = UnhlsSpecimen::find($specimenId);
-		$unhlspatient = UnhlsPatient::find('$specimenId');
+		$test = UnhlsTest::find($testid);
+		
 		$facilities = UNHLSFacility::all();
 		//Referral facilities
 		$referralReason = ReferralReason::all();
 		return View::make('unhls_test.refer')
-			->with('unhlsspecimen', $unhlsspecimen)
-			->with('unhlspatient', $unhlspatient)
+			
+			->with('test',$test)
 			->with('facilities', $facilities)
 			->with('referralReason', $referralReason);
 
@@ -1033,8 +1033,9 @@ class UnhlsTestController extends \BaseController {
 	 *
 	 * @return View
 	 */
-	public function referAction()
+	public function refer_action()
 	{
+	    \Log::info("Sample Referral started .....");
 		//Validate
 		$rules = array(
 			'referral-status' => 'required',
@@ -1065,15 +1066,20 @@ class UnhlsTestController extends \BaseController {
 		$referral->facility_id = Input::get('facility_id');
 		$referral->person = Input::get('person');
 		$referral->contacts = Input::get('contacts');
-		$referral->user_id = Auth::user()->id;
+		$referral->user_id = 1;//Auth::user()->id;
 
 		//Update specimen referral status
 		$specimen = UnhlsSpecimen::find($specimenId);
 
 		DB::transaction(function() use ($referral, $specimen) {
+
+		\Log::info(". ..1...");
 			$referral->save();
+			\Log::info(". ..2...");
 			$specimen->referral_id = $referral->id;
+			\Log::info(". ..3...");
 			$specimen->save();
+			\Log::info(". ..4...");
 		});
 
 		//Start test
@@ -1082,6 +1088,8 @@ class UnhlsTestController extends \BaseController {
 
 		//Return view
 		$url = Session::get('SOURCE_URL');
+
+		\Log::info("Sample Referral ended .....");
 		
 		return Redirect::to($url)->with('message', trans('messages.specimen-successful-refer'))
 					->with('activeTest', array($specimen->test->id));

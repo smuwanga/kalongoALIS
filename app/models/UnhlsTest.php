@@ -22,9 +22,11 @@ class UnhlsTest extends Eloquent
 	// when a specimen is at the analytic stage, it's rejected only for that particular test
 	const REJECTED = 6;
 	// todo: consider how to consider it's pending, completed and verified statuses without confusion
-	const REFERRED_IN = 7;
-	const REFERRED_OUT = 8;
+	
 	const APPROVED = 7;//The final phase of a test. This means that all tests for this patient's visit are ready to be officially handed over
+
+	const REFERRED_IN = 8;//Changed the flags. 
+	const REFERRED_OUT = 9;//Changed the flags.
 
 
 	/**
