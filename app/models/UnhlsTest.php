@@ -605,6 +605,7 @@ class UnhlsTest extends Eloquent
 		return $tests;
 	}
 
+
 	/**
 	* Search for completed tests meeting the given criteria
 	*
@@ -1178,4 +1179,6 @@ class UnhlsTest extends Eloquent
     {
       return ($this->testType->name == 'HIV') ? true : false;
     }
+
+   
 }

@@ -3,32 +3,74 @@
     <div>
         <ol class="breadcrumb">
           <li><a href="{{{URL::route('user.home')}}}">{{trans('messages.home')}}</a></li>
-          <li><a href="{{{URL::route('unhls_test.index')}}}">All Tests</a></li>
-          <li class="active">Test(s) in Visit</li>
+          <li class="active">{{ Lang::choice('messages.test',2) }}</li>
         </ol>
     </div>
     @if (Session::has('message'))
         <div class="alert alert-info">{{ trans(Session::get('message')) }}</div>
     @endif
 
+    <div class='container-fluid'>
+        {{ Form::open(array('route' => array('unhls_test.index'))) }}
+            <div class='row'>
+                <div class='col-md-3'>
+                    <div class='col-md-2'>
+                        {{ Form::label('date_from', trans('messages.from')) }}
+                    </div>
+                    <div class='col-md-10'>
+                        {{ Form::text('date_from', $dateFrom,
+                            array('class' => 'form-control standard-datepicker')) }}
+                    </div>
+                </div>
+                <div class='col-md-3'>
+                    <div class='col-md-2'>
+                        {{ Form::label('date_to', trans('messages.to')) }}
+                    </div>
+                    <div class='col-md-10'>
+                        {{ Form::text('date_to', $dateTo,
+                            array('class' => 'form-control standard-datepicker')) }}
+                    </div>
+                </div>
+                <div class='col-md-3'>
+                    <div class='col-md-5'>
+                        {{ Form::label('test_status', trans('messages.test-status')) }}
+                    </div>
+                    <div class='col-md-7'>
+                        {{ Form::select('test_status', $testStatus,
+                            Input::get('test_status'), array('class' => 'form-control')) }}
+                    </div>
+                </div>
+                <div class='col-md-2'>
+                        {{ Form::label('search', trans('messages.search'), array('class' => 'sr-only')) }}
+                        {{ Form::text('search', Input::get('search'),
+                            array('class' => 'form-control', 'placeholder' => 'Search')) }}
+                </div>
+                <div class='col-md-1'>
+                        {{ Form::submit(trans('messages.search'), array('class'=>'btn btn-primary')) }}
+                </div>
+            </div>
+        {{ Form::close() }}
+    </div>
 
+    <br>
 
     <div class="panel panel-primary tests-log">
         <div class="panel-heading ">
             <div class="container-fluid">
                 <div class="row less-gutter">
-                   
-                    <div class="col-md-12">
-                        {{ $visit->patient->name.' ('.($visit->patient->getGender(true)).',
-                            '.$visit->patient->getAge('Y'). ')'}}
-
-
-                        |
-                            
-                        {{ is_null($visit->ward) ? 'N/A':$visit->ward->name }} <!--Unit -->
-
-                       
-                        
+                    <div class="col-md-11">
+                        <span class="glyphicon glyphicon-filter"></span>{{trans('messages.list-tests')}}
+                        @if(Auth::user()->can('request_test'))
+                        <div class="panel-btn">
+                            <a class="btn btn-sm btn-info" href="javascript:void(0)"
+                                data-toggle="modal" data-target="#new-test-modal-unhls">
+                                <span class="glyphicon glyphicon-plus-sign"></span>
+                                {{trans('messages.new-test')}}
+                            </a>
+                        </div>
+                        @endif
+                    </div>
+                    <div class="col-md-1">
                         <a class="btn btn-sm btn-primary pull-right" href="#" onclick="window.history.back();return false;"
                             alt="{{trans('messages.back')}}" title="{{trans('messages.back')}}">
                             <span class="glyphicon glyphicon-backward"></span></a>
@@ -80,7 +122,7 @@
                         <td>{{ $test->getSpecimenId() }}</td> <!--Specimen ID -->
                         <td>{{ $test->testType->name }}</td> <!--Test-->
                         <td>{{ $test->visit->visit_type }}</td> <!--Visit Type -->
-                        <td>{{ is_null($test->visit->ward) ? 'N/A':$test->visit->ward->name }}</td> <!--Unit -->
+                        <td>{{ is_null($test->visit->ward) ? '':$test->visit->ward->name }}</td> <!--Unit -->
                         <!-- ACTION BUTTONS -->
                         <td>
                             <a class="btn btn-sm btn-success"
@@ -137,7 +179,7 @@
                                     </a>
                                 @endif
                                 @if(Auth::user()->can('refer_specimens') && !($test->isExternal()) && !($test->specimen->isReferred()))
-                                    <a class="btn btn-sm btn-info" href="{{ URL::route('unhls_test.refer', array($test->id)) }}">
+                                    <a class="btn btn-sm btn-info" href="{{ URL::route('unhls_test.refer', array($test->specimen_id)) }}">
                                         <span class="glyphicon glyphicon-edit"></span>
                                         {{trans('messages.refer-sample')}}
                                     </a>
@@ -169,19 +211,6 @@
                                     </a>
                                 @endif
                             @endif
-                        @endif
-                        
-                        @if(Auth::user()->can('cancel_test'))
-                        <br>
-                            <a class="btn btn-sm btn-danger"
-                                href="{{ URL::route('unhls_test.cancel_test', $test->id) }}"
-                                id="cancel-test-{{$test->id}}-link"
-                                title="Cancel Test">
-                                <span class="glyphicon glyphicon-remove">
-                                    
-                                </span>
-                                Cancel
-                            </a>
                         @endif
                         </td>
 
@@ -250,8 +279,55 @@
         </div>
     </div>
 
+    <!-- MODALS -->
+    <div class="modal fade" id="new-test-modal-unhls">
+      <div class="modal-dialog">
+        <div class="modal-content">
+        {{ Form::open(array('route' => 'unhls_test.create')) }}
+          <input type="hidden" id="patient_id" name="patient_id" value="0" />
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">
+                <span aria-hidden="true">&times;</span>
+                <span class="sr-only">{{trans('messages.close')}}</span>
+            </button>
+            <h4 class="modal-title">{{trans('messages.create-new-test')}}</h4>
+          </div>
+          <div class="modal-body">
+            <h4>{{ trans('messages.first-select-patient') }}</h4>
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="input-group">
+                  <input type="text" class="form-control search-text"
+                    placeholder="{{ trans('messages.search-patient-placeholder') }}">
+                  <span class="input-group-btn">
+                    <button class="btn btn-default search-patient" type="button">
+                        {{ trans('messages.patient-search-button') }}</button>
+                  </span>
+                </div><!-- /input-group -->
+                <div class="patient-search-result form-group">
+                    <table class="table table-condensed table-striped table-bordered table-hover hide">
+                      <thead>
+                        <th> </th>
+                        <th>{{ trans('messages.patient-id') }}</th>
+                        <th>{{ Lang::choice('messages.name',2) }}</th>
+                      </thead>
+                      <tbody>
+                      </tbody>
+                    </table>
+                </div>
+              </div><!-- /.col-lg-12 -->
+            </div><!-- /.row -->          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+                {{trans('messages.close')}}</button>
+            <button type="button" class="btn btn-primary next" onclick="submit();" disabled>
+                {{trans('messages.next')}}</button>
+          </div>
+        {{ Form::close() }}
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
-    
     <div class="modal fade" id="accept-specimen-modal">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -374,7 +450,6 @@
 
     <div id="count" style='display:none;'>0</div>
     <div id ="barcodeList" style="display:none;"></div>
-
 
     <!-- jQuery barcode script -->
     <script type="text/javascript" src="{{ asset('js/barcode.js') }} "></script>

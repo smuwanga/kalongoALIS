@@ -31,6 +31,15 @@
                             array('class' => 'form-control standard-datepicker')) }}
                     </div>
                 </div>
+                <div class='col-md-3'>
+                    <div class='col-md-5'>
+                        {{ Form::label('test_status', trans('messages.test-status')) }}
+                    </div>
+                    <div class='col-md-7'>
+                        {{ Form::select('test_status', $testStatus,
+                            Input::get('test_status'), array('class' => 'form-control','id'=> $selectedStatusId)) }}
+                    </div>
+                </div>
                 
                 <div class='col-md-2'>
                         {{ Form::label('search', trans('messages.search'), array('class' => 'sr-only')) }}
@@ -79,6 +88,8 @@
                         <th>Lab Number</th>
                         <th class="col-md-2">{{trans('messages.patient-name')}}</th>
                         <th class="col-md-1">{{trans('messages.visit-lab-number')}}</th>
+                        <!--location: where test is comping from, e.g. ICU, Emergency, OPD, ... -->
+                        <th>Unit</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -100,7 +111,9 @@
                         <!--Visit Number -->
                         <td>{{ $visit->patient->name}}</td> <!--Patient Name -->
                         <td>{{ $visit->visit_lab_number}}</td> <!--Visit Lab Number: the number issued each time this patient walks into the lab-->
-
+                        
+                        <!--location: where test is comping from, e.g. ICU, Emergency, OPD, ... -->
+                        <td>{{ $visit->getWard()}}</td>
                         
                         <!-- ACTION BUTTONS -->
                         <td>
@@ -292,7 +305,7 @@
             <span class="glyphicon glyphicon-thumbs-down"></span>
             {{trans('messages.reject')}}</a>
         <a class="btn btn-sm btn-warning start-test" href="javascript:void(0)"
-            data-url="{{ URL::route('unhls_test.start') }}" title="{{trans('messages.start-test-title')}}">
+            data-url="{{ URL::route('test.start') }}" title="{{trans('messages.start-test-title')}}">
             <span class="glyphicon glyphicon-play"></span>
             {{trans('messages.start-test')}}</a>
     </div> <!-- /. reject-start-buttons -->

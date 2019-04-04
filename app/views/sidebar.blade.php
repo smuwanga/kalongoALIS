@@ -174,35 +174,35 @@
 								</li>
 								<li>
 									<div>
-										<a href="{{URL::route('unhls_test.completed')}}">
+										<a href="{{URL::route('test.completed')}}">
 											<span class="glyphicon glyphicon-tag" ></span>{{trans('Completed Tests')}}
 										</a>
 									</div>
 								</li>
 																<li>
 									<div>
-										<a href="{{URL::route('unhls_test.notrecieved')}}">
+										<a href="{{URL::route('test.notrecieved')}}">
 											<span class="glyphicon glyphicon-tag" ></span>{{trans('Samples Not Recieved')}}
 										</a>
 									</div>
 								</li>
 																<li>
 									<div>
-										<a href="{{URL::route('unhls_test.pending')}}">
+										<a href="{{URL::route('test.pending')}}">
 											<span class="glyphicon glyphicon-tag" ></span>{{trans('Pending Tests')}}
 										</a>
 									</div>
 								</li>
 																<li>
 									<div>
-										<a href="{{URL::route('unhls_test.started')}}">
+										<a href="{{URL::route('test.started')}}">
 											<span class="glyphicon glyphicon-tag" ></span>{{trans('Tests Started')}}
 										</a>
 									</div>
 								</li>
 								<li>
 									<div>
-										<a href="{{URL::route('unhls_test.verified')}}">
+										<a href="{{URL::route('test.verified')}}">
 											<span class="glyphicon glyphicon-tag" ></span>{{trans('Verified Tests')}}
 										</a>
 									</div>

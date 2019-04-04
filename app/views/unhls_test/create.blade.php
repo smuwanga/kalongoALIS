@@ -69,7 +69,7 @@
 										</div>
 										<div class="form-group">
 											{{ Form::label('ward_id','Ward/Clinic/Health Unit') }}
-											{{ Form::select('ward_id', [' ' => '--- ---'], null,
+											{{ Form::select('ward_id', [' ' => '--- ---'], Input::get('ward_id'),
 											array('class' => 'form-control','id'=>'ward_dropdown_id','name'=>'ward_dropdown')) }}
 										</div>
 										<!--div class="form-group">

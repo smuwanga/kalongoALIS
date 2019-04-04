@@ -317,9 +317,9 @@ Route::group(array("before" => "auth"), function()
         "as"   => "unhls_test.updateSpecimenType",
         "uses" => "UnhlsTestController@updateSpecimenType"
     ));
-    Route::post("/unhls_test/start", array(
+    Route::post("/test/start", array(
         "before" => "checkPerms:start_test",
-        "as"   => "unhls_test.start",
+        "as"   => "test.start",
         "uses" => "UnhlsTestController@start"
     ));
     Route::get("/unhls_test/{test}/enterresults", array(
@@ -350,20 +350,20 @@ Route::group(array("before" => "auth"), function()
         "as"   => "unhls_test.collectSpecimenAction",
         "uses" => "UnhlsTestController@collectSpecimenAction"
     ));
-    Route::get("unhls_test/completed", array(
-        "as" => "unhls_test.completed",
+    Route::get("test/completed", array(
+        "as" => "test.completed",
         "uses" => "UnhlsTestController@completed"));
-    Route::get("unhls_test/pending", array(
-        "as" => "unhls_test.pending",
+    Route::get("test/pending", array(
+        "as" => "test.pending",
         "uses" => "UnhlsTestController@pending"));
-    Route::get("unhls_test/started", array(
-        "as" => "unhls_test.started",
+    Route::get("test/started", array(
+        "as" => "test.started",
         "uses" => "UnhlsTestController@started"));
-    Route::get("unhls_test/notrecieved", array(
-        "as" => "unhls_test.notrecieved",
+    Route::get("test/notrecieved", array(
+        "as" => "test.notrecieved",
         "uses" => "UnhlsTestController@notRecieved"));
-    Route::get("unhls_test/verified", array(
-        "as" => "unhls_test.verified",
+    Route::get("test/verified", array(
+        "as" => "test.verified",
         "uses" => "UnhlsTestController@verified"));
     //Test viewDetails start
     Route::get("/unhls_test/{test}/viewdetails", array(

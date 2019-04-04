@@ -31,6 +31,7 @@
         @endif
         {{ Form::open(array('route' => 'refer_action')) }}
             {{ Form::hidden('specimen_id', $test->specimen->id) }}
+            {{ Form::hidden('test_id', $test->id) }}
             <div class="panel-body">
                 <div class="panel panel-info">
                     <div class="panel-heading">
@@ -92,13 +93,13 @@
                     
                 </div>
                 <br>
-                <div class="form-group">
+                <!--div class="form-group">
                     {{ Form::label('referral-type', trans('messages.referral-type')) }}
                     <div>{{ Form::radio('referral-status', '0', true) }}<span class='input-tag'>
                         {{trans('messages.vertical')}}</span></div>
                     <div>{{ Form::radio('referral-status', '1', false) }}<span class='input-tag'>
                         {{trans('messages.horizontal')}}</span></div>
-                </div>
+                </div-->
                 <div class="form-group">
                     {{ Form::label('refer-reason', trans('messages.reasons-for-referral')) }}
                     {{ Form::select('referral-reason', array(0 => '')+$referralReason->lists('reason', 'id'),

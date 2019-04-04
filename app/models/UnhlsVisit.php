@@ -26,7 +26,7 @@ class UnhlsVisit extends Eloquent
 	}
 
 	/**
-	 * Test relationship
+	 * Ward relationship
 	 */
 	public function ward()
 	{
@@ -108,7 +108,16 @@ class UnhlsVisit extends Eloquent
 			return false;
 		}
 	}
+	public function getWard(){
+		$ward_name = 'N\A';
+		if($this->ward_id != NULL || $this->ward_id !=0){
+			$ward=Ward::find($this->ward_id);
+		    $ward_name= $ward->name;
+		}
 
+		return $ward_name;
+		
+	}
 	/**
 	 * Search for visits meeting the given criteria
 	 *
@@ -137,6 +146,60 @@ class UnhlsVisit extends Eloquent
 				$q->where('visit_status_id','=', $visitStatusId);
 			});
 		}
+		//  put default to get content for today
+		if ($dateFrom||$dateTo) {
+			$visits = $visits->where(function($q) use ($dateFrom, $dateTo)
+			{
+				if($dateFrom)$q->where('created_at', '>=', $dateFrom);
+
+				if($dateTo){
+					$dateTo = $dateTo . ' 23:59:59';
+					$q->where('created_at', '<=', $dateTo);
+				}
+			});
+		}
+
+		$visits = $visits->orderBy('created_at', 'ASC');
+
+		return $visits;
+	}
+
+	/**
+	 * Search for visits meeting the given criteria
+	 *
+	 * @param String $searchString
+	 * @param String $testStatusId
+	 * @param String $dateFrom
+	 * @param String $dateTo
+	 * @return Collection
+	 */
+	public static function searchWithTests($searchString = '', $testStatusId = 0, $dateFrom = NULL, $dateTo = NULL)
+	{
+		$visits = UnhlsVisit::with('patient')->where(function($q) use ($searchString,$testStatusId){
+
+			$q->whereHas('patient', function($q)  use ($searchString){
+				$q->where(function($q) use ($searchString){
+					$q->where('external_patient_number', 'like', '%' . $searchString . '%')
+					  ->orWhere('patient_number', 'like', '%' . $searchString . '%')
+					  ->orWhere('name', 'like', '%' . $searchString . '%')
+					  ->orWhere('ulin', 'like', '%' . $searchString . '%');
+				});
+			});
+
+			$q->whereHas('tests', function($q)  use ($testStatusId){
+				$q->where(function($q) use ($testStatusId){
+					$q->where('test_status_id', '=',  $testStatusId );
+				});
+			});
+
+		});
+		/**if ($visitStatusId > 0) {
+			$visits = $visits->where(function($q) use ($visitStatusId)
+			{
+				$q->where('visit_status_id','=', $visitStatusId);
+			});
+		}*/
+		
 		//  put default to get content for today
 		if ($dateFrom||$dateTo) {
 			$visits = $visits->where(function($q) use ($dateFrom, $dateTo)
