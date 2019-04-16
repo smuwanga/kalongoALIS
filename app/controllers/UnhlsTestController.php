@@ -28,41 +28,20 @@ class UnhlsTestController extends \BaseController {
 
 		$searchString = isset($input['search'])?$input['search']:'';
 		$testStatusId = isset($input['test_status'])?$input['test_status']:'';
+		$testCategoryId = isset($input['test_category'])?$input['test_category']:'';
 		if (isset($input['date_from'])) {
 			$dateFrom = $input['date_from'];
 		}else{
 			$dateFrom = date('Y-m-d');
 			$input['date_from'] = date('Y-m-d');
 		}
-		$dateTo = isset($input['date_to'])?$input['date_to']:'';
+		$dateTo = isset($input['date_to'])?$input['date_to']:date('Y-m-d');
         
       
-		// Search Conditions
-		if($searchString||$testStatusId||$dateFrom||$dateTo){
-			if ($searchString != '') {
-				$dateFrom = '';
-				$dateTo = '';
-			}
+		
 
-			
-			//$visits = UnhlsVisit::search($searchString,$testStatusId, $dateFrom, $dateTo);
-			if ($testStatusId == 0) {
-				$visits = UnhlsVisit::search($searchString,$testStatusId, $dateFrom, $dateTo);
-			}else{
-				$visits = UnhlsVisit::searchWithTests($searchString,$testStatusId, $dateFrom, $dateTo);
-			}
-			
+		$visits = UnhlsVisit::searchWithTests($searchString,$testStatusId,$testCategoryId, $dateFrom, $dateTo);
 
-
-			if (count($visits) == 0) {
-				Session::flash('message', trans('messages.empty-search'));
-			}
-		}
-		else
-		{
-			// List all the active tests
-			$visits = UnhlsVisit::orderBy('created_at', 'ASC');
-		}
 
 		
 		// Create Test Statuses array. Include a first entry for ALL
@@ -71,10 +50,12 @@ class UnhlsTestController extends \BaseController {
 			$statuses[$key] = trans("messages.$value");
 		}
 		
-		//\Log::info($visits);
-		// Pagination
-		$visits = $visits->paginate(Config::get('kblis.page-items'))->appends($input);
-
+		// Create Test Categories array. Include a first entry for ALL
+		$test_categories = array('All')+TestCategory::all()->lists('name','id');
+		foreach ($test_categories as $key => $value) {
+			$test_categories[$key] = $value;
+		}
+		
 		
 
 		// Load the view and pass it the tests
@@ -84,7 +65,8 @@ class UnhlsTestController extends \BaseController {
 					->with('dateTo', $dateTo)
 					->with('testStatus', $statuses)
 					->with('selectedStatusId',$testStatusId)
-					->withInput($input);
+					->with('testCategories',$test_categories)
+					->with('selectedTestCategoryId',$testCategoryId);
 	}
 	public function cancelTest($id){
 		$test = UnhlsTest::find($id);
@@ -149,6 +131,7 @@ class UnhlsTestController extends \BaseController {
 
 		$searchString = isset($input['search'])?$input['search']:'';
 		$testStatusId = 4;
+		$testCategoryId = 0;
 		if (isset($input['date_from'])) {
 			$dateFrom = $input['date_from'];
 		}else{
@@ -159,32 +142,9 @@ class UnhlsTestController extends \BaseController {
         
       
 		// Search Conditions
-		if($searchString||$testStatusId||$dateFrom||$dateTo){
-			if ($searchString != '') {
-				$dateFrom = '';
-				$dateTo = '';
-			}
+		$visits = UnhlsVisit::searchWithTests($searchString,$testStatusId,$testCategoryId, $dateFrom, $dateTo);
 
-			
-			//$visits = UnhlsVisit::search($searchString,$testStatusId, $dateFrom, $dateTo);
-			if ($testStatusId == 0) {
-				$visits = UnhlsVisit::search($searchString,$testStatusId, $dateFrom, $dateTo);
-			}else{
-				$visits = UnhlsVisit::searchWithTests($searchString,$testStatusId, $dateFrom, $dateTo);
-			}
-			
-
-
-			if (count($visits) == 0) {
-				Session::flash('message', trans('messages.empty-search'));
-			}
-		}
-		else
-		{
-			// List all the active tests
-			$visits = UnhlsVisit::orderBy('created_at', 'ASC');
-		}
-
+        
 		
 		// Create Test Statuses array. Include a first entry for ALL
 		$statuses = array('all')+TestStatus::all()->lists('name','id');
@@ -192,10 +152,12 @@ class UnhlsTestController extends \BaseController {
 			$statuses[$key] = trans("messages.$value");
 		}
 		
-		//\Log::info($visits);
-		// Pagination
-		$visits = $visits->paginate(Config::get('kblis.page-items'))->appends($input);
-
+		// Create Test Categories array. Include a first entry for ALL
+		$test_categories = array('All')+TestCategory::all()->lists('name','id');
+		foreach ($test_categories as $key => $value) {
+			$test_categories[$key] = $value;
+		}
+		
 		
 		// Load the view and pass it the tests
 		return View::make('unhls_test.index')
@@ -204,7 +166,8 @@ class UnhlsTestController extends \BaseController {
 					->with('dateTo', $dateTo)
 					->with('testStatus', $statuses)
 					->with('selectedStatusId',$testStatusId)
-					->withInput($input);
+					->with('testCategories',$test_categories)
+					->with('selectedTestCategoryId',$testCategoryId);
 
 	}
 
@@ -227,6 +190,7 @@ class UnhlsTestController extends \BaseController {
 
 		$searchString = isset($input['search'])?$input['search']:'';
 		$testStatusId = 2;
+		$testCategoryId = 0;
 		if (isset($input['date_from'])) {
 			$dateFrom = $input['date_from'];
 		}else{
@@ -237,40 +201,25 @@ class UnhlsTestController extends \BaseController {
         
       
 		// Search Conditions
-		if($searchString||$testStatusId||$dateFrom||$dateTo){
-			if ($searchString != '') {
-				$dateFrom = '';
-				$dateTo = '';
-			}
-
-			
-			//$visits = UnhlsVisit::search($searchString,$testStatusId, $dateFrom, $dateTo);
-			
-		    $visits = UnhlsVisit::searchWithTests($searchString,$testStatusId, $dateFrom, $dateTo);
-			
-			
-
-
-			if (count($visits) == 0) {
-				Session::flash('message', trans('messages.empty-search'));
-			}
-		}
-		else
-		{
-			// List all the active tests
-			$visits = UnhlsVisit::orderBy('created_at', 'ASC');
-		}
-
 		
+		$visits = UnhlsVisit::searchWithTests($searchString,$testStatusId,$testCategoryId, $dateFrom, $dateTo);
+
+        
 		// Create Test Statuses array. Include a first entry for ALL
 		$statuses = array('all')+TestStatus::all()->lists('name','id');
 		foreach ($statuses as $key => $value) {
 			$statuses[$key] = trans("messages.$value");
 		}
+
+		// Create Test Categories array. Include a first entry for ALL
+		$test_categories = array('All')+TestCategory::all()->lists('name','id');
+		foreach ($test_categories as $key => $value) {
+			$test_categories[$key] = $value;
+		}
 		
 		//\Log::info($visits);
 		// Pagination
-		$visits = $visits->paginate(Config::get('kblis.page-items'))->appends($input);
+		//$visits = $visits->paginate(Config::get('kblis.page-items'))->appends($input);
 
 		
 
@@ -281,6 +230,8 @@ class UnhlsTestController extends \BaseController {
 					->with('dateTo', $dateTo)
 					->with('testStatus', $statuses)
 					->with('selectedStatusId',$testStatusId)
+					->with('testCategories',$test_categories)
+					->with('selectedTestCategoryId',$testCategoryId)
 					->withInput($input);
 
 
@@ -305,6 +256,7 @@ class UnhlsTestController extends \BaseController {
 
 		$searchString = isset($input['search'])?$input['search']:'';
 		$testStatusId = 3;
+		$testCategoryId = 0;
 		if (isset($input['date_from'])) {
 			$dateFrom = $input['date_from'];
 		}else{
@@ -315,30 +267,10 @@ class UnhlsTestController extends \BaseController {
         
       
 		// Search Conditions
-		if($searchString||$testStatusId||$dateFrom||$dateTo){
-			if ($searchString != '') {
-				$dateFrom = '';
-				$dateTo = '';
-			}
+		$visits = UnhlsVisit::searchWithTests($searchString,$testStatusId,$testCategoryId, $dateFrom, $dateTo);
 
-			
-			//$visits = UnhlsVisit::search($searchString,$testStatusId, $dateFrom, $dateTo);
-			if ($testStatusId == 0) {
-				$visits = UnhlsVisit::search($searchString,$testStatusId, $dateFrom, $dateTo);
-			}else{
-				$visits = UnhlsVisit::searchWithTests($searchString,$testStatusId, $dateFrom, $dateTo);
-			}
-			
-
-
-			if (count($visits) == 0) {
+        if (count($visits) == 0) {
 				Session::flash('message', trans('messages.empty-search'));
-			}
-		}
-		else
-		{
-			// List all the active tests
-			$visits = UnhlsVisit::orderBy('created_at', 'ASC');
 		}
 
 		
@@ -348,9 +280,11 @@ class UnhlsTestController extends \BaseController {
 			$statuses[$key] = trans("messages.$value");
 		}
 		
-		//\Log::info($visits);
-		// Pagination
-		$visits = $visits->paginate(Config::get('kblis.page-items'))->appends($input);
+		// Create Test Categories array. Include a first entry for ALL
+		$test_categories = array('All')+TestCategory::all()->lists('name','id');
+		foreach ($test_categories as $key => $value) {
+			$test_categories[$key] = $value;
+		}
 
 		
 
@@ -361,7 +295,9 @@ class UnhlsTestController extends \BaseController {
 					->with('dateTo', $dateTo)
 					->with('testStatus', $statuses)
 					->with('selectedStatusId',$testStatusId)
-					->withInput($input);
+					->with('testCategories',$test_categories)
+					->with('selectedTestCategoryId',$testCategoryId)
+					;
 
 	}
 
@@ -384,6 +320,7 @@ class UnhlsTestController extends \BaseController {
 
 		$searchString = isset($input['search'])?$input['search']:'';
 		$testStatusId = 1;
+		$testCategoryId = 0;
 		if (isset($input['date_from'])) {
 			$dateFrom = $input['date_from'];
 		}else{
@@ -394,31 +331,9 @@ class UnhlsTestController extends \BaseController {
         
       
 		// Search Conditions
-		if($searchString||$testStatusId||$dateFrom||$dateTo){
-			if ($searchString != '') {
-				$dateFrom = '';
-				$dateTo = '';
-			}
+		$visits = UnhlsVisit::searchWithTests($searchString,$testStatusId,$testCategoryId, $dateFrom, $dateTo);
 
-			
-			//$visits = UnhlsVisit::search($searchString,$testStatusId, $dateFrom, $dateTo);
-			if ($testStatusId == 0) {
-				$visits = UnhlsVisit::search($searchString,$testStatusId, $dateFrom, $dateTo);
-			}else{
-				$visits = UnhlsVisit::searchWithTests($searchString,$testStatusId, $dateFrom, $dateTo);
-			}
-			
-
-
-			if (count($visits) == 0) {
-				Session::flash('message', trans('messages.empty-search'));
-			}
-		}
-		else
-		{
-			// List all the active tests
-			$visits = UnhlsVisit::orderBy('created_at', 'ASC');
-		}
+        
 
 		
 		// Create Test Statuses array. Include a first entry for ALL
@@ -427,9 +342,11 @@ class UnhlsTestController extends \BaseController {
 			$statuses[$key] = trans("messages.$value");
 		}
 		
-		//\Log::info($visits);
-		// Pagination
-		$visits = $visits->paginate(Config::get('kblis.page-items'))->appends($input);
+		// Create Test Categories array. Include a first entry for ALL
+		$test_categories = array('All')+TestCategory::all()->lists('name','id');
+		foreach ($test_categories as $key => $value) {
+			$test_categories[$key] = $value;
+		}
 
 		
 
@@ -440,7 +357,9 @@ class UnhlsTestController extends \BaseController {
 					->with('dateTo', $dateTo)
 					->with('testStatus', $statuses)
 					->with('selectedStatusId',$testStatusId)
-					->withInput($input);
+					->with('testCategories',$test_categories)
+					->with('selectedTestCategoryId',$testCategoryId)
+					;
 
 	}
 
@@ -464,6 +383,7 @@ class UnhlsTestController extends \BaseController {
 
 		$searchString = isset($input['search'])?$input['search']:'';
 		$testStatusId = 5;
+		$testCategoryId=0;
 		if (isset($input['date_from'])) {
 			$dateFrom = $input['date_from'];
 		}else{
@@ -474,39 +394,23 @@ class UnhlsTestController extends \BaseController {
         
       
 		// Search Conditions
-		if($searchString||$testStatusId||$dateFrom||$dateTo){
-			if ($searchString != '') {
-				$dateFrom = '';
-				$dateTo = '';
-			}
+		$visits = UnhlsVisit::searchWithTests($searchString,$testStatusId,$testCategoryId, $dateFrom, $dateTo);
 
-			
-			
-			$visits = UnhlsVisit::searchWithTests($searchString,$testStatusId, $dateFrom, $dateTo);
-			
-			if (count($visits) == 0) {
-				Session::flash('message', trans('messages.empty-search'));
-			}
-		}
-		else
-		{
-			// List all the active tests
-			$visits = UnhlsVisit::orderBy('created_at', 'ASC');
-		}
-
+       
 		
 		// Create Test Statuses array. Include a first entry for ALL
 		$statuses = array('all')+TestStatus::all()->lists('name','id');
 		foreach ($statuses as $key => $value) {
 			$statuses[$key] = trans("messages.$value");
 		}
+		// Create Test Categories array. Include a first entry for ALL
+		$test_categories = array('All')+TestCategory::all()->lists('name','id');
+		foreach ($test_categories as $key => $value) {
+			$test_categories[$key] = $value;
+		}
 		
-		//\Log::info($visits);
-		// Pagination
-		$visits = $visits->paginate(Config::get('kblis.page-items'))->appends($input);
-
 		
-
+      
 		// Load the view and pass it the tests
 		return View::make('unhls_test.index')
 					->with('visitSet', $visits)
@@ -514,8 +418,9 @@ class UnhlsTestController extends \BaseController {
 					->with('dateTo', $dateTo)
 					->with('testStatus', $statuses)
 					->with('selectedStatusId',$testStatusId)
-					->withInput($input);
-
+					->with('testCategories',$test_categories)
+					->with('selectedTestCategoryId',$testCategoryId);
+					
 	}
 
 

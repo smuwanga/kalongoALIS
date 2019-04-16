@@ -30,6 +30,15 @@ class UnhlsPatient extends Eloquent
         return $this->hasMany('UnhlsVisit');
     }
 
+
+    public static function getAllPatients(){
+    	$sql = "select * from unhls_patients";
+    	$patients = DB::select($sql);
+
+    	return $patients;
+    }
+
+    
 	/**
 	 * Patient Age 
 	 *
@@ -87,6 +96,28 @@ class UnhlsPatient extends Eloquent
 		return $age;
 	}
 
+	public function newAge($dateOfBirth){
+
+		$new_age = "";
+		$at = new DateTime('now');
+
+		$dateOfBirth = new DateTime($dateOfBirth);
+		$interval = $dateOfBirth->diff($at);
+
+		$days = $interval->format('%a');
+
+		if($days < 30){
+			$new_age = $days . " days";
+
+		}elseif ($days >= 30 && $days < 365) {
+			$months = round($days/12);
+			$new_age = $months . " month(s)";
+		}else{
+			$years = round($days/365);
+			$new_age = $years . " year(s)";
+		}
+		return $new_age;
+	}
 	/**
 	* Get patient's gender
 	*

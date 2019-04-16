@@ -203,7 +203,7 @@
 								<li>
 									<div>
 										<a href="{{URL::route('test.verified')}}">
-											<span class="glyphicon glyphicon-tag" ></span>{{trans('Verified Tests')}}
+											<span class="glyphicon glyphicon-tag" ></span>Reviewed Tests
 										</a>
 									</div>
 								</li>

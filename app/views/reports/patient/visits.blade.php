@@ -41,6 +41,13 @@
 								<span class="glyphicon glyphicon-eye-open"></span>
 								{{trans('messages.view-report')}}
 							</a>
+							@if(Entrust::can('recall_report'))
+								<a class="btn btn-sm btn-danger" href="{{ URL::to('patientvisitreport/recall/' . $visit->id) }}" >
+									<span class="glyphicon glyphicon-eye-open"></span>
+									{{trans('messages.recall-report')}}
+								</a>
+								
+							@endif
 						</td>
 					</tr>
 				@empty

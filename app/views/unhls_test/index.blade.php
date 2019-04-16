@@ -13,7 +13,7 @@
     <div class='container-fluid'>
         {{ Form::open(array('route' => array('unhls_test.index'))) }}
             <div class='row'>
-                <div class='col-md-3'>
+                <div class='col-md-2'>
                     <div class='col-md-2'>
                         {{ Form::label('date_from', trans('messages.from')) }}
                     </div>
@@ -22,7 +22,7 @@
                             array('class' => 'form-control standard-datepicker')) }}
                     </div>
                 </div>
-                <div class='col-md-3'>
+                <div class='col-md-2'>
                     <div class='col-md-2'>
                         {{ Form::label('date_to', trans('messages.to')) }}
                     </div>
@@ -31,13 +31,22 @@
                             array('class' => 'form-control standard-datepicker')) }}
                     </div>
                 </div>
-                <div class='col-md-3'>
+                <div class='col-md-2'>
                     <div class='col-md-5'>
                         {{ Form::label('test_status', trans('messages.test-status')) }}
                     </div>
                     <div class='col-md-7'>
                         {{ Form::select('test_status', $testStatus,
-                            Input::get('test_status'), array('class' => 'form-control','id'=> $selectedStatusId)) }}
+                            Input::get('test_status'), array('class' => 'form-control')) }}
+                    </div>
+                </div>
+                <div class='col-md-3'>
+                    <div class='col-md-5'>
+                        {{ Form::label('test_category', trans('messages.list-test-categories')) }}
+                    </div>
+                    <div class='col-md-7'>
+                        {{ Form::select('test_category', $testCategories,
+                            Input::get('test_category'), array('class' => 'form-control','id'=> $selectedTestCategoryId)) }}
                     </div>
                 </div>
                 
@@ -80,7 +89,8 @@
             </div>
         </div>
         <div class="panel-body">
-            <table class="table table-striped table-hover table-condensed">
+            <table id="visits_table" class="row-border hover table table-bordered table-condensed table-striped">
+
                 <thead>
                     <tr>
                         <th>{{trans('messages.date-ordered')}}</th>
@@ -89,7 +99,7 @@
                         <th class="col-md-2">{{trans('messages.patient-name')}}</th>
                         <th class="col-md-1">{{trans('messages.visit-lab-number')}}</th>
                         <!--location: where test is comping from, e.g. ICU, Emergency, OPD, ... -->
-                        <th>Unit</th>
+                        <th>Unit </th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -99,21 +109,21 @@
                    
                     <tr>
                         <td>{{ date('d-m-Y H:i', strtotime($visit->created_at));}}</td>  <!--Date Ordered-->
-                        <td>{{ empty($visit->patient->external_patient_number)?
-                                $visit->patient->patient_number:
-                                $visit->patient->external_patient_number
+                        <td>{{ empty($visit->external_patient_number)?
+                                $visit->patient_number:
+                                $visit->external_patient_number
                             }}</td> <!--Patient Number -->
 
-                        <td>{{$visit->patient->ulin}}</td> <!--unhls terminology -->
+                        <td>{{$visit->ulin}}</td> <!--unhls terminology -->
                         <!-- issue: this is confusing people as they may mistake it as ULIN -->
                         
                         
                         <!--Visit Number -->
-                        <td>{{ $visit->patient->name}}</td> <!--Patient Name -->
+                        <td>{{ $visit->name}}</td> <!--Patient Name -->
                         <td>{{ $visit->visit_lab_number}}</td> <!--Visit Lab Number: the number issued each time this patient walks into the lab-->
                         
                         <!--location: where test is comping from, e.g. ICU, Emergency, OPD, ... -->
-                        <td>{{ $visit->getWard()}}</td>
+                        <td>{{ empty($visit->ward)? 'N/A' :$visit->ward}}</td>
                         
                         <!-- ACTION BUTTONS -->
                         <td>
@@ -148,9 +158,7 @@
                 @endforeach
                 </tbody>
             </table>
-            {{ $visitSet->links() }}
-        {{ Session::put('SOURCE_URL', URL::full()) }}
-        {{ Session::put('TESTS_FILTER_INPUT', Input::except('_token')); }}
+        
 
         </div>
     </div>

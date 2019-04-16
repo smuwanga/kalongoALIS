@@ -391,6 +391,7 @@ return array(
      *   Tests Results
      */
     'edit-test-results' => 'Edit Test Results',
+    'recall-test-results' => 'Recall Test Results',
     'enter-results' => 'Enter Results',
     'enter-results-title' => 'Enter Test Results',
     'enter-test-results' => 'Enter Test Results',
@@ -444,6 +445,8 @@ return array(
     'results-entry-date' => 'Results Entry Date',
     'test-results-values' => 'Test Results',
     'view-report' => 'View Report',
+    'recall-report' => 'Recall Report',
+    'recall-test' => 'Recall Test',
     'view-final-report'=>'View Final Report',
     'view-interim-report'=>'View Interim Report',
     'view-visit-report' => 'View Visit Report',

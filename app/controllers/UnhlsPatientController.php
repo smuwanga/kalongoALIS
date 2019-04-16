@@ -16,20 +16,21 @@ class UnhlsPatientController extends \BaseController {
 	public function index()
 		{
 		
-		$patients = UnhlsPatient::all();
+		$patients = UnhlsPatient::getAllPatients();
 		/*if (count($patients) == 0) {
 		 	Session::flash('message', trans('messages.no-match'));
 		}*/
-		$clinicianUI = AdhocConfig::where('name','Clinician_UI')->first()->activateClinicianUI();
+		//$clinicianUI = AdhocConfig::where('name','Clinician_UI')->first()->activateClinicianUI();
 
 		
 
-				
+		$patient_helper=UnhlsPatient::find(1);
 		// Load the view and pass the patients
 		return View::make('unhls_patient.index')
 				->with('patients', $patients)
+				->with('patient_helper',$patient_helper);
 				
-				->withInput(Input::all());
+				
 	}
 
 	public function live()

@@ -487,14 +487,31 @@ Route::group(array("before" => "auth"), function()
             "as" => "reports.patient.visits",
             "uses" => "ReportController@viewPatientVisits"
         ));
-         Route::any("/patientvisitreport/{id}", array(
+        Route::any("/patientvisitreport/{id}", array(
             "as" => "reports.patient.visit.report",
             "uses" => "ReportController@viewPatientVisitReport"
         ));
+
+
+        Route::any("/patientvisitreport/recall/{id}", array(
+            "as" => "reports.patient.visit.report.recall",
+            "uses" => "ReportController@recallPatientVisitReport"
+        ));
+        Route::any("/patientvisitreport/recall/test/{id}", array(
+            "as" => "reports.patient.visit.report.recall.test",
+            "uses" => "ReportController@recallPatientTest"
+        ));
+        Route::post("/patientvisitreport/{test}/saveresults", array(
+            "before" => "checkPerms:recall_report",
+            "as"   => "reports.recallResults",
+            "uses" => "ReportController@recallResults"
+        ));
+
         Route::any("/patient_final_report/{id}/{visit}", array(
             "as" => "reports.patient.report",
             "uses" => "ReportController@viewFinalPatientReport"
         ));
+
          Route::any("/patient_interim_report/{id}/{visit}", array(
             "as" => "reports.patient.interim.report",
             "uses" => "ReportController@viewInterimPatientReport"

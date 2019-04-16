@@ -69,6 +69,7 @@ class UnhlsSpecimen extends Eloquent
         return $this->hasMany('UnhlsTest', 'specimen_id');
     }
 
+    
     /**
 	 * referrals relationship
 	 */

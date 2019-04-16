@@ -7,7 +7,7 @@
 	</ol>
 </div>
 
-<div class='container-fluid'>
+<!--div class='container-fluid'>
 	<div class='row'>
 		<div class='col-md-12'>
 			{{ Form::open(array('route' => array('unhls_patient.index'), 'class'=>'form-inline',
@@ -23,7 +23,7 @@
 			{{ Form::close() }}
 		</div>
 	</div>
-</div>
+</div -->
 
 <br>
 
@@ -63,8 +63,11 @@
 						<td>{{ $patient->patient_number }}</td>
 						<td>{{ $patient->ulin}}</td>
 						<td>{{ $patient->name }}</td>
-						<td>{{ $patient->getGender() }}</td>
-						<td>{{ $patient->getAge() }}</td>
+						<td>{{ ($patient->gender == 0)? 'Male':'Female' }}</td>
+						<td>{{ 
+								$patient_helper->newAge($patient->dob)
+						 }}</td>
+						
 						<td>{{ $patient->village_residence }}</td>
 						<td>{{ $patient->village_workplace  }}</td>
 						<td>

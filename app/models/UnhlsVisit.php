@@ -173,7 +173,7 @@ class UnhlsVisit extends Eloquent
 	 * @param String $dateTo
 	 * @return Collection
 	 */
-	public static function searchWithTests($searchString = '', $testStatusId = 0, $dateFrom = NULL, $dateTo = NULL)
+	public static function searchWithTests1($searchString = '', $testStatusId = 0,$testCategoryId=0, $dateFrom = NULL, $dateTo = NULL)
 	{
 		$visits = UnhlsVisit::with('patient')->where(function($q) use ($searchString,$testStatusId){
 
@@ -216,5 +216,51 @@ class UnhlsVisit extends Eloquent
 		$visits = $visits->orderBy('created_at', 'ASC');
 
 		return $visits;
+	}
+
+	/**
+	 * Search for visits meeting the given criteria
+	 *
+	 * @param String $searchString
+	 * @param String $testStatusId
+	 * @param String $dateFrom
+	 * @param String $dateTo
+	 * @return Collection
+	 */
+	public static function searchWithTests($searchString = '', $testStatusId = 0,$testCategoryId=0, $dateFrom = NULL, $dateTo = NULL)
+	{
+		//$dateFrom ='2019-02-01';
+		$condition="";
+		if($searchString != ''){
+			$condition = " AND (p.patient_number like '%".$searchString."%' 
+				OR p.external_patient_number like '%".$searchString."%' 
+				OR p.ulin like '%".$searchString."%' OR p.name like '%".$searchString."%')";
+		}
+		if($testStatusId > 0){
+			$condition = $condition." AND t.test_status_id = ".$testStatusId;
+		}
+		if($testCategoryId > 0){
+			$condition = $condition." AND tt.test_category_id = ".$testCategoryId;
+		}
+
+		$sqlStatement = "select v.created_at ,p.patient_number,p.external_patient_number,
+		    p.ulin,p.nin,p.name,v.visit_lab_number,v.id,w.name ward
+        from unhls_visits v 
+			left join unhls_tests t on v.id = t.visit_id 
+			left join test_types tt on tt.id = t.test_type_id 
+			left join test_categories tc on tc.id = tt.test_category_id 
+			left join unhls_patients p on p.id = v.patient_id 
+			left join wards w on w.id=v.ward_id
+		where v.created_at >= '".$dateFrom."' and v.created_at <='".$dateTo." 23:59:59' ".$condition.
+		" group by visit_id";
+
+		//\Log::info($sqlStatement);
+		//		where v.created_at >= '".$dateFrom."' and v.created_at <='".$dateTo." 23:59:59' ".$condition.
+		$resultset = DB::select($sqlStatement);
+
+		
+		//var_dump($resultset);
+		return $resultset;
+		
 	}
 }

@@ -17,18 +17,19 @@ class ReportController extends \BaseController {
 
 	public function loadPatients()
 	{
-		$search = Input::get('search');
+		//$search = Input::get('search');
 
-		$patients = UnhlsPatient::search($search)->orderBy('id','DESC')->paginate(Config::get('kblis.page-items'));
+		//$patients = UnhlsPatient::search($search)->orderBy('id','DESC')->paginate(Config::get('kblis.page-items'));
+    	$patients = UnhlsPatient::getAllPatients();
+    	$patient_helper = UnhlsPatient::find(1);
 
-
-
-		if (count($patients) == 0) {
-		 	Session::flash('message', trans('messages.no-match'));
-		}
+		//if (count($patients) == 0) {
+		// 	Session::flash('message', trans('messages.no-match'));
+		//}
 
 		// Load the view and pass the patients
-		return View::make('reports.patient.index')->with('patients', $patients)->withInput(Input::all());
+		return View::make('reports.patient.index')->with('patients', $patients)
+		->with('patient_helper',$patient_helper);
 	}
 
 	public function viewFinalPatientReport($id, $visit = null,$testId = null){
@@ -405,6 +406,110 @@ class ReportController extends \BaseController {
 		->with('visits', $visits)->withInput(Input::all());
 
 	}
+
+	public function recallPatientVisitReport($id){
+		$tests = UnhlsTest::searchByVisit( $id);
+		if (count($tests) == 0) {
+				Session::flash('message', trans('messages.empty-search'));
+		}
+		
+		// Pagination
+		$tests = $tests->paginate(Config::get('kblis.page-items'));
+		$visit = UnhlsVisit::find($id);
+
+		
+
+		// Load the view and pass it the tests
+		return View::make('reports.patient.recall_report')
+					->with('testSet', $tests)
+					->with('visit',$visit);
+	}
+
+	public function recallPatientTest($testID){
+		$test = UnhlsTest::find($testID);
+		// if the test being carried out requires a culture worksheet
+		if ($test->testType->name == 'Culture and Sensitivity') {
+			return Redirect::route('culture.edit', [$test->id]);
+		}elseif ($test->testType->name == 'Gram Staining') {
+			return Redirect::route('gramstain.edit', [$test->id]);
+		}else{
+			return View::make('reports.patient.recall_test')->with('test', $test);
+		}
+	}
+
+	/**
+	 * Saves Test Results
+	 *
+	 * @param $testID to save
+	 * @return view
+	 */
+	public function recallResults($testID)
+	{
+		$test = UnhlsTest::find($testID);
+		
+
+		if ($test->testType->name == 'Gram Staining') {
+			$results = '';
+			foreach ($test->gramStainResults as $gramStainResult) {
+				$results = $results.$gramStainResult->gramStainRange->name.',';
+			}
+		}
+		$revisions = UnhlsRecalledTestResult::numberOfRevisions($testID);
+		\Log::info("..1..");
+		var_dump($revisions->revisions);
+		\Log::info("..2..");
+
+		foreach ($test->testType->measures as $measure) {
+			$testResult = UnhlsRecalledTestResult::firstOrCreate(array('test_id' => $testID, 'measure_id' => $measure->id));
+			if ($test->testType->name == 'Gram Staining') {
+
+				$testResult->result = $results;
+				$inputName = "m_".$measure->id;
+			}else{
+				$testResult->result = Input::get('m_'.$measure->id);
+				$inputName = "m_".$measure->id;
+			}
+			$rules = array("$inputName" => 'max:255');
+
+			$validator = Validator::make(Input::all(), $rules);
+
+			if ($validator->fails()) {
+				return Redirect::back()->withErrors($validator)->withInput(Input::all());
+			} else {
+				$testResult->save();
+			}
+		}
+		if ($test->isHIV()) {
+			$testResult->interpretation = $test->interpreteHIVResults();
+		}else{
+			$testResult->interpretation = Input::get('interpretation');
+		}
+		$testResult->created_by = Auth::user()->id;
+		$testResult->created_at = date('Y-m-d H:i:s');
+		$testResult->save();
+
+		//Fire of entry saved/edited event
+		Event::fire('test.recalled', array($testID));
+
+		$input = Session::get('TESTS_FILTER_INPUT');
+		Session::put('fromRedirect', 'true');
+
+		// Get page
+		/*$url = Session::get('SOURCE_URL');
+		$urlParts = explode('&', $url);
+		if(isset($urlParts['page'])){
+			$pageParts = explode('=', $urlParts['page']);
+			$input['page'] = $pageParts[1];
+		}*/
+        $url = "/patientvisitreport/recall/".$test->visit_id;
+		
+		// redirect
+		return Redirect::to($url)
+					->with('message', trans('messages.success-saving-results'))
+					->with('activeTest', array($test->id))
+					->withInput($input);
+	}
+
 	/**
 	 *
 	 *

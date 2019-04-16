@@ -5,6 +5,9 @@ $(document).ready(function () {
 	*/
 	$('#patient_visits_datatable').DataTable();
 	$('#patients_table').DataTable();
+    $('#visits_table').DataTable();
+    $('#reports_patients_table').DataTable();
+   
 
 	/**
 	* Event manager for loading dependent select/drop-down for Health Centre Units

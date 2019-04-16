@@ -61,7 +61,8 @@
         <td width="8%" style="text-align:left;">{{ $patient->getGender(false) }}</td>
 
         <td width="5%"><strong>{{ trans('messages.age')}}</strong>:</td>
-        <td width="8%" style="text-align:left;">{{ $patient->getAge()}}</td>
+        <td width="8%" style="text-align:left;">{{ 
+        $patient->newAge($patient->dob) }}</td>
 
         <td width="15%"><strong>{{ trans('messages.patient-contact')}}</strong>:</td>
         <td width="15%" style="text-align:left;">{{ $patient->phone_number}}</td>
