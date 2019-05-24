@@ -96,6 +96,7 @@
 								@endif
 								<td>
 								{{ $result->result }}
+								
 								</td>
 								<td>
 									{{ Measure::getRange($test->visit->patient, $result->measure_id) }}
@@ -105,6 +106,8 @@
 								</td>
 								<td></td><!-- Diagnostic Flag column for results-->
 							</tr>
+							
+							
 							@endif
 						@endforeach
 						@if($test->testType->name == 'HIV')
@@ -128,27 +131,130 @@
 							<tr>
 								<td width="50%" style="font-size:8px">
 									<b>Results Entry Date</b>:{{ $test->time_completed }}</td>
-								<td width="50%">
-									<b>{{trans('messages.tested-by')}}</b>:
-									{{ $test->testedBy->name}}
-								</td>
 								
+								<!-- display tester if recalledTestResults are 0-->
+								@if($test->recalledTestResults->count() == 0)
+									<td width="50%">
+										<b>{{trans('messages.tested-by')}}</b>:
+										{{ $test->testedBy->name}}
+									</td>
+								@endif
 							</tr>
 							
 							<tr>
-								<td width="50%"><b>Reviewed by</b>:{{$test->verifiedBy->name}}</td>
-								<td width="50%"><b>Date Reviewed</b>:{{$test->time_verified}}</td>
-								
+								<!-- display reviewer if recalledTestResults are 0-->
+								@if($test->recalledTestResults->count() == 0)
+									<td width="50%"><b>Reviewed by</b>:{{$test->verifiedBy->name}}</td>
+								@endif
+									<td width="50%"><b>Date Reviewed</b>:{{$test->time_verified}}</td>
 							</tr>
-							
+
+							<!-- display approver if recalledTestResults are 0-->
+							@if($test->recalledTestResults->count() == 0)
+							<tr>
+									<td>
+										<strong>Approved By :
+											
+							               
+							                    @if(!empty($test->isApproved()))
+							                        {{$test->approvedBy->name}}
+							                    @endif
+
+							            </strong>
+									</td>
+							</tr>
+							@endif
 							
 						@endif
+
+
+						
 						</tbody>
 				</table>
 			</td>
 			
 			
 		</tr>
+		@if($test->recalledTestResults->count() > 0)
+		<tr>
+			<td width="20%">{{ $test->recalledTestResults->last()->revision }}</td>
+			<td width="80%">
+				
+				<table style="border-top: 1px solid #cecfd5; font-size:8px;
+ font-family: 'Courier New',Courier;">
+					
+					<tbody>
+						<!-- show results with paremeters and ranges -->
+						@if($test->testType->measures->count() > 1)
+
+							@foreach($test->testResults as $result)
+								<!-- show only parameters with values -->
+								@if($result->result != '')
+								<tr>
+									<td>
+										{{ Measure::find($result->measure_id)->name }}:
+									</td>
+									
+									<td>
+									{{ $result->result }}
+									
+									</td>
+									<td>
+										{{ Measure::getRange($test->visit->patient, $result->measure_id) }}
+									</td>
+									<td>
+										{{ Measure::find($result->measure_id)->unit }}
+									</td>
+									<td></td><!-- Diagnostic Flag column for results-->
+								</tr>
+								@endif 
+							@endforeach
+
+						<!-- show results with paremeters and ranges -->
+						@else
+							<tr>
+									<td>
+									{{ $test->recalledTestResults->last()->result }}
+									</td>
+									
+								</tr>
+						@endif
+						
+						@if($test->testType->name == 'HIV')
+							<tr>
+								<td><b>Interpretation:</b></td> <td>{{$test->interpreteHIVResults()}}</td>
+							</tr>
+						@else
+							<tr>
+								<td width="100%"><br><br>
+									<b>{{trans('messages.comments')}}:</b> {{ $test->recalledTestResults->last()->interpretation == '' ? 'Suitable for the test' : $test->recalledTestResults->last()->interpretation }}
+								</td>
+								
+							</tr>
+	                        
+							<tr>
+								<td width="50%" style="font-size:8px">
+									<b>Results Recall Date</b>:{{ $test->recalledTestResults->last()->created_at }}</td>
+								<td width="50%">
+									<b>{{trans('messages.recalled-by')}}</b>:
+									{{ $test->recalledTestResults->last()->recalledBy->name }}
+								</td>
+								
+							</tr>
+							
+							
+							
+							
+						@endif
+
+
+						
+						</tbody>
+				</table>
+
+			</td>
+		</tr>
+		@endif
 
 	</table>
 	@elseif($test->testType->isCulture())
@@ -232,26 +338,3 @@
 @endforelse
 
 <hr>
-
-<table>
-	<tr><td></td></tr>
-	<tr>
-		<td>
-			<strong>Approved By :
-				
-			  @if(isset($tests))
-                @if(!empty($tests->first()))
-                    @if(!empty($tests->first()->isApproved()))
-                        
-                        {{$tests->first()->approvedBy->name}}
-                    @else
-
-                    @endif
-
-                @endif
-            @endif
-            </strong>
-		</td>
-	</tr>
-	<!-- <tr><td><u><strong></strong></u></td></tr> -->
-</table>

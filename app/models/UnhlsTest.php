@@ -605,6 +605,7 @@ class UnhlsTest extends Eloquent
 		return $tests;
 	}
 
+	
 
 	/**
 	* Search for completed tests meeting the given criteria
@@ -1180,5 +1181,52 @@ class UnhlsTest extends Eloquent
       return ($this->testType->name == 'HIV') ? true : false;
     }
 
+    public static function getRecalledTestRevisions($test_id){
+		$revisions = $revisions = DB::select("SELECT * from unhls_recalled_test_results WHERE unhls_test_id=".$test_id);
+		return $revisions;
+	}
+
+    /*
+    *
+    *
+    */
+    public function revisions()
+	{
+		return $this->hasMany('UnhlsRecalledTestResult', 'unhls_test_id','id');
+	}
+
+	public static function latestRevision($test_id){
+
+		$revisions = DB::select("SELECT * revisions from unhls_recalled_test_results WHERE unhls_test_id=".$test_id);
+
+		$number_of_revisions=$this->numberOfRevisions($test_id);
+		$last_index = $number_of_revisions - 1;
+		if($last_index > 0)
+			return null;
+		
+		//return $revisions[$last_index];
+		return "positive gram stain";
+	}
+
+	public static function numberOfRevisions($test_id){
+		
+
+
+		$revisions = DB::select("SELECT count(*) revisions from unhls_recalled_test_results WHERE unhls_test_id=".$test_id);
+
+		
+		return $revisions[0]->revisions;
+		
+	}
+
+	public function recalledTestResults(){
+		return $this->hasMany('UnhlsRecalledTestResult');
+	}
+
+	public static function getMeasure($measure_id){
+		$measureInstance = Measure::find($measure_id);
+	
+		return $measureInstance;
+	}
    
 }
