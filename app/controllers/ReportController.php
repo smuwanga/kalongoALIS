@@ -285,22 +285,13 @@ class ReportController extends \BaseController {
 		$visits = UnhlsVisit::select('id')->where('patient_id','=',$id)->get();
 		//$tests = UnhlsTest::whereIn('visit_id', [5051])->get();
 
-		\Log::info('...visits...');
-		\Log::info($visits);
+		
 		$visits_array=json_decode($visits,true);
-		\Log::info('...end visits...');
 		$tests = UnhlsTest::whereIn('visit_id', $visits_array)->get();
 
-		\Log::info("....1....");		
 		// adhoc config decision
 		$template = AdhocConfig::where('name','Report')->first()->getReportTemplate();
 
-		\Log::info("....2....");
-		\Log::info($patient);
-		
-		\Log::info("....tests....");
-		\Log::info($tests);
-		\Log::info("..end..tests....");
 		
 		$content = View::make($template)
 			->with('patient', $patient)
