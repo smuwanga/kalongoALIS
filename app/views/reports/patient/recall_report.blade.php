@@ -45,12 +45,12 @@
                         <th>{{trans('messages.patient-number')}}</th>
                         <th>Lab Number</th>
                         <!-- <th>{{trans('messages.visit-number')}}</th> -->
-                        <th class="col-md-2">{{trans('messages.patient-name')}}</th>
                         <th class="col-md-1">{{trans('messages.specimen-id')}}</th>
                         <th>{{ Lang::choice('messages.test',1) }}</th>
                         <th class="col-md-1">{{trans('messages.visit-type')}}</th>
                         <th class="col-md-1">Unit</th>
                         <th>{{trans('messages.test-request-status')}}</th>
+                        <th class="col-md-1">Revisions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -75,8 +75,7 @@
                                 $test->visit->visit_number
                             }}</td> -->
                         <!--Visit Number -->
-                        <td>{{ $test->visit->patient->name.' ('.($test->visit->patient->getGender(true)).',
-                            '.$test->visit->patient->getAge('Y'). ')'}}</td> <!--Patient Name -->
+                        
                         <td>{{ $test->getSpecimenId() }}</td> <!--Specimen ID -->
                         <td>{{ $test->testType->name }}</td> <!--Test-->
                         <td>{{ $test->visit->visit_type }}</td> <!--Visit Type -->
@@ -101,7 +100,16 @@
                         
                        
                         </td>
-
+                        <td>
+                            @foreach($test->getRecalledTestRevisions($test->id) as $key => $revisionInstance)
+                                <a id="recall-{{$test->id}}-link"
+                                        href="{{ URL::route('reports.patient.visit.report.recall.test', array($revisionInstance->id)) }}"
+                                        title="{{trans('messages.recall-test-results')}}">
+                                       
+                                        {{$revisionInstance->revision}},
+                                </a>
+                            @endforeach
+                        </td>
                        
                     </tr>
                     @endif

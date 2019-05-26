@@ -360,6 +360,7 @@ return array(
     'test-status' => 'Test Status',
     'test-request-status' => 'Actions', //unhls terminology
     'tested-by' => 'Performed By',
+    'recalled-by'=>'Recalled by',
     'turnaround-time' => 'Turnaround Time',
     'unknown' => 'Unknown',
     'update-test-results' => 'Update Test Results',

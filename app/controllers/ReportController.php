@@ -285,22 +285,13 @@ class ReportController extends \BaseController {
 		$visits = UnhlsVisit::select('id')->where('patient_id','=',$id)->get();
 		//$tests = UnhlsTest::whereIn('visit_id', [5051])->get();
 
-		\Log::info('...visits...');
-		\Log::info($visits);
+		
 		$visits_array=json_decode($visits,true);
-		\Log::info('...end visits...');
 		$tests = UnhlsTest::whereIn('visit_id', $visits_array)->get();
 
-		\Log::info("....1....");		
 		// adhoc config decision
 		$template = AdhocConfig::where('name','Report')->first()->getReportTemplate();
 
-		\Log::info("....2....");
-		\Log::info($patient);
-		
-		\Log::info("....tests....");
-		\Log::info($tests);
-		\Log::info("..end..tests....");
 		
 		$content = View::make($template)
 			->with('patient', $patient)
@@ -455,12 +446,12 @@ class ReportController extends \BaseController {
 			}
 		}
 		$revisions = UnhlsRecalledTestResult::numberOfRevisions($testID);
-		\Log::info("..1..");
-		var_dump($revisions->revisions);
-		\Log::info("..2..");
+		
 
 		foreach ($test->testType->measures as $measure) {
-			$testResult = UnhlsRecalledTestResult::firstOrCreate(array('test_id' => $testID, 'measure_id' => $measure->id));
+			$testResult = new UnhlsRecalledTestResult();
+			$testResult->unhls_test_id = $testID;
+			$testResult->measure_id = $measure->id;
 			if ($test->testType->name == 'Gram Staining') {
 
 				$testResult->result = $results;
@@ -478,15 +469,20 @@ class ReportController extends \BaseController {
 			} else {
 				$testResult->save();
 			}
+
+			if ($test->isHIV()) {
+				$testResult->interpretation = $test->interpreteHIVResults();
+			}else{
+				$testResult->interpretation = Input::get('interpretation');
+			}
+			$revision_string = $revisions + 1;
+			$testResult->revision = 'rev'.$revision_string;
+
+			$testResult->created_by = Auth::user()->id;
+			$testResult->created_at = date('Y-m-d H:i:s');
+			$testResult->save();
 		}
-		if ($test->isHIV()) {
-			$testResult->interpretation = $test->interpreteHIVResults();
-		}else{
-			$testResult->interpretation = Input::get('interpretation');
-		}
-		$testResult->created_by = Auth::user()->id;
-		$testResult->created_at = date('Y-m-d H:i:s');
-		$testResult->save();
+		
 
 		//Fire of entry saved/edited event
 		Event::fire('test.recalled', array($testID));
