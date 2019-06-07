@@ -70,6 +70,9 @@
             <div class="col-md-3">
                 <span class="col-md-12 range-title">{{trans('messages.measure-range')}}</span>
             </div>
+            <div class="col-md-3">
+                <span class="col-md-12 flag-title">{{trans('messages.measure-flags')}}</span>
+            </div>
             <div class="col-md-2">
                 <span class="col-md-12 interpretation-title">{{trans('messages.interpretation')}}</span>
             </div>
@@ -96,8 +99,13 @@
             </div>
             <div class="col-md-3">
                 <input class="col-md-4 rangemin" name="" type="text" title="{{trans('messages.lower-range')}}">
-                <span class="col-md-2">:</span>
+                <span class="col-md-1">:</span>
                 <input class="col-md-4 rangemax" name="" type="text" title="{{trans('messages.upper-range')}}">
+            </div>
+            <div class="col-md-3">
+                <input class="col-md-4 flagmin" name="" type="text" title="{{trans('messages.flags')}}">
+                <span class="col-md-1">:</span>
+                <input class="col-md-4 flagmax" name="" type="text" title="{{trans('messages.upper-range')}}">
             </div>
             <div class="col-md-2">
                 <input class="col-md-10 interpretation" name="" type="text">

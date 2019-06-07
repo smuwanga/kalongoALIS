@@ -53,6 +53,9 @@
                             <div class="col-md-3">
                                 <span class="col-md-12 range-title">{{trans('messages.measure-range')}}</span>
                             </div>
+                            <div class="col-md-3">
+                                <span class="col-md-12 flag-title">{{trans('messages.measure-flags')}}</span>
+                            </div>
                             <div class="col-md-2">
                                 <span class="col-md-12 interpretation-title">{{trans('messages.interpretation')}}
                                 </span>
@@ -84,6 +87,19 @@
                                     value="{{ $value->range_upper }}"
                                     title="{{trans('messages.upper-range')}}">
                             </div>
+
+
+                            <div class="col-md-3">
+                                <input class="col-md-4" name="measures[{{$measure->id}}][flagmin][]" type="text"
+                                    value="{{ $value->flag_lower }}" 
+                                    title="{{trans('messages.lower-range')}}">
+                                <span class="col-md-2">:</span>
+                                <input class="col-md-4" name="measures[{{$measure->id}}][flagmax][]" type="text"
+                                    value="{{ $value->flag_upper }}"
+                                    title="{{trans('messages.upper-range')}}">
+                            </div>
+
+
                             <div class="col-md-2">
                                 <input class="col-md-10" name="measures[{{$measure->id}}][interpretation][]" type="text" 
                                     value="{{ $value->interpretation }}">
