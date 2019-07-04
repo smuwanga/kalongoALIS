@@ -601,6 +601,33 @@ $(function(){
     });
 
     /**
+    *
+    *
+    */
+    $('#section_id').on('change', function() {
+        var testTypeCategoryId = $('#section_id').val();
+        if (testTypeCategoryId != 0 ) {
+            $.ajax({
+                type: 'GET',
+                url: "/tat/test_types",
+                data: {
+                    option: testTypeCategoryId
+                },
+                success: function(data){
+                    $('#test_type').empty();
+                    //$('#test_type').append("<option value=''>Select Test Type</option>");
+                    
+                    for(i=0;i<data.length;i++){
+                        $('#test_type').append("<option value='"+ data[i].id +"'>" + data[i].name + "</option>");
+
+                    }
+                    
+                }
+            });
+        }
+    });
+
+    /**
      *Create List of tests in the test request page
      */
     var lastNewSpecimenId = 0;
@@ -1054,7 +1081,7 @@ $(function(){
      */
 
         /*Dynamic loading of select list options*/
-        $('#section_id').change(function(){
+        /*$('#section_id').change(function(){
             $.get("/reports/dropdown2",
                 { option: $(this).val() },
                 function(data) {
@@ -1065,7 +1092,7 @@ $(function(){
                         test_type.append("<option value='"+ element.id +"'>" + element.name + "</option>");
                     });
                 });
-        });
+        });*/
         /*End dynamic select list options*/
                 /*Dynamic loading of select list options*/
         $('#commodity-id').change(function(){
@@ -1525,3 +1552,138 @@ $(function(){
             );
         }
     }
+
+    /** HighCharts 
+    function loadTurnAroundTime(){
+
+        Highcharts.chart('trennnndsDiv', {
+
+            title: {
+                text: 'Daily TAT for HIV Tests'
+            },
+
+            subtitle: {
+                text: 'Source: ALIS'
+            },
+            xAxis:{
+                categories:data_resultset['x_axis']
+            },
+
+            yAxis: {
+                title: {
+                    text: 'Average Turn Around Time'
+                }
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle'
+            },
+
+            plotOptions: {
+                series: {
+                    label: {
+                        connectorAllowed: false
+                    },
+                   // pointStart: 1
+                }
+            },
+
+            series: [{
+                name: 'Targeted SANAS TAT',
+                data: data_resultset['target_tat']
+            }, {
+                name: 'Analysis',
+                data: data_resultset['testing_tat']
+            }, {
+                name: 'Patient Waiting Time',
+                data: data_resultset['waiting_tat']
+            }],
+
+            responsive: {
+                rules: [{
+                    condition: {
+                        maxWidth: 500
+                    },
+                    chartOptions: {
+                        legend: {
+                            layout: 'horizontal',
+                            align: 'center',
+                            verticalAlign: 'bottom'
+                        }
+                    }
+                }]
+            }
+
+    });
+
+    
+
+}*/
+
+$(document).ready(
+    function(){
+        
+        
+        Highcharts.chart('trendsDiv', {
+
+            title: {
+                text: 'Daily TAT for '+data_resultset.test_type.name
+            },
+
+            subtitle: {
+                text: 'Source: ALIS'
+            },
+            xAxis:{
+                categories:data_resultset.x_axis
+            },
+
+            yAxis: {
+                title: {
+                    text: 'Average Turn Around Time('+data_resultset.test_type.targetTAT_unit+')'
+                }
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle'
+            },
+
+            plotOptions: {
+                series: {
+                    label: {
+                        connectorAllowed: false
+                    },
+                   // pointStart: 1
+                }
+            },
+
+            series: [{
+                name: 'Targeted SANAS TAT',
+                data: data_resultset.target_tat
+            }, {
+                name: 'Analysis',
+                data: data_resultset.testing_tat
+            }, {
+                name: 'Patient Waiting Time',
+                data: data_resultset.waiting_tat
+            }],
+
+            responsive: {
+                rules: [{
+                    condition: {
+                        maxWidth: 500
+                    },
+                    chartOptions: {
+                        legend: {
+                            layout: 'horizontal',
+                            align: 'center',
+                            verticalAlign: 'bottom'
+                        }
+                    }
+                }]
+            }
+
+    });//end Highcharts
+
+    });

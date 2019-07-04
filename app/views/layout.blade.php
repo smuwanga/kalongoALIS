@@ -20,6 +20,14 @@
         <script defer type="text/javascript" src="{{ URL::asset('js/bootstrap.min.js') }} "></script>
         <script defer type="text/javascript" src="{{ URL::asset('js/jquery.dataTables.js') }} "></script>
         <script defer type="text/javascript" src="{{ URL::asset('js/dataTables.bootstrap.js') }} "></script>
+
+        <script defer type="text/javascript" src="{{ URL::asset('highcharts/highcharts.js') }} "></script>
+        <script defer type="text/javascript" src="{{ URL::asset('highcharts/series-label.js') }} "></script>
+        <script defer type="text/javascript" src="{{ URL::asset('highcharts/exporting.js') }} "></script>
+        <script defer type="text/javascript" src="{{ URL::asset('highcharts/export-data.js') }} "></script>
+        <script type="text/javascript">
+                var data_resultset = <?php echo json_encode($resultset); ?>;
+        </script>
         <script defer type="text/javascript" src="{{ URL::asset('js/script.js') }} "></script>
 		<!-- print special used in bb module -->
         <script defer type="text/javascript" src="{{ URL::asset('js/print_special.js') }} "></script>
