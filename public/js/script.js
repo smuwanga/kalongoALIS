@@ -1659,10 +1659,10 @@ $(document).ready(
             },
 
             series: [{
-                name: 'Targeted SANAS TAT',
+                name: 'Expected TAT',
                 data: data_resultset.target_tat
             }, {
-                name: 'Analysis',
+                name: 'Analysis(Actual) TAT',
                 data: data_resultset.testing_tat
             }, {
                 name: 'Patient Waiting Time',

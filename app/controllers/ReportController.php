@@ -1312,6 +1312,21 @@ class ReportController extends \BaseController {
 		$quotient = $numerator/($denominator * 60);
 		return floatval(number_format($quotient,2));
 	}
+	private static function getQuotientUsingTATunits($numerator, $denominator,$tat_units){
+		if($denominator < 1)
+			return 0;
+		$quotient = 0;//$numerator/($denominator * 60);
+
+
+		if(strtolower($tat_units) == 'minutes'){
+			$quotient = $numerator/($denominator * 1);
+		}elseif(strtolower($tat_units) == 'hours'){
+			$quotient = $numerator/($denominator * 60);
+		}elseif (strtolower($tat_units) == 'days') {
+			$quotient = $numerator/($denominator * 60 * 24);
+		}
+		return floatval(number_format($quotient,2));
+	}
 	public static function getTurnAroundTime($from, $to, $labSection, $testType, $interval){
 		//fetch data for the 
 		//select 
@@ -1331,10 +1346,11 @@ class ReportController extends \BaseController {
 		$target_turn_around_time_record=[];
 		$testing_turn_around_time=[];
 		$patient_waiting_turn_around_time=[];
-		$test_type_instance = TestType::find($testType);
 
-		Log::info("....TAT...");
-		Log::info($test_type_instance->targetTAT);
+		$test_type_instance = TestType::find($testType);
+		$targetTAT_unit = $test_type_instance->targetTAT_unit;
+
+		
 		if($interval == 'D'){
 			$result_set = DB::select($sql);
 
@@ -1368,8 +1384,8 @@ class ReportController extends \BaseController {
 
 		    			# insert into the array_map
 		    			array_push($x_axis_record, $current_record->date_created);
-		    			array_push($patient_waiting_turn_around_time,self::getQuotient($patient_waiting_time,$current_date_count));
-		    			array_push($testing_turn_around_time,self::getQuotient($testing_time,$current_date_count));
+		    			array_push($patient_waiting_turn_around_time,self::getQuotientUsingTATunits($patient_waiting_time,$current_date_count,$targetTAT_unit));
+		    			array_push($testing_turn_around_time,self::getQuotientUsingTATunits($testing_time,$current_date_count,$targetTAT_unit));
 		    			array_push($target_turn_around_time_record, floatval($test_type_instance->targetTAT));
 
 
@@ -1385,8 +1401,8 @@ class ReportController extends \BaseController {
 				    		$testing_time = $testing_time + intval($current_record->testing_time);
 
 				    		array_push($x_axis_record, $current_record->date_created);
-		    			    array_push($patient_waiting_turn_around_time,self::getQuotient($patient_waiting_time,$current_date_count));
-		    			    array_push($testing_turn_around_time,self::getQuotient($testing_time,$current_date_count));
+		    			    array_push($patient_waiting_turn_around_time,self::getQuotientUsingTATunits($patient_waiting_time,$current_date_count,$targetTAT_unit));
+		    			    array_push($testing_turn_around_time,self::getQuotientUsingTATunits($testing_time,$current_date_count,$targetTAT_unit));
 		    			    array_push($target_turn_around_time_record, floatval($test_type_instance->targetTAT));
 
 		    		}
@@ -1402,8 +1418,8 @@ class ReportController extends \BaseController {
 		    		if($current_record->date_created != $second_index_record->date_created){
 		    			
 				    	array_push($x_axis_record, $current_record->date_created);
-		    			array_push($patient_waiting_turn_around_time,self::getQuotient($patient_waiting_time,$current_date_count));
-		    			array_push($testing_turn_around_time,self::getQuotient($testing_time,$current_date_count));
+		    			array_push($patient_waiting_turn_around_time,self::getQuotientUsingTATunits($patient_waiting_time,$current_date_count,$targetTAT_unit));
+		    			array_push($testing_turn_around_time,self::getQuotientUsingTATunits($testing_time,$current_date_count,$targetTAT_unit));
 		    			array_push($target_turn_around_time_record, floatval($test_type_instance->targetTAT));
 
 		    		}
