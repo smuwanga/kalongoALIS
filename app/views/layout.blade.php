@@ -20,6 +20,7 @@
         <script defer type="text/javascript" src="{{ URL::asset('js/bootstrap.min.js') }} "></script>
         <script defer type="text/javascript" src="{{ URL::asset('js/jquery.dataTables.js') }} "></script>
         <script defer type="text/javascript" src="{{ URL::asset('js/dataTables.bootstrap.js') }} "></script>
+  <script defer type="text/javascript" src="{{ URL::asset('js/script.js') }} "></script>
 
         <script defer type="text/javascript" src="{{ URL::asset('highcharts/highcharts.js') }} "></script>
         <script defer type="text/javascript" src="{{ URL::asset('highcharts/series-label.js') }} "></script>
@@ -55,7 +56,7 @@
                     } 
                 ?>;
         </script>
-        <script defer type="text/javascript" src="{{ URL::asset('js/script.js') }} "></script>
+        <script defer type="text/javascript" src="{{ URL::asset('js/turn-around-time.js') }} "></script>
         <title>{{ Config::get('kblis.name') }} </title>
     </head>
     <body class="side_nav_hover">
