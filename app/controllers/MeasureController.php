@@ -37,6 +37,8 @@ class MeasureController extends \BaseController {
                 $val['gender'] = $data['gender'];
                 $val['rangemin'] = $data['rangemin'];
                 $val['rangemax'] = $data['rangemax'];
+                $val['flagmin'] = $data['flagmin'];
+                $val['flagmax'] = $data['flagmax'];
                 $val['interpretation'] = $data['interpretation'];
 
                 // Add ranges for this measure
@@ -48,6 +50,8 @@ class MeasureController extends \BaseController {
                     $measurerange->gender = $val['gender'][$i];
                     $measurerange->range_lower = $val['rangemin'][$i];
                     $measurerange->range_upper = $val['rangemax'][$i];
+                    $measurerange->flag_lower = $val['flagmin'][$i];
+                    $measurerange->flag_upper = $val['flagmax'][$i];
                     $measurerange->interpretation = $val['interpretation'][$i];
                     $measurerange->save();
                  }
@@ -90,6 +94,8 @@ class MeasureController extends \BaseController {
                     $val['gender'] = $data['gender'];
                     $val['rangemin'] = $data['rangemin'];
                     $val['rangemax'] = $data['rangemax'];
+                    $val['flagmin'] = $data['flagmin'];
+                    $val['flagmax'] = $data['flagmax'];
                 }else{
                     $val['val'] = $data['val'];
                 }
@@ -112,6 +118,8 @@ class MeasureController extends \BaseController {
                         $measurerange->gender = $val['gender'][$i];
                         $measurerange->range_lower = $val['rangemin'][$i];
                         $measurerange->range_upper = $val['rangemax'][$i];
+                        $measurerange->flag_lower = $val['flagmin'][$i];
+                        $measurerange->flag_upper = $val['flagmax'][$i];
                     }else{
                         $measurerange->alphanumeric = $val['val'][$i];
                     }

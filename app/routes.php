@@ -553,6 +553,10 @@ Route::group(array("before" => "auth"), function()
             "as"   => "reports.aggregate.tat",
             "uses" => "ReportController@turnaroundTime"
         ));
+        Route::get("/tat/test_types",array(
+            "as"=>"tat.testtypes",
+            "uses"=>"ReportController@fetchTestTypes"
+          ));
         Route::any("/infection", array(
             "as"   => "reports.aggregate.infection",
             "uses" => "ReportController@infectionReport"

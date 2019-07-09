@@ -12,7 +12,7 @@ class UnhlsTest extends Eloquent
 	public $timestamps = false;
 
 	/**
-	 * Test status constants
+	 * Test status constants, same in the test_statuses table
 	 */
 	const SPECIMEN_NOT_RECEIVED = 1;
 	const PENDING = 2;
