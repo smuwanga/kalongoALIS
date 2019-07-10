@@ -1331,115 +1331,119 @@ class ReportController extends \BaseController {
 		//fetch data for the 
 		//select 
 		//where lab section, and testType
-
+		$result_set=[];
 		
+		try{
+				$sql = "SELECT t.id,tt.name,t.test_type_id,DATE(t.time_created) as date_created,t.time_started,
+						t.time_verified,t.time_approved,
+						TIMESTAMPDIFF(MINUTE,t.time_created,t.time_approved) as waiting_time,
+						TIMESTAMPDIFF(MINUTE,t.time_started,t.time_approved) as testing_time
+					from unhls_tests t left join test_types  tt on t.test_type_id = tt.id 
+					where tt.id =  ".$testType." 
+					and (t.time_created BETWEEN '".$from." 00:00:00' AND '".$to." 23:59:59')";
+				
+				$x_axis_record=[];
+				$target_turn_around_time_record=[];
+				$testing_turn_around_time=[];
+				$patient_waiting_turn_around_time=[];
 
-		$sql = "SELECT t.id,tt.name,t.test_type_id,DATE(t.time_created) as date_created,t.time_started,
-				t.time_verified,t.time_approved,
-				TIMESTAMPDIFF(MINUTE,t.time_created,t.time_approved) as waiting_time,
-				TIMESTAMPDIFF(MINUTE,t.time_started,t.time_approved) as testing_time
-			from unhls_tests t left join test_types  tt on t.test_type_id = tt.id 
-			where tt.id =  ".$testType." 
-			and (t.time_created BETWEEN '".$from." 00:00:00' AND '".$to." 23:59:59')";
-		
-		$x_axis_record=[];
-		$target_turn_around_time_record=[];
-		$testing_turn_around_time=[];
-		$patient_waiting_turn_around_time=[];
+				$test_type_instance = TestType::find($testType);
+				$targetTAT_unit = $test_type_instance->targetTAT_unit;
 
-		$test_type_instance = TestType::find($testType);
-		$targetTAT_unit = $test_type_instance->targetTAT_unit;
-
-		
-		if($interval == 'D'){
-			$result_set = DB::select($sql);
-
-
-		    	$current_date_count = 0;
-		    	$previous_record = null;
-		    	$current_record = null;
-		    	$patient_waiting_time=0;
-		    	$testing_time=0;
-
-		    	$last_index = sizeof($result_set) - 1;
-		    for ($i=0; $i < sizeof($result_set); $i++) { 
-		    	$previous_index = $i - 1;
-		    	
-
-		    	if($previous_index > -1){
-		    		$previous_record = $result_set[$previous_index];
-		    		$current_record = $result_set[$i];
-
-		    		
-
-		    		if($current_record->date_created == $previous_record->date_created){
-		    			$current_date_count ++;
-		    			$patient_waiting_time =$patient_waiting_time + intval($current_record->waiting_time);
-		    			$testing_time= $testing_time + intval($current_record->testing_time);	
-		    		
-		    		}elseif ($current_record->date_created != $previous_record->date_created && $last_index > $i) {
-		    			$current_date_count ++;
-		    			$patient_waiting_time =$patient_waiting_time + intval($current_record->waiting_time);
-		    			$testing_time= $testing_time + intval($current_record->testing_time);
-
-		    			# insert into the array_map
-		    			array_push($x_axis_record, $current_record->date_created);
-		    			array_push($patient_waiting_turn_around_time,self::getQuotientUsingTATunits($patient_waiting_time,$current_date_count,$targetTAT_unit));
-		    			array_push($testing_turn_around_time,self::getQuotientUsingTATunits($testing_time,$current_date_count,$targetTAT_unit));
-		    			array_push($target_turn_around_time_record, floatval($test_type_instance->targetTAT));
+				
+				if($interval == 'D'){
+					$result_set = DB::select($sql);
 
 
-		    			$patient_waiting_time=0;
-		    			$testing_time=0;
-		    			$current_date_count =0;
-		    		}elseif ($last_index == $i && 
-		    			$current_record->date_created != $previous_record->date_created) {
-		    			
-			    			$current_record = $result_set[$i];
+				    	$current_date_count = 0;
+				    	$previous_record = null;
+				    	$current_record = null;
+				    	$patient_waiting_time=0;
+				    	$testing_time=0;
+
+				    	$last_index = sizeof($result_set) - 1;
+				    for ($i=0; $i < sizeof($result_set); $i++) { 
+				    	$previous_index = $i - 1;
+				    	
+
+				    	if($previous_index > -1){
+				    		$previous_record = $result_set[$previous_index];
+				    		$current_record = $result_set[$i];
+
+				    		
+
+				    		if($current_record->date_created == $previous_record->date_created){
+				    			$current_date_count ++;
+				    			$patient_waiting_time =$patient_waiting_time + intval($current_record->waiting_time);
+				    			$testing_time= $testing_time + intval($current_record->testing_time);	
+				    		
+				    		}elseif ($current_record->date_created != $previous_record->date_created && $last_index > $i) {
+				    			$current_date_count ++;
+				    			$patient_waiting_time =$patient_waiting_time + intval($current_record->waiting_time);
+				    			$testing_time= $testing_time + intval($current_record->testing_time);
+
+				    			# insert into the array_map
+				    			array_push($x_axis_record, $current_record->date_created);
+				    			array_push($patient_waiting_turn_around_time,self::getQuotientUsingTATunits($patient_waiting_time,$current_date_count,$targetTAT_unit));
+				    			array_push($testing_turn_around_time,self::getQuotientUsingTATunits($testing_time,$current_date_count,$targetTAT_unit));
+				    			array_push($target_turn_around_time_record, floatval($test_type_instance->targetTAT));
+
+
+				    			$patient_waiting_time=0;
+				    			$testing_time=0;
+				    			$current_date_count =0;
+				    		}elseif ($last_index == $i && 
+				    			$current_record->date_created != $previous_record->date_created) {
+				    			
+					    			$current_record = $result_set[$i];
+						    		$current_date_count ++;
+						    		$patient_waiting_time = $patient_waiting_time + intval($current_record->waiting_time);
+						    		$testing_time = $testing_time + intval($current_record->testing_time);
+
+						    		array_push($x_axis_record, $current_record->date_created);
+				    			    array_push($patient_waiting_turn_around_time,self::getQuotientUsingTATunits($patient_waiting_time,$current_date_count,$targetTAT_unit));
+				    			    array_push($testing_turn_around_time,self::getQuotientUsingTATunits($testing_time,$current_date_count,$targetTAT_unit));
+				    			    array_push($target_turn_around_time_record, floatval($test_type_instance->targetTAT));
+
+				    		}
+
+				    	}else{
+				    		$current_record = $result_set[$i];
+				    		
 				    		$current_date_count ++;
-				    		$patient_waiting_time = $patient_waiting_time + intval($current_record->waiting_time);
+				    		$patient_waiting_time = $patient_waiting_time + intval($current_record->waiting_time) ;
 				    		$testing_time = $testing_time + intval($current_record->testing_time);
 
-				    		array_push($x_axis_record, $current_record->date_created);
-		    			    array_push($patient_waiting_turn_around_time,self::getQuotientUsingTATunits($patient_waiting_time,$current_date_count,$targetTAT_unit));
-		    			    array_push($testing_turn_around_time,self::getQuotientUsingTATunits($testing_time,$current_date_count,$targetTAT_unit));
-		    			    array_push($target_turn_around_time_record, floatval($test_type_instance->targetTAT));
+				    		$second_index_record = $result_set[1];#ensure that the first record is added
+				    		if($current_record->date_created != $second_index_record->date_created){
+				    			
+						    	array_push($x_axis_record, $current_record->date_created);
+				    			array_push($patient_waiting_turn_around_time,self::getQuotientUsingTATunits($patient_waiting_time,$current_date_count,$targetTAT_unit));
+				    			array_push($testing_turn_around_time,self::getQuotientUsingTATunits($testing_time,$current_date_count,$targetTAT_unit));
+				    			array_push($target_turn_around_time_record, floatval($test_type_instance->targetTAT));
 
-		    		}
+				    		}
+				    	}
 
-		    	}else{
-		    		$current_record = $result_set[$i];
-		    		
-		    		$current_date_count ++;
-		    		$patient_waiting_time = $patient_waiting_time + intval($current_record->waiting_time) ;
-		    		$testing_time = $testing_time + intval($current_record->testing_time);
+				    	
 
-		    		$second_index_record = $result_set[1];#ensure that the first record is added
-		    		if($current_record->date_created != $second_index_record->date_created){
-		    			
-				    	array_push($x_axis_record, $current_record->date_created);
-		    			array_push($patient_waiting_turn_around_time,self::getQuotientUsingTATunits($patient_waiting_time,$current_date_count,$targetTAT_unit));
-		    			array_push($testing_turn_around_time,self::getQuotientUsingTATunits($testing_time,$current_date_count,$targetTAT_unit));
-		    			array_push($target_turn_around_time_record, floatval($test_type_instance->targetTAT));
+				    }
+		            
+				}elseif ($interval == 'W') {
+					# code...
+				}elseif ($interval == 'M') {
+					# code...
+				}
 
-		    		}
-		    	}
-
-		    	
-
-		    }
-            
-		}elseif ($interval == 'W') {
-			# code...
-		}elseif ($interval == 'M') {
-			# code...
-		}
-		$result_set=[];
-		$result_set['target_tat']=$target_turn_around_time_record;
-		$result_set['testing_tat']=$testing_turn_around_time;
-		$result_set['waiting_tat']=$patient_waiting_turn_around_time;
-		$result_set['x_axis']=$x_axis_record;
-		$result_set['test_type']=$test_type_instance;
+				$result_set['target_tat']=$target_turn_around_time_record;
+				$result_set['testing_tat']=$testing_turn_around_time;
+				$result_set['waiting_tat']=$patient_waiting_turn_around_time;
+				$result_set['x_axis']=$x_axis_record;
+				$result_set['test_type']=$test_type_instance;
+			}catch(Exception $e){
+				
+			}
+		
 
 		return $result_set;
 		
@@ -1480,7 +1484,7 @@ class ReportController extends \BaseController {
 				Session::flash('fine', '');
 			}
 		}
-		$resultset = self::getTatStats($from, $to, $testCategory, $testType, $interval);
+		//$resultset = self::getTatStats($from, $to, $testCategory, $testType, $interval);
 		$new_resultset = self::getTurnAroundTime($from, $to, $testCategory, $testType, $interval);
 		return View::make('reports.tat.index')
 					->with('labSections', $labSections)
