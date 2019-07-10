@@ -52,7 +52,7 @@
                         echo json_encode($resultset);
                     }else{
 
-                        echo "mmm";
+                        echo "'mmm'";
                     } 
                 ?>;
         </script>
