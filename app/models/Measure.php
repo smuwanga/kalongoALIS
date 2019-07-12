@@ -169,6 +169,58 @@ class Measure extends Eloquent
         }
 		return "(".substr($measureRange->range_lower, 0, -2)." - ".substr($measureRange->range_upper, 0, -2).")";
 	}
+
+	/**
+	 *  Get measure range with given patient patient details
+	 *
+	 * @return boolean
+	 */
+	public static function getDiagonisticFlag($patient, $measureId,$numeric_result)
+	{
+		Log::info("....1.......");
+		$age = $patient->getAge('ref_range_Y');
+		// if for particular gender is zero, check for both genders
+        $rangeValidity = MeasureRange::where('measure_id', '=', $measureId)
+            ->where('age_min', '<=', $age)->where('age_max', '>=', $age)
+            ->where('gender', '=', $patient->gender);
+        $measureRange = new stdClass();
+
+        if ($rangeValidity->count()==0) {
+            $measureRange = MeasureRange::where('measure_id', '=', $measureId)
+                ->where('age_min', '<=', $age)->where('age_max', '>=', $age)
+                ->where('gender', '=', UnhlsPatient::BOTH)->first();
+            if (is_null($measureRange)) {
+                // age is outside the provided reference ranges
+                return null;
+            }
+        }else{
+            $measureRange = $rangeValidity->first();
+        }
+
+       return self::determineDiagnosticFlag($measureRange,$numeric_result);
+	}
+
+	public static function determineDiagnosticFlag($measureRange,$numeric_result){
+		$flag = "";
+
+		try{
+			//if(floatval($measureRange->range_lower) <= floatval($numeric_result) ){//low
+			$float_lower = (float)$measureRange->range_lower;
+			$float_upper = (float)$measureRange->range_upper;
+			$float_result = (float)$numeric_result;
+
+			if($float_result <= $float_lower ){//low
+		    	$flag = $measureRange->flag_lower;
+		    }elseif ( $float_result >= $float_upper) {
+		    	$flag = $measureRange->flag_upper;
+		    }
+		}catch(Exception $e){
+			Log::info($e->message());
+		}
+		
+
+		return $flag;
+	}
 	/**
 	 *  Get test result count for the given measure and parameters
 	 *

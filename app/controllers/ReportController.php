@@ -476,7 +476,7 @@ class ReportController extends \BaseController {
 				$testResult->interpretation = Input::get('interpretation');
 			}
 			$revision_string = $revisions + 1;
-			$testResult->revision = 'rev'.$revision_string;
+			$testResult->revision = 'revision'.$revision_string;
 
 			$testResult->created_by = Auth::user()->id;
 			$testResult->created_at = date('Y-m-d H:i:s');
