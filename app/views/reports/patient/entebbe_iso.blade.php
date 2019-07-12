@@ -104,7 +104,7 @@
 								<td>
 									{{ Measure::find($result->measure_id)->unit }}
 								</td>
-								<td></td><!-- Diagnostic Flag column for results-->
+								<td>{{ Measure::getDiagonisticFlag($test->visit->patient, $result->measure_id,$result->result) }}</td><!-- Diagnostic Flag column for results-->
 							</tr>
 							
 							
