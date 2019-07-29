@@ -300,12 +300,12 @@ Route::group(array("before" => "auth"), function()
     Route::get("/unhls_test/{id}/reject", array(
         "before" => "checkPerms:reject_test_specimen",
         "as"   => "unhls_test.reject",
-        "uses" => "UnhlsTestController@reject"
+        "uses" => "UnhlsTestController@reject1"
     ));
-    Route::post("/unhls_test/rejectaction", array(
+    Route::post("/save_rejection", array(
         "before" => "checkPerms:reject_test_specimen",
-        "as"   => "unhls_test.rejectAction",
-        "uses" => "UnhlsTestController@rejectAction"
+        "as"   => "unhls_test.save_rejection",
+        "uses" => "UnhlsTestController@saveRejection"
     ));
     Route::post("/unhls_test/changespecimen", array(
         "before" => "checkPerms:change_test_specimen",

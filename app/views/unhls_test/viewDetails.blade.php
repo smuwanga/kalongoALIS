@@ -90,12 +90,18 @@
 								{{$test->time_created}}</p>
 							<p class="view"><strong>{{trans('messages.test-status')}}</strong>
 								{{trans('messages.'.$test->testStatus->name)}}</p>
-							<p class="view-striped"><strong>{{trans('messages.physician')}}</strong>
-								{{$test->requested_by or trans('messages.unknown') }}</p>
-							@if($test->testType->name = 'HIV' || $test->testType->name = 'H.I.V' )
-								<p class="view-striped"><strong>{{trans('messages.purpose')}}</strong>
-									{{$test->purpose or trans('messages.unknown') }}</p>
-							@endif
+							
+							<p class="view-striped"><strong> {{trans('messages.physician')}}</strong>
+								
+									{{ !empty($test->requested_by)?UnhlsTest::getRequester($test->requested_by)->name : 'Unknown'}}
+								
+
+							</p>
+
+								@if($test->testType->name = 'HIV' || $test->testType->name = 'H.I.V' )
+									<p class="view-striped"><strong>{{trans('messages.purpose')}}</strong>
+										{{$test->purpose or trans('messages.unknown') }}</p>
+								@endif
 							<p class="view-striped"><strong>{{trans('messages.request-origin')}}</strong>
 								@if($test->specimen->isReferred() && $test->specimen->referral->status == Referral::REFERRED_IN)
 									{{ trans("messages.in") }}
@@ -144,21 +150,15 @@
 							</p>
 							<!-- Test Requested by -->
 							<p class="view-striped"><strong>Test requested by</strong>
-								@if(!empty($test->therapy->clinician))
-									{{$test->therapy->clinician}}
-								@elseif(!empty($test->clinician->name ))
-		                            {{$test->clinician->name }}
-		                        
-								@endif
+								{{ !empty($test->requested_by)?UnhlsTest::getRequester($test->requested_by)->name : 'Unknown'}}
+
+								
 							</p>
 							<!-- Requested by -->
 							<p class="view-striped"><strong>Phone contact of clinician</strong>
 								
-								@if(!empty($test->therapy->clinician))
-									{{$test->therapy->contact}}
-								@elseif(!empty($test->clinician->phone))
-		                           {{$test->clinician->phone }}
-								@endif
+								{{ !empty($test->requested_by)?UnhlsTest::getRequester($test->requested_by)->phone : 'Unknown'}}
+							</p>
 
 						</div>
 					</div>
