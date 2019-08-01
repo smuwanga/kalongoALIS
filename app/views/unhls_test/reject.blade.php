@@ -29,7 +29,7 @@
 				{{ HTML::ul($errors->all()) }}
 			</div>
 		@endif
-		{{ Form::open(array('route' => 'unhls_test.rejectAction')) }}
+		{{ Form::open(array('route' => 'unhls_test.save_rejection')) }}
 			{{ Form::hidden('specimen_id', $test->specimen->id) }}
 			{{ Form::hidden('test_id', $test->id) }}
 			<div class="panel-body">

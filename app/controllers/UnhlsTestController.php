@@ -662,8 +662,9 @@ class UnhlsTestController extends \BaseController {
 	 * @param
 	 * @return
 	 */
-	public function reject($testID)
+	public function reject1($testID)
 	{
+
 		$test = UnhlsTest::find($testID);
 		$rejectionReason = RejectionReason::all();
 		return View::make('unhls_test.reject')->with('test', $test)
@@ -678,6 +679,7 @@ class UnhlsTestController extends \BaseController {
 	 */
 	public function refer($specimenID)
 	{
+
 		$specimen = UnhlsSpecimen::find($specimenID);
 		$referralReason = ReferralReason::all();
 		$test = UnhlsTest::find($specimenID);
@@ -692,7 +694,7 @@ class UnhlsTestController extends \BaseController {
 	 * @return
 	 */
 	// todo: create a functions for pre-analytic rejection
-	public function rejectAction()
+	public function saveRejection()
 	{
 		//Reject justifying why.
 		$rules = array(
@@ -700,16 +702,18 @@ class UnhlsTestController extends \BaseController {
 			'reject_explained_to' => 'required',
 		);
 		$validator = Validator::make(Input::all(), $rules);
-
 		if ($validator->fails()) {
 			return Redirect::route('unhls_test.reject', array(Input::get('test_id')))
 				->withInput()
 				->withErrors($validator);
 		} else {
+
 			$test = UnhlsTest::find(Input::get('test_id'));
 			// this refers to analytic rejection of specimen
+
 			$test->test_status_id = UnhlsTest::REJECTED;
 			$test->save();
+
 			// todo: create cascade deletion for it, incase rejection is reversed
 			$rejection = new AnalyticSpecimenRejection;
 			//$rejection->rejection_reason_id = Input::get('rejectionReason');
@@ -726,15 +730,20 @@ class UnhlsTestController extends \BaseController {
 			$reasons = Input::get('rejectionReason');
 			if(is_array($reasons)){
 				foreach ($reasons as $id => $value) {
+
 					$reason =new AnalyticSpecimenRejectionReason;
 
 					$reason->rejection_id = $rejection->id;
 					$reason->specimen_id = Input::get('specimen_id');
 					$reason->reason_id = $value;
 					$reason->save();
+
 				}
 			}
 			$url = Session::get('SOURCE_URL');
+			
+
+
 			
 			return Redirect::to($url)->with('message', 'messages.success-rejecting-specimen')
 						->with('activeTest', array($test->id));

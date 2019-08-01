@@ -79,9 +79,10 @@
 						<tr>
 								<th><b>Parameter</b></th>
 								<th><b>Result</b></th>
+								<th><b>Diagnostic Flag</b></th><!-- Diagnostic Flag column for results-->
 								<th><b>Reference Interval</b></th>
 								<th><b>SI units</b></th>
-								<th><b>Diagnostic Flag</b></th><!-- Diagnostic Flag column for results-->
+								
 							</tr>
 					</thead>
 					<tbody>
@@ -98,13 +99,14 @@
 								{{ $result->result }}
 								
 								</td>
+								<td>{{ Measure::getDiagonisticFlag($test->visit->patient, $result->measure_id,$result->result) }}</td><!-- Diagnostic Flag column for results-->
+
 								<td>
 									{{ Measure::getRange($test->visit->patient, $result->measure_id) }}
 								</td>
 								<td>
 									{{ Measure::find($result->measure_id)->unit }}
 								</td>
-								<td>{{ Measure::getDiagonisticFlag($test->visit->patient, $result->measure_id,$result->result) }}</td><!-- Diagnostic Flag column for results-->
 							</tr>
 							
 							
