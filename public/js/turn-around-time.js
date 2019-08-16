@@ -41,10 +41,10 @@ $(document).ready(
                     name: 'Expected TAT',
                     data: data_resultset.target_tat
                 }, {
-                    name: 'Analysis(Actual) TAT',
+                    name: 'Analysis TAT',
                     data: data_resultset.testing_tat
                 }, {
-                    name: 'Patient Waiting Time',
+                    name: 'Actual TAT',
                     data: data_resultset.waiting_tat
                 }],
 
