@@ -15,8 +15,17 @@ class UnhlsPatientController extends \BaseController {
 	 */
 	public function index()
 		{
+
+		$search = Input::get('search');
+
+		$patients = UnhlsPatient::search($search)->orderBy('id', 'desc')->paginate(15)->appends(Input::except('_token'));
+
+		if (count($patients) == 0) {
+		 	Session::flash('message', trans('messages.no-match'));
+		}
 		
-		$patients = UnhlsPatient::getAllPatients();
+		//$patients = UnhlsPatient::getAllPatients();
+		//$patients = UnhlsPatient::paginate(15);
 		/*if (count($patients) == 0) {
 		 	Session::flash('message', trans('messages.no-match'));
 		}*/

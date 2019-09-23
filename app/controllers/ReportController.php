@@ -1342,6 +1342,7 @@ class ReportController extends \BaseController {
 		
 		}
 
+		
 		return $result_set;
 		
 	}
@@ -1454,6 +1455,7 @@ class ReportController extends \BaseController {
 				$result_set['waiting_tat']=$patient_waiting_turn_around_time;
 				$result_set['x_axis']=$x_axis_record;
 				$result_set['test_type']=$test_type_instance;
+				$result_set['interval']='Daily';
 			}catch(Exception $e){
 				
 			}
@@ -1573,6 +1575,7 @@ class ReportController extends \BaseController {
 				$result_set['waiting_tat']=$patient_waiting_turn_around_time;
 				$result_set['x_axis']=$x_axis_record;
 				$result_set['test_type']=$test_type_instance;
+				$result_set['interval']='Monthly';
 			}catch(Exception $e){
 				
 			}

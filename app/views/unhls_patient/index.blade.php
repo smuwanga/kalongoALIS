@@ -7,7 +7,7 @@
 	</ol>
 </div>
 
-<!--div class='container-fluid'>
+<div class='container-fluid'>
 	<div class='row'>
 		<div class='col-md-12'>
 			{{ Form::open(array('route' => array('unhls_patient.index'), 'class'=>'form-inline',
@@ -23,7 +23,7 @@
 			{{ Form::close() }}
 		</div>
 	</div>
-</div -->
+</div>
 
 <br>
 
@@ -98,6 +98,7 @@
 				 @endforeach                  
              </tbody>
              </table>
+             <?php echo $patients->links(); ?>
 
 		
 	</div>
