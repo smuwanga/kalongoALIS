@@ -7,7 +7,7 @@ $(document).ready(
             Highcharts.chart('trendsDiv', {
 
                 title: {
-                    text: 'Daily TAT for '+data_resultset.test_type.name
+                    text: data_resultset.interval+' TAT for '+data_resultset.test_type.name
                 },
 
                 subtitle: {
