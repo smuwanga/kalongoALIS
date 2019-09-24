@@ -104,11 +104,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                @foreach($visitSet as $key => $visit)
+            @if($can_edit_test)    
+                @forelse($visitSet as $key => $visit)
                     <!-- todo: revise:for now excluding tests without specimens -->
                    
                     <tr>
-                        <td>{{ date('d-m-Y H:i', strtotime($visit->created_at));}}</td>  <!--Date Ordered-->
+                       <td>{{ date('d-m-Y H:i', strtotime($visit->created_at));}}</td>  <!--Date Ordered-->
                         <td>{{ empty($visit->external_patient_number)?
                                 $visit->patient_number:
                                 $visit->external_patient_number
@@ -137,7 +138,7 @@
                             </a>
                             
                             <br>
-                            @if(Auth::user()->can('edit_test'))
+                            
                                 <a class="btn btn-sm btn-info"
                                     href="{{ URL::route('unhls_test.viewDetails', $visit->id) }}"
                                     id="view-visit-details-{{$visit->id}}-link"
@@ -148,7 +149,7 @@
                                     Edit Test(s)
                                     
                                 </a>
-                            @endIf
+                            
                             
                         </td>
 
@@ -156,10 +157,54 @@
                     </tr>
                     
                 @endforeach
+            @else
+                @forelse($visitSet as $key => $visit)
+                    <!-- todo: revise:for now excluding tests without specimens -->
+                   
+                    <tr>
+                       <td>{{ date('d-m-Y H:i', strtotime($visit->created_at));}}</td>  <!--Date Ordered-->
+                        <td>{{ empty($visit->external_patient_number)?
+                                $visit->patient_number:
+                                $visit->external_patient_number
+                            }}</td> <!--Patient Number -->
+
+                        <td>{{$visit->ulin}}</td> <!--unhls terminology -->
+                        <!-- issue: this is confusing people as they may mistake it as ULIN -->
+                        
+                        
+                        <!--Visit Number -->
+                        <td>{{ $visit->name}}</td> <!--Patient Name -->
+                        <td>{{ $visit->visit_lab_number}}</td> <!--Visit Lab Number: the number issued each time this patient walks into the lab-->
+                        
+                        <!--location: where test is comping from, e.g. ICU, Emergency, OPD, ... -->
+                        <td>{{ empty($visit->ward)? 'N/A' :$visit->ward}}</td>
+                        
+                        <!-- ACTION BUTTONS -->
+                        <td>
+                            <a class="btn btn-sm btn-success"
+                                href="{{ URL::route('unhls_test.list_tests_in_visit', $visit->id) }}"
+                                id="view-visit-details-{{$visit->id}}-link"
+                                title="{{trans('messages.visit-test-details')}}">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                {{trans('messages.visit-test-details')}}
+                                
+                            </a>
+                            
+                            <br>
+                            
+                            
+                        </td>
+
+                        
+                    </tr>
+                    
+                @endforeach
+
+            @endif
                 </tbody>
             </table>
-        
-
+           
+            
         </div>
     </div>
 

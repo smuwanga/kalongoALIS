@@ -256,11 +256,13 @@ class UnhlsVisit extends Eloquent
 
 		//\Log::info($sqlStatement);
 		//		where v.created_at >= '".$dateFrom."' and v.created_at <='".$dateTo." 23:59:59' ".$condition.
-		$resultset = DB::select($sqlStatement);
+		//$resultset = DB::select($sqlStatement);
 
 		
-		//var_dump($resultset);
-		return $resultset;
 		
+		
+		$resultset = DB::select(DB::raw($sqlStatement)); //$query is raw SQL query say SELECT * FROM a LEFT JOIN b on a.id = b.a_id GROUP BY a.id
+		
+		return $resultset;
 	}
 }

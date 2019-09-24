@@ -23,7 +23,7 @@ class UnhlsPatientController extends \BaseController {
 		if (count($patients) == 0) {
 		 	Session::flash('message', trans('messages.no-match'));
 		}
-		
+		  
 		//$patients = UnhlsPatient::getAllPatients();
 		//$patients = UnhlsPatient::paginate(15);
 		/*if (count($patients) == 0) {

@@ -39,10 +39,13 @@ class UnhlsTestController extends \BaseController {
         
       
 		
-
+		$results_per_page = 15;
 		$visits = UnhlsVisit::searchWithTests($searchString,$testStatusId,$testCategoryId, $dateFrom, $dateTo);
+        $visits_pagination = Paginator::make($visits, count($visits), $results_per_page);
 
-
+        Log::info(".....1.....");
+        Log::info($visits_pagination );
+        Log::info(".....1..2.....");
 		
 		// Create Test Statuses array. Include a first entry for ALL
 		$statuses = array('all')+TestStatus::all()->lists('name','id');
@@ -56,17 +59,19 @@ class UnhlsTestController extends \BaseController {
 			$test_categories[$key] = $value;
 		}
 		
-		
-
+		$can_edit_test = false;
+		if(Auth::user()->can('edit_test'))
+			$can_edit_test = true;
 		// Load the view and pass it the tests
 		return View::make('unhls_test.index')
-					->with('visitSet', $visits)
+					->with('visitSet', $visits_pagination)
 					->with('dateFrom', $dateFrom)
 					->with('dateTo', $dateTo)
 					->with('testStatus', $statuses)
 					->with('selectedStatusId',$testStatusId)
 					->with('testCategories',$test_categories)
-					->with('selectedTestCategoryId',$testCategoryId);
+					->with('selectedTestCategoryId',$testCategoryId)
+					->with('can_edit_test',$can_edit_test);
 	}
 	public function cancelTest($id){
 		$test = UnhlsTest::find($id);
