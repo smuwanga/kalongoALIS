@@ -99,18 +99,19 @@ class UnhlsPatient extends Eloquent
 	public function newAge($dateOfBirth){
 
 		$new_age = "";
-		$at = new DateTime('now');
+		$now_datetime_instance = new DateTime(date("Y-m-d"));
 
-		$dateOfBirth = new DateTime($dateOfBirth);
-		$interval = $dateOfBirth->diff($at);
+		$dateOfBirth_datetime_instance = new DateTime($dateOfBirth);
+		$interval = $now_datetime_instance->diff($dateOfBirth_datetime_instance);
 
 		$days = $interval->format('%a');
+	
 
 		if($days < 30){
 			$new_age = $days . " days";
 
-		}elseif ($days >= 30 && $days < 365) {
-			$months = round($days/12);
+		}elseif (($days >= 30) && ($days < 365)) {
+			$months = round($days/30);
 			$new_age = $months . " month(s)";
 		}else{
 			$years = round($days/365);

@@ -12,6 +12,7 @@
 			</div>
 		</a>
 	</div>
+	@if(Auth::user()->can('manage_patients'))
 	<div class="btn-group container col-xs-3">
 		<a class="link-tip" href="{{ URL::route('unhls_patient.index')}}" data-toggle="tooltip" data-placement="bottom" title="Click to view and  manage patient bio-data">
 			<div class="panel panel-default">
@@ -19,6 +20,7 @@
 			</div>
 		</a>
 	</div>
+	@endif
 	<div class="btn-group container col-xs-3">
 		<a class="link-tip" href="{{ URL::route('unhls_els.index')}}" data-toggle="tooltip" data-placement="bottom" title="Click to mange stock of laboratory supplies and to update equipment information">
 			<div class="panel panel-default">
