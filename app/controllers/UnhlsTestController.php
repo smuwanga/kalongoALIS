@@ -43,9 +43,7 @@ class UnhlsTestController extends \BaseController {
 		$visits = UnhlsVisit::searchWithTests($searchString,$testStatusId,$testCategoryId, $dateFrom, $dateTo);
         $visits_pagination = Paginator::make($visits, count($visits), $results_per_page);
 
-        Log::info(".....1.....");
-        Log::info($visits_pagination );
-        Log::info(".....1..2.....");
+       
 		
 		// Create Test Statuses array. Include a first entry for ALL
 		$statuses = array('all')+TestStatus::all()->lists('name','id');
@@ -163,7 +161,10 @@ class UnhlsTestController extends \BaseController {
 			$test_categories[$key] = $value;
 		}
 		
-		
+		$can_edit_test = false;
+		if(Auth::user()->can('edit_test'))
+			$can_edit_test = true;
+
 		// Load the view and pass it the tests
 		return View::make('unhls_test.index')
 					->with('visitSet', $visits)
@@ -172,7 +173,8 @@ class UnhlsTestController extends \BaseController {
 					->with('testStatus', $statuses)
 					->with('selectedStatusId',$testStatusId)
 					->with('testCategories',$test_categories)
-					->with('selectedTestCategoryId',$testCategoryId);
+					->with('selectedTestCategoryId',$testCategoryId)
+					->with('can_edit_test',$can_edit_test);
 
 	}
 
@@ -227,6 +229,9 @@ class UnhlsTestController extends \BaseController {
 		//$visits = $visits->paginate(Config::get('kblis.page-items'))->appends($input);
 
 		
+		$can_edit_test = false;
+		if(Auth::user()->can('edit_test'))
+			$can_edit_test = true;
 
 		// Load the view and pass it the tests
 		return View::make('unhls_test.index')
@@ -237,6 +242,7 @@ class UnhlsTestController extends \BaseController {
 					->with('selectedStatusId',$testStatusId)
 					->with('testCategories',$test_categories)
 					->with('selectedTestCategoryId',$testCategoryId)
+					->with('can_edit_test',$can_edit_test)
 					->withInput($input);
 
 
@@ -291,7 +297,9 @@ class UnhlsTestController extends \BaseController {
 			$test_categories[$key] = $value;
 		}
 
-		
+		$can_edit_test = false;
+		if(Auth::user()->can('edit_test'))
+			$can_edit_test = true;
 
 		// Load the view and pass it the tests
 		return View::make('unhls_test.index')
@@ -302,6 +310,7 @@ class UnhlsTestController extends \BaseController {
 					->with('selectedStatusId',$testStatusId)
 					->with('testCategories',$test_categories)
 					->with('selectedTestCategoryId',$testCategoryId)
+					->with('can_edit_test',$can_edit_test)
 					;
 
 	}
@@ -354,7 +363,10 @@ class UnhlsTestController extends \BaseController {
 		}
 
 		
-
+		$can_edit_test = false;
+		if(Auth::user()->can('edit_test'))
+			$can_edit_test = true;
+		
 		// Load the view and pass it the tests
 		return View::make('unhls_test.index')
 					->with('visitSet', $visits)
@@ -364,6 +376,7 @@ class UnhlsTestController extends \BaseController {
 					->with('selectedStatusId',$testStatusId)
 					->with('testCategories',$test_categories)
 					->with('selectedTestCategoryId',$testCategoryId)
+					->with('can_edit_test',$can_edit_test)
 					;
 
 	}
@@ -414,7 +427,9 @@ class UnhlsTestController extends \BaseController {
 			$test_categories[$key] = $value;
 		}
 		
-		
+		$can_edit_test = false;
+		if(Auth::user()->can('edit_test'))
+			$can_edit_test = true;
       
 		// Load the view and pass it the tests
 		return View::make('unhls_test.index')
@@ -424,7 +439,8 @@ class UnhlsTestController extends \BaseController {
 					->with('testStatus', $statuses)
 					->with('selectedStatusId',$testStatusId)
 					->with('testCategories',$test_categories)
-					->with('selectedTestCategoryId',$testCategoryId);
+					->with('selectedTestCategoryId',$testCategoryId)
+					->with('can_edit_test',$can_edit_test);
 					
 	}
 

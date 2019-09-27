@@ -16,7 +16,7 @@
 	<thead>
 	    <tr>
 	            <th width="20%"><strong>Sample Type</strong></th>
-	            <th width="20%"><strong>Date Collected</strong></th>
+	            <th width="20%"><strong>Date Entered</strong></th>
 	            
 	            <th width="20%"><strong>Date Received</strong></th>
 	            

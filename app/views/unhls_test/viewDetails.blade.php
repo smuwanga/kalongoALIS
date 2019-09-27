@@ -22,7 +22,8 @@
 									{{trans('messages.edit-test-results')}}
 								</a>
 							@endif
-							@if(Auth::user()->can('verify_test_results'))
+							@if( Auth::user()->can('verify_test_results') && Auth::user()->id != $test->tested_by)
+									
 								@if(!$test->isVerified())
 								<a class="btn btn-sm btn-success" href="{{ URL::route('test.verify', array($test->id)) }}">
 									<span class="glyphicon glyphicon-thumbs-up"></span>
@@ -33,7 +34,7 @@
 							@endif
 
 
-							@if(Auth::user()->can('approve_test_results') )
+							@if(Auth::user()->can('approve_test_results') && Auth::user()->id != $test->tested_by)
 								@if($test->isVerified())
 								
 								<a class="btn btn-sm btn-success" href="{{ URL::route('test.approve', array($test->id)) }}">

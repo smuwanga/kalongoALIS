@@ -115,7 +115,7 @@
 						<div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 3px; width: 215px; display: none;"><div class="ps-scrollbar-x" style="left: 0px; width: 0px;"></div></div><div class="ps-scrollbar-y-rail" style="top: 0px; right: 3px; height: 620px; display: none;"><div class="ps-scrollbar-y" style="top: 0px; height: 0px;"></div></div></div>
 					</div>
 				</li>
-
+			@if(Auth::user()->can('manage_patients'))
 				<li class="nav_trigger">
 					<a href="#"><span class="ion-person"></span><span class="nav_title">Patient Information</span>
 					</a>
@@ -147,6 +147,7 @@
 						<div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 3px; width: 215px; display: none;"><div class="ps-scrollbar-x" style="left: 0px; width: 0px;"></div></div><div class="ps-scrollbar-y-rail" style="top: 0px; right: 3px; height: 620px; display: none;"><div class="ps-scrollbar-y" style="top: 0px; height: 0px;"></div></div></div>
 					</div>
 				</li>
+			@endif
 				<li class="nav_trigger">
 					<a href="#">
 						<span class="ion-erlenmeyer-flask"></span>
@@ -156,6 +157,7 @@
 						<div class="side_inner ps-ready ps-container" style="height: 620px;">
 							<h4 class="panel_heading panel_heading_first"> Tests</h4>
 							<ul>
+								@if(Auth::user()->can('request_test'))
 								<li>
 									<div>
 										<a href="javascript:void(0)" data-toggle="modal" data-target="#new-test-modal-unhls">
@@ -164,7 +166,7 @@
 										</a>
 									</div>
 								</li>
-
+								@endif
 								<li>
 									<div>
 										<a href="{{ URL::route('unhls_test.index')}}">
