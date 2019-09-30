@@ -152,6 +152,10 @@ class UnhlsTest extends Eloquent
 		return $this->belongsTo('User', 'approved_by', 'id');
 	}
 
+
+	public function instrumentUsed(){
+		return $this->belongsTo('instrument','instrument_id','id');
+	}
 	/**
 	 * Test Results relationship
 	 */

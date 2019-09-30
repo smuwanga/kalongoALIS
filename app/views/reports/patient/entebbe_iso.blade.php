@@ -143,6 +143,15 @@
 								@endif
 							</tr>
 							
+							@if(!empty($test->instrumentUsed->name))
+							<tr>
+								<td width="100%" style="font-size:12px">
+									<b>Instrument Used</b>:{{ $test->instrumentUsed->name }}
+								</td>
+							
+							</tr>
+							@endif
+							
 							<tr>
 								<!-- display reviewer if recalledTestResults are 0-->
 								@if($test->recalledTestResults->count() == 0)

@@ -843,7 +843,13 @@ class UnhlsTestController extends \BaseController {
 	public function enterResults($testID)
 	{
 		$test = UnhlsTest::find($testID);
-		$instruments = Instrument::all();
+		$instruments = array('---Choose Instrument---') + Instrument::all()->lists('name','id');
+		$selectedInstrumentId = isset($input['instrument'])?$input['instrument']:'';
+
+		foreach ($instruments as $key => $value) {
+			$instruments[$key] = $value;
+		}
+
 		// if the test being carried out requires a culture worksheet
 		if ($test->testType->isCulture()) {
 			return Redirect::route('culture.edit', [$test->id]);
@@ -851,7 +857,8 @@ class UnhlsTestController extends \BaseController {
 			return Redirect::route('gramstain.edit', [$test->id]);
 		}else{
 			return View::make('unhls_test.enterResults')->with('test', $test)
-			->with('instruments',$instruments);
+			->with('instruments',$instruments)
+			->with('selectedInstrumentId',$selectedInstrumentId);
 		}
 	}
 
@@ -921,6 +928,7 @@ class UnhlsTestController extends \BaseController {
 		}else{
 			$test->interpretation = Input::get('interpretation');
 		}
+		$test->instrument_id = Input::get('instrument');
 		$test->save();
 
 		//Fire of entry saved/edited event

@@ -236,11 +236,13 @@
                             {{ Form::textarea('interpretation', $test->interpretation, 
                                 array('class' => 'form-control result-interpretation', 'rows' => '2')) }}
                         </div>
+
+                        
                         <div class="form-group">
                             {{ Form::label('instrument' , 'Instrument Used to Test') }}
                             {{ Form::select('instrument', $instruments,
                                                 Input::get('instrument'),
-                                                ['class' => 'form-control specimen-type']) }}
+                                                array('class' => 'form-control','id'=> $selectedInstrumentId)) }}
                         </div>
                         <div class="form-group actions-row">
                             {{ Form::button('<span class="glyphicon glyphicon-save">
@@ -380,6 +382,12 @@
                                         </tr>
                                     </tbody>
                                 </table>
+                                <div class="form-group">
+                                    {{ Form::label('instrument' , 'Instrument Used to Test') }}
+                                    {{ Form::select('instrument', $instruments,
+                                                        Input::get('instrument'),
+                                                        array('class' => 'form-control','id'=> $selectedInstrumentId)) }}
+                                </div>
                                 {{ Form::close() }}
                                 @endforeach
                               </div>
