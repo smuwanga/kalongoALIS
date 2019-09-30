@@ -30,6 +30,14 @@
 				{{ Form::textarea('description', Input::old('description'), 
 					array('class' => 'form-control', 'rows' => '3' )) }}
 			</div>
+			<div class="form-group">
+				{{ Form::label('ip', trans('messages.ip')) }}
+				{{ Form::text('ip', Input::old('ip'), array('class' => 'form-control')) }}
+			</div>
+			<div class="form-group">
+				{{ Form::label('hostname', trans('messages.host-name')) }}
+				{{ Form::text('hostname', Input::old('hostname'), array('class' => 'form-control')) }}
+			</div>
 		</div>
 		<div class="panel-footer">
 			<div class="form-group actions-row">

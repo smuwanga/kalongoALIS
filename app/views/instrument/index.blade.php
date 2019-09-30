@@ -34,6 +34,7 @@
 			<thead>
 				<tr>
 					<th>{{Lang::choice('messages.name',1)}}</th>
+					<th>{{Lang::choice('messages.description',1)}}</th>
 					<th>{{trans('messages.ip')}}</th>
 					<th>{{trans('messages.host-name')}}</th>
 					<th>{{trans('messages.actions')}}</th>
@@ -43,6 +44,7 @@
 			@foreach($instruments as $key => $value)
 				<tr>
 					<td>{{ $value->name }}</td>
+					<td>{{ $value->description }}</td>
 					<td>{{ $value->ip }}</td>
 					<td>{{ $value->hostname }}</td>
 

@@ -843,13 +843,15 @@ class UnhlsTestController extends \BaseController {
 	public function enterResults($testID)
 	{
 		$test = UnhlsTest::find($testID);
+		$instruments = Instrument::all();
 		// if the test being carried out requires a culture worksheet
 		if ($test->testType->isCulture()) {
 			return Redirect::route('culture.edit', [$test->id]);
 		}elseif ($test->testType->isGramStain()) {
 			return Redirect::route('gramstain.edit', [$test->id]);
 		}else{
-			return View::make('unhls_test.enterResults')->with('test', $test);
+			return View::make('unhls_test.enterResults')->with('test', $test)
+			->with('instruments',$instruments);
 		}
 	}
 

@@ -116,7 +116,7 @@
 							<tr>
 								<td><b>Interpretation:</b></td> <td>{{$test->interpreteHIVResults()}}</td>
 							</tr>
-						@else
+						@endif
 							<tr>
 								<td width="100%"><br><br>
 									<b>{{trans('messages.comments')}}:</b> {{ $test->interpretation == '' ? 'Suitable for the test' : $test->interpretation }}
@@ -167,7 +167,7 @@
 							</tr>
 							@endif
 							
-						@endif
+						
 
 
 						
