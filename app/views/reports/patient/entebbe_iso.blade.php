@@ -116,7 +116,7 @@
 							<tr>
 								<td><b>Interpretation:</b></td> <td>{{$test->interpreteHIVResults()}}</td>
 							</tr>
-						@else
+						@endif
 							<tr>
 								<td width="100%"><br><br>
 									<b>{{trans('messages.comments')}}:</b> {{ $test->interpretation == '' ? 'Suitable for the test' : $test->interpretation }}
@@ -143,6 +143,15 @@
 								@endif
 							</tr>
 							
+							@if(!empty($test->instrumentUsed->name))
+							<tr>
+								<td width="100%" style="font-size:12px">
+									<b>Instrument Used</b>:{{ $test->instrumentUsed->name }}
+								</td>
+							
+							</tr>
+							@endif
+							
 							<tr>
 								<!-- display reviewer if recalledTestResults are 0-->
 								@if($test->recalledTestResults->count() == 0)
@@ -167,7 +176,7 @@
 							</tr>
 							@endif
 							
-						@endif
+						
 
 
 						

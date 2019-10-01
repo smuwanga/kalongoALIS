@@ -89,6 +89,7 @@
         </td>
         <td width="20%"><strong>Officer's Contact</strong>:</td>
         <td width="30%">
+            <!--
             @if(isset($tests))
                 @if(!empty($tests->first()))
                     @if(!empty($tests->first()->therapy->contact))
@@ -98,7 +99,8 @@
                     @endif
 
                 @endif
-            @endif
+            @endif -->
+            ---
         </td>
         
 

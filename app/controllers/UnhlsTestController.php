@@ -498,7 +498,12 @@ class UnhlsTestController extends \BaseController {
 		//Create a Lab categories Array
 		$categories = ['Select Lab Section']+TestCategory::lists('name', 'id');
 		$wards = ['Select Sample Origin']+Ward::lists('name', 'id');
-		$clinicians = ['Select clinician']+Clinician::lists('name', 'id');
+		//$clinicians = ['Select clinician']+Clinician::lists('name', 'id');
+		
+        $clinicians = ['Select clinician']+Clinician::
+        select('id', DB::raw('CONCAT(id, " ", name) AS full_name'))
+        ->orderBy('id')
+    	->lists('full_name', 'id');
 
 		// sample collection default details
 		$now = new DateTime();
@@ -843,13 +848,22 @@ class UnhlsTestController extends \BaseController {
 	public function enterResults($testID)
 	{
 		$test = UnhlsTest::find($testID);
+		$instruments = array('---Choose Instrument---') + Instrument::all()->lists('name','id');
+		$selectedInstrumentId = isset($input['instrument'])?$input['instrument']:'';
+
+		foreach ($instruments as $key => $value) {
+			$instruments[$key] = $value;
+		}
+
 		// if the test being carried out requires a culture worksheet
 		if ($test->testType->isCulture()) {
 			return Redirect::route('culture.edit', [$test->id]);
 		}elseif ($test->testType->isGramStain()) {
 			return Redirect::route('gramstain.edit', [$test->id]);
 		}else{
-			return View::make('unhls_test.enterResults')->with('test', $test);
+			return View::make('unhls_test.enterResults')->with('test', $test)
+			->with('instruments',$instruments)
+			->with('selectedInstrumentId',$selectedInstrumentId);
 		}
 	}
 
@@ -919,6 +933,7 @@ class UnhlsTestController extends \BaseController {
 		}else{
 			$test->interpretation = Input::get('interpretation');
 		}
+		$test->instrument_id = Input::get('instrument');
 		$test->save();
 
 		//Fire of entry saved/edited event
