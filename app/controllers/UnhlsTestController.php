@@ -498,7 +498,12 @@ class UnhlsTestController extends \BaseController {
 		//Create a Lab categories Array
 		$categories = ['Select Lab Section']+TestCategory::lists('name', 'id');
 		$wards = ['Select Sample Origin']+Ward::lists('name', 'id');
-		$clinicians = ['Select clinician']+Clinician::lists('name', 'id');
+		//$clinicians = ['Select clinician']+Clinician::lists('name', 'id');
+		
+        $clinicians = ['Select clinician']+Clinician::
+        select('id', DB::raw('CONCAT(id, " ", name) AS full_name'))
+        ->orderBy('id')
+    	->lists('full_name', 'id');
 
 		// sample collection default details
 		$now = new DateTime();

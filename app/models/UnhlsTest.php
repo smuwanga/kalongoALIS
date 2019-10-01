@@ -88,6 +88,27 @@ class UnhlsTest extends Eloquent
 		
 		return $json_default_requester;
 	}
+	public static function getRequestingOfficer($requester_identifier){
+		$requester_id = 0;
+		$tester  = array('name' =>'Unknown' , 
+			'phone'=>'Unknown',
+			'email'=>'Unknown');
+		$json_default_requester = json_encode($tester);
+		if(!empty($requester_identifier)){
+			
+			try{
+				$requester_id = intval($requester_identifier);
+				$requester = Clinician::find($requester_id);
+				return $requester->name;
+
+			}catch(Exception $e){
+				return $json_default_requester;
+			}
+			
+		}
+		
+		return $json_default_requester;
+	}
 	/**
 	 * Test Type relationship
 	 */
@@ -154,7 +175,7 @@ class UnhlsTest extends Eloquent
 
 
 	public function instrumentUsed(){
-		return $this->belongsTo('instrument','instrument_id','id');
+		return $this->belongsTo('Instrument','instrument_id','id');
 	}
 	/**
 	 * Test Results relationship
