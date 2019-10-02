@@ -76,9 +76,25 @@ class UnhlsTest extends Eloquent
 		if(!empty($requester_identifier)){
 			
 			try{
-				$requester_id = intval($requester_identifier);
-				$requester = Clinician::find($requester_id);
-				return $requester;
+				
+				if(is_numeric($requester_identifier)){
+					$requester_id = intval($requester_identifier);
+				    $requester = Clinician::find($requester_id);
+
+				    return $requester;
+				}else{
+					$dummy_requester = Clinician::find(1);
+					
+
+					
+					
+					$dummy_requester->name = $requester_identifier;
+					$dummy_requester->phone='Unknown';
+					$dummy_requester->email='Unknown';
+
+					return $dummy_requester;
+				}
+				
 
 			}catch(Exception $e){
 				return $json_default_requester;
