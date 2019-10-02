@@ -94,7 +94,8 @@
 							
 							<p class="view-striped"><strong> {{trans('messages.physician')}}</strong>
 								
-									{{ !empty($test->requested_by)?UnhlsTest::getRequester($test->requested_by)->name : 'Unknown'}}
+									{{ !empty($test->requested_by)?
+									UnhlsTest::getRequester($test->requested_by)->name : 'Unknown'}}
 								
 
 							</p>
