@@ -104,6 +104,7 @@ class UnhlsTestController extends \BaseController {
 		$tests = $tests->paginate(Config::get('kblis.page-items'));
 		$visit = UnhlsVisit::find($id);
 
+
 		//	Barcode
 		$barcode = Barcode::first();
 
@@ -837,6 +838,50 @@ class UnhlsTestController extends \BaseController {
 		$test->time_started = date('Y-m-d H:i:s');
 		$test->save();
 		return $test->test_status_id;
+	}
+
+	/**
+	 * Update time collected
+	 *
+	 * @param
+	 * @return
+	 */
+	public function updateTimeSampleCollected()
+	{
+		$test = UnhlsTest::find(Input::get('id'));
+	
+		$test->test_status_id = UnhlsTest::COLLECTED;
+		$test->time_created = date('Y-m-d H:i:s');
+		$test->save();
+		//return $test->test_status_id;
+		$redirect_url = "/unhls_test/";
+		if(isset($test->visit_id))
+			$redirect_url = $redirect_url . $test->visit_id;
+		
+
+		return Redirect::to($redirect_url);
+		/*
+		$tests = UnhlsTest::searchByVisit( $test->visit_id);
+
+		if (count($tests) == 0) {
+				Session::flash('message', trans('messages.empty-search'));
+		}
+		
+		// Pagination
+		$tests = $tests->paginate(Config::get('kblis.page-items'));
+		$visit = UnhlsVisit::find($test->visit_id);
+
+
+		//	Barcode
+		$barcode = Barcode::first();
+
+		// Load the view and pass it the tests
+		return View::make('unhls_test.list_tests_in_visit')
+					->with('testSet', $tests)
+					->with('visit',$visit)
+					->with('barcode', $barcode);
+					*/
+		
 	}
 
 	/**

