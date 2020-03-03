@@ -1355,8 +1355,8 @@ class ReportController extends \BaseController {
 		try{
 				$sql = "SELECT t.id,tt.name,t.test_type_id,DATE(t.time_created) as date_created,t.time_started,
 						t.time_verified,t.time_approved,
-						TIMESTAMPDIFF(MINUTE,t.time_created,t.time_approved) as waiting_time,
-						TIMESTAMPDIFF(MINUTE,t.time_started,t.time_approved) as testing_time
+						TIMESTAMPDIFF(MINUTE,t.time_created,t.time_completed) as waiting_time,
+						TIMESTAMPDIFF(MINUTE,t.time_started,t.time_completed) as testing_time
 					from unhls_tests t left join test_types  tt on t.test_type_id = tt.id 
 					where tt.id =  ".$testType." 
 					and (t.time_created BETWEEN '".$from." 00:00:00' AND '".$to." 23:59:59')";

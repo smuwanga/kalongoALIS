@@ -128,8 +128,17 @@
                                 </a>
                             @endif
                             @if ($test->isPending())
+                                @if(Auth::user()->can('collect_sample'))
+                                    <a class="btn btn-sm btn-primary start-test" href="#" onclick="setTimeout(function(){ location.reload();}, 10000);"
+                                        data-test-id="{{$test->id}}" data-url="{{ URL::route('test.collect.sample') }}"
+                                        title="{{trans('messages.sample-collected-title')}}">
+                                        <span class="glyphicon glyphicon-play"></span>
+                                        {{trans('messages.sample-collected')}}
+                                    </a>
+                                @endif
+                            @elseif ($test->isSampleCollected())
                                 @if(Auth::user()->can('start_test'))
-                                    <a class="btn btn-sm btn-warning start-test" href="javascript:void(0)"
+                                    <a class="btn btn-sm btn-warning start-test" href="#" onclick="setTimeout(function(){ location.reload();}, 10000);"
                                         data-test-id="{{$test->id}}" data-url="{{ URL::route('test.start') }}"
                                         title="{{trans('messages.start-test-title')}}">
                                         <span class="glyphicon glyphicon-play"></span>
@@ -142,6 +151,7 @@
                                         {{trans('messages.refer-sample')}}
                                     </a>
                                 @endif
+
                             @elseif ($test->isStarted())
                                 @if(Auth::user()->can('enter_test_results'))
                                     <a class="btn btn-sm btn-info" id="enter-results-{{$test->id}}-link"
@@ -199,12 +209,13 @@
                                         @elseif($test->isPending())
                                             <span class='label label-info'>
                                                 {{trans('messages.pending')}}</span>
+                                        @elseif($test->isSampleCollected())
+                                            <span class='label label-info'>
+                                                {{trans('messages.completed')}}</span>
                                         @elseif($test->isStarted())
                                             <span class='label label-warning'>
                                                 {{trans('messages.started')}}</span>
-                                        @elseif($test->isCompleted())
-                                            <span class='label label-primary'>
-                                                {{trans('messages.completed')}}</span>
+                                        
                                         @elseif($test->isVerified())
                                             <span class='label label-success'>
                                                 {{trans('messages.verified')}}</span>
@@ -233,6 +244,9 @@
                                         @elseif($test->specimen->isAccepted())
                                             <span class='label label-success'>
                                                 {{trans('messages.specimen-accepted-label')}}</span>
+
+                                                <span class='label label-success'>
+                                                {{ $test->isCompleted() }}</span>
                                         @endif
                                     </div>
                                 </div>

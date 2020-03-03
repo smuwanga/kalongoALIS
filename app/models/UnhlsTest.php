@@ -16,6 +16,7 @@ class UnhlsTest extends Eloquent
 	 */
 	const SPECIMEN_NOT_RECEIVED = 1;
 	const PENDING = 2;
+	const COLLECTED = 10;//Marks the sample is successfully picked 
 	const STARTED = 3;
 	const COMPLETED = 4;
 	const VERIFIED = 5;
@@ -256,6 +257,13 @@ class UnhlsTest extends Eloquent
 			return false;
 	}
 
+	public function isSampleCollected()
+	{
+		if($this->test_status_id == UnhlsTest::COLLECTED)
+			return true;
+		else 
+			return false;
+	}
 	/**
 	 * Helper function: check if the Test status is STARTED
 	 *
@@ -276,7 +284,7 @@ class UnhlsTest extends Eloquent
 	 */
 	public function isCompleted()
 	{
-		if($this->test_status_id == UnhlsTest::COMPLETED || $this->test_status_id == UnhlsTest::VERIFIED)
+		if($this->test_status_id == UnhlsTest::COMPLETED)
 			return true;
 		else 
 			return false;
