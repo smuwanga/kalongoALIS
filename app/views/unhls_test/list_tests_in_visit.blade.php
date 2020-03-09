@@ -211,14 +211,17 @@
                                                 {{trans('messages.pending')}}</span>
                                         @elseif($test->isSampleCollected())
                                             <span class='label label-info'>
-                                                {{trans('messages.completed')}}</span>
+                                                {{trans('messages.collected')}}</span>
                                         @elseif($test->isStarted())
                                             <span class='label label-warning'>
                                                 {{trans('messages.started')}}</span>
                                         
                                         @elseif($test->isVerified())
-                                            <span class='label label-success'>
+                                            <span class='label label-warning'>
                                                 {{trans('messages.verified')}}</span>
+                                        @elseif($test->isApproved())
+                                            <span class='label label-success'>
+                                                {{trans('messages.approved')}}</span>
                                         @endif
                                     </div>
                                 </div>
@@ -242,10 +245,10 @@
                                             <span class='label label-danger'>
                                                 {{trans('messages.specimen-rejected-label')}}</span>
                                         @elseif($test->specimen->isAccepted())
-                                            <span class='label label-success'>
+                                            <span class='label label-info'>
                                                 {{trans('messages.specimen-accepted-label')}}</span>
 
-                                                <span class='label label-success'>
+                                                <span class='label label-info'>
                                                 {{ $test->isCompleted() }}</span>
                                         @endif
                                     </div>

@@ -13,38 +13,47 @@
                 <div class="row less-gutter">
                     <div class="col-md-11">
 						<span class="glyphicon glyphicon-cog"></span>{{trans('messages.test-details')}}
-
-						@if($test->isCompleted() && $test->specimen->isAccepted())
+						
 						<div class="panel-btn">
+						@if($test->isCompleted() && $test->specimen->isAccepted())
+								
+									@if(Auth::user()->can('edit_test_results'))
+										<a class="btn btn-sm btn-info" href="{{ URL::to('unhls_test/'.$test->id.'/edit') }}">
+											<span class="glyphicon glyphicon-edit"></span>
+											{{trans('messages.edit-test-results')}}
+										</a>
+									@endif
+									@if( Auth::user()->can('verify_test_results') && Auth::user()->id != $test->tested_by)
+											
+										@if(!$test->isVerified())
+											<a class="btn btn-sm btn-success" href="{{ URL::route('test.verify', array($test->id)) }}">
+												<span class="glyphicon glyphicon-thumbs-up"></span>
+												{{trans('messages.verify')}}
+											</a>
+										@endif
+									@endif
+						@elseif($test->isVerified())
+
+							
 							@if(Auth::user()->can('edit_test_results'))
-								<a class="btn btn-sm btn-info" href="{{ URL::to('unhls_test/'.$test->id.'/edit') }}">
-									<span class="glyphicon glyphicon-edit"></span>
-									{{trans('messages.edit-test-results')}}
-								</a>
+										<a class="btn btn-sm btn-info" href="{{ URL::to('unhls_test/'.$test->id.'/edit') }}">
+											<span class="glyphicon glyphicon-edit"></span>
+											{{trans('messages.edit-test-results')}}
+										</a>
 							@endif
-							@if( Auth::user()->can('verify_test_results') && Auth::user()->id != $test->tested_by)
-									
-								@if(!$test->isVerified())
-								<a class="btn btn-sm btn-success" href="{{ URL::route('test.verify', array($test->id)) }}">
-									<span class="glyphicon glyphicon-thumbs-up"></span>
-									{{trans('messages.verify')}}
-								</a>
-								
-								@endif
-							@endif
-
-
 							@if(Auth::user()->can('approve_test_results') && Auth::user()->id != $test->tested_by)
-								@if($test->isVerified())
-								
-								<a class="btn btn-sm btn-success" href="{{ URL::route('test.approve', array($test->id)) }}">
-									<span class="glyphicon glyphicon-thumbs-up"></span>
-									{{trans('messages.approve')}}
-								</a>
-								@endif
+										
+										@if($test->isVerified())
+											<a class="btn btn-sm btn-success" href="{{ URL::route('test.approve', array($test->id)) }}">
+												<span class="glyphicon glyphicon-thumbs-up"></span>
+												{{trans('messages.approve')}}
+											</a>
+										@endif
 							@endif
-						</div>
+
 						@endif
+						</div>
+					
 						
 						<div class="panel-btn">
 							@if(Auth::user()->can('view_reports'))
