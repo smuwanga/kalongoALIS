@@ -848,11 +848,14 @@ class UnhlsTestController extends \BaseController {
 	 */
 	public function updateTimeSampleCollected()
 	{
+		
 		$test = UnhlsTest::find(Input::get('id'));
-	
+
+		
 		$test->test_status_id = UnhlsTest::COLLECTED;
 		$test->time_created = date('Y-m-d H:i:s');
 		$test->save();
+		
 		//return $test->test_status_id;
 		$redirect_url = "/unhls_test/";
 		if(isset($test->visit_id))
