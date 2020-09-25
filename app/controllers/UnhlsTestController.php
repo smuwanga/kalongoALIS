@@ -2,6 +2,8 @@
 
 use Illuminate\Database\QueryException;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Http\Request;
+
 
 /**
  * Contains test resources  
@@ -655,7 +657,115 @@ class UnhlsTestController extends \BaseController {
 		}
 	}
 
+	private function generatePatient($received_test_request){
+		
+		$patient = null;
+		$received_patient_array = $received_test_request['patient'];
+		
+		$patient_number_identifier = $received_patient_array['identifier'];
+		$patient_array = UnhlsPatient::where('patient_number',$patient_number_identifier)->get();
+	
+		if(sizeof($patient_array) == 0){
+			$patient = new UnhlsPatient();
+			$patient->patient_number = $received_patient_array['identifier'];
+			$patient->name = $received_patient_array['name'];
+			$patient->gender = ($received_patient_array['gender'] == 'female') ? 1  : 0;
+			$patient->dob = $received_patient_array['birthDate'];
+			$patient->phone_number = $received_patient_array['telephone'];
+			$patient->created_by = 1;
+			$patient->save();
+			
+			$patient->ulin = $patient->getUlin();
+			$patient->save();
 
+			$uuid = new UuidGenerator(); 
+			$uuid->save();
+		}else{
+			$patient = $patient_array[0];
+		}
+		
+		return $patient;
+	}
+
+	private function generateClinician($received_test_request){
+		$clinician = null;
+		$received_clinician_array = $received_test_request['requester'];
+
+		$clinician_array = Clinician::where('unique_number', $received_clinician_array['identifier'])->get();
+		
+		if(sizeof($clinician_array) == 0 ){
+			$clinician = new Clinician();
+			
+			$clinician->unique_number = $received_clinician_array['identifier'];
+			$clinician->cadre = $received_clinician_array['cadre'];
+			$clinician->phone = $received_clinician_array['telecom'];
+			$clinician->email = $received_clinician_array['email'];
+			$clinician->save();
+		}else{
+
+			
+			$clinician = $clinician_array[0];
+			
+		}
+		return $clinician;
+	}
+	public function emrTestRequest(){
+		$received_test_request = \Input::all();
+
+		$status="";
+		$status_code =0;
+		$status_message = "";
+
+        
+		//Patient Bio
+		$patient = $this->generatePatient($received_test_request);
+		
+		//Clinician
+		$clinician = $this->generateClinician($received_test_request);
+
+		//Clinical Notes
+		$received_clinical_notes_array = $received_test_request['clinicalNotes'];
+
+
+		$received_subject = $received_test_request['subject'];
+
+		$emr_test_request_instance = null;
+		$emr_test_request_array = EmrTestRequest::where('emr_request_id',$received_subject['identifier'])->get();
+
+		if(sizeof($emr_test_request_array) == 0 ){
+			$emr_test_request_instance = new EmrTestRequest();
+			$emr_test_request_instance->patient_id = $patient->id;
+			$emr_test_request_instance->clinician_id = $clinician->id;
+
+			
+			$emr_test_request_instance->clinical_notes = $received_clinical_notes_array['text'];
+			$emr_test_request_instance->hospitalised_more_than_24hrs = $received_clinical_notes_array['hasPatientBeenHospitalizedForMoreThan48Hours'];
+			$emr_test_request_instance->been_on_anti_biotics = $received_clinical_notes_array['hasPatientBeenOnAntibioticsDuringTheInfection'];
+			$emr_test_request_instance->current_therapy = $received_clinical_notes_array['currentTherapy'];
+			$emr_test_request_instance->previous_therapy = $received_clinical_notes_array['previousTherapy'];
+
+			//Location
+			$received_subject = $received_test_request['subject'];
+			$emr_test_request_instance->emr = $received_test_request['note'];
+			$emr_test_request_instance->ward = $received_subject['ward'];
+			$emr_test_request_instance->bed_number = $received_subject['bedNumber'];
+			$emr_test_request_instance->emr_request_id = $received_subject['identifier'];
+			$emr_test_request_instance->visit_type_id = ($received_subject['visit_type'] == 'in-patient')?1:2;
+        
+			//store transaction from EMR
+			$emr_test_request_instance->save();
+
+			$status="success";
+			$status_code =201;
+			$status_message = "Test Request received successfully in the Laboratory";
+		}else{
+			$status="error";
+			$status_code =409;
+			$status_message = "Conflict: Record already exists by id.";
+		}
+		
+		return \Response::json(['status' => $status, 'message' => $status_message], $status_code);
+	}
 	/**
 	 * Display Collect page 
 	 *

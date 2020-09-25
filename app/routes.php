@@ -37,6 +37,8 @@ Route::group(array("before" => "guest"), function()
         "uses" => "UserController@loginAction"
     ));
 
+    Route::post('/api/fhir/emr_test_request', 'UnhlsTestController@emrTestRequest');
+
 });
 /* Routes accessible AFTER logging in */
 Route::group(array("before" => "auth"), function()
