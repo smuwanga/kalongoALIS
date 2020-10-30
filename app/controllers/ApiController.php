@@ -614,10 +614,6 @@ class ApiController extends \BaseController {
 
         $all_visits = $visit4;
 
-//        $all_visits = str_replace("0000-00-00 00:00:00",null, json_encode($all_visits),$i);
-//        $all_visits = str_replace("0000-00-00",null, $all_visits,$i);
-//        $all_visits = str_replace("00:00:00",null, $all_visits,$i);
-
         return Response::json(json_decode(json_encode($all_visits), true));
 
     }
@@ -708,92 +704,97 @@ class ApiController extends \BaseController {
 
         $sanitized_visit = $specimen_test = [];
 //        dd($vis['patientvisit']);
+
+        /*
+         * The code block below replaces invalid time values e.g. "0000-00-00", "0000-00-00 00:00:00", "00:00:00"
+         * with the NULL data type.
+         */
         if (!empty($vis['patientvisit'])){
             foreach ($vis['patientvisit'] as $visitor){
                 $vis['patientvisit'] = $visitor;
                 foreach ($vis['patientvisit'] as $visit_key => $visit_value){
                     $sanitized_visit[$visit_key] = $this->sanitizeTimeValues($visit_value);
                 }
-                    foreach ($sanitized_visit['specimentestList'] as $visit_specimen){
-                        foreach ($visit_specimen as $key => $value){    // Verify time values in specimentestList array keys
-                            $visit_specimen[$key] = $this->sanitizeTimeValues($value);
-                        }
-                        $specimen_test[] = $visit_specimen;
+
+                foreach ($sanitized_visit['specimentestList'] as $visit_specimen){
+                    foreach ($visit_specimen as $key => $value){    // Verify time values in specimentestList array keys
+                        $visit_specimen[$key] = $this->sanitizeTimeValues($value);
                     }
+                    $specimen_test[] = $visit_specimen;
+                }
 
-                    $sanitized_visit['specimentestList'] = $specimen_test;
+                $sanitized_visit['specimentestList'] = $specimen_test;
 
-                    $test_results = $result_keys = $measure_keys = $result_measures =
-                    $organisms = $organisms_keys = $reject_keys = $reason_keys =
-                    $reject_reasons = $rejects = $spec_results = $res_list = [];
+                $test_results = $result_keys = $measure_keys = $result_measures =
+                $organisms = $organisms_keys = $reject_keys = $reason_keys =
+                $reject_reasons = $rejects = $spec_results = $res_list = [];
 
-                    $specimen_tests = [];
-                    foreach ($sanitized_visit['specimentestList'] as $specimens){
-                        foreach ($specimens['testresultList'] as $testresult){  // Verify time values in testresultList array keys
-                            foreach ($testresult as $result_key => $result_value){
-                                $result_keys[$result_key] = $this->sanitizeTimeValues($result_value);
-                            }
-                            $test_results = $result_keys;
-
-                            $result_measures = [];
-                            foreach ($test_results['measurerangeList'] as $measure_range){  // Verify time values in measurerangeList array keys
-                                foreach ($measure_range as $measure_key => $measure_value){
-                                    $measure_keys[$measure_key] = $this->sanitizeTimeValues($measure_value);
-                                }
-                                $result_measures[] = $measure_keys;
-                            }
-                            $test_results['measurerangeList'] = $result_measures;
-                            $spec_results[] = $test_results;
+                $specimen_tests = [];
+                foreach ($sanitized_visit['specimentestList'] as $specimens){
+                    foreach ($specimens['testresultList'] as $testresult){  // Verify time values in testresultList array keys
+                        foreach ($testresult as $result_key => $result_value){
+                            $result_keys[$result_key] = $this->sanitizeTimeValues($result_value);
                         }
-                        $specimens['testresultList'] = $spec_results;
+                        $test_results = $result_keys;
 
-                        foreach ($specimens['microorganismList'] as $micro_organism){  // Verify time values in microorganismList array keys
-                            foreach ($micro_organism as $organism_key => $organism_value){
-                                $organisms_keys[$organism_key] = $this->sanitizeTimeValues($organism_value);
+                        $result_measures = [];
+                        foreach ($test_results['measurerangeList'] as $measure_range){  // Verify time values in measurerangeList array keys
+                            foreach ($measure_range as $measure_key => $measure_value){
+                                $measure_keys[$measure_key] = $this->sanitizeTimeValues($measure_value);
                             }
-                            $organisms[] = $organisms_keys;
+                            $result_measures[] = $measure_keys;
                         }
-                        $specimens['microorganismList'] = $organisms;
-
-                        foreach ($specimens['specimenrejectList'] as $rejectList){  // Verify time values in specimenrejectList array keys
-                            $rej_array = $res_list = [];
-                            foreach ($rejectList as $reject_key => $reject_value){
-                                $reject_keys[$reject_key] = $this->sanitizeTimeValues($reject_value);
-                            }
-                            $rej_array = $reject_keys;
-
-                            foreach ($rej_array['rejectreasonList'] as $reason){  // Verify time values in rejectreasonList array keys
-                                foreach ($reason as $reason_key => $reason_value){
-                                    $reason_keys[$reason_key] = $this->sanitizeTimeValues($reason_value);
-                                }
-                                $res_list[] = $reason_keys;
-                            }
-                            $rej_array['rejectreasonList'] = $res_list;
-                            $rejects[] = $rej_array;
-                        }
-                        $specimens['specimenrejectList'] = $rejects;
-
-                        // Verify time values in referralList array keys
-                        $refs = [];
-                        foreach ($specimens['referralList'] as $referral){
-                            foreach ($referral as $ref_key => $ref_value){
-                                $reason_keys[$ref_key] = $this->sanitizeTimeValues($ref_value);
-                            }
-                            $refs[] = $reason_keys;
-                        }
-                        $specimens['referralList'] = $refs;
-
-                        $specimen_tests[] = $specimens;
+                        $test_results['measurerangeList'] = $result_measures;
+                        $spec_results[] = $test_results;
                     }
-                    $sanitized_visit['specimentestList'] =  $specimen_tests;
-                    $all_visits[] = $sanitized_visit;
+                    $specimens['testresultList'] = $spec_results;
+
+                    foreach ($specimens['microorganismList'] as $micro_organism){  // Verify time values in microorganismList array keys
+                        foreach ($micro_organism as $organism_key => $organism_value){
+                            $organisms_keys[$organism_key] = $this->sanitizeTimeValues($organism_value);
+                        }
+                        $organisms[] = $organisms_keys;
+                    }
+                    $specimens['microorganismList'] = $organisms;
+
+                    foreach ($specimens['specimenrejectList'] as $rejectList){  // Verify time values in specimenrejectList array keys
+                        $rej_array = $res_list = [];
+                        foreach ($rejectList as $reject_key => $reject_value){
+                            $reject_keys[$reject_key] = $this->sanitizeTimeValues($reject_value);
+                        }
+                        $rej_array = $reject_keys;
+
+                        foreach ($rej_array['rejectreasonList'] as $reason){  // Verify time values in rejectreasonList array keys
+                            foreach ($reason as $reason_key => $reason_value){
+                                $reason_keys[$reason_key] = $this->sanitizeTimeValues($reason_value);
+                            }
+                            $res_list[] = $reason_keys;
+                        }
+                        $rej_array['rejectreasonList'] = $res_list;
+                        $rejects[] = $rej_array;
+                    }
+                    $specimens['specimenrejectList'] = $rejects;
+
+                    // Verify time values in referralList array keys
+                    $refs = [];
+                    foreach ($specimens['referralList'] as $referral){
+                        foreach ($referral as $ref_key => $ref_value){
+                            $reason_keys[$ref_key] = $this->sanitizeTimeValues($ref_value);
+                        }
+                        $refs[] = $reason_keys;
+                    }
+                    $specimens['referralList'] = $refs;
+
+                    $specimen_tests[] = $specimens;
+                }
+                $sanitized_visit['specimentestList'] =  $specimen_tests;
+                $all_visits[] = $sanitized_visit;
 
             }
             $vis['patientvisit'] = $all_visits;
         }
 
 
-//        dd(json_encode($vis['patientvisit']));
         // Add POC table
         $vis['poc'] = json_decode(json_encode($this->pocTable($poc_id)), true);
 
