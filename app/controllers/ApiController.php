@@ -524,8 +524,8 @@ class ApiController extends \BaseController {
         $visit3 = [];
         foreach ($visits2 as $patient_visit) {
             if (!empty($patient_visit['specimentestList'])) {
-                $updated_patient_visit = $updated_tests = $test_results =
-                $test_organisms = $test_rejects = $test_referrals = [];
+                $updated_tests = $test_results = $test_organisms =
+                $test_rejects = $test_referrals = [];
 
                 foreach ($patient_visit['specimentestList'] as $spec_test) {
                     // Appending test results to specimentest
@@ -614,11 +614,11 @@ class ApiController extends \BaseController {
 
         $all_visits = $visit4;
 
-        $all_visits = str_replace("0000-00-00 00:00:00",null, json_encode($all_visits),$i);
-        $all_visits = str_replace("0000-00-00",null, $all_visits,$i);
-        $all_visits = str_replace("00:00:00",null, $all_visits,$i);
+//        $all_visits = str_replace("0000-00-00 00:00:00",null, json_encode($all_visits),$i);
+//        $all_visits = str_replace("0000-00-00",null, $all_visits,$i);
+//        $all_visits = str_replace("00:00:00",null, $all_visits,$i);
 
-        return Response::json(json_decode($all_visits, true));
+        return Response::json(json_decode(json_encode($all_visits), true));
 
     }
 
@@ -706,7 +706,482 @@ class ApiController extends \BaseController {
             $vis['patientvisit'] = [];
         }
 
-//        // Add POC table
+
+//        dd(reset($vis['patientvisit']));
+        $vis['patientvisit'] = reset($vis['patientvisit']);
+//        dd($vis['patientvisit']);
+        $sanitized_visit = $specimen_test = [];
+
+        $vis['patientvisit'] = '{
+   "patientvisit":[
+      {
+         "unhlsPatientsId":3,
+         "patientNumber":"",
+         "ulin":"KHL\/1811\/1177\/AF",
+         "nin":"AFX5K2345",
+         "name":"ANENA LYDIA",
+         "dob":"2016-01-01",
+         "age":24,
+         "gender":1,
+         "nationality":"Ugandan",
+         "email":"name@email.com",
+         "address":"Koboko",
+         "villageResidence":"Barracks",
+         "districtResidence":114,
+         "villageWorkplace":"Koboko",
+         "districtWorkplace":1,
+         "phoneNumber":"0701234567",
+         "occupation":"Test User",
+         "externalPatientNumber":"1",
+         "unhlsPatientsCreatedBy":3,
+         "unhlsPatientsDeletedAt":"0000-00-00 00:00:00",
+         "unhlsPatientsCreatedAt":"2018-11-21 09:48:27",
+         "unhlsPatientsUpdatedAt":"2018-11-21 09:50:06",
+         "isMicro":0,
+         "microPatientsDetailsId":1,
+         "patientId":3,
+         "subCountyResidence":"Koboko county",
+         "subCountyWorkplace":"Koboko Hospital",
+         "nameNextKin":"John",
+         "contactNextKin":"Doe",
+         "residenceNextKin":"Kawempe",
+         "admissionDate":"2020-02-21 05:05:00",
+         "transfered":1,
+         "facilityTransfered":"Koboko Hospital",
+         "clinicalNotes":"Sample notes",
+         "daysOnAntibiotic":"3",
+         "requestedBy":"Test User",
+         "clinicianContact":"Test Clinician",
+         "microPatientsDetailsDeletedAt":"2020-09-26 02:00:00",
+         "microPatientsDetailsCreatedAt":"2020-09-26 01:00:00",
+         "microPatientsDetailsUpdatedAt":"2020-09-26 02:00:00",
+         "unhlsDistrictsId":114,
+         "unhlsDistrictsName":"KOBOKO",
+         "unhlsDistrictsCreatedAt":"2018-11-20 12:12:30",
+         "unhlsDistrictsUpdatedAt":"2018-11-20 12:12:30",
+         "unhlsVisitsId":2,
+         "unhlsVisitsPatientId":3,
+         "visitType":"Out-patient",
+         "visitNumber":2,
+         "visitLabNumber":"L107",
+         "facilityId":2,
+         "facilityLabNumber":"L107",
+         "unhlsVisitsCreatedAt":"2018-11-21 09:51:18",
+         "unhlsVisitsUpdatedAt":"2018-11-21 09:51:18",
+         "wardId":8,
+         "bedNo":"1234",
+         "visitStatusId":1,
+         "hospitalized":1,
+         "urgency":1,
+         "onAntibiotics":3,
+         "wardsId":8,
+         "wardsName":"OPD",
+         "wardsDescription":"Out patient department",
+         "wardsWardTypeId":2,
+         "wardTypeId":2,
+         "wardTypeName":"Out-Patient",
+         "specimentestList":[
+            {
+               "unhlsTestsId":2,
+               "unhlsTestsVisitId":2,
+               "urgencyId":1,
+               "testTypeId":49,
+               "unhlsTestsSpecimenId":2,
+               "interpretation":"Sample interpretation",
+               "testStatusId":4,
+               "unhlsTestsCreatedBy":3,
+               "unhlsTestsTestedBy":1,
+               "unhlsTestsVerifiedBy":0,
+               "unhlsTestsRequestedBy":"Richard",
+               "unhlsTestsClinicianId":15,
+               "purpose":"Purpose",
+               "timeCreated":"2018-11-21 09:51:19",
+               "timeStarted":"2018-11-21 09:58:41",
+               "timeCompleted":"2018-11-21 11:04:20",
+               "timeVerified":"2020-09-26 01:00:00",
+               "timeSent":"2020-09-26 02:00:00",
+               "externalId":1,
+               "instrument":"Telescope",
+               "approvedBy":15,
+               "timeApproved":"0000-00-00 00:00:00",
+               "unhlsTestsRevisedBy":"Richard",
+               "timeRevised":"2020-09-26 02:00:00",
+               "testTypesId":49,
+               "testTypesName":"Malaria RDT",
+               "testTypesDescription":"Malaria RDT",
+               "testTypesTestCategoryId":1,
+               "targetTAT":"1",
+               "targetTATunit":"hours",
+               "orderableTest":1,
+               "prevalenceThreshold":"Prevalent",
+               "testTypesAccredited":1,
+               "testTypesDeletedAt":"2020-09-26 02:04:00",
+               "testTypesCreatedAt":"2018-11-20 15:42:46",
+               "testTypesUpdatedAt":"2019-07-12 18:47:55",
+               "testCategoriesId":1,
+               "testCategoriesName":"PARASITOLOGY",
+               "testCategoriesDescription":"PARASITOLOGY",
+               "testCategoriesDeletedAt":"2020-09-26 03:00:00",
+               "testCategoriesCreatedAt":"2018-11-20 12:12:49",
+               "testCategoriesUpdatedAt":"2018-11-20 12:12:49",
+               "testStatusesId":4,
+               "testStatusesName":"completed",
+               "testStatusesTestPhaseId":3,
+               "testPhasesId":3,
+               "testPhasesName":"Post-Analytical",
+               "specimensId":2,
+               "specimensSpecimenTypeId":22,
+               "specimenStatusId":2,
+               "specimensAcceptedBy":3,
+               "referralId":5,
+               "specimensTimeCollected":"2018-11-21 09:50:00",
+               "specimensTimeAccepted":"2018-11-21 09:50:00",
+               "specimenTypesId":22,
+               "specimenTypesName":"Blood",
+               "specimenTypesDescription":"Blood",
+               "specimenTypesDeletedAt":"2020-09-26 01:04:00",
+               "specimenTypesCreatedAt":"2018-11-20 12:12:49",
+               "specimenTypesUpdatedAt":"2018-11-20 12:12:49",
+               "specimenStatusesId":2,
+               "specimenStatusesName":"specimen-accepted",
+               "testresultList":[
+                  {
+                     "unhlsTestsResultsId":34,
+                     "unhlsTestsResultsTestId":2,
+                     "unhlsTestsResultsMeasureId":104,
+                     "unhlsTestsResultsResult":"Positive",
+                     "timeEntered":"2018-11-21 11:04:20",
+                     "sampleId":"Blood",
+                     "revisedResult":"Sample Revised Result",
+                     "revisedBy":"15",
+                     "revisedBy2":"15",
+                     "timeRevised":"2020-09-26 01:00:00",
+                     "measuresId":104,
+                     "measuresMeasureTypeId":2,
+                     "measuresName":"Malaria RDT",
+                     "unit":"ml",
+                     "measuresDescription":"Malaria RDT",
+                     "measuresCreatedAt":"2018-11-20 15:42:46",
+                     "measuresUpdatedAt":"2018-11-20 15:42:46",
+                     "measuresDeletedAt":"0000-00-00 00:00:00",
+                     "measureTypesId":2,
+                     "measureTypesName":"Alphanumeric Values",
+                     "measureTypesDeletedAt":"2020-09-26 01:00:00",
+                     "measureTypesCreatedAt":"2018-11-20 12:12:49",
+                     "measureTypesUpdatedAt":"2018-11-20 12:12:49",
+                     "measurerangeList":[
+                        {
+                           "measureRangesId":277,
+                           "measureRangesMeasureId":104,
+                           "ageMin":"1.00",
+                           "ageMax":"1.00",
+                           "gender":0,
+                           "flagMin":"min",
+                           "flagMax":"max",
+                           "rangeLower":"1.000",
+                           "rangeUpper":"0.200",
+                           "flagLower":"lower",
+                           "flagUpper":"upper",
+                           "alphanumeric":"Positive",
+                           "interpretation":"interpretation",
+                           "measureRangesDeletedAt":"0000-00-00 00:00:00",
+                           "resultInterpretationId":1
+                        },
+                        {
+                           "measureRangesId":278,
+                           "measureRangesMeasureId":104,
+                           "ageMin":"1.00",
+                           "ageMax":"1.00",
+                           "gender":0,
+                           "flagMin":"min",
+                           "flagMax":"max",
+                           "rangeLower":"1.000",
+                           "rangeUpper":"0.200",
+                           "flagLower":"lower",
+                           "flagUpper":"upper",
+                           "alphanumeric":"Negative",
+                           "interpretation":"interpretation",
+                           "measureRangesDeletedAt":"2020-09-26 01:00:00",
+                           "resultInterpretationId":1
+                        }
+                     ]
+                  }
+               ],
+               "microorganismList":[
+                  {
+                     "isolatedOrganismsId":1,
+                     "isolatedOrganismsUserId":6,
+                     "isolatedOrganismsTestId":2,
+                     "isolatedOrganismsOrganismId":13,
+                     "isolatedOrganismsCreatedAt":"2020-09-26 07:01:00",
+                     "isolatedOrganismsUpdatedAt":"2020-09-26 01:00:00",
+                     "organismsId":13,
+                     "organismsName":"Acinetobacter baumannii",
+                     "organismsDescription":"Acinetobacter baumannii",
+                     "organismsDeletedAt":"2020-09-26 01:02:00",
+                     "organismsCreatedAt":"2017-05-31 14:29:48",
+                     "organismsUpdatedAt":"2017-05-31 14:29:48",
+                     "drugSusceptibilityId":1,
+                     "drugSusceptibilityUserId":6,
+                     "drugSusceptibilityDrugId":4,
+                     "drugSusceptibilityIsolatedOrganismId":1,
+                     "drugSusceptibilityDrugSusceptibilityMeasureId":2,
+                     "zoneDiameter":1,
+                     "drugSusceptibilityDeletedAt":"0000-00-00 00:00:00",
+                     "drugSusceptibilityCreatedAt":"2020-09-26 01:00:00",
+                     "drugSusceptibilityUpdatedAt":"2020-09-26 01:01:00",
+                     "drugSusceptibilityMeasuresId":2,
+                     "symbol":"I",
+                     "interpretation":"Intermediate",
+                     "drugsId":4,
+                     "drugsName":"Cefotaxime",
+                     "drugsDescription":"Cefotaxime",
+                     "drugsDeletedAt":"2020-09-26 01:00:00",
+                     "drugsCreatedAt":"2017-05-31 17:29:38",
+                     "drugsUpdatedAt":"2017-05-31 17:29:38"
+                  }
+               ],
+               "specimenrejectList":[
+                  {
+                     "analyticSpecimenRejectionsId":1,
+                     "testId":2,
+                     "specimenId":207,
+                     "rejectedBy":6,
+                     "rejectionReasonId":1,
+                     "rejectExplainedTo":"Ayila Simon",
+                     "timeRejected":"0000-00-00 00:00:00",
+                     "rejectreasonList":[
+                        {
+                           "analyticSpecimenRejectionReasonsId":1,
+                           "analyticSpecimenRejectionReasonsSpecimenId":207,
+                           "analyticSpecimenRejectionReasonsRejectionId":1,
+                           "analyticSpecimenRejectionReasonsRejectionIdReasonId":1,
+                           "analyticSpecimenRejectionReasonsRejectionIdCreatedAt":"2018-11-26 11:59:21",
+                           "analyticSpecimenRejectionReasonsRejectionIdUpdatedAt":"2018-11-26 11:59:21",
+                           "analyticSpecimenRejectionReasonsRejectionIdDeletedAt":"0000-00-00 00:00:00",
+                           "rejectionReasonsId":1,
+                           "rejectionReasonsReason":"Inadequate sample volume"
+                        },
+                        {
+                           "analyticSpecimenRejectionReasonsId":1,
+                           "analyticSpecimenRejectionReasonsSpecimenId":207,
+                           "analyticSpecimenRejectionReasonsRejectionId":1,
+                           "analyticSpecimenRejectionReasonsRejectionIdReasonId":1,
+                           "analyticSpecimenRejectionReasonsRejectionIdCreatedAt":"2018-11-26 11:59:21",
+                           "analyticSpecimenRejectionReasonsRejectionIdUpdatedAt":"2018-11-26 11:59:21",
+                           "analyticSpecimenRejectionReasonsRejectionIdDeletedAt":"0000-00-00 00:00:00",
+                           "rejectionReasonsId":1,
+                           "rejectionReasonsReason":"Inadequate sample volume"
+                        }
+                     ]
+                  },
+                  {
+                     "analyticSpecimenRejectionsId":4,
+                     "testId":2,
+                     "specimenId":208,
+                     "rejectedBy":7,
+                     "rejectionReasonId":1,
+                     "rejectExplainedTo":"Stella Simon",
+                     "timeRejected":"0000-00-00 00:00:00",
+                     "rejectreasonList":[
+                        {
+                           "analyticSpecimenRejectionReasonsId":1,
+                           "analyticSpecimenRejectionReasonsSpecimenId":207,
+                           "analyticSpecimenRejectionReasonsRejectionId":1,
+                           "analyticSpecimenRejectionReasonsRejectionIdReasonId":1,
+                           "analyticSpecimenRejectionReasonsRejectionIdCreatedAt":"2018-11-26 11:59:21",
+                           "analyticSpecimenRejectionReasonsRejectionIdUpdatedAt":"2018-11-26 11:59:21",
+                           "analyticSpecimenRejectionReasonsRejectionIdDeletedAt":"0000-00-00 00:00:00",
+                           "rejectionReasonsId":1,
+                           "rejectionReasonsReason":"Inadequate sample volume"
+                        },
+                        {
+                           "analyticSpecimenRejectionReasonsId":1,
+                           "analyticSpecimenRejectionReasonsSpecimenId":207,
+                           "analyticSpecimenRejectionReasonsRejectionId":1,
+                           "analyticSpecimenRejectionReasonsRejectionIdReasonId":1,
+                           "analyticSpecimenRejectionReasonsRejectionIdCreatedAt":"2018-11-26 11:59:21",
+                           "analyticSpecimenRejectionReasonsRejectionIdUpdatedAt":"2018-11-26 11:59:21",
+                           "analyticSpecimenRejectionReasonsRejectionIdDeletedAt":"0000-00-00 00:00:00",
+                           "rejectionReasonsId":1,
+                           "rejectionReasonsReason":"Inadequate sample volume"
+                        }
+                     ]
+                  }
+               ],
+               "referralList":[
+                  {
+                     "referralsId":5,
+                     "testId":2,
+                     "sampleObtainer":"Sample Obtainer",
+                     "cadreObtainer":"Cadre obtainer",
+                     "sampleDate":"2020-09-01",
+                     "sampleTime":"2020-09-26 01:00:00",
+                     "timeDispatch":"2020-09-26 01:00:00",
+                     "storageCondition":"Dry",
+                     "transportType":"Road",
+                     "referralsStatus":2,
+                     "referralReason":1,
+                     "prioritySpecimen":"Priority",
+                     "refferalFacilityId":1,
+                     "person":"Clinician",
+                     "contacts":"Next of Kin",
+                     "userId":6,
+                     "createdAt":"2020-09-26 01:00:00",
+                     "updatedAt":"2020-09-26 01:00:00",
+                     "facilitiesId":1,
+                     "facilitiesName":"Koboko Hospital",
+                     "facilityContact":"07012345768",
+                     "facilityEmail":"facility@email.com",
+                     "facilitiesActive":0,
+                     "facilitiesCode":"KB1234",
+                     "dhis2Name":"Koboko Hospital",
+                     "dhis2Uid":"yDPmjwoOIxi",
+                     "facilitiesCreatedAt":"2020-09-26 01:02:00",
+                     "facilitiesUpdatedAt":"2020-09-26 01:02:00",
+                     "referralReasonsId":1,
+                     "referralReasonsReason":"Sample referral reason"
+                  },
+                  {
+                     "referralsId":5,
+                     "testId":2,
+                     "sampleObtainer":"Sample Obtainer",
+                     "cadreObtainer":"Cadre obtainer",
+                     "sampleDate":"2020-09-01",
+                     "sampleTime":"2020-09-26 01:00:00",
+                     "timeDispatch":"2020-09-26 01:00:00",
+                     "storageCondition":"Dry",
+                     "transportType":"Road",
+                     "referralsStatus":2,
+                     "referralReason":1,
+                     "prioritySpecimen":"Priority",
+                     "refferalFacilityId":1,
+                     "person":"Clinician",
+                     "contacts":"Next of Kin",
+                     "userId":6,
+                     "createdAt":"2020-09-26 01:00:00",
+                     "updatedAt":"2020-09-26 01:00:00",
+                     "facilitiesId":1,
+                     "facilitiesName":"Koboko Hospital",
+                     "facilityContact":"07012345768",
+                     "facilityEmail":"facility@email.com",
+                     "facilitiesActive":0,
+                     "facilitiesCode":"KB1234",
+                     "dhis2Name":"Koboko Hospital",
+                     "dhis2Uid":"yDPmjwoOIxi",
+                     "facilitiesCreatedAt":"2020-09-26 01:02:00",
+                     "facilitiesUpdatedAt":"2020-09-26 01:02:00",
+                     "referralReasonsId":1,
+                     "referralReasonsReason":"Sample referral reason"
+                  }
+               ]
+            }
+         ]
+      }
+   ]}';
+//        dd(json_decode($vis['patientvisit'], true));
+
+        $vis['patientvisit'] = json_decode($vis['patientvisit'], true);
+        $visit['patientvisit'] = reset($vis['patientvisit']);
+//        dd($visit['patientvisit'][0]);
+        $vis['patientvisit'] = $visit['patientvisit'][0];
+        if (!empty($vis['patientvisit'])){
+            foreach ($vis['patientvisit'] as $visit_key => $visit_value){
+                $sanitized_visit[$visit_key] = $this->sanitizeTimeValues($visit_value);
+
+            }
+//        dd($sanitized_visit);
+
+            foreach ($sanitized_visit['specimentestList'] as $visit_specimen){
+                foreach ($visit_specimen as $key => $value){
+                    $visit_specimen[$key] = $this->sanitizeTimeValues($value);
+                }
+                $specimen_test[] = $visit_specimen;
+            }
+
+            $sanitized_visit['specimentestList'] = $specimen_test;
+//            dd($sanitized_visit['specimentestList']);
+
+            $test_results = $result_keys = $measure_keys = $result_measures =
+            $organisms = $organisms_keys = $reject_keys = $reason_keys =
+            $reject_reasons = $rejects = $spec_results = $res_list = [];
+
+            $specimen_tests = [];
+            foreach ($sanitized_visit['specimentestList'] as $specimens){
+//                dd($specimens);
+                foreach ($specimens['testresultList'] as $testresult){  // Verify time values in testresultList array keys
+//                    dd($testresult);
+                    foreach ($testresult as $result_key => $result_value){
+                        $result_keys[$result_key] = $this->sanitizeTimeValues($result_value);
+                    }
+                    $test_results = $result_keys;
+//                    dd($test_results['measurerangeList']);
+                    $result_measures = [];
+                    foreach ($test_results['measurerangeList'] as $measure_range){  // Verify time values in measurerangeList array keys
+//                        dd($measure_range);
+                        foreach ($measure_range as $measure_key => $measure_value){
+//                            dd($measure_key);
+                            $measure_keys[$measure_key] = $this->sanitizeTimeValues($measure_value);
+                        }
+                        $result_measures[] = $measure_keys;
+                    }
+                    $test_results['measurerangeList'] = $result_measures;
+                    $spec_results[] = $test_results;
+//                    dd($test_results['measurerangeList']);
+                }
+                $specimens['testresultList'] = $spec_results;
+//                dd($specimens['testresultList']);
+//                dd($specimens['microorganismList']);
+
+                foreach ($specimens['microorganismList'] as $micro_organism){  // Verify time values in microorganismList array keys
+                    foreach ($micro_organism as $organism_key => $organism_value){
+                        $organisms_keys[$organism_key] = $this->sanitizeTimeValues($organism_value);
+                    }
+                    $organisms[] = $organisms_keys;
+                }
+                $specimens['microorganismList'] = $organisms;
+//                dd($specimens['microorganismList']);
+
+//                dd($specimens['specimenrejectList']);
+                foreach ($specimens['specimenrejectList'] as $rejectList){  // Verify time values in specimenrejectList array keys
+                    $rej_array = $res_list = [];
+                    foreach ($rejectList as $reject_key => $reject_value){
+                        $reject_keys[$reject_key] = $this->sanitizeTimeValues($reject_value);
+                    }
+                    $rej_array = $reject_keys;
+
+                    foreach ($rej_array['rejectreasonList'] as $reason){  // Verify time values in rejectreasonList array keys
+                        foreach ($reason as $reason_key => $reason_value){
+                            $reason_keys[$reason_key] = $this->sanitizeTimeValues($reason_value);
+                        }
+                        $res_list[] = $reason_keys;
+                    }
+                    $rej_array['rejectreasonList'] = $res_list;
+                    $rejects[] = $rej_array;
+                }
+                $specimens['specimenrejectList'] = $rejects;
+
+                // Verify time values in referralList array keys
+                $refs = [];
+                foreach ($specimens['referralList'] as $referral){
+                    foreach ($referral as $ref_key => $ref_value){
+                        $reason_keys[$ref_key] = $this->sanitizeTimeValues($ref_value);
+                    }
+                    $refs[] = $reason_keys;
+                }
+
+                $specimens['referralList'] = $refs;
+//                dd($specimens);
+//                $vis['patientvisit']['specimentestList']
+                $specimen_tests[] = $specimens;
+            }
+            $sanitized_visit['specimentestList'] =  $specimen_tests;
+            dd(json_encode($sanitized_visit));
+
+        }
+
+
+        // Add POC table
         $vis['poc'] = json_decode(json_encode($this->pocTable($poc_id)), true);
 
         // Add poc_result to each POC
@@ -720,12 +1195,48 @@ class ApiController extends \BaseController {
         }
 
         $vis['poc'] = $poc_results;
+//        dd($vis['poc']);
+        $poc_keys = $poc_array = $result_poc = $result_keys = [];
+        foreach ($vis['poc'] as $poc){
+            foreach ($poc as $poc_key => $poc_value){
+                $poc_keys[$poc_key] = $this->sanitizeTimeValues($poc_value);
+            }
+            foreach ($poc_keys['pocresultList'] as $poc_res){
+                foreach ($poc_res as $res_key => $res_value){
+                    $result_keys[$res_key] = $this->sanitizeTimeValues($res_value);
+                }
+                $result_poc[] = $result_keys;
+            }
+            $poc_keys['pocresultList'] = $result_poc;
+        }
+        $vis['poc'] = $poc_keys;
+//            dd($vis['poc']);
 
         // Add facility users
-        $vis['facilityusers'] = json_decode(json_encode($this->users($user_id)));
+        $user_keys = $user_array = [];
+        $vis['facilityusers'] = json_decode(json_encode($this->users($user_id)), true);
+//        dd($vis['facilityusers']);
+        foreach ($vis['facilityusers'] as $user){
+            foreach ($user as $user_key => $user_value){
+                $user_keys[$user_key] = $this->sanitizeTimeValues($user_value);
+            }
+            $user_array[] = $user_keys;
+        }
+        $vis['facilityusers'] = $user_array;
+//        dd($vis['facilityusers']);
 
         // Add facility clinicians
+        $clinician_keys = $clinician_array = [];
         $vis['clinicians'] = json_decode(json_encode($this->clinicians($clinician_id)), true);
+        foreach ($vis['clinicians'] as $clin){
+            foreach ($clin as $clin_key => $clin_value){
+                $clinician_keys[$clin_key] = $this->sanitizeTimeValues($clin_value);
+            }
+            $clinician_array[] = $clinician_keys;
+        }
+        $vis['clinicians'] = $clinician_array;
+
+//        dd($vis['clinicians']);
 
         return $vis;
     }
@@ -743,18 +1254,18 @@ class ApiController extends \BaseController {
     {
 
         $last_update_test = UnhlsTestResult::where('time_entered', '>', strtotime($importDate))
-            ->where('test_id', '>', DB::raw($test_id))
-            ->select('test_id')
-            ->orderBy('test_id', 'asc')
-            ->first()
-            ->toArray();
+                                ->where('test_id', '>', DB::raw($test_id))
+                                ->select('test_id')
+                                ->orderBy('test_id', 'asc')
+                                ->first()
+                                ->toArray();
 
 //        dd($last_update_test);
         $last_updated_visit_id = UnhlsTest::where('id', '=', $last_update_test['test_id'])
-            ->select('visit_id')
-            ->orderBy('visit_id', 'asc')
-            ->first()
-            ->toArray();
+                                    ->select('visit_id')
+                                    ->orderBy('visit_id', 'asc')
+                                    ->first()
+                                    ->toArray();
 
         $result = json_decode($this->getPatientVisits($last_updated_visit_id['visit_id'])->getContent(), true);
 
@@ -764,6 +1275,24 @@ class ApiController extends \BaseController {
         return json_decode(json_encode($result), true);
 
     }
+
+    /*
+     * Replace invalid time values with null data type
+     */
+    public function sanitizeTimeValues($time)
+    {
+        if($time === "0000-00-00 00:00:00"){
+            return null;
+        }elseif($time === "0000-00-00"){
+            return null;
+        }elseif ($time === "00:00:00"){
+            return null;
+        }else{
+            return $time;
+        }
+
+    }
+
 
 	/**
 	 * Display a listing of the resource.
