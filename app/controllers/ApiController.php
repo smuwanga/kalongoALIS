@@ -809,8 +809,10 @@ class ApiController extends \BaseController {
 
         $vis['poc'] = $poc_results;
 
-        $poc_keys = $poc_array = $result_poc = $result_keys = [];
+        $poc_keys = $poc_array = $result_keys = $p_result = [];
+
         foreach ($vis['poc'] as $poc){
+            $result_poc = [];
             foreach ($poc as $poc_key => $poc_value){
                 $poc_keys[$poc_key] = $this->sanitizeTimeValues($poc_value);
             }
@@ -822,8 +824,9 @@ class ApiController extends \BaseController {
                 $result_poc[] = $result_keys;
             }
             $poc_keys['pocresultList'] = $result_poc;
+            $p_result[] = $poc_keys;
         }
-        $vis['poc'] = $poc_keys;
+        $vis['poc'] = $p_result;
 
         // Add facility users
         $user_keys = $user_array = [];
