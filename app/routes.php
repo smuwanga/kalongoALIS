@@ -37,6 +37,16 @@ Route::group(array("before" => "guest"), function()
         "uses" => "UserController@loginAction"
     ));
 
+    Route::any('/settings', array(
+        "as" => "facility.settings",
+        "uses" => "UserController@configureFacilitySettings"
+    ));
+
+    Route::get('/connection', array(
+        "as" => "facility.connection",
+        "uses" => "UserController@testConnection"
+    ));
+
     Route::post('/api/fhir/emr_test_request', 'UnhlsTestController@emrTestRequest');
 
 });
@@ -974,4 +984,8 @@ Route::get('hackpassword', function() {
     echo 'Password changed successfully.';
 });
 
+// DATA WARE HOUSE API ENDPOINTS
 
+Route::get('/facility_settings', 'ApiController@facilitySettings');
+
+Route::get('/getvisits/{visit_id}/{poc_id}/{clin_id}/{user_id}', 'ApiController@getChunkedVisits');
